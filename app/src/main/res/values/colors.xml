@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="header_strart">#0B92DF</color>
+    <color name="header_end">#0BAEDF</color>
+    <color name="actionbar_background">#0B92DF</color>
+</resources>

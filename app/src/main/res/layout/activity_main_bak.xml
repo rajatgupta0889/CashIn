@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient"
+    android:orientation="vertical"
+    tools:context="com.mantralabsglobal.cashin.LoginActivity"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cash_in"/>
+
+    </LinearLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        >
+
+        <TableRow  android:layout_width="match_parent">
+            <EditText android:layout_width="match_parent" android:drawableLeft="@drawable/shape_32" android:singleLine="true" />
+        </TableRow>
+        <TableRow  android:layout_width="match_parent">
+            <EditText android:layout_width="match_parent" android:drawableLeft="@drawable/shape_2" android:password="true"/>
+        </TableRow>
+
+        <TableRow  android:layout_width="match_parent">
+            <ImageButton android:layout_width="match_parent" android:src="@drawable/log_in" android:scaleType="fitCenter"/>
+        </TableRow>
+        <TableRow  android:gravity="center" android:layout_width="match_parent">
+            <ImageView android:src="@drawable/forgot_your_password_" android:scaleType="fitCenter" />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
