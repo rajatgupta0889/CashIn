@@ -14,10 +14,17 @@
         android:gravity="center"
         >
 
-        <ImageView
+        <!--<ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cash_in"/>
+            android:src="@drawable/cash_in"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="@string/cash_in"
+            style="@style/LoginFont"
+            android:textSize="@dimen/font_size_header"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -26,12 +33,22 @@
         android:orientation="vertical"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
+        android:gravity="center"
         >
-            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:drawableLeft="@drawable/shape_32" android:singleLine="true" />
-            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:drawableLeft="@drawable/shape_2" android:password="true"/>
-            <ImageButton  android:layout_width="match_parent" android:layout_height="50dp" android:src="@drawable/log_in" android:scaleType="center"
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="Email" />
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:drawableStart="@drawable/shape_32" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:text="Password" />
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:password="true" android:drawableStart="@drawable/shape_2" android:drawablePadding="100dp"/>
+
+            <ImageButton  android:layout_width="match_parent" android:layout_height="wrap_content" android:src="@drawable/log_in" android:scaleType="center"
                 android:id="@+id/loginButton" />
-            <ImageView android:src="@drawable/forgot_your_password_" android:layout_width="match_parent" android:layout_height="50dp" android:scaleType="center" />
+
+            <ImageView android:src="@drawable/forgot_your_password_" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="fitXY" />
 
     </LinearLayout>
 

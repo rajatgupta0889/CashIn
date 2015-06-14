@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -32,6 +33,9 @@ public abstract class AbstractPager extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ViewPager pager = (ViewPager) getActivity().findViewById(R.id.viewPager);
         pager.setAdapter(getPagerAdapter(getChildFragmentManager()));
+
+        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(pager);
     }
 
     protected abstract FragmentPagerAdapter getPagerAdapter(FragmentManager fragmentManager);

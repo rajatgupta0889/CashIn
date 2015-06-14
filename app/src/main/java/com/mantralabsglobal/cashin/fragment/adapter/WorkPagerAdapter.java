@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.mantralabsglobal.cashin.fragment.tabs.BusinessCardFragment;
 import com.mantralabsglobal.cashin.fragment.tabs.CurrentAddressFragment;
 
 /**
@@ -12,9 +13,11 @@ import com.mantralabsglobal.cashin.fragment.tabs.CurrentAddressFragment;
 public class WorkPagerAdapter extends FragmentPagerAdapter{
 
     private String tabtitles[] = new String[] { "Business Card", "Linked In"};
+    private BusinessCardFragment fragment;
 
     public WorkPagerAdapter(FragmentManager fm) {
         super(fm);
+        fragment = new BusinessCardFragment();
     }
 
     @Override
@@ -22,8 +25,7 @@ public class WorkPagerAdapter extends FragmentPagerAdapter{
         switch (position) {
 
             case 0:
-                CurrentAddressFragment currentAddressFragment = new CurrentAddressFragment();
-                return currentAddressFragment ;
+                return fragment ;
             // Open FragmentTab3.java
         }
         return new CurrentAddressFragment();

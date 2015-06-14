@@ -1,5 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mantralabsglobal.cashin.MainActivity">
 
@@ -8,12 +10,13 @@
         android:layout_height="150dp"
         android:background="@color/header_strart"
         android:orientation="vertical"
-        android:paddingTop="20dp" android:paddingLeft="20dp" android:paddingRight="20dp"
+        android:paddingTop="20dp"
         android:id="@+id/linearLayout">
         
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:paddingLeft="20dp" android:paddingRight="20dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -30,34 +33,45 @@
 
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
                 android:id="@+id/yourPhotoButton"
-                android:src="@drawable/your_photo"
+                android:src="@drawable/your_photos"
                 android:background="@color/header_strart"
+
                 />
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
                 android:id="@+id/yourIdentityButton"
                 android:src="@drawable/your_identity" android:background="@color/header_strart"
                 />
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="10dp"
+                android:scaleType="fitXY"
                 android:id="@+id/workButton"
                 android:src="@drawable/work" android:background="@color/header_strart"
                 />
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="-10dp"
+                android:scaleType="fitXY"
                 android:id="@+id/financialButton"
                 android:src="@drawable/financial" android:background="@color/header_strart"
                 />
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="-10dp"
+                android:scaleType="fitXY"
                 android:id="@+id/socialButton"
                 android:src="@drawable/social" android:background="@color/header_strart"
                 />
@@ -91,73 +105,6 @@
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true">
 
-       <!-- <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/yourPhoto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <android.support.v4.view.PagerTabStrip
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:textColor="#000000" />
-
-        </android.support.v4.view.ViewPager>
-
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/yourIdentity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <android.support.v4.view.PagerTabStrip
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:textColor="#000000" />
-
-        </android.support.v4.view.ViewPager>
-
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/work"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <android.support.v4.view.PagerTabStrip
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:textColor="#000000" />
-
-        </android.support.v4.view.ViewPager>
-
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/financial"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-        </android.support.v4.view.ViewPager>
-
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/social"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <android.support.v4.view.PagerTabStrip
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:textColor="#000000" />
-
-        </android.support.v4.view.ViewPager>
--->
     </FrameLayout>
 
 </RelativeLayout>

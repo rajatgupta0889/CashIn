@@ -3,9 +3,7 @@ package com.mantralabsglobal.cashin.fragment.tabs;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,7 @@ import com.mantralabsglobal.cashin.R;
 /**
  * Created by pk on 13/06/2015.
  */
-public class CurrentAddressFragment extends Fragment {
+public class BusinessCardFragment extends Fragment {
 
     ViewFlipper viewFlipper;
     View currentView;
@@ -26,20 +24,17 @@ public class CurrentAddressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Get the view from fragmenttab1.xml
-        View view = inflater.inflate(R.layout.fragment_current_location, container, false);
+        View view = inflater.inflate(R.layout.fragment_business_card, container, false);
 
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.current_location_viewflipper);
+        viewFlipper = (ViewFlipper) view.findViewById(R.id.business_card_viewflipper);
         currentView = view;
-        Button btnEdit = (Button) view.findViewById(R.id.editCurrentAddressButton);
+        Button btnEdit = (Button) view.findViewById(R.id.enterWorkDetailsButton);
         btnEdit.setOnClickListener(listener);
-
-        FloatingActionButton btnGps = (FloatingActionButton) view.findViewById(R.id.gpsLocationButton);
-        btnGps.setOnClickListener(listener);
 
     }
 
@@ -56,13 +51,13 @@ public class CurrentAddressFragment extends Fragment {
         public void onClick(View v) {
 
             View child = null;
-            if(v.getId() == currentView.findViewById(R.id.editCurrentAddressButton).getId())
+            if(v.getId() == currentView.findViewById(R.id.enterWorkDetailsButton).getId())
             {
-                child = currentView.findViewById(R.id.getLocationFromFormLayout);
+                child = currentView.findViewById(R.id.enterWorkDetailLayout);
             }
             else
             {
-                child = currentView.findViewById(R.id.getLocationFromGPSLayout);
+                child = currentView.findViewById(R.id.businessCardSnapLayout);
             }
             if(child != null)
                 viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));

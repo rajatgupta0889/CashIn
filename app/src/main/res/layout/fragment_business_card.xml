@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <ViewFlipper
+        android:id="@+id/business_card_viewflipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/businessCardSnapLayout"
+                android:layout_width="match_parent" android:gravity="center"  android:layout_height="match_parent" android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:paddingTop="50dp" android:gravity="center" android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Take a snap of your business card" />
+
+                <ImageView
+                    android:layout_marginTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:src="@drawable/business_card_layer"/>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:background="@drawable/gradient_seperator"
+                android:layout_height="2dp"></View>
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="Don't have a business card ready?" />
+
+                <Button
+                android:id="@+id/enterWorkDetailsButton"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content" android:capitalize="characters" android:text="Enter work details  >" android:background="@null"
+                />
+
+        </LinearLayout>
+        <LinearLayout android:id="@+id/enterWorkDetailLayout" android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Employer Name" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Work Email Id" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+    </ViewFlipper>
+    </ScrollView>
+
+</LinearLayout>

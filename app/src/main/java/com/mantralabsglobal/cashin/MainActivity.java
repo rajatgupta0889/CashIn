@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -18,7 +19,10 @@ import com.mantralabsglobal.cashin.fragment.adapter.WorkPagerAdapter;
 
 public class MainActivity extends FragmentActivity{
 
-
+    private FinancePagerAdapter financePagerAdapter;
+    private IdentityPagerAdapter identityPagerAdapter;
+    private WorkPagerAdapter workPagerAdapter;
+    private SocialPagerAdapter socialPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,24 +62,48 @@ public class MainActivity extends FragmentActivity{
                 @Override
                 protected FragmentPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
                     if (v == findViewById(R.id.yourPhotoButton))
-                        return new FinancePagerAdapter(fragmentManager);
+                        return getFinancePageAdapter(fragmentManager);
                     if (v == findViewById(R.id.yourIdentityButton))
-                        return new IdentityPagerAdapter(fragmentManager);
+                        return getIdentityPagerAdapter(fragmentManager);
                     if (v == findViewById(R.id.workButton))
-                        return new WorkPagerAdapter(fragmentManager);
+                        return getWorkPagerAdapter(fragmentManager);
                     if (v == findViewById(R.id.financialButton))
-                        return new FinancePagerAdapter(fragmentManager);
+                        return getFinancePageAdapter(fragmentManager);
                     if (v == findViewById(R.id.socialButton))
-                        return new SocialPagerAdapter(fragmentManager);
+                        return getSocialPageAdapter(fragmentManager);
                     return null;
                 }
             };
 
             if(f_pager != null) {
                 FT.replace(R.id.main_frame, f_pager);
+                FT.addToBackStack(null);
                 FT.commit();
             }
         }
     };
+
+    protected FinancePagerAdapter getFinancePageAdapter(FragmentManager fragmentManager)
+    {
+        financePagerAdapter = new FinancePagerAdapter(fragmentManager);
+        return financePagerAdapter;
+    }
+
+    protected SocialPagerAdapter getSocialPageAdapter(FragmentManager fragmentManager)
+    {
+        socialPagerAdapter = new SocialPagerAdapter(fragmentManager);
+        return socialPagerAdapter;
+    }
+
+    protected WorkPagerAdapter getWorkPagerAdapter(FragmentManager fragmentManager)
+    {
+        workPagerAdapter = new WorkPagerAdapter(fragmentManager);
+        return workPagerAdapter;
+    }
+    protected IdentityPagerAdapter getIdentityPagerAdapter(FragmentManager fragmentManager)
+    {
+        identityPagerAdapter = new IdentityPagerAdapter(fragmentManager);
+        return identityPagerAdapter;
+    }
 
 }

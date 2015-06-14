@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mantralabsglobal.cashin.fragment.tabs.CurrentAddressFragment;
+import com.mantralabsglobal.cashin.fragment.tabs.IncomeFragment;
 
 /**
  * Created by pk on 13/06/2015.
@@ -13,17 +14,19 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
 
     private String tabtitles[] = new String[] { "Bank Statement", "Income", "Current Address" , "Permanent Address"};
 
+    private IncomeFragment ifragnent;
+
     public FinancePagerAdapter(FragmentManager fm) {
         super(fm);
+        ifragnent = new IncomeFragment();
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
 
-            case 0:
-                CurrentAddressFragment currentAddressFragment = new CurrentAddressFragment();
-                return currentAddressFragment ;
+            case 1:
+                return ifragnent ;
             // Open FragmentTab3.java
         }
         return new CurrentAddressFragment();

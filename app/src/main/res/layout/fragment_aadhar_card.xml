@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <ViewFlipper
+        android:id="@+id/aadhar_card_viewflipper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/aadharCardSnapLayout"
+            android:layout_width="match_parent" android:gravity="center"  android:layout_height="match_parent" android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:paddingTop="50dp" android:gravity="center" android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Scan Aadhar card QR Code" />
+
+                <ImageView
+                    android:layout_marginTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:src="@drawable/business_card_layer"/>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:background="@drawable/gradient_seperator"
+                android:layout_height="2dp"></View>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="Don't have the Aadhar card ready?" />
+
+            <Button
+                android:id="@+id/enterAadharDetailsButton"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content" android:capitalize="characters" android:text="Enter Aadhar details  >" android:background="@null"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/enterAadharDetailLayout" android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Name"/>
+            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="eg. Praveen Kumar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Address"/>
+            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="eg. Bangalore" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Gender"/>
+            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Male" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Aadhar Number"/>
+            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Aadhar number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Mobile"/>
+            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Mobile Number" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="false" android:text="Son Of" android:hint="Son Of" />
+                <EditText android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="false" android:hint="Father's Name" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Date of birth"/>
+                <EditText android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="false" android:hint="MM/dd/YYYY" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="24 years"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </ViewFlipper>
+    </ScrollView>
+
+</LinearLayout>
