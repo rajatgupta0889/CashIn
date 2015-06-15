@@ -7,19 +7,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/header_strart"
+        android:layout_height="120dp"
+        android:background="@color/primary"
         android:orientation="vertical"
         android:paddingTop="20dp"
         android:id="@+id/linearLayout">
         
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:paddingLeft="20dp" android:paddingRight="20dp"
             android:orientation="horizontal">
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/your_profile"/>
         </LinearLayout>
@@ -29,35 +29,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             >
 
 
             <ImageButton
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:scaleType="fitXY"
                 android:id="@+id/yourPhotoButton"
                 android:src="@drawable/your_photos"
-                android:background="@color/header_strart"
+                android:background="@color/primary"
 
                 />
 
             <ImageButton
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="2dp"
                 android:scaleType="fitXY"
                 android:id="@+id/yourIdentityButton"
-                android:src="@drawable/your_identity" android:background="@color/header_strart"
+                android:src="@drawable/your_identity" android:background="@color/primary"
                 />
             <ImageButton
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="2dp"
                 android:scaleType="fitXY"
                 android:id="@+id/workButton"
-                android:src="@drawable/work" android:background="@color/header_strart"
+                android:src="@drawable/work" android:background="@color/primary"
                 />
             <ImageButton
                 android:layout_width="75dp"
@@ -65,7 +66,7 @@
                 android:layout_marginLeft="-10dp"
                 android:scaleType="fitXY"
                 android:id="@+id/financialButton"
-                android:src="@drawable/financial" android:background="@color/header_strart"
+                android:src="@drawable/financial" android:background="@color/primary"
                 />
             <ImageButton
                 android:layout_width="75dp"
@@ -73,7 +74,7 @@
                 android:layout_marginLeft="-10dp"
                 android:scaleType="fitXY"
                 android:id="@+id/socialButton"
-                android:src="@drawable/social" android:background="@color/header_strart"
+                android:src="@drawable/social" android:background="@color/primary"
                 />
         </LinearLayout>
 

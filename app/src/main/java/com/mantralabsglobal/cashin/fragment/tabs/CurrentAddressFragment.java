@@ -9,7 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
 import com.mantralabsglobal.cashin.R;
@@ -41,6 +43,20 @@ public class CurrentAddressFragment extends Fragment {
         FloatingActionButton btnGps = (FloatingActionButton) view.findViewById(R.id.gpsLocationButton);
         btnGps.setOnClickListener(listener);
 
+        Spinner spinner = (Spinner) view.findViewById(R.id.city_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.city_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner = (Spinner) view.findViewById(R.id.state_spinner);
+        adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.state_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner = (Spinner) view.findViewById(R.id.own_spinner);
+        adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.own_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
 

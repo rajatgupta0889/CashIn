@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="font_size_header">30sp</dimen>
     <dimen name="font_size">10sp</dimen>
+    <dimen name="form_input_margin_top">20dp</dimen>
+    <dimen name="form_input_padding_left">30dp</dimen>
 </resources>

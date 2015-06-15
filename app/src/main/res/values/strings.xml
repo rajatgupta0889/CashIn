@@ -15,4 +15,17 @@
     <string name="password_hint">Password</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="city_array">
+        <item>Bangalore</item>
+        <item>Mumbai</item>
+    </string-array>
+    <string-array name="state_array">
+        <item>Karnataka</item>
+        <item>Maharashtra</item>
+    </string-array>
+    <string-array name="own_array">
+        <item>Family</item>
+        <item>Self</item>
+        <item>Joint</item>
+    </string-array>
 </resources>
