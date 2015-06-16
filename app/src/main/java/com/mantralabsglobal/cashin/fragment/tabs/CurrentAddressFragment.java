@@ -35,12 +35,11 @@ public class CurrentAddressFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.current_location_viewflipper);
         currentView = view;
         Button btnEdit = (Button) view.findViewById(R.id.editCurrentAddressButton);
         btnEdit.setOnClickListener(listener);
 
-        FloatingActionButton btnGps = (FloatingActionButton) view.findViewById(R.id.gpsLocationButton);
+        FloatingActionButton btnGps = (FloatingActionButton) view.findViewById(R.id.gpsLocationFormButton);
         btnGps.setOnClickListener(listener);
 
         Spinner spinner = (Spinner) view.findViewById(R.id.city_spinner);
@@ -57,6 +56,10 @@ public class CurrentAddressFragment extends Fragment {
         adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.own_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+
+        view.findViewById(R.id.getLocationFromFormLayout).setVisibility(View.GONE);
+        view.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.GONE);
     }
 
 
@@ -74,14 +77,18 @@ public class CurrentAddressFragment extends Fragment {
             View child = null;
             if(v.getId() == currentView.findViewById(R.id.editCurrentAddressButton).getId())
             {
-                child = currentView.findViewById(R.id.getLocationFromFormLayout);
+                currentView.findViewById(R.id.getLocationFromFormLayout).setVisibility(View.VISIBLE);
+                currentView.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.GONE);
+                currentView.findViewById(R.id.gpsLocationFormButton).setVisibility(View.VISIBLE);
             }
             else
             {
-                child = currentView.findViewById(R.id.getLocationFromGPSLayout);
+                currentView.findViewById(R.id.getLocationFromFormLayout).setVisibility(View.GONE);
+                currentView.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.VISIBLE);
+                currentView.findViewById(R.id.gpsLocationFormButton).setVisibility(View.GONE);
             }
-            if(child != null)
-                viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));
+            //if(child != null)
+              //  viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));
         }
     };
 
