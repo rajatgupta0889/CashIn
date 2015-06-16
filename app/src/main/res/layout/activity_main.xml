@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mantralabsglobal.cashin.MainActivity">
+    tools:context="com.mantralabsglobal.cashin.MainActivity"
+    android:id="@+id/a">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,51 +45,65 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
             >
 
 
-            <ImageButton
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="5dp"
-                android:scaleType="fitXY"
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
                 android:id="@+id/yourPhotoButton"
-                android:src="@drawable/your_photos"
-                android:background="@color/primary"
-
+                android:drawableTop="@drawable/ic_photo"
+                android:text="@string/your_photo"
+                android:theme="@style/primary_nav_button"
+                android:background="?android:attr/selectableItemBackground"
                 />
 
-            <ImageButton
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="2dp"
-                android:scaleType="fitXY"
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
                 android:id="@+id/yourIdentityButton"
-                android:src="@drawable/your_identity" android:background="@color/primary"
+                android:text="Your Identity"
+                android:theme="@style/primary_nav_button"
+                android:drawableTop="@drawable/ic_identity"
+                android:background="?android:attr/selectableItemBackground"
                 />
-            <ImageButton
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="2dp"
-                android:scaleType="fitXY"
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
                 android:id="@+id/workButton"
-                android:src="@drawable/work" android:background="@color/primary"
+                android:text="Work"
+                android:theme="@style/primary_nav_button"
+                android:drawableTop="@drawable/ic_work"
+                android:background="?android:attr/selectableItemBackground"
                 />
-            <ImageButton
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="-10dp"
-                android:scaleType="fitXY"
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
                 android:id="@+id/financialButton"
-                android:src="@drawable/financial" android:background="@color/primary"
+                android:text="Financial"
+                android:theme="@style/primary_nav_button"
+                android:drawableTop="@drawable/ic_financial"
+                android:background="?android:attr/selectableItemBackground"
                 />
-            <ImageButton
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:layout_marginLeft="-10dp"
-                android:scaleType="fitXY"
+            <Button
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scaleType="center"
                 android:id="@+id/socialButton"
-                android:src="@drawable/social" android:background="@color/primary"
+                android:text="Social"
+                android:theme="@style/primary_nav_button"
+                android:drawableTop="@drawable/ic_social"
+                android:background="@null"
                 />
         </LinearLayout>
 

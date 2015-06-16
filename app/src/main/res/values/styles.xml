@@ -28,6 +28,11 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="primary_nav_button" parent="android:Widget.Material.Button">
+        <item name="android:textSize">9sp</item>
+        <item name="android:textColor">@color/light</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
     <style name="Login_EditTextStyle" parent="@android:style/Widget.EditText">
         <item name="android:textColor">@color/light</item>
         <item name="android:layout_height">45dip</item>

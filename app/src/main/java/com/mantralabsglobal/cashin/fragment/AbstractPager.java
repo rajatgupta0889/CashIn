@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.fragment.adapter.FinancePagerAdapter;
@@ -36,6 +37,8 @@ public abstract class AbstractPager extends Fragment {
 
         TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(pager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        //tabLayout.setFillViewport(true);
     }
 
     protected abstract FragmentPagerAdapter getPagerAdapter(FragmentManager fragmentManager);

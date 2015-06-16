@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
@@ -23,27 +24,31 @@ public class MainActivity extends FragmentActivity{
     private IdentityPagerAdapter identityPagerAdapter;
     private WorkPagerAdapter workPagerAdapter;
     private SocialPagerAdapter socialPagerAdapter;
+    private Button yourIdentityButton;
+    private Button yourPhotoButton;
+    private Button workButton;
+    private Button financialButton;
+    private Button socialButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageButton yourIdentityButton = (ImageButton)findViewById(R.id.yourIdentityButton);
+        yourIdentityButton = (Button)findViewById(R.id.yourIdentityButton);
         yourIdentityButton.setOnClickListener(clickListener);
 
-        ImageButton yourPhotoButton = (ImageButton)findViewById(R.id.yourPhotoButton);
+        yourPhotoButton = (Button)findViewById(R.id.yourPhotoButton);
         yourPhotoButton.setOnClickListener(clickListener);
 
-        ImageButton workButton = (ImageButton)findViewById(R.id.workButton);
+        workButton = (Button)findViewById(R.id.workButton);
         workButton.setOnClickListener(clickListener);
 
-        ImageButton financialButton = (ImageButton)findViewById(R.id.financialButton);
+        financialButton = (Button)findViewById(R.id.financialButton);
         financialButton.setOnClickListener(clickListener);
 
-        ImageButton socialButton = (ImageButton)findViewById(R.id.socialButton);
+        socialButton = (Button)findViewById(R.id.socialButton);
         socialButton.setOnClickListener(clickListener);
-
 
         //ViewPager financialviewPager = (ViewPager) findViewById(R.id.financial);
         //financialviewPager.setAdapter(new FinancePagerAdapter(getSupportFragmentManager()));
@@ -58,29 +63,54 @@ public class MainActivity extends FragmentActivity{
 
             Fragment f_pager = null;
 
-            final FrameLayout fl = (FrameLayout )findViewById(R.id.main_frame);
             f_pager = new AbstractPager() {
                 @Override
                 protected FragmentPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-                    if (v == findViewById(R.id.yourPhotoButton))
+                    if (v == yourPhotoButton)
                         return getFinancePageAdapter(fragmentManager);
-                    if (v == findViewById(R.id.yourIdentityButton))
+                    if (v == yourIdentityButton)
                         return getIdentityPagerAdapter(fragmentManager);
-                    if (v == findViewById(R.id.workButton))
+                    if (v == workButton)
                         return getWorkPagerAdapter(fragmentManager);
-                    if (v == findViewById(R.id.financialButton))
+                    if (v == financialButton)
                         return getFinancePageAdapter(fragmentManager);
-                    if (v == findViewById(R.id.socialButton))
+                    if (v == socialButton)
                         return getSocialPageAdapter(fragmentManager);
                     return null;
                 }
             };
 
             if(f_pager != null) {
-                FT.replace(R.id.main_frame, f_pager);
+                FT.replace(R.id.main_frame, f_pager, "");
                 FT.addToBackStack(null);
                 FT.commit();
             }
+
+            //Update the button icon
+            if (v == yourPhotoButton)
+                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_photoselected,0,0);
+            else
+                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_photo,0,0);
+
+            if (v == yourIdentityButton)
+                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_identityselected,0,0);
+            else
+                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_identity,0,0);
+
+            if (v == workButton)
+                workButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_workselected,0,0);
+            else
+                workButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_work,0,0);
+
+            if (v == financialButton)
+                financialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_financialselected,0,0);
+            else
+                financialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_financial,0,0);
+
+            if (v == socialButton)
+                socialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_socialselected,0,0);
+            else
+                socialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_social,0,0);
         }
     };
 
