@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 
@@ -15,7 +16,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ImageButton mondayEdit= (ImageButton)findViewById(R.id.loginButton);
+        Button mondayEdit= (Button)findViewById(R.id.loginButton);
         final Context context = getBaseContext();
         mondayEdit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

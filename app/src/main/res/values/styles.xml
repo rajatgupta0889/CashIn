@@ -10,10 +10,22 @@
         <item name="android:spinnerStyle">@style/spinner_style</item>
     </style>
 
+    <style name="loginTheme" parent="AppTheme">
+        <item name="colorControlNormal">@color/light</item>
+        <item name="colorControlActivated">@color/accent</item>
+        <item name="colorControlHighlight">@color/accent</item>
+        <item name="android:editTextStyle">@style/Login_EditTextStyle</item>
+    </style>
+
     <style name="spinner_style" parent="Base.Widget.AppCompat.Spinner.Underlined"/>
 
     <style name="LoginFont" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="Login_EditTextStyle" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@color/light</item>
+        <item name="android:layout_height">45dip</item>
     </style>
 
 </resources>

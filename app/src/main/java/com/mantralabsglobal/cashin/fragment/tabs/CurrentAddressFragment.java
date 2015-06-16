@@ -59,7 +59,8 @@ public class CurrentAddressFragment extends Fragment {
 
 
         view.findViewById(R.id.getLocationFromFormLayout).setVisibility(View.GONE);
-        view.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.GONE);
+        view.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.gpsLocationFormButton).setVisibility(View.GONE);
     }
 
 
