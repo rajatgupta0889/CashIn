@@ -8,6 +8,11 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="android:spinnerStyle">@style/spinner_style</item>
+        <item name="donut_text_size">10dp</item>
+        <item name="donut_finished_color">@color/light</item>
+        <item name="donut_finished_stroke_width">2dp</item>
+        <item name="donut_unfinished_stroke_width">2dp</item>
+        <item name="donut_text_color">@color/light</item>
     </style>
 
     <style name="loginTheme" parent="AppTheme">

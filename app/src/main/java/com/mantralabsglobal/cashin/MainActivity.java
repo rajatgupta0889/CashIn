@@ -44,6 +44,7 @@ public class MainActivity extends FragmentActivity{
         ImageButton socialButton = (ImageButton)findViewById(R.id.socialButton);
         socialButton.setOnClickListener(clickListener);
 
+
         //ViewPager financialviewPager = (ViewPager) findViewById(R.id.financial);
         //financialviewPager.setAdapter(new FinancePagerAdapter(getSupportFragmentManager()));
     }
