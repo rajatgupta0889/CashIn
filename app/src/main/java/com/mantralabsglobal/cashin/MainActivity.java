@@ -1,11 +1,13 @@
 package com.mantralabsglobal.cashin;
 
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -82,7 +84,7 @@ public class MainActivity extends FragmentActivity{
 
             if(f_pager != null) {
                 FT.replace(R.id.main_frame, f_pager, "");
-                FT.addToBackStack(null);
+                //FT.addToBackStack(null);
                 FT.commit();
             }
 
@@ -135,6 +137,24 @@ public class MainActivity extends FragmentActivity{
     {
         identityPagerAdapter = new IdentityPagerAdapter(fragmentManager);
         return identityPagerAdapter;
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Closing Application")
+                .setMessage(R.string.confirm_on_close)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
 }

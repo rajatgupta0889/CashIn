@@ -33,11 +33,15 @@ public abstract class AbstractPager extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
         ViewPager pager = (ViewPager) getActivity().findViewById(R.id.viewPager);
-        pager.setAdapter(getPagerAdapter(getChildFragmentManager()));
+        FragmentPagerAdapter fragmentPagerAdapter = getPagerAdapter(getChildFragmentManager());
+        pager.setAdapter(fragmentPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(pager);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        if(fragmentPagerAdapter.getCount()<3)
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        else
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         //tabLayout.setFillViewport(true);
     }
 
