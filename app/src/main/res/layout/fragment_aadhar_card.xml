@@ -4,11 +4,12 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    <ViewFlipper
+    <FrameLayout
         android:id="@+id/aadhar_card_viewflipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/aadharCardSnapLayout"
             android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
 
@@ -51,57 +52,164 @@
 
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/enterAadharDetailLayout" android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+        <RelativeLayout android:id="@+id/enterAadharDetailLayout" android:paddingLeft="20dp" android:paddingRight="20dp" android:padding="20dp"
+            android:layout_width="match_parent" android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name"/>
-            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="eg. Praveen Kumar" />
+                android:layout_height="wrap_content" android:text="Name"
+                android:layout_marginLeft="30dp" android:layout_marginTop="30dp"/>
 
-            <TextView
+            <ImageView
+                android:id="@+id/ac_1"
+                android:layout_below="@+id/tv_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Address"/>
-            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="eg. Bangalore" />
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
 
-            <TextView
+            <EditText android:layout_toRightOf="@+id/ac_1" android:layout_below="@+id/tv_name" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:singleLine="true"  android:hint="eg. Praveen Kumar"
+                android:id="@+id/et_name"
+                />
+
+
+
+                        <TextView android:id="@+id/tv_address"
+                            android:layout_marginLeft="30dp" android:layout_marginTop="30dp"
+                            android:layout_below="@+id/et_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:text="Address"/>
+            <ImageView
+                android:id="@+id/ac_address"
+                android:layout_below="@+id/tv_address"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Gender"/>
-            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Male" />
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
 
-            <TextView
+            <EditText android:id="@+id/et_address"
+                android:layout_toRightOf="@+id/ac_address" android:layout_below="@+id/tv_address"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:hint="eg. Bangalore" />
+
+                       <TextView android:id="@+id/tv_gender"
+                           android:layout_marginLeft="30dp" android:layout_marginTop="30dp"
+                           android:layout_below="@+id/et_address"
+                           android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:text="Gender"/>
+
+            <ImageView
+                android:id="@+id/ac_gender"
+                android:layout_below="@+id/tv_gender"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Aadhar Number"/>
-            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Aadhar number" />
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
 
-            <TextView
+
+            <Spinner android:id="@+id/spin_gender"
+                android:layout_toRightOf="@+id/ac_gender" android:layout_below="@+id/tv_gender"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:hint="Male" />
+
+               <TextView android:id="@+id/tv_aadhar"
+                   android:layout_marginLeft="30dp" android:layout_marginTop="30dp"
+                   android:layout_below="@+id/spin_gender"
+                   android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" android:text="Aadhar Number"/>
+            <ImageView
+                android:id="@+id/ac_aadhar"
+                android:layout_below="@+id/tv_aadhar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Mobile"/>
-            <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Mobile Number" />
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
 
-            <LinearLayout
+            <EditText android:id="@+id/et_aadhar"
+                android:layout_toRightOf="@+id/ac_aadhar" android:layout_below="@+id/tv_aadhar"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:hint="Aadhar number" />
+
+
+
+          <TextView android:id="@+id/tv_mobile"
+              android:layout_marginLeft="30dp" android:layout_marginTop="30dp"
+              android:layout_below="@+id/et_aadhar"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" android:text="Mobile"/>
+            <ImageView
+                android:id="@+id/ac_mobile"
+                android:layout_below="@+id/tv_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
+
+            <EditText android:id="@+id/et_mobile"
+                android:layout_toRightOf="@+id/ac_mobile" android:layout_below="@+id/tv_mobile"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:hint="Mobile Number" />
+
+            <View
+                android:id="@+id/v_relation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="false" android:text="Son Of" android:hint="Son Of" />
-                <EditText android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="false" android:hint="Father's Name" />
-            </LinearLayout>
-            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_below="@+id/et_mobile"
+                android:layout_marginTop="30dp"
+
+                />
+
+
+            <ImageView
+                android:id="@+id/ac_relationship"
+                android:layout_below="@+id/v_relation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
+            <Spinner android:id="@+id/spin_relationship"
+                android:layout_toRightOf="@+id/ac_relationship"
+                android:layout_below="@+id/v_relation"
+
+                android:layout_width="100dp" android:layout_height="wrap_content"  />
+
+            <EditText android:id="@+id/et_relation_name" android:layout_toEndOf="@id/spin_relationship" android:layout_marginLeft="20dp"
+                android:layout_below="@+id/v_relation"
+                android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="true" android:hint="Father's Name" />
+
+            <View
+                android:id="@+id/v_dob"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="Date of birth"/>
-                <EditText android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="false" android:hint="MM/dd/YYYY" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="24 years"/>
+                android:layout_height="match_parent"
+                android:layout_below="@+id/et_relation_name"
+                android:layout_marginTop="30dp"
+            />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_dob"
+                android:layout_marginLeft="30dp"
+                android:layout_below="@+id/v_dob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Date of birth"/>
+            <ImageView
+                android:id="@+id/ac_dob"
+                android:layout_below="@+id/tv_dob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
+            <EditText android:id="@+id/et_dob"
+                android:layout_toRightOf="@+id/ac_dob" android:layout_below="@+id/tv_dob"
+                android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="true"
+                style="@android:style/Widget.Material.Spinner.Underlined"
+                android:layout_marginLeft="10dp"
+                android:width="150dp" />
 
 
-        </LinearLayout>
+            <!--
+
+                                                              <LinearLayout
+                                                                  android:layout_width="match_parent"
+                                                                  android:layout_height="wrap_content" android:orientation="horizontal">
+                                                                  <TextView
+                                                                      android:layout_width="wrap_content"
+                                                                      android:layout_height="wrap_content" android:text="Date of birth"/>
+                                                                  <EditText android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="false" android:hint="MM/dd/YYYY" />
+                                                                  <TextView
+                                                                      android:layout_width="wrap_content"
+                                                                      android:layout_height="wrap_content" android:text="24 years"/>
+
+                                                              </LinearLayout>
+                                                  -->
+
+        </RelativeLayout>
 
 
-    </ViewFlipper>
+    </FrameLayout>
     </ScrollView>
 
 </LinearLayout>

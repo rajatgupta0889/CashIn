@@ -16,6 +16,7 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="your_photo">Your Photo</string>
     <string name="confirm_on_close">Exit Cash In</string>
+    <string name="default_dateof_birth">01-Jan-1990</string>
 
     <string-array name="city_array">
         <item>Bangalore</item>
@@ -29,5 +30,14 @@
         <item>Family</item>
         <item>Self</item>
         <item>Joint</item>
+    </string-array>
+    <string-array name="relationship_array">
+        <item>Son of</item>
+        <item>Wife of</item>
+    </string-array>
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Others</item>
     </string-array>
 </resources>
