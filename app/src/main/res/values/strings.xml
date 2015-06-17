@@ -17,6 +17,11 @@
     <string name="your_photo">Your Photo</string>
     <string name="confirm_on_close">Exit Cash In</string>
     <string name="default_dateof_birth">01-Jan-1990</string>
+    <string name="pan_number">PAN Number</string>
+    <string name="pan_number_hint">ALHRR0000S</string>
+    <string name="relation_name_hint">Name of the relation</string>
+    <string name="enter_pan_card_details_button"><![CDATA[Enter PAN card details  >]]></string>
+    <string name="pan_card_not_ready">Don\'t have the PAN card ready?</string>
 
     <string-array name="city_array">
         <item>Bangalore</item>

@@ -31,7 +31,6 @@ import java.util.GregorianCalendar;
  */
 public class AadharCardFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    ViewFlipper viewFlipper;
     View currentView;
     private EditText dobEditText;
 
