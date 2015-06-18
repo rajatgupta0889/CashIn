@@ -103,7 +103,7 @@
                 android:text="Social"
                 android:theme="@style/primary_nav_button"
                 android:drawableTop="@drawable/ic_social"
-                android:background="@null"
+                android:background="?android:attr/selectableItemBackground"
                 />
         </LinearLayout>
 
