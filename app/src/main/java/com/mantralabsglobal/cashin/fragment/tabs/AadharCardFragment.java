@@ -46,7 +46,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
  * Created by pk on 13/06/2015.
  */
-public class AadharCardFragment extends Fragment implements DatePickerDialog.OnDateSetListener , ZXingScannerView.ResultHandler{
+public class AadharCardFragment extends Fragment implements DatePickerDialog.OnDateSetListener ,ZXingScannerView.ResultHandler{
 
     View currentView;
     private EditText dobEditText;
@@ -54,6 +54,8 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
     private Spinner gender;
     private ArrayAdapter<CharSequence> genderAdapter ;
     private ZXingScannerView scannerView;
+    private Spinner relation;
+    private ArrayAdapter<CharSequence> relationAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,19 +99,21 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
                         e1.printStackTrace();
                     }
                 }
+
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 DialogFragment newFragment = new DatepickerDialogFragment(AadharCardFragment.this, defaultDate);
                 newFragment.show(ft, "date_dialog");
+
             }
         });
 
         scannerView = (ZXingScannerView)view.findViewById(R.id.scanner);
         scannerView.setResultHandler(this);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spin_relationship);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.relationship_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        relation = (Spinner) view.findViewById(R.id.spin_relationship);
+        relationAdapter = ArrayAdapter.createFromResource(view.getContext(), R.array.relationship_array, android.R.layout.simple_spinner_item);
+        relationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        relation.setAdapter(relationAdapter);
 
         gender = (Spinner) view.findViewById(R.id.spin_gender);
         genderAdapter = ArrayAdapter.createFromResource(view.getContext(), R.array.gender_array, android.R.layout.simple_spinner_item);
@@ -183,6 +187,7 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
             ((EditText) currentView.findViewById(R.id.et_address)).setText(aadharDetail.getAddress());
             ((EditText) currentView.findViewById(R.id.et_aadhar)).setText(aadharDetail.getUid());
             gender.setSelection(genderAdapter.getPosition(aadharDetail.getGender()));
+            relation.setSelection(relationAdapter.getPosition(aadharDetail.getRelation()));
 
         }
     }

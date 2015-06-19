@@ -18,6 +18,7 @@ public class AadharDetail {
     private String subDistrict;
     private String state;
     private String pincode;
+    private String relation;
 
     public String getUid() {
         return uid;
@@ -40,7 +41,17 @@ public class AadharDetail {
     }
 
     public void setGender(String gender) {
+        if("M".equalsIgnoreCase(gender))
+            gender = "Male";
+        else if("F".equalsIgnoreCase(gender))
+            gender = "Female";
+
         this.gender = gender;
+
+        if(gender.equalsIgnoreCase("Male"))
+            setRelation("Son Of");
+        else
+            setRelation("Daughter Of");
     }
 
     public String getYearOfBirth() {
@@ -134,5 +145,13 @@ public class AadharDetail {
     public String getAddress()
     {
         return getHouse() + ", " + getStreet() + ", " + getLandmark() + ", " + getDistrict() + ", " + getState();
+    }
+
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 }

@@ -37,8 +37,8 @@
         <item>Joint</item>
     </string-array>
     <string-array name="relationship_array">
-        <item>Son of</item>
-        <item>Wife of</item>
+        <item>Son Of</item>
+        <item>Daughter Of</item>
     </string-array>
     <string-array name="gender_array">
         <item>Male</item>
