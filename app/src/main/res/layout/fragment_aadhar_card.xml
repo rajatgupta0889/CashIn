@@ -21,7 +21,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="Scan Aadhar card QR Code" />
+                    android:layout_height="wrap_content" android:text="@string/scan_aadhar_qr_code" />
 
                 <ImageButton android:id="@+id/ib_launchScanner"
                     android:layout_marginTop="30dp"
@@ -42,25 +42,25 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="Don't have the Aadhar card ready?" />
+                android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="@string/aadhar_card_not_ready" />
 
             <Button
                 android:id="@+id/bt_launch_aadhar_form"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" android:capitalize="characters" android:text="Enter Aadhar details  >" android:background="@null"
+                android:layout_height="wrap_content" android:capitalize="characters" android:text="@string/enter_aadhar_details" android:background="@null"
                 />
 
         </LinearLayout>
 
-        <RelativeLayout android:id="@+id/rl_aadhar_detail" android:paddingLeft="20dp" android:paddingRight="20dp" android:padding="20dp"
+        <RelativeLayout android:id="@+id/rl_aadhar_detail" android:paddingLeft="10dp" android:paddingRight="10dp"
             android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="visible"
             android:layout_gravity="left|top">
 
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name"
+                android:layout_height="wrap_content" android:text="@string/name"
                 android:layout_toRightOf="@+id/ac_name"
                 android:layout_marginTop="30dp"/>
 
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_name" />
 
             <EditText android:layout_toRightOf="@+id/ac_name" android:layout_below="@+id/tv_name" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:singleLine="true"  android:hint="eg. Praveen Kumar"
+                android:layout_height="wrap_content" android:singleLine="true"
                 android:id="@+id/et_name"
                 />
 
@@ -82,7 +82,7 @@
                 android:layout_below="@+id/et_name"
                 android:layout_width="wrap_content"
                 android:layout_toRightOf="@+id/ac_address"
-                android:layout_height="wrap_content" android:text="Address"/>
+                android:layout_height="wrap_content" android:text="@string/address"/>
 
             <ImageView
                 android:id="@+id/ac_address"
@@ -92,13 +92,13 @@
 
             <EditText android:id="@+id/et_address"
                 android:layout_toRightOf="@+id/ac_address" android:layout_below="@+id/tv_address"
-                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:hint="eg. Bangalore" />
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" />
 
            <TextView android:id="@+id/tv_gender"
                android:layout_toRightOf="@+id/ac_gender" android:layout_marginTop="30dp"
                android:layout_below="@+id/et_address"
                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Gender"/>
+                android:layout_height="wrap_content" android:text="@string/gender"/>
 
             <ImageView
                 android:id="@+id/ac_gender"
@@ -109,13 +109,13 @@
 
             <Spinner android:id="@+id/spin_gender"
                 android:layout_toRightOf="@+id/ac_gender" android:layout_below="@+id/tv_gender"
-                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:hint="Male" />
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" />
 
            <TextView android:id="@+id/tv_aadhar"
                android:layout_toRightOf="@+id/ac_aadhar" android:layout_marginTop="30dp"
                android:layout_below="@+id/spin_gender"
                android:layout_width="wrap_content"
-              android:layout_height="wrap_content" android:text="Aadhar Number"/>
+              android:layout_height="wrap_content" android:text="@string/aadhar_number"/>
             <ImageView
                 android:id="@+id/ac_aadhar"
                 android:layout_below="@+id/tv_aadhar"
@@ -124,7 +124,7 @@
 
             <EditText android:id="@+id/et_aadhar"
                 android:layout_toRightOf="@+id/ac_aadhar" android:layout_below="@+id/tv_aadhar"
-                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:hint="Aadhar number" />
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" />
 
 
 
@@ -173,7 +173,7 @@
 
                 <EditText android:id="@+id/et_relation_name" android:layout_toEndOf="@id/spin_relationship" android:layout_marginLeft="20dp"
                     android:layout_below="@+id/v_relation" android:layout_width="0dp"
-                    android:layout_weight="3" android:layout_height="wrap_content" android:singleLine="true" android:hint="Father's Name" />
+                    android:layout_weight="3" android:layout_height="wrap_content" android:singleLine="true" />
 
             </LinearLayout>
 
@@ -190,20 +190,31 @@
                 android:layout_toRightOf="@+id/ac_dob"
                 android:layout_below="@+id/v_dob"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Date of birth"/>
+                android:layout_height="wrap_content" android:text="@string/date_of_birth"/>
             <ImageView
                 android:id="@+id/ac_dob"
                 android:layout_below="@+id/tv_dob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_calender" />
-            <EditText android:id="@+id/et_dob"
-                android:focusable="false"
-                android:layout_toRightOf="@+id/ac_dob" android:layout_below="@+id/tv_dob"
-                android:layout_width="wrap_content" android:layout_height="match_parent" android:singleLine="true"
-                style="@android:style/Widget.Material.Spinner.Underlined"
-                android:layout_marginLeft="10dp"
-                android:width="150dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/ac_dob" android:layout_below="@+id/tv_dob">
+
+                <EditText android:id="@+id/et_dob"
+                    android:focusable="false"
+                    android:layout_weight="2"
+                    android:layout_width="0dp" android:layout_height="wrap_content" android:singleLine="true"
+                    style="@android:style/Widget.Material.Spinner.Underlined"
+                    android:width="150dp" />
+                <TextView
+                    android:id="@+id/tv_age"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
             <!--
 
@@ -241,6 +252,19 @@
         android:id="@+id/fab_launchScanner"
         android:src="@drawable/ic_camera"
         app:fabSize="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/ll_aadhar_fragment"
+        android:layout_marginTop="-80dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"  />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_launch_aadhar_form"
+        android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+        app:fabSize="normal"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

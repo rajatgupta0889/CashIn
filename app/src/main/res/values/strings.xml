@@ -22,6 +22,14 @@
     <string name="relation_name_hint">Name of the relation</string>
     <string name="enter_pan_card_details_button"><![CDATA[Enter PAN card details  >]]></string>
     <string name="pan_card_not_ready">Don\'t have the PAN card ready?</string>
+    <string name="scan_aadhar_qr_code">Scan Aadhar card QR Code</string>
+    <string name="aadhar_card_not_ready">Don\'t have the Aadhar card ready?</string>
+    <string name="enter_aadhar_details"><![CDATA[Enter Aadhar details  >]]></string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="gender">Gender</string>
+    <string name="aadhar_number">Aadhar Number</string>
+    <string name="date_of_birth">Date of birth</string>
 
     <string-array name="city_array">
         <item>Bangalore</item>

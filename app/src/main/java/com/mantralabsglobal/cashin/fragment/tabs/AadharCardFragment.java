@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -78,6 +79,9 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_launchScanner);
         fab.setOnClickListener(listener);
+
+        FloatingActionButton fabForm = (FloatingActionButton) view.findViewById(R.id.fab_launch_aadhar_form);
+        fabForm.setOnClickListener(listener);
 
         dobEditText = (EditText)view.findViewById(R.id.et_dob);
 
@@ -192,6 +196,19 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(scannerView.getVisibility() == View.VISIBLE)
+            scannerView.startCamera();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(scannerView.getVisibility() == View.VISIBLE)
+            scannerView.stopCamera();
+    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -200,6 +217,23 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext());
 
         dobEditText.setText(dateFormat.format(cal.getTime()));
+        ((TextView)currentView.findViewById(R.id.tv_age)).setText(computeAge(year,monthOfYear, dayOfMonth) + " Years");
+
+    }
+
+    public int computeAge(int year, int monthOfYear, int dayOfMonth)
+    {
+        Calendar myBirthDate = Calendar.getInstance();
+        myBirthDate.clear();
+        myBirthDate.set(year, monthOfYear, dayOfMonth);
+        Calendar now = Calendar.getInstance();
+        Calendar clone = (Calendar) myBirthDate.clone(); // Otherwise changes are been reflected.
+        int years = -1;
+        while (!clone.after(now)) {
+            clone.add(Calendar.YEAR, 1);
+            years++;
+        }
+       return years;
     }
 
     @Override
@@ -214,7 +248,8 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
         public void onClick(View v) {
 
             View child = null;
-            if(v.getId() == currentView.findViewById(R.id.bt_launch_aadhar_form).getId())
+            if(v.getId() == currentView.findViewById(R.id.bt_launch_aadhar_form).getId()
+                    || v.getId() == currentView.findViewById(R.id.fab_launch_aadhar_form).getId())
             {
                loadAadharForm();
             }
@@ -236,15 +271,20 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
             currentView.findViewById(R.id.scanner).setVisibility(View.GONE);
         if(id != R.id.rl_aadhar_detail)
             currentView.findViewById(R.id.rl_aadhar_detail).setVisibility(View.GONE);
-        if(id != R.id.ll_aadhar_camera)
+        if(id != R.id.ll_aadhar_camera) {
             currentView.findViewById(R.id.ll_aadhar_camera).setVisibility(View.GONE);
+            scannerView.stopCamera();
+        }
         if(id != R.id.fab_launchScanner)
             currentView.findViewById(R.id.fab_launchScanner).setVisibility(View.GONE);
+        if(id != R.id.fab_launch_aadhar_form)
+            currentView.findViewById(R.id.fab_launch_aadhar_form).setVisibility(View.GONE);
     }
 
 
     private void loadAadharScanner() {
         resetVisibilityOfFragments(R.id.scanner);
+        currentView.findViewById(R.id.fab_launch_aadhar_form).setVisibility(View.VISIBLE);
         List<BarcodeFormat> formatList = new ArrayList<>();
         formatList.add(BarcodeFormat.QR_CODE);
         scannerView.setFormats(formatList);
