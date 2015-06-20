@@ -47,16 +47,12 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
  * Created by pk on 13/06/2015.
  */
-public class AadharCardFragment extends Fragment implements DatePickerDialog.OnDateSetListener ,ZXingScannerView.ResultHandler{
+public class AadharCardFragment extends BaseFragment implements ZXingScannerView.ResultHandler{
 
-    View currentView;
-    private EditText dobEditText;
     private AadharDetail aadharDetail;
     private Spinner gender;
-    private ArrayAdapter<CharSequence> genderAdapter ;
     private ZXingScannerView scannerView;
     private Spinner relation;
-    private ArrayAdapter<CharSequence> relationAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,8 +65,7 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        //viewFlipper = (ViewFlipper) view.findViewById(R.id.aadhar_card_viewflipper);
-        currentView = view;
+        super.onViewCreated(view, savedInstanceState);
         Button btnEdit = (Button) view.findViewById(R.id.bt_launch_aadhar_form);
         btnEdit.setOnClickListener(listener);
 
@@ -83,49 +78,24 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
         FloatingActionButton fabForm = (FloatingActionButton) view.findViewById(R.id.fab_launch_aadhar_form);
         fabForm.setOnClickListener(listener);
 
-        dobEditText = (EditText)view.findViewById(R.id.et_dob);
+        EditText dobEditText = (EditText)view.findViewById(R.id.et_dob);
 
-        dobEditText.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext());
-                Date defaultDate = null;
-                try {
-                    defaultDate = dateFormat.parse(dobEditText.getText().toString());
-                } catch (ParseException e) {
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-                        defaultDate = sdf.parse(getString(R.string.default_dateof_birth));
-
-                    } catch (ParseException e1) {
-
-                        e1.printStackTrace();
-                    }
-                }
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                DialogFragment newFragment = new DatepickerDialogFragment(AadharCardFragment.this, defaultDate);
-                newFragment.show(ft, "date_dialog");
-
-            }
-        });
+        initDateOfBirthEditText(dobEditText,(TextView)getCurrentView().findViewById(R.id.tv_age) );
 
         scannerView = (ZXingScannerView)view.findViewById(R.id.scanner);
         scannerView.setResultHandler(this);
 
         relation = (Spinner) view.findViewById(R.id.spin_relationship);
-        relationAdapter = ArrayAdapter.createFromResource(view.getContext(), R.array.relationship_array, android.R.layout.simple_spinner_item);
-        relationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        relation.setAdapter(relationAdapter);
+        relation.setAdapter(getRelationAdapter());
 
         gender = (Spinner) view.findViewById(R.id.spin_gender);
-        genderAdapter = ArrayAdapter.createFromResource(view.getContext(), R.array.gender_array, android.R.layout.simple_spinner_item);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gender.setAdapter(genderAdapter);
+        gender.setAdapter(getGenderAdapter());
 
-        loadAadharCamera();
-
+        registerChildView(getCurrentView().findViewById(R.id.ll_aadhar_camera), View.VISIBLE);
+        registerChildView(getCurrentView().findViewById(R.id.scanner), View.GONE);
+        registerChildView(getCurrentView().findViewById(R.id.rl_aadhar_detail), View.GONE);
+        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launchScanner), getCurrentView().findViewById(R.id.rl_aadhar_detail));
+        registerFloatingActionButton( (FloatingActionButton)getCurrentView().findViewById(R.id.fab_launch_aadhar_form),getCurrentView().findViewById(R.id.scanner) );
     }
 
     private AadharDetail parseAadharXML(String xml)
@@ -178,20 +148,14 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
         return aadharDetail;
     }
 
-    private void loadAadharCamera() {
-        resetVisibilityOfFragments(R.id.ll_aadhar_camera);
-    }
-
     private void loadAadharForm() {
-        resetVisibilityOfFragments(R.id.rl_aadhar_detail);
-        currentView.findViewById(R.id.fab_launchScanner).setVisibility(View.VISIBLE);
-
-        if(aadharDetail!= null) {
-            ((EditText) currentView.findViewById(R.id.et_name)).setText(aadharDetail.getName());
-            ((EditText) currentView.findViewById(R.id.et_address)).setText(aadharDetail.getAddress());
-            ((EditText) currentView.findViewById(R.id.et_aadhar)).setText(aadharDetail.getUid());
-            gender.setSelection(genderAdapter.getPosition(aadharDetail.getGender()));
-            relation.setSelection(relationAdapter.getPosition(aadharDetail.getRelation()));
+       setVisibleChildView(getCurrentView().findViewById(R.id.rl_aadhar_detail));
+         if(aadharDetail!= null) {
+            ((EditText) getCurrentView().findViewById(R.id.et_name)).setText(aadharDetail.getName());
+            ((EditText) getCurrentView().findViewById(R.id.et_address)).setText(aadharDetail.getAddress());
+            ((EditText) getCurrentView().findViewById(R.id.et_aadhar)).setText(aadharDetail.getUid());
+            gender.setSelection(getGenderAdapter().getPosition(aadharDetail.getGender()));
+            relation.setSelection(getRelationAdapter().getPosition(aadharDetail.getRelation()));
 
         }
     }
@@ -210,51 +174,18 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
             scannerView.stopCamera();
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear,
-                          int dayOfMonth) {
-        Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext());
-
-        dobEditText.setText(dateFormat.format(cal.getTime()));
-        ((TextView)currentView.findViewById(R.id.tv_age)).setText(computeAge(year,monthOfYear, dayOfMonth) + " Years");
-
-    }
-
-    public int computeAge(int year, int monthOfYear, int dayOfMonth)
-    {
-        Calendar myBirthDate = Calendar.getInstance();
-        myBirthDate.clear();
-        myBirthDate.set(year, monthOfYear, dayOfMonth);
-        Calendar now = Calendar.getInstance();
-        Calendar clone = (Calendar) myBirthDate.clone(); // Otherwise changes are been reflected.
-        int years = -1;
-        while (!clone.after(now)) {
-            clone.add(Calendar.YEAR, 1);
-            years++;
-        }
-       return years;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             View child = null;
-            if(v.getId() == currentView.findViewById(R.id.bt_launch_aadhar_form).getId()
-                    || v.getId() == currentView.findViewById(R.id.fab_launch_aadhar_form).getId())
+            if(v.getId() == getCurrentView().findViewById(R.id.bt_launch_aadhar_form).getId()
+                    || v.getId() == getCurrentView().findViewById(R.id.fab_launch_aadhar_form).getId())
             {
                loadAadharForm();
             }
-            else if(v.getId() == currentView.findViewById(R.id.ib_launchScanner).getId()
-                    || v.getId() == currentView.findViewById(R.id.fab_launchScanner).getId()
+            else if(v.getId() == getCurrentView().findViewById(R.id.ib_launchScanner).getId()
+                    || v.getId() == getCurrentView().findViewById(R.id.fab_launchScanner).getId()
                     )
             {
                 loadAadharScanner();
@@ -264,31 +195,12 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
         }
     };
 
-    private void resetVisibilityOfFragments(int id)
-    {
-        currentView.findViewById(id).setVisibility(View.VISIBLE);
-        if(id != R.id.scanner)
-            currentView.findViewById(R.id.scanner).setVisibility(View.GONE);
-        if(id != R.id.rl_aadhar_detail)
-            currentView.findViewById(R.id.rl_aadhar_detail).setVisibility(View.GONE);
-        if(id != R.id.ll_aadhar_camera) {
-            currentView.findViewById(R.id.ll_aadhar_camera).setVisibility(View.GONE);
-            scannerView.stopCamera();
-        }
-        if(id != R.id.fab_launchScanner)
-            currentView.findViewById(R.id.fab_launchScanner).setVisibility(View.GONE);
-        if(id != R.id.fab_launch_aadhar_form)
-            currentView.findViewById(R.id.fab_launch_aadhar_form).setVisibility(View.GONE);
-    }
-
-
     private void loadAadharScanner() {
-        resetVisibilityOfFragments(R.id.scanner);
-        currentView.findViewById(R.id.fab_launch_aadhar_form).setVisibility(View.VISIBLE);
+        setVisibleChildView(getCurrentView().findViewById(R.id.scanner));
         List<BarcodeFormat> formatList = new ArrayList<>();
         formatList.add(BarcodeFormat.QR_CODE);
         scannerView.setFormats(formatList);
-        scannerView.setFlash(true);
+        scannerView.setFlash(false);
         scannerView.setAutoFocus(true);
         scannerView.startCamera();
 
@@ -302,4 +214,5 @@ public class AadharCardFragment extends Fragment implements DatePickerDialog.OnD
         aadharDetail = parseAadharXML(rawResult.getText());
         loadAadharForm();
     }
+
 }
