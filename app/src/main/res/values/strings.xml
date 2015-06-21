@@ -33,6 +33,13 @@
     <string name="app_id">1442120239426705</string>
     <string name="facebook">facebook</string>
     <string name="facebook_connect">connnect</string>
+    <string name="facebook_connected_as">Connected as</string>
+    <string name="facebook_profile_details">Profile Details</string>
+    <string name="workplace">Workplace</string>
+    <string name="current_city">Current city</string>
+    <string name="hometown">Hometown</string>
+    <string name="relationship">Relationship</string>
+    <string name="label">Label</string>
     <string-array name="city_array">
         <item>Bangalore</item>
         <item>Mumbai</item>
