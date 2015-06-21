@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_pan_card_fragment">
 
     <FrameLayout
@@ -7,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/ll_facebook_connect"
             android:layout_width="match_parent" android:gravity="center"  android:layout_height="match_parent" android:orientation="vertical"
             android:baselineAligned="false">
@@ -25,114 +26,189 @@
 
         </LinearLayout>
 
-        <RelativeLayout android:visibility="gone" android:id="@+id/rl_facebook_details" android:paddingLeft="10dp" android:paddingRight="20dp" android:padding="20dp"
+     <!--   <RelativeLayout android:visibility="visible" android:id="@+id/rl_facebook_details" android:paddingLeft="10dp" android:paddingRight="20dp" android:padding="20dp"
             android:layout_width="match_parent" android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/tv_name"
+                android:id="@+id/tv_connectedAs"
                 android:layout_toEndOf="@+id/ac_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/name"
+                android:layout_height="wrap_content" android:text="@string/facebook_connected_as"
                 />
 
-            <ImageView
-                android:id="@+id/ac_name"
-                android:layout_below="@+id/tv_name"
+            <EditText
+                android:id="@+id/et_connectedAs"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_name" />
-
-            <EditText android:layout_toEndOf="@+id/ac_name" android:layout_below="@+id/tv_name" android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:singleLine="true"
-                android:id="@+id/et_name"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/tv_connectedAs"
                 />
-
-            <TextView android:id="@+id/tv_pan"
-                android:layout_toEndOf="@+id/ac_pan"
-                   android:layout_below="@+id/et_name"
-                   android:layout_width="wrap_content"
-                  android:layout_height="wrap_content" android:text="@string/pan_number"/>
-            <ImageView
-                android:id="@+id/ac_pan"
-                android:layout_below="@+id/tv_pan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_aadhar_number" />
-
-            <EditText android:id="@+id/et_pan"
-                android:layout_toRightOf="@+id/ac_pan" android:layout_below="@+id/tv_pan"
-                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" />
 
             <View
-                android:id="@+id/v_dob"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/et_pan"
-
-                />
+                android:layout_height="@dimen/form_seperator_height"
+                android:id="@+id/seperatorView1"
+                android:layout_below="@id/et_connectedAs"/>
 
             <TextView
-                android:id="@+id/tv_dob"
-                android:layout_toEndOf="@+id/ac_dob"
-                android:layout_below="@+id/v_dob"
+                android:id="@+id/tv_profileDetails"
+                android:layout_below="@+id/seperatorView1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/date_of_birth"/>
-            <ImageView
-                android:id="@+id/ac_dob"
-                android:layout_below="@+id/tv_dob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_calender" />
-
-            <LinearLayout
-                android:id="@+id/ll_dob"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@+id/ac_dob" android:layout_below="@+id/tv_dob">
-
-                <EditText android:id="@+id/et_dob"
-                    android:focusable="false"
-                    android:layout_weight="2"
-                    android:layout_width="0dp" android:layout_height="wrap_content" android:singleLine="true"
-                    style="@android:style/Widget.Material.Spinner.Underlined"
-                    android:width="150dp" />
-                <TextView
-                    android:id="@+id/tv_age"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+                android:layout_height="wrap_content" android:text="@string/facebook_profile_details"
+                />
 
             <View
-                android:id="@+id/v_relation"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/ll_dob"
-                android:layout_marginTop="30dp"
+                android:layout_height="@dimen/form_seperator_height"
+                android:id="@+id/seperatorView2"
+                android:layout_below="@id/tv_profileDetails"/>
 
+            <TextView
+                android:id="@+id/tv_workplace"
+                android:layout_below="@+id/seperatorView2"
+                android:layout_toEndOf="@+id/ac_workplace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/workplace"
                 />
+
+            <ImageView
+                android:id="@+id/ac_workplace"
+                android:layout_below="@+id/seperatorView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_work_address" />
+
+            <EditText android:layout_toEndOf="@+id/ac_workplace" android:layout_below="@+id/tv_workplace" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:singleLine="true"
+                android:id="@+id/et_workplace"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/form_seperator_height"
+                android:id="@+id/seperatorView3"
+                android:layout_below="@id/et_workplace"/>
+
+            <TextView
+                android:id="@+id/tv_current_city"
+                android:layout_below="@+id/seperatorView3"
+                android:layout_toEndOf="@+id/ac_current_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/current_city"
+                />
+
+            <ImageView
+                android:id="@+id/ac_current_city"
+                android:layout_below="@+id/seperatorView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_work_address" />
+
+            <EditText android:layout_toEndOf="@+id/ac_current_city" android:layout_below="@+id/tv_current_city" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:singleLine="true"
+                android:id="@+id/et_current_city"
+                />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/form_seperator_height"
+                android:id="@+id/seperatorView4"
+                android:layout_below="@id/et_current_city"/>
+
+            <TextView
+                android:id="@+id/tv_hometown"
+                android:layout_below="@+id/seperatorView4"
+                android:layout_toEndOf="@+id/ac_hometown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/hometown"
+                />
+
+            <ImageView
+                android:id="@+id/ac_hometown"
+                android:layout_below="@+id/seperatorView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_work_address" />
+
+            <EditText android:layout_toEndOf="@+id/ac_hometown" android:layout_below="@+id/tv_hometown" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:singleLine="true"
+                android:id="@+id/et_hometown"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/form_seperator_height"
+                android:id="@+id/seperatorView5"
+                android:layout_below="@id/et_hometown"/>
+
+            <TextView
+                android:id="@+id/tv_relationship"
+                android:layout_below="@+id/seperatorView5"
+                android:layout_toEndOf="@+id/ac_relationship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/relationship"
+                />
+
             <ImageView
                 android:id="@+id/ac_relationship"
-                android:layout_below="@+id/v_relation"
+                android:layout_below="@+id/seperatorView5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_son_of" />
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_work_address" />
+
+            <EditText android:layout_toEndOf="@+id/ac_relationship" android:layout_below="@+id/tv_relationship" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:singleLine="true"
+                android:id="@+id/et_relationship"
+                />
+
+        </RelativeLayout>-->
+
+        <LinearLayout  android:id="@+id/rl_facebook_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ll_sonOf"
-                android:layout_toEndOf="@+id/ac_relationship"
-                android:layout_below="@+id/v_relation"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_connectedAs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/facebook_connected_as"
+                    />
 
-                <Spinner android:id="@+id/spin_relationship"
-                    android:layout_width="0dp"
-                    android:layout_weight="2" android:layout_height="wrap_content"  />
-
-                <EditText android:id="@+id/et_relation_name"  android:layout_marginStart="20dp"
-                    android:layout_width="0dp"
-                    android:layout_weight="3" android:layout_height="wrap_content" android:singleLine="true" />
+                <EditText
+                    android:id="@+id/et_connectedAs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:editable="false"
+                    />
 
             </LinearLayout>
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_profileDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/facebook_profile_details"
+                />
+            <com.mantralabsglobal.cashin.views.CustomEditText
+                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" custom:field_label="@string/workplace" custom:field_icon="@drawable/ic_work_address"/>
+
+            <com.mantralabsglobal.cashin.views.CustomEditText
+                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" custom:field_label="@string/current_city" custom:field_icon="@drawable/ic_work_address"/>
+            <com.mantralabsglobal.cashin.views.CustomEditText
+                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" custom:field_label="@string/hometown" custom:field_icon="@drawable/ic_work_address"/>
+            <com.mantralabsglobal.cashin.views.CustomEditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" custom:field_label="@string/relationship_status" custom:field_icon="@drawable/ic_work_address"/>
+
+            <com.mantralabsglobal.cashin.views.BirthDayView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" custom:field_label="@string/date_of_birth"></com.mantralabsglobal.cashin.views.BirthDayView>
+
+        </LinearLayout>
 
 
     </FrameLayout>

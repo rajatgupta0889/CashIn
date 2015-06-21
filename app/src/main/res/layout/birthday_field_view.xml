@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_custom_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_dob"
+            android:layout_toEndOf="@+id/ac_dob"
+            android:layout_below="@+id/v_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="@string/date_of_birth"/>
+        <ImageView
+            android:id="@+id/ac_dob"
+            android:layout_below="@+id/tv_dob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_calender" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/ac_dob" android:layout_below="@+id/tv_dob">
+
+            <EditText android:id="@+id/et_dob"
+                android:focusable="false"
+                android:layout_weight="2"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:singleLine="true"
+                style="@android:style/Widget.Material.Spinner.Underlined"
+                android:width="150dp" />
+            <TextView
+                android:id="@+id/tv_age"
+                android:layout_marginStart="20dp"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>
