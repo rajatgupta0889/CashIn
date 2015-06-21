@@ -23,6 +23,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.AadharDetail;
+import com.mantralabsglobal.cashin.dao.AadharDAO;
 import com.mantralabsglobal.cashin.fragment.DatepickerDialogFragment;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -98,58 +99,11 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
         registerFloatingActionButton( (FloatingActionButton)getCurrentView().findViewById(R.id.fab_launch_aadhar_form),getCurrentView().findViewById(R.id.scanner) );
     }
 
-    private AadharDetail parseAadharXML(String xml)
-    {
-        XmlPullParserFactory xmlFactoryObject = null;
-        AadharDetail aadharDetail = new AadharDetail();
 
-        try {
-            xmlFactoryObject = XmlPullParserFactory.newInstance();
-            XmlPullParser aadharparser = xmlFactoryObject.newPullParser();
-            aadharparser.setInput(new StringReader(xml));
-
-
-            int event = aadharparser.getEventType();
-            while (event != XmlPullParser.END_DOCUMENT)
-            {
-                String name=aadharparser.getName();
-                switch (event){
-                    case XmlPullParser.START_TAG:
-                        break;
-
-                    case XmlPullParser.END_TAG:
-                        if(name.equals("PrintLetterBarcodeData")){
-                            aadharDetail.setUid(aadharparser.getAttributeValue(null, "uid"));
-                            aadharDetail.setName(aadharparser.getAttributeValue(null, "name"));
-                            aadharDetail.setGender(aadharparser.getAttributeValue(null, "gender"));
-                            aadharDetail.setYearOfBirth(aadharparser.getAttributeValue(null, "yob"));
-                            aadharDetail.setHouse(aadharparser.getAttributeValue(null, "house"));
-                            aadharDetail.setStreet(aadharparser.getAttributeValue(null, "street"));
-                            aadharDetail.setLandmark(aadharparser.getAttributeValue(null, "lm"));
-                            aadharDetail.setLoc(aadharparser.getAttributeValue(null, "loc"));
-                            aadharDetail.setVtc(aadharparser.getAttributeValue(null, "vtc"));
-                            aadharDetail.setPostOffice(aadharparser.getAttributeValue(null, "po"));
-                            aadharDetail.setDistrict(aadharparser.getAttributeValue(null, "dist"));
-                            aadharDetail.setSubDistrict(aadharparser.getAttributeValue(null, "subdist"));
-                            aadharDetail.setState(aadharparser.getAttributeValue(null, "state"));
-                            aadharDetail.setPincode(aadharparser.getAttributeValue(null, "pc"));
-
-                        }
-                        break;
-                }
-                event = aadharparser.next();
-            }
-
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return aadharDetail;
-    }
 
     private void loadAadharForm() {
        setVisibleChildView(getCurrentView().findViewById(R.id.rl_aadhar_detail));
+        //TODO: Replace with form binding
          if(aadharDetail!= null) {
             ((EditText) getCurrentView().findViewById(R.id.et_name)).setText(aadharDetail.getName());
             ((EditText) getCurrentView().findViewById(R.id.et_address)).setText(aadharDetail.getAddress());
@@ -182,13 +136,19 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
             if(v.getId() == getCurrentView().findViewById(R.id.bt_launch_aadhar_form).getId()
                     || v.getId() == getCurrentView().findViewById(R.id.fab_launch_aadhar_form).getId())
             {
-               loadAadharForm();
+
+                loadAadharForm();
             }
             else if(v.getId() == getCurrentView().findViewById(R.id.ib_launchScanner).getId()
                     || v.getId() == getCurrentView().findViewById(R.id.fab_launchScanner).getId()
                     )
             {
                 loadAadharScanner();
+            }
+
+            if(v.getId() == getCurrentView().findViewById(R.id.fab_launch_aadhar_form).getId())
+            {
+                scannerView.stopCamera();
             }
            // if(child != null)
           //      viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));
@@ -211,7 +171,7 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
         scannerView.stopCamera();
         Toast.makeText(getActivity(), "Contents = " + rawResult.getText() +
                 ", Format = " + rawResult.getBarcodeFormat().toString(), Toast.LENGTH_SHORT).show();
-        aadharDetail = parseAadharXML(rawResult.getText());
+        aadharDetail = AadharDAO.getAadharDetailFromXML(rawResult.getText());
         loadAadharForm();
     }
 

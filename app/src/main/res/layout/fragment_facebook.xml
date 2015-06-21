@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_pan_card_fragment">
+
+    <FrameLayout
+        android:id="@+id/fl_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:visibility="visible"
+            android:id="@+id/ll_facebook_connect"
+            android:layout_width="match_parent" android:gravity="center"  android:layout_height="match_parent" android:orientation="vertical"
+            android:baselineAligned="false">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/facebook" />
+
+                <Button
+                    android:id="@+id/btn_facebook_connect"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:background="@drawable/com_facebook_button_background" android:text="@string/facebook_connect" />
+
+
+        </LinearLayout>
+
+        <RelativeLayout android:visibility="gone" android:id="@+id/rl_facebook_details" android:paddingLeft="10dp" android:paddingRight="20dp" android:padding="20dp"
+            android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_toEndOf="@+id/ac_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/name"
+                />
+
+            <ImageView
+                android:id="@+id/ac_name"
+                android:layout_below="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_name" />
+
+            <EditText android:layout_toEndOf="@+id/ac_name" android:layout_below="@+id/tv_name" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:singleLine="true"
+                android:id="@+id/et_name"
+                />
+
+            <TextView android:id="@+id/tv_pan"
+                android:layout_toEndOf="@+id/ac_pan"
+                   android:layout_below="@+id/et_name"
+                   android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" android:text="@string/pan_number"/>
+            <ImageView
+                android:id="@+id/ac_pan"
+                android:layout_below="@+id/tv_pan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_aadhar_number" />
+
+            <EditText android:id="@+id/et_pan"
+                android:layout_toRightOf="@+id/ac_pan" android:layout_below="@+id/tv_pan"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true" />
+
+            <View
+                android:id="@+id/v_dob"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/et_pan"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_dob"
+                android:layout_toEndOf="@+id/ac_dob"
+                android:layout_below="@+id/v_dob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/date_of_birth"/>
+            <ImageView
+                android:id="@+id/ac_dob"
+                android:layout_below="@+id/tv_dob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_calender" />
+
+            <LinearLayout
+                android:id="@+id/ll_dob"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/ac_dob" android:layout_below="@+id/tv_dob">
+
+                <EditText android:id="@+id/et_dob"
+                    android:focusable="false"
+                    android:layout_weight="2"
+                    android:layout_width="0dp" android:layout_height="wrap_content" android:singleLine="true"
+                    style="@android:style/Widget.Material.Spinner.Underlined"
+                    android:width="150dp" />
+                <TextView
+                    android:id="@+id/tv_age"
+                    android:layout_marginStart="20dp"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/v_relation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/ll_dob"
+                android:layout_marginTop="30dp"
+
+                />
+            <ImageView
+                android:id="@+id/ac_relationship"
+                android:layout_below="@+id/v_relation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_son_of" />
+
+            <LinearLayout
+                android:id="@+id/ll_sonOf"
+                android:layout_toEndOf="@+id/ac_relationship"
+                android:layout_below="@+id/v_relation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Spinner android:id="@+id/spin_relationship"
+                    android:layout_width="0dp"
+                    android:layout_weight="2" android:layout_height="wrap_content"  />
+
+                <EditText android:id="@+id/et_relation_name"  android:layout_marginStart="20dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="3" android:layout_height="wrap_content" android:singleLine="true" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import com.mantralabsglobal.cashin.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.IdentityPagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.SocialPagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.WorkPagerAdapter;
+import com.sromku.simple.fb.SimpleFacebook;
 
 
 public class MainActivity extends FragmentActivity{
@@ -31,6 +33,8 @@ public class MainActivity extends FragmentActivity{
     private Button workButton;
     private Button financialButton;
     private Button socialButton;
+    private SimpleFacebook mSimpleFacebook;
+    Fragment f_pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +66,6 @@ public class MainActivity extends FragmentActivity{
 
             final android.support.v4.app.FragmentManager FM = getSupportFragmentManager();
             android.support.v4.app.FragmentTransaction FT = FM.beginTransaction();
-
-            Fragment f_pager = null;
 
             f_pager = new AbstractPager() {
                 @Override
@@ -137,6 +139,12 @@ public class MainActivity extends FragmentActivity{
     {
         identityPagerAdapter = new IdentityPagerAdapter(fragmentManager);
         return identityPagerAdapter;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        f_pager.onActivityResult(requestCode,resultCode,data);
     }
 
     @Override

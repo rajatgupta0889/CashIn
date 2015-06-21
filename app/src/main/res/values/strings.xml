@@ -30,7 +30,9 @@
     <string name="gender">Gender</string>
     <string name="aadhar_number">Aadhar Number</string>
     <string name="date_of_birth">Date of birth</string>
-
+    <string name="app_id">1442120239426705</string>
+    <string name="facebook">facebook</string>
+    <string name="facebook_connect">connnect</string>
     <string-array name="city_array">
         <item>Bangalore</item>
         <item>Mumbai</item>

@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.fragment.tabs;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -39,6 +40,27 @@ public abstract class BaseFragment extends Fragment {
     private List<View> childViews = new ArrayList<>();
     private Map<View, List<FloatingActionButton>> floatingActionButtonViewMap = new HashMap<>();
     private View visibleChildView;
+
+    private ProgressDialog mProgressDialog;
+
+    protected void showDialog() {
+        if (mProgressDialog == null) {
+            setProgressDialog();
+        }
+        mProgressDialog.show();
+    }
+
+    protected void hideDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+    private void setProgressDialog() {
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setTitle("Thinking...");
+        mProgressDialog.setMessage("Doing the action...");
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
