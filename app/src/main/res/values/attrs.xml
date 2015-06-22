@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="custom_edit_view">
+    <declare-styleable name="custom_view">
         <attr name="field_label" format="string"/>
         <attr name="field_icon" format="integer"/>
         <attr name="field_text" format="string"/>

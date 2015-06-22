@@ -25,6 +25,9 @@ import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.AadharDetail;
 import com.mantralabsglobal.cashin.dao.AadharDAO;
 import com.mantralabsglobal.cashin.fragment.DatepickerDialogFragment;
+import com.mantralabsglobal.cashin.views.CustomEditText;
+import com.mantralabsglobal.cashin.views.CustomSpinner;
+import com.mantralabsglobal.cashin.views.SonOfSpinner;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -51,9 +54,9 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class AadharCardFragment extends BaseFragment implements ZXingScannerView.ResultHandler{
 
     private AadharDetail aadharDetail;
-    private Spinner gender;
+    private CustomSpinner gender;
     private ZXingScannerView scannerView;
-    private Spinner relation;
+    private SonOfSpinner relation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,18 +82,14 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
         FloatingActionButton fabForm = (FloatingActionButton) view.findViewById(R.id.fab_launch_aadhar_form);
         fabForm.setOnClickListener(listener);
 
-        EditText dobEditText = (EditText)view.findViewById(R.id.et_dob);
-
-        initDateOfBirthEditText(dobEditText,(TextView)getCurrentView().findViewById(R.id.tv_age) );
-
         scannerView = (ZXingScannerView)view.findViewById(R.id.scanner);
         scannerView.setResultHandler(this);
 
-        relation = (Spinner) view.findViewById(R.id.spin_relationship);
-        relation.setAdapter(getRelationAdapter());
-
-        gender = (Spinner) view.findViewById(R.id.spin_gender);
+        gender = (CustomSpinner) view.findViewById(R.id.cs_gender);
         gender.setAdapter(getGenderAdapter());
+
+        relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
+        gender.setAdapter(gender.getAdapter());
 
         registerChildView(getCurrentView().findViewById(R.id.ll_aadhar_camera), View.VISIBLE);
         registerChildView(getCurrentView().findViewById(R.id.scanner), View.GONE);
@@ -105,11 +104,11 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
        setVisibleChildView(getCurrentView().findViewById(R.id.rl_aadhar_detail));
         //TODO: Replace with form binding
          if(aadharDetail!= null) {
-            ((EditText) getCurrentView().findViewById(R.id.et_name)).setText(aadharDetail.getName());
-            ((EditText) getCurrentView().findViewById(R.id.et_address)).setText(aadharDetail.getAddress());
-            ((EditText) getCurrentView().findViewById(R.id.et_aadhar)).setText(aadharDetail.getUid());
+            ((CustomEditText) getCurrentView().findViewById(R.id.cc_name)).setText(aadharDetail.getName());
+            ((CustomEditText) getCurrentView().findViewById(R.id.cc_address)).setText(aadharDetail.getAddress());
+            ((CustomEditText) getCurrentView().findViewById(R.id.cc_aadhar)).setText(aadharDetail.getUid());
             gender.setSelection(getGenderAdapter().getPosition(aadharDetail.getGender()));
-            relation.setSelection(getRelationAdapter().getPosition(aadharDetail.getRelation()));
+            relation.setSelection(relation.getRelationAdapter().getPosition(aadharDetail.getRelation()));
 
         }
     }

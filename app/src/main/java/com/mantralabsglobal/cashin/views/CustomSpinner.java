@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
@@ -16,25 +17,25 @@ import com.mantralabsglobal.cashin.R;
 /**
  * Created by pk on 6/21/2015.
  */
-public class CustomEditText extends LinearLayout {
+public class CustomSpinner extends LinearLayout {
 
     private TextView tv_label;
-    private EditText et_editText;
+    private Spinner spinner;
     private ImageView iv_icon;
 
-    public CustomEditText(Context context) {
+    public CustomSpinner(Context context) {
         this(context, null);
     }
 
-    public CustomEditText(Context context, AttributeSet attrs) {
+    public CustomSpinner(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CustomEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public CustomEditText(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CustomSpinner(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         init();
@@ -42,12 +43,11 @@ public class CustomEditText extends LinearLayout {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.custom_view, 0, 0);
         try {
             tv_label.setText(ta.getString(R.styleable.custom_view_field_label));
-           // iv_icon.setImageResource(R.drawable.ic_work_address);
 
             Drawable drawable = ta.getDrawable(R.styleable.custom_view_field_icon);
             if (drawable != null)
                 iv_icon.setBackground(drawable);
-            et_editText.setText(ta.getString(R.styleable.custom_view_field_text));
+
         } finally {
             ta.recycle();
         }
@@ -57,7 +57,7 @@ public class CustomEditText extends LinearLayout {
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        inflater.inflate(R.layout.custom_edittext_view, this);
+        inflater.inflate(R.layout.custom_spinner_view, this);
 
 
         loadViews();
@@ -65,8 +65,18 @@ public class CustomEditText extends LinearLayout {
 
     private void loadViews() {
         iv_icon = (ImageView)findViewById(R.id.ac_icon);
-        et_editText = (EditText)findViewById(R.id.et_text);
+        spinner = (Spinner)findViewById(R.id.spin_spinner);
         tv_label = (TextView)findViewById(R.id.tv_label);
+    }
+
+    public void setAdapter(SpinnerAdapter adapter)
+    {
+        spinner.setAdapter(adapter);
+    }
+
+    public SpinnerAdapter getAdapter()
+    {
+        return spinner.getAdapter();
     }
 
     public CharSequence getLabel()
@@ -79,7 +89,7 @@ public class CustomEditText extends LinearLayout {
          tv_label.setText(value);
     }
 
-    public void setText(CharSequence name) {
-        et_editText.setText(name);
+    public void setSelection(int position) {
+        spinner.setSelection(position);
     }
 }

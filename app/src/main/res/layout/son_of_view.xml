@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_custom_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/ac_icon"
+            android:layout_below="@+id/tv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/ic_son_of" />
+
+        <LinearLayout
+            android:id="@+id/ll_sonOf"
+            android:layout_toEndOf="@+id/ac_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Spinner android:id="@+id/spin_sonof"
+                android:layout_width="0dp"
+                android:layout_weight="2" android:layout_height="wrap_content"  />
+
+            <EditText android:id="@+id/et_sonof"  android:layout_marginStart="10dp"
+                android:layout_width="0dp"
+                android:layout_weight="3" android:layout_height="wrap_content" android:singleLine="true" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

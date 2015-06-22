@@ -12,13 +12,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.views.BirthDayView;
+import com.mantralabsglobal.cashin.views.CustomEditText;
+import com.mantralabsglobal.cashin.views.SonOfSpinner;
 
 /**
  * Created by pk on 13/06/2015.
  */
 public class PANCardFragment extends BaseFragment  {
 
-    private EditText dobEditText;
+    private BirthDayView dobEditText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,18 +34,13 @@ public class PANCardFragment extends BaseFragment  {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
         Button btnEdit = (Button) view.findViewById(R.id.enterPANDetailsButton);
         btnEdit.setOnClickListener(listener);
 
-        dobEditText = (EditText)view.findViewById(R.id.et_dob);
+        dobEditText = (BirthDayView)view.findViewById(R.id.cc_dob);
 
-        dobEditText = (EditText)view.findViewById(R.id.et_dob);
-
-        initDateOfBirthEditText(dobEditText, (TextView) getCurrentView().findViewById(R.id.tv_age));
-
-        Spinner relation = (Spinner) view.findViewById(R.id.spin_relationship);
-        relation.setAdapter(getRelationAdapter());
+        SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
 
         registerChildView(getCurrentView().findViewById(R.id.enterPANDetailLayout), View.GONE);
         registerChildView(getCurrentView().findViewById(R.id.panCardSnapLayout), View.VISIBLE);

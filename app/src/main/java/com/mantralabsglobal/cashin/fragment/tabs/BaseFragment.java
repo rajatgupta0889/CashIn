@@ -34,7 +34,6 @@ import java.util.Map;
  */
 public abstract class BaseFragment extends Fragment {
 
-    private ArrayAdapter<CharSequence> relationAdapter;
     private ArrayAdapter<CharSequence> genderAdapter;
     private View currentView;
     private List<View> childViews = new ArrayList<>();
@@ -121,34 +120,10 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public int computeAge(int year, int monthOfYear, int dayOfMonth)
-    {
-        Calendar myBirthDate = Calendar.getInstance();
-        myBirthDate.clear();
-        myBirthDate.set(year, monthOfYear, dayOfMonth);
-        Calendar now = Calendar.getInstance();
-        Calendar clone = (Calendar) myBirthDate.clone(); // Otherwise changes are been reflected.
-        int years = -1;
-        while (!clone.after(now)) {
-            clone.add(Calendar.YEAR, 1);
-            years++;
-        }
-        return years;
-    }
-
     protected View getCurrentView(){
         return currentView;
     }
 
-    protected ArrayAdapter<CharSequence> getRelationAdapter()
-    {
-        if(relationAdapter == null)
-        {
-            relationAdapter = ArrayAdapter.createFromResource(getCurrentView().getContext(), R.array.relationship_array, android.R.layout.simple_spinner_item);
-            relationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        }
-        return relationAdapter;
-    }
 
     protected ArrayAdapter<CharSequence> getGenderAdapter()
     {
@@ -160,42 +135,4 @@ public abstract class BaseFragment extends Fragment {
         return genderAdapter;
     }
 
-    protected void initDateOfBirthEditText(final EditText et_dob, final TextView tv_age)
-    {
-        et_dob.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext());
-                Date defaultDate = null;
-                try {
-                    defaultDate = dateFormat.parse(et_dob.getText().toString());
-                } catch (ParseException e) {
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
-                        defaultDate = sdf.parse(getString(R.string.default_dateof_birth));
-
-                    } catch (ParseException e1) {
-
-                        e1.printStackTrace();
-                    }
-                }
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                DialogFragment newFragment = new DatepickerDialogFragment( new DatePickerDialog.OnDateSetListener(){
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-                        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getActivity().getApplicationContext());
-
-                        et_dob.setText(dateFormat.format(cal.getTime()));
-                        tv_age.setText(computeAge(year, monthOfYear, dayOfMonth) + " Years");
-                    }
-                }, defaultDate);
-                newFragment.show(ft, "date_dialog");
-
-            }
-        });
-    }
 }
