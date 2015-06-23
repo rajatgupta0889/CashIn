@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.mantralabsglobal.cashin.fragment.tabs.BlankFragment;
 import com.mantralabsglobal.cashin.fragment.tabs.CurrentAddressFragment;
 import com.mantralabsglobal.cashin.fragment.tabs.FacebookFragment;
 
@@ -28,7 +29,7 @@ public class SocialPagerAdapter extends FragmentPagerAdapter{
                 return facebookFragment ;
             // Open FragmentTab3.java
         }
-        return new CurrentAddressFragment();
+        return new BlankFragment();
     }
 
     @Override

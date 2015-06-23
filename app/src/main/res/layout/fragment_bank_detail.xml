@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_pan_card_fragment">
+
+    <FrameLayout
+        android:id="@+id/fl_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout  android:id="@+id/rl_facebook_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_connectedAs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="@string/enter_primary_bank_details"
+                    />
+
+            </LinearLayout>
+
+            <com.mantralabsglobal.cashin.views.CustomEditText
+                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" custom:field_label="@string/bank_name" custom:field_icon="@drawable/ic_work_address"/>
+
+            <com.mantralabsglobal.cashin.views.CustomEditText
+                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" custom:field_label="@string/account_number_last_4_digits" custom:field_icon="@drawable/ic_work_address"/>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

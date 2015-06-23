@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mantralabsglobal.cashin.fragment.tabs.AadharCardFragment;
+import com.mantralabsglobal.cashin.fragment.tabs.BlankFragment;
 import com.mantralabsglobal.cashin.fragment.tabs.CurrentAddressFragment;
 import com.mantralabsglobal.cashin.fragment.tabs.PANCardFragment;
 
@@ -22,6 +23,7 @@ public class IdentityPagerAdapter extends FragmentPagerAdapter{
         super(fm);
         aadharCardFragment = new AadharCardFragment();
         panCardFragment = new PANCardFragment();
+
     }
 
     @Override
@@ -34,7 +36,7 @@ public class IdentityPagerAdapter extends FragmentPagerAdapter{
                 return panCardFragment;
             // Open FragmentTab3.java
         }
-        return new CurrentAddressFragment();
+        return new BlankFragment();
     }
 
     @Override

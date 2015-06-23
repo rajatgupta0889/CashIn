@@ -4,8 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.mantralabsglobal.cashin.fragment.tabs.BlankFragment;
 import com.mantralabsglobal.cashin.fragment.tabs.BusinessCardFragment;
 import com.mantralabsglobal.cashin.fragment.tabs.CurrentAddressFragment;
+import com.mantralabsglobal.cashin.fragment.tabs.LinkedInFragment;
 
 /**
  * Created by pk on 13/06/2015.
@@ -13,11 +15,13 @@ import com.mantralabsglobal.cashin.fragment.tabs.CurrentAddressFragment;
 public class WorkPagerAdapter extends FragmentPagerAdapter{
 
     private String tabtitles[] = new String[] { "Business Card", "Linked In"};
-    private BusinessCardFragment fragment;
+    private BusinessCardFragment businessCardFragment;
+    private LinkedInFragment linkedInFragment;
 
     public WorkPagerAdapter(FragmentManager fm) {
         super(fm);
-        fragment = new BusinessCardFragment();
+        businessCardFragment = new BusinessCardFragment();
+        linkedInFragment = new LinkedInFragment();
     }
 
     @Override
@@ -25,10 +29,12 @@ public class WorkPagerAdapter extends FragmentPagerAdapter{
         switch (position) {
 
             case 0:
-                return fragment ;
+                return businessCardFragment ;
+            case 1:
+                return linkedInFragment;
             // Open FragmentTab3.java
         }
-        return new CurrentAddressFragment();
+        return new BlankFragment();
     }
 
     @Override

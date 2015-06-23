@@ -79,8 +79,8 @@ public class FacebookFragment extends BaseFragment  {
             }
         });
 
-        registerChildView(getCurrentView().findViewById(R.id.ll_facebook_connect), View.GONE);
-        registerChildView(getCurrentView().findViewById(R.id.rl_facebook_details), View.VISIBLE);
+        registerChildView(getCurrentView().findViewById(R.id.ll_facebook_connect), View.VISIBLE);
+        registerChildView(getCurrentView().findViewById(R.id.rl_facebook_details), View.GONE);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

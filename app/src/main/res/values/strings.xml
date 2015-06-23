@@ -40,6 +40,27 @@
     <string name="hometown">Hometown</string>
     <string name="relationship_status">Relationship status</string>
     <string name="label">Label</string>
+    <string name="employer_name">Employer Name</string>
+    <string name="work_email_id">Work Email Id</string>
+    <string name="work_address">Work Address</string>
+    <string name="take_busininess_card_snap">Take a snap of your business card</string>
+    <string name="business_card_not_ready">Don\'t have a business card ready?</string>
+    <string name="enter_work_details"><![CDATA[Enter work details  >]]></string>
+    <string name="linkedIn">LinkedIn</string>
+    <string name="linkedIn_connect">Connect</string>
+    <string name="linkedIn_connected_as">Connected As</string>
+    <string name="work_experience">Work Experience</string>
+    <string name="job_title">Job Title</string>
+    <string name="company">Company</string>
+    <string name="time_period">Time Period</string>
+    <string name="school">School</string>
+    <string name="enter_primary_bank_details">Enter your primary bank details</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="account_number_last_4_digits">Account Number (Last 4 digits)</string>
+    <string name="last_three_month_salary">Please enter your last 3 months income</string>
+    <string name="month_one">Month One</string>
+    <string name="month_two">month_two</string>
+    <string name="month_three">Month_three</string>
     <string-array name="city_array">
         <item>Bangalore</item>
         <item>Mumbai</item>

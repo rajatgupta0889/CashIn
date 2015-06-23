@@ -15,10 +15,7 @@ import com.mantralabsglobal.cashin.R;
 /**
  * Created by pk on 13/06/2015.
  */
-public class BusinessCardFragment extends Fragment {
-
-    ViewFlipper viewFlipper;
-    View currentView;
+public class BusinessCardFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,11 +28,14 @@ public class BusinessCardFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        viewFlipper = (ViewFlipper) view.findViewById(R.id.business_card_viewflipper);
-        currentView = view;
+
+        super.onViewCreated(view, savedInstanceState);
+
         Button btnEdit = (Button) view.findViewById(R.id.enterWorkDetailsButton);
         btnEdit.setOnClickListener(listener);
 
+        registerChildView(getCurrentView().findViewById(R.id.ll_business_card_snap), View.VISIBLE);
+        registerChildView(getCurrentView().findViewById(R.id.ll_business_card_detail), View.GONE);
     }
 
 
@@ -51,16 +51,15 @@ public class BusinessCardFragment extends Fragment {
         public void onClick(View v) {
 
             View child = null;
-            if(v.getId() == currentView.findViewById(R.id.enterWorkDetailsButton).getId())
+            if(v.getId() == getCurrentView().findViewById(R.id.enterWorkDetailsButton).getId())
             {
-                child = currentView.findViewById(R.id.enterWorkDetailLayout);
+                setVisibleChildView(getCurrentView().findViewById(R.id.ll_business_card_detail));
             }
             else
             {
-                child = currentView.findViewById(R.id.businessCardSnapLayout);
+                setVisibleChildView(getCurrentView().findViewById(R.id.ll_business_card_snap));
             }
-            if(child != null)
-                viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));
+
         }
     };
 

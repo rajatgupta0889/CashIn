@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-    <ViewFlipper
+    <FrameLayout
         android:id="@+id/business_card_viewflipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
             <LinearLayout
-                android:id="@+id/businessCardSnapLayout"
+                android:id="@+id/ll_business_card_snap" android:visibility="gone"
                 android:layout_width="match_parent" android:gravity="center"  android:layout_height="match_parent" android:orientation="vertical">
 
             <LinearLayout
@@ -20,7 +17,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="Take a snap of your business card" />
+                    android:layout_height="wrap_content" android:text="@string/take_busininess_card_snap" />
 
                 <ImageView
                     android:layout_marginTop="30dp"
@@ -40,37 +37,42 @@
 
             <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="Don't have a business card ready?" />
+                    android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="@string/business_card_not_ready" />
 
                 <Button
                 android:id="@+id/enterWorkDetailsButton"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" android:capitalize="characters" android:text="Enter work details  >" android:background="@null"
+                android:layout_height="wrap_content" android:capitalize="characters" android:text="@string/enter_work_details" android:background="@null"
                 />
 
         </LinearLayout>
-        <LinearLayout android:id="@+id/enterWorkDetailLayout" android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/ll_business_card_detail" >
+            <LinearLayout android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Employer Name" />
+                <com.mantralabsglobal.cashin.views.CustomEditText
+                    android:id="@+id/cc_employer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" app:field_label="@string/employer_name" app:field_icon="@drawable/ic_name"/>
 
-            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <EditText android:layout_width="match_parent" android:layout_height="50dp" android:singleLine="false"  android:hint="Work Email Id" />
+                <com.mantralabsglobal.cashin.views.CustomEditText
+                    android:id="@+id/cc_work_email_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" app:field_label="@string/work_email_id" app:field_icon="@drawable/ic_name"/>
 
-            </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
+                <com.mantralabsglobal.cashin.views.CustomEditText
+                    android:id="@+id/cc_work_addess"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" app:field_label="@string/work_address" app:field_icon="@drawable/ic_name"/>
 
-    </ViewFlipper>
-    </ScrollView>
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
 
 </LinearLayout>
