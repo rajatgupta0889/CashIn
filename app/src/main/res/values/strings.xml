@@ -61,6 +61,14 @@
     <string name="month_one">Month One</string>
     <string name="month_two">month_two</string>
     <string name="month_three">Month_three</string>
+    <string name="street">Street</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="pincode">Pincode</string>
+    <string name="house_own_or_rented">Is the House own or rented ?</string>
+    <string name="rent">Rent</string>
+    <string name="owned">Owned</string>
+    <string name="owned_by">Own</string>
     <string-array name="city_array">
         <item>Bangalore</item>
         <item>Mumbai</item>

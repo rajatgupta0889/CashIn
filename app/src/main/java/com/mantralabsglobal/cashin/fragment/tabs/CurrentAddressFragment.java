@@ -15,14 +15,13 @@ import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.views.CustomSpinner;
 
 /**
  * Created by pk on 13/06/2015.
  */
-public class CurrentAddressFragment extends Fragment {
+public class CurrentAddressFragment extends BaseFragment {
 
-    ViewFlipper viewFlipper;
-    View currentView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,32 +34,34 @@ public class CurrentAddressFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        currentView = view;
+       super.onViewCreated(view, savedInstanceState);
         Button btnEdit = (Button) view.findViewById(R.id.editCurrentAddressButton);
         btnEdit.setOnClickListener(listener);
 
         FloatingActionButton btnGps = (FloatingActionButton) view.findViewById(R.id.gpsLocationFormButton);
         btnGps.setOnClickListener(listener);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.city_spinner);
+        CustomSpinner spinner = (CustomSpinner) view.findViewById(R.id.cs_city);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.city_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.state_spinner);
+        spinner = (CustomSpinner) view.findViewById(R.id.cs_state);
         adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.state_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        spinner = (Spinner) view.findViewById(R.id.own_spinner);
+        spinner = (CustomSpinner) view.findViewById(R.id.cs_owned_by);
         adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.own_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
 
-        view.findViewById(R.id.getLocationFromFormLayout).setVisibility(View.GONE);
-        view.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.gpsLocationFormButton).setVisibility(View.GONE);
+        registerChildView(view.findViewById(R.id.getLocationFromFormLayout), View.GONE);
+        registerChildView(view.findViewById(R.id.getLocationFromGPSLayout), View.VISIBLE);
+
+        registerFloatingActionButton(btnGps, view.findViewById(R.id.getLocationFromFormLayout));
+
     }
 
 
@@ -76,20 +77,14 @@ public class CurrentAddressFragment extends Fragment {
         public void onClick(View v) {
 
             View child = null;
-            if(v.getId() == currentView.findViewById(R.id.editCurrentAddressButton).getId())
+            if(v.getId() == getCurrentView().findViewById(R.id.editCurrentAddressButton).getId())
             {
-                currentView.findViewById(R.id.getLocationFromFormLayout).setVisibility(View.VISIBLE);
-                currentView.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.GONE);
-                currentView.findViewById(R.id.gpsLocationFormButton).setVisibility(View.VISIBLE);
+                setVisibleChildView(getCurrentView().findViewById(R.id.getLocationFromFormLayout));
             }
             else
             {
-                currentView.findViewById(R.id.getLocationFromFormLayout).setVisibility(View.GONE);
-                currentView.findViewById(R.id.getLocationFromGPSLayout).setVisibility(View.VISIBLE);
-                currentView.findViewById(R.id.gpsLocationFormButton).setVisibility(View.GONE);
+                setVisibleChildView(getCurrentView().findViewById(R.id.getLocationFromGPSLayout));
             }
-            //if(child != null)
-              //  viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));
         }
     };
 

@@ -9,165 +9,70 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout android:visibility="visible" android:id="@+id/getLocationFromFormLayout"
-            android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:visibility="visible" android:id="@+id/getLocationFromFormLayout"
+            android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
             <TextView android:id="@+id/adressTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:text="Address"  android:layout_alignParentTop="true" />
 
-            <LinearLayout android:id="@+id/streetLayout"
-                android:layout_width="match_parent" android:layout_below="@+id/adressTextView"
-                android:layout_height="wrap_content" android:orientation="horizontal" >
-                    <LinearLayout
-                        android:layout_width="30dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_height="match_parent" android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle"/>
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="250dp"
-                        android:layout_height="match_parent" android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:text="Street" />
-                        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
-                            android:inputType="textMultiLine"
-                            android:lines="2"
-                            android:minLines="2"
-                            android:gravity="top|left"
-                            android:maxLines="2"
-                            />
-
-                    </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/cityLayout" android:layout_below="@+id/streetLayout"
+            <com.mantralabsglobal.cashin.views.CustomEditText
+                android:id="@+id/cc_street"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="horizontal" >
-                <LinearLayout
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent" android:gravity="center" android:layout_marginRight="5dp">
+                android:layout_height="wrap_content" app:field_label="@string/street" app:field_icon="@drawable/account_circle"/>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
+            <com.mantralabsglobal.cashin.views.CustomSpinner
+                android:id="@+id/cs_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:field_label="@string/city" app:field_icon="@drawable/account_circle"/>
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="250dp"
-                    android:layout_height="match_parent" android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:text="City" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="horizontal">
 
-                    <Spinner android:id="@+id/city_spinner" android:layout_width="150dp" android:layout_height="wrap_content"  />
+                <com.mantralabsglobal.cashin.views.CustomSpinner
+                    android:id="@+id/cs_state"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent" app:field_label="@string/state" app:field_icon="@drawable/account_circle"/>
 
-                </LinearLayout>
+                <com.mantralabsglobal.cashin.views.CustomEditText
+                    android:id="@+id/cc_pincode"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" app:field_label="@string/pincode"/>
+
             </LinearLayout>
 
-                        <LinearLayout android:layout_below="@+id/cityLayout" android:id="@+id/stateLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/form_input_margin_top">
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp">
 
-                            <LinearLayout
-                                android:layout_width="30dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_height="match_parent" android:gravity="center">
+                <TextView android:layout_below="@+id/seperatorView" android:id="@+id/ownOrRentedTextView"
+                    android:layout_marginTop="@dimen/form_input_margin_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"  android:text="@string/house_own_or_rented"/>
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle"/>
+                <RadioGroup  android:id="@+id/ownOrRentedRadioGroup"
+                    android:layout_marginTop="@dimen/form_input_margin_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal"  >
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/rent" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/owned"/>
 
-                            </LinearLayout>
+                </RadioGroup>
+            </LinearLayout>
+            <com.mantralabsglobal.cashin.views.CustomSpinner
+                android:id="@+id/cs_owned_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/account_circle"/>
 
-                            <LinearLayout
-                                android:layout_width="150dp"
-                                android:layout_height="match_parent" android:orientation="vertical">
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" android:text="State" />
-                                <Spinner android:id="@+id/state_spinner" android:layout_width="match_parent" android:layout_height="match_parent"   />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="100dp"
-                                android:layout_height="match_parent" android:orientation="vertical">
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" android:text="Pincode" />
-                                <EditText android:layout_width="match_parent" android:layout_height="match_parent"  android:inputType="number" android:numeric="integer" android:maxLength="6"/>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <View android:layout_below="@+id/stateLayout" android:id="@+id/seperatorView"
-                            android:layout_marginTop="@dimen/form_input_margin_top"
-                            android:layout_marginBottom="10dp"
-                            android:layout_width="wrap_content"
-                            android:background="@drawable/gradient_seperator"
-                            android:layout_height="2dp"></View>
-
-                        <TextView android:layout_below="@+id/seperatorView" android:id="@+id/ownOrRentedTextView"
-                            android:layout_marginTop="@dimen/form_input_margin_top"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"  android:text="Is the House own or rented ?"/>
-
-                        <RadioGroup android:layout_below="@+id/ownOrRentedTextView" android:id="@+id/ownOrRentedRadioGroup"
-                            android:layout_marginTop="@dimen/form_input_margin_top"
-                            android:paddingLeft="@dimen/form_input_padding_left"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:orientation="horizontal"  >
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:text="Rent" />
-                            <RadioButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" android:text="Own"/>
-
-                        </RadioGroup>
-
-                        <LinearLayout android:layout_below="@+id/ownOrRentedRadioGroup"
-                            android:id="@+id/house_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="@dimen/form_input_margin_top">
-                            <LinearLayout
-                                android:layout_width="30dp"
-                                android:layout_height="match_parent" android:gravity="center" android:layout_marginRight="5dp">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" android:scaleType="fitCenter" android:src="@drawable/account_circle" />
-
-                            </LinearLayout>
-                            <LinearLayout android:id="@+id/own_layout"
-                                android:layout_width="250dp"
-                                android:layout_height="match_parent" android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" android:text="Own" />
-
-                                <Spinner android:id="@+id/own_spinner" android:layout_width="150dp" android:layout_height="wrap_content"   />
-
-
-
-
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:visibility="gone"
