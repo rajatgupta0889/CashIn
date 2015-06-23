@@ -21,8 +21,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/street" app:field_icon="@drawable/account_circle"/>
 
-            <com.mantralabsglobal.cashin.views.CustomSpinner
-                android:id="@+id/cs_city"
+            <com.mantralabsglobal.cashin.views.CustomEditText
+                android:id="@+id/cc_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/city" app:field_icon="@drawable/account_circle"/>
 
@@ -31,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:orientation="horizontal">
 
-                <com.mantralabsglobal.cashin.views.CustomSpinner
-                    android:id="@+id/cs_state"
+                <com.mantralabsglobal.cashin.views.CustomEditText
+                    android:id="@+id/cc_state"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="match_parent" app:field_label="@string/state" app:field_icon="@drawable/account_circle"/>
@@ -89,7 +89,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:text="Get location from GPS" />
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/ib_get_gps_location"
                     android:layout_marginTop="30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:src="@drawable/gps_layer"/>
