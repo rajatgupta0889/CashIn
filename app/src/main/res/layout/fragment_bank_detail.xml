@@ -10,11 +10,11 @@
 
         <LinearLayout  android:id="@+id/rl_facebook_details"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:orientation="vertical">
+            android:layout_height="match_parent" android:orientation="vertical" android:padding="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="horizontal">
+                android:layout_height="100dp" android:orientation="horizontal" android:gravity="center">
                 <TextView
                     android:id="@+id/tv_connectedAs"
                     android:layout_width="wrap_content"
