@@ -17,6 +17,8 @@ import android.widget.TableLayout;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.fragment.adapter.FinancePagerAdapter;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by pk on 14/06/2015.
  */
@@ -27,6 +29,7 @@ public abstract class AbstractPager extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.pager, container, false);
+        ButterKnife.inject(this,view);
         return view;
     }
 
@@ -34,6 +37,7 @@ public abstract class AbstractPager extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
+
         ViewPager pager = (ViewPager) getActivity().findViewById(R.id.viewPager);
         FragmentPagerAdapter fragmentPagerAdapter = getPagerAdapter(getChildFragmentManager());
         pager.setAdapter(fragmentPagerAdapter);

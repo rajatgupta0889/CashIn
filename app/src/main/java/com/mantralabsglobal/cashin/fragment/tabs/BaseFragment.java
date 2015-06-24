@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by pk on 6/20/2015.
  */
@@ -64,6 +66,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(this,view);
         currentView = view;
     }
 

@@ -44,6 +44,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import butterknife.InjectView;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 //import eu.livotov.zxscan.ScannerView;
@@ -54,17 +55,36 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class AadharCardFragment extends BaseFragment implements ZXingScannerView.ResultHandler{
 
     private AadharDetail aadharDetail;
-    private CustomSpinner gender;
-    private ZXingScannerView scannerView;
-    private SonOfSpinner relation;
+
+    @InjectView(R.id.cs_gender)
+     CustomSpinner gender;
+
+    @InjectView(R.id.cs_sonOf)
+     SonOfSpinner relation;
+
+    @InjectView(R.id.ib_launchScanner)
+     ImageButton btn_scanner;
+
+    @InjectView(R.id.fab_launchScanner)
+     FloatingActionButton fab_launchScanner;
+
+    @InjectView(R.id.fab_launch_aadhar_form)
+     FloatingActionButton fab_launchForm;
+
+    @InjectView(R.id.ll_aadhar_camera)
+     ViewGroup vg_camera;
+
+    @InjectView(R.id.scanner)
+    ZXingScannerView vg_scanner;
+
+    @InjectView(R.id.rl_aadhar_detail)
+     ViewGroup vg_form;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Get the view from fragmenttab1.xml
-        View view = inflater.inflate(R.layout.fragment_aadhar_card, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_aadhar_card, container, false);
     }
 
     @Override
@@ -73,29 +93,23 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
         Button btnEdit = (Button) view.findViewById(R.id.bt_launch_aadhar_form);
         btnEdit.setOnClickListener(listener);
 
-        ImageButton btn = (ImageButton) view.findViewById(R.id.ib_launchScanner);
-        btn.setOnClickListener(listener);
+        btn_scanner.setOnClickListener(listener);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_launchScanner);
-        fab.setOnClickListener(listener);
+        fab_launchScanner.setOnClickListener(listener);
 
-        FloatingActionButton fabForm = (FloatingActionButton) view.findViewById(R.id.fab_launch_aadhar_form);
-        fabForm.setOnClickListener(listener);
+        fab_launchForm.setOnClickListener(listener);
 
-        scannerView = (ZXingScannerView)view.findViewById(R.id.scanner);
-        scannerView.setResultHandler(this);
+        vg_scanner.setResultHandler(this);
 
-        gender = (CustomSpinner) view.findViewById(R.id.cs_gender);
         gender.setAdapter(getGenderAdapter());
 
-        relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
-        gender.setAdapter(gender.getAdapter());
+        relation.setAdapter(relation.getAdapter());
 
-        registerChildView(getCurrentView().findViewById(R.id.ll_aadhar_camera), View.VISIBLE);
-        registerChildView(getCurrentView().findViewById(R.id.scanner), View.GONE);
-        registerChildView(getCurrentView().findViewById(R.id.rl_aadhar_detail), View.GONE);
-        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launchScanner), getCurrentView().findViewById(R.id.rl_aadhar_detail));
-        registerFloatingActionButton( (FloatingActionButton)getCurrentView().findViewById(R.id.fab_launch_aadhar_form),getCurrentView().findViewById(R.id.scanner) );
+        registerChildView(vg_camera, View.VISIBLE);
+        registerChildView(vg_scanner, View.GONE);
+        registerChildView(vg_form, View.GONE);
+        registerFloatingActionButton(fab_launchScanner, vg_form);
+        registerFloatingActionButton( fab_launchForm,vg_scanner );
     }
 
 
@@ -116,15 +130,15 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
     @Override
     public void onResume() {
         super.onResume();
-        if(scannerView.getVisibility() == View.VISIBLE)
-            scannerView.startCamera();
+        if(vg_scanner.getVisibility() == View.VISIBLE)
+            vg_scanner.startCamera();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(scannerView.getVisibility() == View.VISIBLE)
-            scannerView.stopCamera();
+        if(vg_scanner.getVisibility() == View.VISIBLE)
+            vg_scanner.stopCamera();
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
@@ -147,7 +161,7 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
 
             if(v.getId() == getCurrentView().findViewById(R.id.fab_launch_aadhar_form).getId())
             {
-                scannerView.stopCamera();
+                vg_scanner.stopCamera();
             }
            // if(child != null)
           //      viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));
@@ -158,16 +172,16 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
         setVisibleChildView(getCurrentView().findViewById(R.id.scanner));
         List<BarcodeFormat> formatList = new ArrayList<>();
         formatList.add(BarcodeFormat.QR_CODE);
-        scannerView.setFormats(formatList);
-        scannerView.setFlash(false);
-        scannerView.setAutoFocus(true);
-        scannerView.startCamera();
+        vg_scanner.setFormats(formatList);
+        vg_scanner.setFlash(false);
+        vg_scanner.setAutoFocus(true);
+        vg_scanner.startCamera();
 
     }
 
     @Override
     public void handleResult(Result rawResult) {
-        scannerView.stopCamera();
+        vg_scanner.stopCamera();
         Toast.makeText(getActivity(), "Contents = " + rawResult.getText() +
                 ", Format = " + rawResult.getBarcodeFormat().toString(), Toast.LENGTH_SHORT).show();
         aadharDetail = AadharDAO.getAadharDetailFromXML(rawResult.getText());
