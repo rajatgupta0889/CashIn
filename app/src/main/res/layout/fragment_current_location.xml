@@ -127,7 +127,8 @@
         android:layout_alignTop="@+id/currentLocationLayout"
         android:layout_marginTop="-80dp"
         android:layout_marginRight="20dp"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+        app:borderWidth="0dp"/>
 
 
 </LinearLayout>
