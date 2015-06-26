@@ -153,6 +153,7 @@ public class LinkedInFragment extends BaseFragment  {
                 public void onError(SocialAuthError socialAuthError) {
                     Log.e("LinkedInFragment", "failed to get career", socialAuthError);
                     hideProgressDialog();
+                    showToastOnUIThread(socialAuthError.getMessage());
                 }
             });
 
@@ -162,6 +163,7 @@ public class LinkedInFragment extends BaseFragment  {
         public void onError(SocialAuthError socialAuthError) {
             Log.e("LinkedInFragment", socialAuthError.getMessage(), socialAuthError);
             hideProgressDialog();
+            showToastOnUIThread(socialAuthError.getMessage());
         }
 
         @Override
@@ -197,7 +199,7 @@ public class LinkedInFragment extends BaseFragment  {
 
         @Override
         public void onError(SocialAuthError socialAuthError) {
-            Toast.makeText(getActivity(), "Failed to get profile information", Toast.LENGTH_LONG);
+            showToastOnUIThread(socialAuthError.getMessage());
         }
     }
 
