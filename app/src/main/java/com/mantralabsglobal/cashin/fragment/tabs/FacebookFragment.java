@@ -14,13 +14,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
-import com.sromku.simple.fb.Permission;
-import com.sromku.simple.fb.SimpleFacebook;
-import com.sromku.simple.fb.entities.Profile;
-import com.sromku.simple.fb.listeners.OnLoginListener;
-import com.sromku.simple.fb.listeners.OnProfileListener;
+import com.mantralabsglobal.cashin.service.FacebookService;
+import com.mantralabsglobal.cashin.views.BirthDayView;
+import com.mantralabsglobal.cashin.views.CustomEditText;
+
+import org.brickred.socialauth.Profile;
+import org.brickred.socialauth.android.DialogListener;
+import org.brickred.socialauth.android.SocialAuthAdapter;
+import org.brickred.socialauth.android.SocialAuthError;
+import org.brickred.socialauth.android.SocialAuthListener;
 
 import java.util.List;
+
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by pk on 13/06/2015.
@@ -28,12 +35,33 @@ import java.util.List;
 public class FacebookFragment extends BaseFragment  {
 
     private EditText dobEditText;
+    private SocialAuthAdapter socialAuthAdapter;
+
+    @InjectView(R.id.cet_workplace)
+    public CustomEditText workplace;
+
+    @InjectView(R.id.cet_city)
+    public CustomEditText city;
+
+    @InjectView(R.id.cet_hometown)
+    public CustomEditText hometown;
+
+    @InjectView(R.id.cet_relationshipStatus)
+    public CustomEditText relationshipStatus;
+
+    @InjectView(R.id.cet_dob)
+    public BirthDayView dob;
+
+    @InjectView(R.id.rl_facebook_details)
+    public ViewGroup viewGroup_facebookForm;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_facebook, container, false);
+
         return view;
     }
 
@@ -41,83 +69,73 @@ public class FacebookFragment extends BaseFragment  {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button btnFacebookConnect = (Button) view.findViewById(R.id.btn_facebook_connect);
-        final SimpleFacebook simpleFacebook = SimpleFacebook.getInstance(getActivity());
 
-        btnFacebookConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!simpleFacebook.isLogin())
-                {
-                    simpleFacebook.login(new OnLoginListener() {
-                        @Override
-                        public void onLogin(String s, List<Permission> list, List<Permission> list1) {
-                            Toast.makeText(getActivity(), "Logged in sucessfully", Toast.LENGTH_LONG).show();
-                            getFacebookProfile();
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            Toast.makeText(getActivity(), "Logged in cancelled", Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onException(Throwable throwable) {
-                            Toast.makeText(getActivity(), "Logged in failed " + throwable.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFail(String s) {
-                            Toast.makeText(getActivity(), "Logged in failed " + s, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                else
-                {
-                    getFacebookProfile();
-                }
-
-            }
-        });
+        socialAuthAdapter = new SocialAuthAdapter(dialogListener);
 
         registerChildView(getCurrentView().findViewById(R.id.ll_facebook_connect), View.VISIBLE);
-        registerChildView(getCurrentView().findViewById(R.id.rl_facebook_details), View.GONE);
+        registerChildView(viewGroup_facebookForm, View.GONE);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        SimpleFacebook simpleFacebook = SimpleFacebook.getInstance(getActivity());
-        simpleFacebook.onActivityResult(requestCode, resultCode, data);
-    }
-
-    protected void getFacebookProfile()
+    @OnClick(R.id.btn_facebook_connect)
+    public void facebook_connect_click()
     {
-        showProgressDialog(getString(R.string.waiting_for_facebook), true, false);
-        SimpleFacebook simpleFacebook = SimpleFacebook.getInstance(getActivity());
-        simpleFacebook.getProfile(new OnProfileListener() {
+        showProgressDialog(getString(R.string.waiting_for_facebook));
 
-            @Override
-            public void onThinking() {
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                hideProgressDialog();
-                Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_LONG).show();
-
-            }
-
-            @Override
-            public void onFail(String reason) {
-                hideProgressDialog();
-                Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onComplete(Profile response) {
-                hideProgressDialog();
-                Toast.makeText(getActivity(), response.getHometown(), Toast.LENGTH_LONG).show();
-            }
-        });
+        socialAuthAdapter.authorize(getActivity(), SocialAuthAdapter.Provider.FACEBOOK);
     }
+
+    private DialogListener dialogListener = new DialogListener() {
+        @Override
+        public void onComplete(Bundle bundle) {
+            socialAuthAdapter.getUserProfileAsync(FacebookFragment.this.profileSocialAuthListener);
+        }
+
+        @Override
+        public void onError(SocialAuthError socialAuthError) {
+            hideProgressDialog();
+            showToastOnUIThread(socialAuthError.getMessage());
+        }
+
+        @Override
+        public void onCancel() {
+            hideProgressDialog();
+        }
+
+        @Override
+        public void onBack() {
+            hideProgressDialog();
+        }
+    };
+
+    private void showFacebookProfileForm(FacebookService.FacebookProfile fbProfile)
+    {
+        if(fbProfile != null)
+        {
+            workplace.setText(fbProfile.getWorkspace());
+            city.setText(fbProfile.getCity());
+            //dob.setText(fbProfile.getDob());
+            relationshipStatus.setText(fbProfile.getRelationshipStatus());
+            hometown.setText(fbProfile.getHometown());
+        }
+        setVisibleChildView(viewGroup_facebookForm);
+    }
+
+    private SocialAuthListener<Profile> profileSocialAuthListener = new SocialAuthListener<Profile>() {
+        @Override
+        public void onExecute(String s, Profile profile) {
+            FacebookService.FacebookProfile facebookProfile = new FacebookService.FacebookProfile();
+            facebookProfile.setCity(profile.getLocation());
+            facebookProfile.setDob(profile.getDob().toString());
+            //facebookProfile.setRelationshipStatus(profile.get);
+            showFacebookProfileForm(facebookProfile);
+            hideProgressDialog();
+        }
+
+        @Override
+        public void onError(SocialAuthError socialAuthError) {
+            hideProgressDialog();
+            showToastOnUIThread(socialAuthError.getMessage());
+        }
+    };
 
 }

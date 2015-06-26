@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:padding="20dp">
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/ll_linkedIn_connect"
             android:layout_width="match_parent" android:gravity="center"  android:layout_height="match_parent" android:orientation="vertical"
             android:baselineAligned="false">
@@ -22,7 +22,7 @@
                     android:id="@+id/btn_linkedIn_connect"
                     android:layout_marginTop="30dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:background="@drawable/com_facebook_button_background" android:text="@string/linkedIn_connect" />
+                    android:layout_height="wrap_content" android:drawableLeft="@drawable/linkedin" android:text="@string/linkedIn_connect" />
 
 
         </LinearLayout>

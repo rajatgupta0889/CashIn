@@ -11,10 +11,10 @@ import retrofit.http.POST;
  */
 public interface LinkedInService {
 
-    @GET("/user/bank")
+    @GET("/user/linkedIn")
     void getLinkedInDetail(Callback<LinkedInDetail> callback);
 
-    @POST("/user/bank")
+    @POST("/user/linkedIn")
     void setLinkedInDetail(LinkedInDetail linkedInDetail, Callback<LinkedInDetail> callback);
 
     public static class LinkedInDetail{

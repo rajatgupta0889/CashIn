@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
 
@@ -30,6 +31,10 @@ public abstract class BaseFragment extends Fragment {
 
     protected ProgressDialog progressDialog;
 
+    protected void showProgressDialog( String message)
+    {
+        showProgressDialog(message,true, false);
+    }
     protected void showProgressDialog( String message, boolean indeterminate, boolean cancelable)
     {
         progressDialog.setTitle(getString(R.string.title_please_wait));
@@ -37,6 +42,16 @@ public abstract class BaseFragment extends Fragment {
         progressDialog.setIndeterminate(indeterminate);
         progressDialog.setCancelable(cancelable);
         progressDialog.show();
+    }
+
+    protected void showToastOnUIThread(final String message)
+    {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     protected void hideProgressDialog()

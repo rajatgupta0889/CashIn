@@ -20,7 +20,6 @@ import com.mantralabsglobal.cashin.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.IdentityPagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.SocialPagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.WorkPagerAdapter;
-import com.sromku.simple.fb.SimpleFacebook;
 
 
 public class MainActivity extends BaseActivity {
@@ -34,7 +33,6 @@ public class MainActivity extends BaseActivity {
     private Button workButton;
     private Button financialButton;
     private Button socialButton;
-    private SimpleFacebook mSimpleFacebook;
     Fragment f_pager;
 
     @Override

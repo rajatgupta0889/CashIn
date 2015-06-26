@@ -1,6 +1,5 @@
 package com.mantralabsglobal.cashin.fragment.tabs;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.mantralabsglobal.cashin.R;
-import com.sromku.simple.fb.SimpleFacebook;
 
 /**
  * Created by pk on 13/06/2015.
