@@ -16,7 +16,10 @@ public interface AuthenticationService {
     public final String USER_ID= "USER_ID";
 
     @POST("/login")
-    void authenticateUser(@Body UserPrincipal userPrincipal  , Callback<AuthenticationResult> callback);
+    void authenticateUser(@Body UserPrincipal userPrincipal  , Callback<AuthenticatedUser> callback);
+
+    @POST("/signup")
+    void registerUser(@Body NewUser user  , Callback<AuthenticatedUser> callback);
 
     public static class UserPrincipal{
 
@@ -40,7 +43,7 @@ public interface AuthenticationService {
         }
     }
 
-    public static class AuthenticationResult{
+    public static class AuthenticatedUser{
         private String message;
         private String email;
         private Date createdAt;
@@ -86,5 +89,18 @@ public interface AuthenticationService {
         public void setId(String id) {
             this.id = id;
         }
+    }
+
+    public static class NewUser{
+        private String email;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
     }
 }

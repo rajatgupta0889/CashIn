@@ -69,9 +69,9 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
 
         AuthenticationService service = restClient.getAuthenticationService();
 
-        service.authenticateUser(userPrincipal, new Callback<AuthenticationService.AuthenticationResult>() {
+        service.authenticateUser(userPrincipal, new Callback<AuthenticationService.AuthenticatedUser>() {
             @Override
-            public void success(AuthenticationService.AuthenticationResult authenticationResult, Response response) {
+            public void success(AuthenticationService.AuthenticatedUser authenticationResult, Response response) {
                 SharedPreferences sharedPreferences = getSharedPreferences("com.mantralabsglobal.cashin", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(AuthenticationService.USER_EMAIL, authenticationResult.getEmail())
