@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import com.mantralabsglobal.cashin.Activity.BaseActivity;
 import com.mantralabsglobal.cashin.fragment.AbstractPager;
 import com.mantralabsglobal.cashin.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.IdentityPagerAdapter;
@@ -22,7 +23,7 @@ import com.mantralabsglobal.cashin.fragment.adapter.WorkPagerAdapter;
 import com.sromku.simple.fb.SimpleFacebook;
 
 
-public class MainActivity extends FragmentActivity{
+public class MainActivity extends BaseActivity {
 
     private FinancePagerAdapter financePagerAdapter;
     private IdentityPagerAdapter identityPagerAdapter;

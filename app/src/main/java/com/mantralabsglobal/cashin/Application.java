@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin;
 
 import com.facebook.login.DefaultAudience;
+import com.mantralabsglobal.cashin.rest.RestClient;
 import com.sromku.simple.fb.Permission;
 import com.sromku.simple.fb.SimpleFacebook;
 import com.sromku.simple.fb.SimpleFacebookConfiguration;
@@ -13,12 +14,14 @@ public class Application extends android.app.Application{
 
     private static final String APP_ID = "1442120239426705";
     private static final String APP_NAMESPACE = "pk_cashin_test";
-
+    private RestClient restClient;
 
     @Override
     public void onCreate() {
         super.onCreate();
        // SharedObjects.context = this;
+
+        restClient = new RestClient(getBaseContext());
 
         // set log to true
         Logger.DEBUG_WITH_STACKTRACE = true;
@@ -45,6 +48,11 @@ public class Application extends android.app.Application{
 
         SimpleFacebook.setConfiguration(configuration);
     }
+
+    public RestClient getRestClient() {
+        return restClient;
+    }
+
 }
 
 

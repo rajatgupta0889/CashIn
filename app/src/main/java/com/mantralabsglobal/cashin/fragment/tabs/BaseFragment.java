@@ -1,30 +1,16 @@
 package com.mantralabsglobal.cashin.fragment.tabs;
 
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.fragment.DatepickerDialogFragment;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +31,7 @@ public abstract class BaseFragment extends Fragment {
     private ProgressDialog mProgressDialog;
 
     protected void showDialog() {
+
         if (mProgressDialog == null) {
             setProgressDialog();
         }
