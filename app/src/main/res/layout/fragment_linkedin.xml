@@ -6,7 +6,8 @@
     <FrameLayout
         android:id="@+id/fl_linkedIn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="20dp">
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/ll_linkedIn_connect"
@@ -43,7 +44,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/et_connectedAs"
+                    android:id="@+id/et_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:editable="false"

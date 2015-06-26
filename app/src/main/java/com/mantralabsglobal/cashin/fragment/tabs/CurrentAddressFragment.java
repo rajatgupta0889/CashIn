@@ -90,7 +90,7 @@ public class CurrentAddressFragment extends BaseFragment {
         ib_get_gps_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CurrentAddressFragment.this.showDialog();
+                CurrentAddressFragment.this.showProgressDialog(getString(R.string.waiting_for_gps), true, false);
                 Location location = appLocationService.getLocation(LocationManager.GPS_PROVIDER);
                 if(location == null)
                     location = appLocationService.getLocation(LocationManager.NETWORK_PROVIDER);
@@ -102,7 +102,7 @@ public class CurrentAddressFragment extends BaseFragment {
                     locationAddress.getAddressFromLocation(latitude, longitude,
                             getActivity().getApplicationContext(), new GeocoderHandler());
                 } else {
-                    CurrentAddressFragment.this.hideDialog();
+                    CurrentAddressFragment.this.hideProgressDialog();
                     showSettingsAlert();
                 }
              }
@@ -209,7 +209,7 @@ public class CurrentAddressFragment extends BaseFragment {
         @Override
         public void handleMessage(Message message) {
             String locationAddress;
-            CurrentAddressFragment.this.hideDialog();
+            CurrentAddressFragment.this.hideProgressDialog();
             Bundle bundle  = message.getData();
             switch (message.what) {
                 case 1:

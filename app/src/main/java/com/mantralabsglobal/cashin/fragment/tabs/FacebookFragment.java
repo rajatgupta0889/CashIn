@@ -90,31 +90,31 @@ public class FacebookFragment extends BaseFragment  {
 
     protected void getFacebookProfile()
     {
+        showProgressDialog(getString(R.string.waiting_for_facebook), true, false);
         SimpleFacebook simpleFacebook = SimpleFacebook.getInstance(getActivity());
         simpleFacebook.getProfile(new OnProfileListener() {
 
             @Override
             public void onThinking() {
-                showDialog();
+
             }
 
             @Override
             public void onException(Throwable throwable) {
-                hideDialog();
+                hideProgressDialog();
                 Toast.makeText(getActivity(), throwable.getMessage(), Toast.LENGTH_LONG).show();
 
             }
 
             @Override
             public void onFail(String reason) {
-                hideDialog();
+                hideProgressDialog();
                 Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onComplete(Profile response) {
-                hideDialog();
-
+                hideProgressDialog();
                 Toast.makeText(getActivity(), response.getHometown(), Toast.LENGTH_LONG).show();
             }
         });

@@ -28,33 +28,28 @@ public abstract class BaseFragment extends Fragment {
     private Map<View, List<FloatingActionButton>> floatingActionButtonViewMap = new HashMap<>();
     private View visibleChildView;
 
-    private ProgressDialog mProgressDialog;
+    protected ProgressDialog progressDialog;
 
-    protected void showDialog() {
-
-        if (mProgressDialog == null) {
-            setProgressDialog();
-        }
-        mProgressDialog.show();
+    protected void showProgressDialog( String message, boolean indeterminate, boolean cancelable)
+    {
+        progressDialog.setTitle(getString(R.string.title_please_wait));
+        progressDialog.setMessage(message);
+        progressDialog.setIndeterminate(indeterminate);
+        progressDialog.setCancelable(cancelable);
+        progressDialog.show();
     }
 
-    protected void hideDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }
-
-    private void setProgressDialog() {
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setTitle("Thinking...");
-        mProgressDialog.setMessage("Doing the action...");
+    protected void hideProgressDialog()
+    {
+        progressDialog.dismiss();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this,view);
+        ButterKnife.inject(this, view);
         currentView = view;
+        progressDialog = new ProgressDialog(getActivity());
     }
 
     protected void registerChildView(View view, int visibility)
