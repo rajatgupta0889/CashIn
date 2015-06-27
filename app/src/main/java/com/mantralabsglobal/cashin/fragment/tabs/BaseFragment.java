@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.views.CustomEditText;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,17 +34,25 @@ public abstract class BaseFragment extends Fragment {
 
     protected ProgressDialog progressDialog;
 
+    private Validator validator;
+
     protected void showProgressDialog( String message)
     {
-        showProgressDialog(message,true, false);
+        showProgressDialog(message, true, false);
     }
-    protected void showProgressDialog( String message, boolean indeterminate, boolean cancelable)
+    protected void showProgressDialog( final String message, final boolean indeterminate, final boolean cancelable)
     {
-        progressDialog.setTitle(getString(R.string.title_please_wait));
-        progressDialog.setMessage(message);
-        progressDialog.setIndeterminate(indeterminate);
-        progressDialog.setCancelable(cancelable);
-        progressDialog.show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.setTitle(getString(R.string.title_please_wait));
+                progressDialog.setMessage(message);
+                progressDialog.setIndeterminate(indeterminate);
+                progressDialog.setCancelable(cancelable);
+                progressDialog.show();
+            }
+        });
+
     }
 
     protected void showToastOnUIThread(final String message)
@@ -56,7 +67,13 @@ public abstract class BaseFragment extends Fragment {
 
     protected void hideProgressDialog()
     {
-        progressDialog.dismiss();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        });
+
     }
 
     @Override
@@ -65,14 +82,44 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.inject(this, view);
         currentView = view;
         progressDialog = new ProgressDialog(getActivity());
+        validator = new Validator(this);
+
+        if(this instanceof Bindable<?>)
+        {
+            final Bindable<?> bindable = (Bindable<?>)this;
+            validator.setValidationListener(new Validator.ValidationListener() {
+                @Override
+                public void onValidationSucceeded() {
+                    bindable.setHasError(false);
+                }
+
+                @Override
+                public void onValidationFailed(List<ValidationError> errors) {
+                    for (ValidationError ve : errors) {
+                        if (ve.getView() instanceof CustomEditText) {
+                            ((CustomEditText) ve.getView()).getEditText().setError(ve.getFailedRules().get(0).getMessage(getActivity()));
+                        }
+                    }
+                    bindable.setHasError(true);
+                }
+            });
+        }
+        else {
+            initValidator(validator);
+        }
     }
+
+    protected void initValidator(Validator validator)
+    {
+        //To Be implemented by sub classes
+    }
+
 
     protected void registerChildView(View view, int visibility)
     {
         childViews.add(view);
         view.setVisibility(visibility);
-        if(visibility == View.VISIBLE)
-        {
+        if(visibility == View.VISIBLE) {
             setVisibleChildView(view);
         }
     }
@@ -85,8 +132,7 @@ public abstract class BaseFragment extends Fragment {
             fabList = new ArrayList<>();
             floatingActionButtonViewMap.put(childView,fabList);
         }
-        if(!fabList.contains(fab))
-        {
+        if(!fabList.contains(fab)) {
             fabList.add(fab);
             fab.setVisibility(childView.getVisibility());
         }
@@ -133,6 +179,10 @@ public abstract class BaseFragment extends Fragment {
             genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         }
         return genderAdapter;
+    }
+
+    public Validator getValidator() {
+        return validator;
     }
 
 }

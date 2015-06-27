@@ -2,7 +2,10 @@ package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
 
@@ -12,16 +15,16 @@ import retrofit.http.POST;
 public interface AddressService {
 
     @GET("/user/address/current")
-    void getCurrentAddress(AuthenticationService.AuthenticatedUser user, Callback<Address> callback);
+    void getCurrentAddress(Callback<Address> callback);
 
     @GET("/user/address/permanent")
-    void getPermanentAddress(AuthenticationService.AuthenticatedUser user, Callback<Address> callback);
+    void getPermanentAddress(Callback<Address> callback);
 
     @POST("/user/address/current")
-    void setCurrentAddress(AuthenticationService.AuthenticatedUser user, Address address ,Callback<Address> callback);
+    void setCurrentAddress(@Body Address address ,Callback<Address> callback);
 
     @POST("/user/address/permanent")
-    void setPermanentAddress(AuthenticationService.AuthenticatedUser user, Address address, Callback<Address> callback);
+    void setPermanentAddress(@Body Address address, Callback<Address> callback);
 
 
     public static class Address{
@@ -32,6 +35,13 @@ public interface AddressService {
         private String pincode;
         private boolean isHouseRented;
         private String own;
+        @SerializedName("user")
+        private String userId;
+        private String type;
+        private Date createdAt;
+        private Date updatedAt;
+        @SerializedName("id")
+        private String addressId;
 
         public String getStreet() {
             return street;
@@ -79,6 +89,42 @@ public interface AddressService {
 
         public void setOwn(String own) {
             this.own = own;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public void setUserId(String userId) {
+            this.userId = userId;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public Date getCreatedAt() {
+            return createdAt;
+        }
+
+        public void setCreatedAt(Date createdAt) {
+            this.createdAt = createdAt;
+        }
+
+        public Date getUpdatedAt() {
+            return updatedAt;
+        }
+
+        public void setUpdatedAt(Date updatedAt) {
+            this.updatedAt = updatedAt;
+        }
+
+        public String getAddressId() {
+            return addressId;
         }
     }
 

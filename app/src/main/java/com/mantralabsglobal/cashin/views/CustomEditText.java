@@ -3,6 +3,7 @@ package com.mantralabsglobal.cashin.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ import com.mantralabsglobal.cashin.R;
 /**
  * Created by pk on 6/21/2015.
  */
-public class CustomEditText extends LinearLayout {
+public class CustomEditText extends LinearLayout  {
 
     private TextView tv_label;
     private EditText et_editText;
@@ -82,4 +83,14 @@ public class CustomEditText extends LinearLayout {
     public void setText(CharSequence name) {
         et_editText.setText(name);
     }
+
+    public Editable getText() {
+        return et_editText.getText();
+    }
+
+    public EditText getEditText()
+    {
+        return et_editText;
+    }
+
 }

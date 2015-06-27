@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout android:visibility="visible" android:id="@+id/getLocationFromFormLayout"
+        <LinearLayout android:visibility="visible" android:id="@+id/vg_current_address_form"
             android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
             <TextView android:id="@+id/adressTextView"
@@ -59,9 +59,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:orientation="horizontal"  >
                     <RadioButton
+                        android:id="@+id/rb_rent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:text="@string/rent" />
                     <RadioButton
+                        android:id="@+id/rb_own"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:text="@string/owned"/>
 
@@ -72,11 +74,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/account_circle"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_cancel" android:text="@string/cancel" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:visibility="gone"
-            android:id="@+id/getLocationFromGPSLayout"
+            android:id="@+id/vg_gps_launcher"
             android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
             <LinearLayout
@@ -106,7 +120,7 @@
                 android:layout_height="2dp"></View>
 
             <Button
-                android:id="@+id/editCurrentAddressButton"
+                android:id="@+id/btn_edit_address"
                 android:layout_width="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content" android:capitalize="characters" android:text="Edit your current address  >" android:background="@null"
@@ -118,7 +132,7 @@
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/gpsLocationFormButton"
+        android:id="@+id/fab_get_loc_from_gps"
         android:src="@drawable/gps_layer"
         app:fabSize="normal"
         android:layout_width="wrap_content"

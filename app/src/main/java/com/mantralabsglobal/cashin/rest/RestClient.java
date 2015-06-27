@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.service.AddressService;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.squareup.okhttp.OkHttpClient;
@@ -23,6 +24,8 @@ public class RestClient  {
     private static final String BASE_URL = "your base url";
     private AuthenticationService authenticationService;
     private LinkedInService linkedInService;
+    private AddressService addressService;
+
     public RestClient(Context context)
     {
         Gson gson = new GsonBuilder()
@@ -46,6 +49,7 @@ public class RestClient  {
 
         authenticationService = restAdapter.create(AuthenticationService.class);
         linkedInService = restAdapter.create(LinkedInService.class);
+        addressService = restAdapter.create(AddressService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -55,6 +59,10 @@ public class RestClient  {
 
     public LinkedInService getLinkedInService() {
         return linkedInService;
+    }
+
+    public AddressService getAddressService() {
+        return addressService;
     }
 
 }

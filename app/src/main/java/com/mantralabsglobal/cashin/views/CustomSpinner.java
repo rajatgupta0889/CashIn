@@ -69,6 +69,11 @@ public class CustomSpinner extends LinearLayout {
         tv_label = (TextView)findViewById(R.id.tv_label);
     }
 
+    public Spinner getSpinner()
+    {
+        return spinner;
+    }
+
     public void setAdapter(SpinnerAdapter adapter)
     {
         spinner.setAdapter(adapter);

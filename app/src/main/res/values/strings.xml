@@ -77,6 +77,12 @@
     <string name="waiting_for_linkedIn">Waiting for linkedIn</string>
     <string name="waiting_for_gps">Witing for gps</string>
     <string name="waiting_for_facebook">Waiting for facebook</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="gps_failed">Failed to get location from GPS</string>
+    <string name="save_sucess">Data saved sucessfully</string>
+    <string name="waiting_for_server">Waiting for server</string>
+    <string name="not_present_on_server">Data not available</string>
     <string-array name="city_array">
         <item>Bangalore</item>
         <item>Mumbai</item>

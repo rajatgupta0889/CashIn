@@ -1,23 +1,11 @@
 package com.mantralabsglobal.cashin.fragment.tabs;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,38 +13,77 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
+import android.widget.RadioButton;
 
+import com.mantralabsglobal.cashin.Application;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.dao.AppLocationService;
 import com.mantralabsglobal.cashin.dao.LocationAddress;
+import com.mantralabsglobal.cashin.service.AddressService;
 import com.mantralabsglobal.cashin.views.CustomEditText;
 import com.mantralabsglobal.cashin.views.CustomSpinner;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
+
+import butterknife.InjectView;
+import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
  */
-public class CurrentAddressFragment extends BaseFragment {
+public class CurrentAddressFragment extends BaseFragment implements Bindable<AddressService.Address> {
 
+    @NotEmpty
+    @InjectView(R.id.cc_street)
     CustomEditText cc_street;
+
+    @NotEmpty
+    @Digits()
+    @InjectView(R.id.cc_pincode)
     CustomEditText cc_pincode;
+
+    @NotEmpty
+    @InjectView(R.id.cc_city)
     CustomEditText cc_city;
+
+    @NotEmpty
+    @InjectView(R.id.cc_state)
     CustomEditText cc_state;
+
+    @InjectView(R.id.cs_owned_by)
+    CustomSpinner cs_own;
+
+    @InjectView(R.id.btn_edit_address)
+    Button btn_editAddress;
+
+    @InjectView(R.id.ib_get_gps_location)
     ImageButton ib_get_gps_location;
-    AppLocationService appLocationService;
-    View addressForm;
-    View gpsForm;
+
+    @InjectView(R.id.rb_rent)
+    RadioButton rb_rented;
+
+    @InjectView(R.id.fab_get_loc_from_gps)
+    FloatingActionButton btnGetLocationFromGPS;
+
+    @InjectView(R.id.vg_current_address_form)
+    ViewGroup vg_addressForm;
+
+    @InjectView(R.id.vg_gps_launcher)
+    ViewGroup vg_gpsLauncher;
+
+    private AddressService mAddressService;
+
+    private boolean isFormValid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_current_location, container, false);
 
         return view;
@@ -65,122 +92,91 @@ public class CurrentAddressFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
        super.onViewCreated(view, savedInstanceState);
-        appLocationService = new AppLocationService(getActivity());
-        Button btnEdit = (Button) view.findViewById(R.id.editCurrentAddressButton);
-        btnEdit.setOnClickListener(listener);
-
-        FloatingActionButton btnGps = (FloatingActionButton) view.findViewById(R.id.gpsLocationFormButton);
-        btnGps.setOnClickListener(listener);
-
-        /*CustomSpinner spinner = (CustomSpinner) view.findViewById(R.id.cs_city);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.city_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);*/
-
-        /*CustomSpinner spinner = (CustomSpinner) view.findViewById(R.id.cs_state);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.state_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);*/
-
-        cc_street = (CustomEditText)view.findViewById(R.id.cc_street);
-        cc_pincode = (CustomEditText)view.findViewById(R.id.cc_pincode);
-        cc_city = (CustomEditText)view.findViewById(R.id.cc_city);
-        cc_state = (CustomEditText)view.findViewById(R.id.cc_state);
-        ib_get_gps_location = (ImageButton)view.findViewById(R.id.ib_get_gps_location);
-        ib_get_gps_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CurrentAddressFragment.this.showProgressDialog(getString(R.string.waiting_for_gps), true, false);
-                Location location = appLocationService.getLocation(LocationManager.GPS_PROVIDER);
-                if(location == null)
-                    location = appLocationService.getLocation(LocationManager.NETWORK_PROVIDER);
-
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    LocationAddress locationAddress = new LocationAddress();
-                    locationAddress.getAddressFromLocation(latitude, longitude,
-                            getActivity().getApplicationContext(), new GeocoderHandler());
-                } else {
-                    CurrentAddressFragment.this.hideProgressDialog();
-                    showSettingsAlert();
-                }
-             }
-        });
 
         CustomSpinner spinner = (CustomSpinner) view.findViewById(R.id.cs_owned_by);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.own_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        addressForm = view.findViewById(R.id.getLocationFromFormLayout);
-        gpsForm = view.findViewById(R.id.getLocationFromGPSLayout);
+        registerChildView(vg_addressForm, View.GONE);
+        registerChildView(vg_gpsLauncher, View.VISIBLE);
+        registerFloatingActionButton(btnGetLocationFromGPS, vg_addressForm);
 
-        registerChildView(addressForm, View.GONE);
-        registerChildView(gpsForm, View.VISIBLE);
+        showProgressDialog(getString(R.string.waiting_for_server));
+        getAddressService().getCurrentAddress(new Callback<AddressService.Address>() {
+            @Override
+            public void success(AddressService.Address address, Response response) {
+                hideProgressDialog();
+                if (address != null) {
+                    bindDataToForm(address);
+                    showAddressForm();
+                } else {
+                    showToastOnUIThread(getString(R.string.not_present_on_server));
+                }
+            }
 
-        registerFloatingActionButton(btnGps, addressForm);
-
+            @Override
+            public void failure(RetrofitError error) {
+                hideProgressDialog();
+                if (error != null)
+                    showToastOnUIThread(error.getMessage());
+                hideProgressDialog();
+            }
+        });
     }
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            View child = null;
-            if(v.getId() == getCurrentView().findViewById(R.id.editCurrentAddressButton).getId())
-            {
-                setVisibleChildView(getCurrentView().findViewById(R.id.getLocationFromFormLayout));
-            }
-            else
-            {
-                setVisibleChildView(getCurrentView().findViewById(R.id.getLocationFromGPSLayout));
-            }
-        }
-    };
-
-    private Location getLocation()
+    @OnClick(R.id.btn_edit_address)
+    public void showAddressForm()
     {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-        long GPSLocationTime = 0;
-        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
-
-        long NetLocationTime = 0;
-
-        if (null != locationNet) {
-            NetLocationTime = locationNet.getTime();
-        }
-
-        if ( 0 < GPSLocationTime - NetLocationTime ) {
-            return locationGPS;
-        }
-        else {
-            return locationNet;
-        }
-
+        setVisibleChildView(vg_addressForm);
     }
 
-    private Address getAddressFromCurrentLocation() throws IOException {
-        Location location = getLocation();
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        Geocoder gcd = new Geocoder(getActivity().getBaseContext(), Locale.getDefault());
-        List<Address> addressList = gcd.getFromLocation(latitude, longitude, 1);
-        if(addressList != null && addressList.size()>0)
-            return addressList.get(0);
-        else
-            return null;
+    @OnClick(R.id.fab_get_loc_from_gps)
+    public void showGPSLauncher()
+    {
+        setVisibleChildView(vg_gpsLauncher);
+    }
+
+    @OnClick(R.id.ib_get_gps_location)
+    public void getLocationFromGPS() {
+        showProgressDialog(getString(R.string.waiting_for_gps));
+
+        LocationAddress locationAddress = new LocationAddress();
+        locationAddress.getCurrentAddress(getActivity(), new LocationAddress.AddressListener() {
+            @Override
+            public void onAddressAquired(final AddressService.Address address) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CurrentAddressFragment.this.onGPSAddressAquired(address);
+                        hideProgressDialog();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onError(final Throwable error) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToastOnUIThread(getString(R.string.gps_failed) + error.getMessage());
+                        hideProgressDialog();
+                    }
+                });
+
+            }
+        });
+
+       }
+
+    public void onGPSAddressAquired(AddressService.Address address)
+    {
+        if(address != null) {
+            bindDataToForm(address);
+            showAddressForm();
+        }
     }
 
     public void showSettingsAlert() {
@@ -205,26 +201,74 @@ public class CurrentAddressFragment extends BaseFragment {
         alertDialog.show();
     }
 
-    private class GeocoderHandler extends Handler {
-        @Override
-        public void handleMessage(Message message) {
-            String locationAddress;
-            CurrentAddressFragment.this.hideProgressDialog();
-            Bundle bundle  = message.getData();
-            switch (message.what) {
-                case 1:
-                    cc_city.setText(bundle.getString(LocationAddress.CITY));
-                    cc_state.setText(bundle.getString(LocationAddress.STATE));
-                    cc_pincode.setText(bundle.getString(LocationAddress.PINCODE));
-                    cc_street.setText(bundle.getString(LocationAddress.STREET) );
-                    break;
-                case 0:
-                case -1:
-                    String error = bundle.getString(LocationAddress.ERROR);
-                    Toast.makeText(getActivity(), error, Toast.LENGTH_LONG);
-                    break;
-            }
-            setVisibleChildView(addressForm);
+    @OnClick(R.id.btn_save)
+    public void onSave()
+    {
+        getValidator().validate(false);
+        if(isFormValid)
+        {
+            getAddressService().setCurrentAddress(getDataFromForm(), new Callback<AddressService.Address>() {
+                @Override
+                public void success(AddressService.Address address, Response response) {
+                    showToastOnUIThread(getString(R.string.save_sucess));
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    showToastOnUIThread(error.getMessage());
+                }
+            });
         }
+    }
+
+    @OnClick(R.id.btn_cancel)
+    public void onCancel()
+    {
+
+    }
+
+    public AddressService getAddressService() {
+        if(mAddressService == null) {
+            mAddressService = ((Application) getActivity().getApplication()).getRestClient().getAddressService();
+        }
+        return mAddressService;
+    }
+
+    public void setAddressService(AddressService addressService) {
+        this.mAddressService = addressService;
+    }
+
+    @Override
+    public void bindDataToForm(final AddressService.Address address) {
+        if(address != null) {
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    cc_city.setText(address.getCity());
+                    cc_state.setText(address.getState());
+                    cc_pincode.setText(address.getPincode());
+                    cc_street.setText(address.getStreet());
+                }
+            });
+
+        }
+    }
+
+    @Override
+    public AddressService.Address getDataFromForm() {
+        AddressService.Address address = new AddressService.Address();
+        address.setStreet(cc_street.getText().toString());
+        address.setPincode(cc_pincode.getText().toString());
+        address.setCity(cc_city.getText().toString());
+        address.setState(cc_state.getText().toString());
+        address.setIsHouseRented(rb_rented.isChecked());
+        address.setOwn(cs_own.getSpinner().getSelectedItem().toString());
+        return address;
+    }
+
+    @Override
+    public void setHasError(boolean hasError) {
+        this.isFormValid = !hasError;
     }
 }
