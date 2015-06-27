@@ -1,6 +1,6 @@
 package com.mantralabsglobal.cashin.dao;
 
-import com.mantralabsglobal.cashin.businessobjects.AadharDetail;
+import com.mantralabsglobal.cashin.service.AadharService;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -14,10 +14,10 @@ import java.io.StringReader;
  */
 public class AadharDAO {
 
-    public static AadharDetail getAadharDetailFromXML(String xml)
+    public static AadharService.AadharDetail getAadharDetailFromXML(String xml)
     {
         XmlPullParserFactory xmlFactoryObject = null;
-        AadharDetail aadharDetail = new AadharDetail();
+        AadharService.AadharDetail aadharDetail = new AadharService.AadharDetail();
 
         try {
             xmlFactoryObject = XmlPullParserFactory.newInstance();
@@ -35,20 +35,26 @@ public class AadharDAO {
 
                     case XmlPullParser.END_TAG:
                         if(name.equals("PrintLetterBarcodeData")){
-                            aadharDetail.setUid(aadharparser.getAttributeValue(null, "uid"));
+                            aadharDetail.setAadharNumber(aadharparser.getAttributeValue(null, "uid"));
                             aadharDetail.setName(aadharparser.getAttributeValue(null, "name"));
                             aadharDetail.setGender(aadharparser.getAttributeValue(null, "gender"));
-                            aadharDetail.setYearOfBirth(aadharparser.getAttributeValue(null, "yob"));
-                            aadharDetail.setHouse(aadharparser.getAttributeValue(null, "house"));
-                            aadharDetail.setStreet(aadharparser.getAttributeValue(null, "street"));
-                            aadharDetail.setLandmark(aadharparser.getAttributeValue(null, "lm"));
-                            aadharDetail.setLoc(aadharparser.getAttributeValue(null, "loc"));
-                            aadharDetail.setVtc(aadharparser.getAttributeValue(null, "vtc"));
-                            aadharDetail.setPostOffice(aadharparser.getAttributeValue(null, "po"));
-                            aadharDetail.setDistrict(aadharparser.getAttributeValue(null, "dist"));
-                            aadharDetail.setSubDistrict(aadharparser.getAttributeValue(null, "subdist"));
-                            aadharDetail.setState(aadharparser.getAttributeValue(null, "state"));
-                            aadharDetail.setPincode(aadharparser.getAttributeValue(null, "pc"));
+                            aadharDetail.setDob(aadharparser.getAttributeValue(null, "yob"));
+                            aadharDetail.setAddress(aadharparser.getAttributeValue(null, "house") +
+                                    aadharparser.getAttributeValue(null, "street") +
+                                    aadharparser.getAttributeValue(null, "lm") +
+                                    aadharparser.getAttributeValue(null, "po") +
+                                    aadharparser.getAttributeValue(null, "dist") +
+                                    aadharparser.getAttributeValue(null, "subdist")+
+                                            aadharparser.getAttributeValue(null, "state") +
+                                            aadharparser.getAttributeValue(null, "pc")
+                            );
+                            //aadharDetail.setLoc(aadharparser.getAttributeValue(null, "loc"));
+                            //aadharDetail.setVtc(aadharparser.getAttributeValue(null, "vtc"));
+                            //aadharDetail.setPostOffice(aadharparser.getAttributeValue(null, "po"));
+                            //aadharDetail.setDistrict(aadharparser.getAttributeValue(null, "dist"));
+                            //aadharDetail.setSubDistrict(aadharparser.getAttributeValue(null, "subdist"));
+                            //aadharDetail.setState(aadharparser.getAttributeValue(null, "state"));
+                           // aadharDetail.setPincode(aadharparser.getAttributeValue(null, "pc"));
 
                         }
                         break;

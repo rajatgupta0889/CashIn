@@ -151,7 +151,7 @@ public abstract class BaseFragment extends Fragment {
                     fab.setVisibility(View.VISIBLE);
                 }
             }
-            if(visibleChildView != null) {
+            if(visibleChildView != null && visibleChildView != view) {
                 visibleChildView.setVisibility(View.GONE);
                 fabList = floatingActionButtonViewMap.get(visibleChildView);
                 if(fabList != null)

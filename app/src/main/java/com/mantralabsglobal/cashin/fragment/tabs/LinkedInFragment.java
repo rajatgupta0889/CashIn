@@ -35,7 +35,7 @@ import retrofit.client.Response;
 /**
  * Created by pk on 13/06/2015.
  */
-public class LinkedInFragment extends BaseFragment  {
+public class LinkedInFragment extends BaseFragment implements Bindable<LinkedInService.LinkedInDetail> {
 
     @InjectView(R.id.btn_linkedIn_connect)
     Button btn_linkedIn;
@@ -56,7 +56,6 @@ public class LinkedInFragment extends BaseFragment  {
     @InjectView(R.id.cs_time_period)
     CustomEditText period;
 
-    LinkedInService.LinkedInDetail linkedInDetail;
     LinkedInService linkedInService;
 
     SocialAuthAdapter socialAuthAdapter;
@@ -87,7 +86,6 @@ public class LinkedInFragment extends BaseFragment  {
         linkedInService.getLinkedInDetail(new Callback<LinkedInService.LinkedInDetail>() {
             @Override
             public void success(LinkedInService.LinkedInDetail linkedInDetail, Response response) {
-                LinkedInFragment.this.linkedInDetail = linkedInDetail;
                 if(linkedInDetail != null && (linkedInDetail.getEducation() != null || linkedInDetail.getWorkExperience() != null))
                     showLinkedInDetailForm(linkedInDetail);
                 else
@@ -107,10 +105,8 @@ public class LinkedInFragment extends BaseFragment  {
     protected void showLinkedInDetailForm(LinkedInService.LinkedInDetail linkedInDetail)
     {
         setVisibleChildView(vg_linkedInProfile);
-        this.jobTitle.setText(linkedInDetail.getWorkExperience().getJobTitle());
-        this.company.setText(linkedInDetail.getWorkExperience().getCompany());
-        //TODO: Set all form fields
-
+        if(linkedInDetail!= null)
+            bindDataToForm(linkedInDetail);
     }
 
 
@@ -121,6 +117,27 @@ public class LinkedInFragment extends BaseFragment  {
         socialAuthAdapter.authorize(getActivity(), SocialAuthAdapter.Provider.LINKEDIN);
     }
 
+    @Override
+    public void bindDataToForm(LinkedInService.LinkedInDetail value) {
+        if(value != null) {
+            if(value.getWorkExperience() != null) {
+                this.jobTitle.setText(value.getWorkExperience().getJobTitle());
+                this.company.setText(value.getWorkExperience().getCompany());
+            }
+        }
+        //TODO: Set all form fields
+    }
+
+    @Override
+    public LinkedInService.LinkedInDetail getDataFromForm() {
+        return null;
+    }
+
+    @Override
+    public void setHasError(boolean hasError) {
+
+    }
+
     private final class ResponseListener implements DialogListener
     {
         public void onComplete(Bundle values) {
@@ -128,25 +145,11 @@ public class LinkedInFragment extends BaseFragment  {
             socialAuthAdapter.getCareerAsync(new SocialAuthListener<Career>() {
                 @Override
                 public void onExecute(String s, Career career) {
-                    LinkedInService.LinkedInDetail linkedInDetail = new LinkedInService.LinkedInDetail();
-                    linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
-                    linkedInDetail.setEducation(new LinkedInService.Education());
-                    if(career.getPositions() != null && career.getPositions().length>0) {
-                        Position position = career.getPositions()[0];
-                        linkedInDetail.getWorkExperience().setCompany(position.getCompanyName());
-                        linkedInDetail.getWorkExperience().setJobTitle(position.getTitle());
-                        linkedInDetail.getWorkExperience().setTimePeriod(position.getStartDate().toString());
-                    }
-                    if(career.getEducations() != null && career.getEducations().length>0)
-                    {
-                        Education education = career.getEducations()[0];
-                        linkedInDetail.getEducation().setCollege(education.getSchoolName());
-                        linkedInDetail.getEducation().setDegree(education.getDegree());
-                        linkedInDetail.getEducation().setFieldOfStudy(education.getFieldOfStudy());
-                    }
 
+                    LinkedInService.LinkedInDetail linkedInDetail = LinkedInService.LinkedInAdapter.fromCareer(career);
                     showLinkedInDetailForm(linkedInDetail);
                     hideProgressDialog();
+
                 }
 
                 @Override

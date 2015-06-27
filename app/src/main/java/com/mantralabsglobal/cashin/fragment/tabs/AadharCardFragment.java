@@ -1,12 +1,17 @@
 package com.mantralabsglobal.cashin.fragment.tabs;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +27,10 @@ import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.businessobjects.AadharDetail;
 import com.mantralabsglobal.cashin.dao.AadharDAO;
 import com.mantralabsglobal.cashin.fragment.DatepickerDialogFragment;
+import com.mantralabsglobal.cashin.service.AadharService;
+import com.mantralabsglobal.cashin.ui.activity.scanner.ScannerActivity;
 import com.mantralabsglobal.cashin.views.CustomEditText;
 import com.mantralabsglobal.cashin.views.CustomSpinner;
 import com.mantralabsglobal.cashin.views.SonOfSpinner;
@@ -45,6 +51,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import butterknife.InjectView;
+import butterknife.OnClick;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 //import eu.livotov.zxscan.ScannerView;
@@ -52,9 +59,19 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 /**
  * Created by pk on 13/06/2015.
  */
-public class AadharCardFragment extends BaseFragment implements ZXingScannerView.ResultHandler{
+public class AadharCardFragment extends BaseFragment implements Bindable<AadharService.AadharDetail>
+{
 
-    private AadharDetail aadharDetail;
+    private AadharService.AadharDetail aadharDetail;
+
+    @InjectView(R.id.cc_name)
+    CustomEditText name;
+
+    @InjectView(R.id.cc_address)
+    CustomEditText address;
+
+    @InjectView(R.id.cc_aadhar)
+    CustomEditText aadharNumber;
 
     @InjectView(R.id.cs_gender)
      CustomSpinner gender;
@@ -65,20 +82,19 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
     @InjectView(R.id.ib_launchScanner)
      ImageButton btn_scanner;
 
+    @InjectView(R.id.bt_edit_aadhar_detail)
+    Button btn_edit_aadhar_detail;
+
     @InjectView(R.id.fab_launchScanner)
      FloatingActionButton fab_launchScanner;
-
-    @InjectView(R.id.fab_launch_aadhar_form)
-     FloatingActionButton fab_launchForm;
 
     @InjectView(R.id.ll_aadhar_camera)
      ViewGroup vg_camera;
 
-    @InjectView(R.id.scanner)
-    ZXingScannerView vg_scanner;
-
     @InjectView(R.id.rl_aadhar_detail)
      ViewGroup vg_form;
+
+    static final int SCAN_AADHAR_CARD = 99;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,102 +106,100 @@ public class AadharCardFragment extends BaseFragment implements ZXingScannerView
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Button btnEdit = (Button) view.findViewById(R.id.bt_launch_aadhar_form);
-        btnEdit.setOnClickListener(listener);
-
-        btn_scanner.setOnClickListener(listener);
-
-        fab_launchScanner.setOnClickListener(listener);
-
-        fab_launchForm.setOnClickListener(listener);
-
-        vg_scanner.setResultHandler(this);
 
         gender.setAdapter(getGenderAdapter());
 
         relation.setAdapter(relation.getAdapter());
 
         registerChildView(vg_camera, View.VISIBLE);
-        registerChildView(vg_scanner, View.GONE);
         registerChildView(vg_form, View.GONE);
         registerFloatingActionButton(fab_launchScanner, vg_form);
-        registerFloatingActionButton( fab_launchForm,vg_scanner );
+
+        Log.d("AadharCardFragment", "On view created");
     }
 
 
+    @OnClick(R.id.bt_edit_aadhar_detail)
+    public void loadAadharForm()
+    {
+        setVisibleChildView(vg_form);
+        bindDataToForm(aadharDetail);
+    }
 
-    private void loadAadharForm() {
-       setVisibleChildView(getCurrentView().findViewById(R.id.rl_aadhar_detail));
-        //TODO: Replace with form binding
-         if(aadharDetail!= null) {
-            ((CustomEditText) getCurrentView().findViewById(R.id.cc_name)).setText(aadharDetail.getName());
-            ((CustomEditText) getCurrentView().findViewById(R.id.cc_address)).setText(aadharDetail.getAddress());
-            ((CustomEditText) getCurrentView().findViewById(R.id.cc_aadhar)).setText(aadharDetail.getUid());
-            gender.setSelection(getGenderAdapter().getPosition(aadharDetail.getGender()));
-            relation.setSelection(relation.getRelationAdapter().getPosition(aadharDetail.getRelation()));
+    @OnClick( {R.id.ib_launchScanner, R.id.fab_launchScanner})
+    public void loadAadharScanner() {
+        List<BarcodeFormat> formatList = new ArrayList<>();
+        formatList.add(BarcodeFormat.QR_CODE);
+        Intent intent = new Intent(getActivity(), ScannerActivity.class);
+        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        startActivityForResult(intent, SCAN_AADHAR_CARD);
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SCAN_AADHAR_CARD) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d("AadharCardFragment", "onActivityResult: " + data.getStringExtra("aadhar_xml"));
+                aadharDetail = AadharDAO.getAadharDetailFromXML(data.getStringExtra("aadhar_xml"));
+                loadAadharForm();
+                //SharedPreferences preferences = getActivity().getSharedPreferences(AadharCardFragment.class.getName(), Context.MODE_PRIVATE);
+                //preferences.edit().putString("aadhar_xml", data.getStringExtra("aadhar_xml")).apply();
+              //  Log.d("AadharCardFragment", "aadharDetail: " + aadharDetail);
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(vg_scanner.getVisibility() == View.VISIBLE)
-            vg_scanner.startCamera();
+        /*Log.d("AadharCardFragment", "On resume");
+        Log.d("AadharCardFragment", "aadharDetail: " + aadharDetail);
+
+        SharedPreferences preferences = getActivity().getSharedPreferences(AadharCardFragment.class.getName(), Context.MODE_PRIVATE);
+        String aadhar_xml = preferences.getString("aadhar_xml", null);
+        if(aadhar_xml != null)
+            aadharDetail = AadharDAO.getAadharDetailFromXML(aadhar_xml);
+        if(aadharDetail != null)
+            loadAadharForm();
+        else
+            setVisibleChildView(vg_camera);
+
+*/
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if(vg_scanner.getVisibility() == View.VISIBLE)
-            vg_scanner.stopCamera();
+    public void onAttach(Activity activity)
+    {
+        super.onAttach(activity);
+        Log.d("AadharCardFragment", "On attach");
     }
 
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    @Override
+    public void bindDataToForm(AadharService.AadharDetail value) {
+        //TODO: Replace with form binding
+        if(aadharDetail!= null) {
+            name.setText(aadharDetail.getName());
+            address.setText(aadharDetail.getAddress());
+            aadharNumber.setText(aadharDetail.getAadharNumber());
+            gender.setSelection(getGenderAdapter().getPosition(aadharDetail.getGender()));
+            relation.setSelection(relation.getRelationAdapter().getPosition(aadharDetail.getSonOf()));
 
-            View child = null;
-            if(v.getId() == getCurrentView().findViewById(R.id.bt_launch_aadhar_form).getId()
-                    || v.getId() == getCurrentView().findViewById(R.id.fab_launch_aadhar_form).getId())
-            {
-
-                loadAadharForm();
-            }
-            else if(v.getId() == getCurrentView().findViewById(R.id.ib_launchScanner).getId()
-                    || v.getId() == getCurrentView().findViewById(R.id.fab_launchScanner).getId()
-                    )
-            {
-                loadAadharScanner();
-            }
-
-            if(v.getId() == getCurrentView().findViewById(R.id.fab_launch_aadhar_form).getId())
-            {
-                vg_scanner.stopCamera();
-            }
-           // if(child != null)
-          //      viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(child));
         }
-    };
-
-    private void loadAadharScanner() {
-        setVisibleChildView(getCurrentView().findViewById(R.id.scanner));
-        List<BarcodeFormat> formatList = new ArrayList<>();
-        formatList.add(BarcodeFormat.QR_CODE);
-        vg_scanner.setFormats(formatList);
-        vg_scanner.setFlash(false);
-        vg_scanner.setAutoFocus(true);
-        vg_scanner.startCamera();
-
     }
 
     @Override
-    public void handleResult(Result rawResult) {
-        vg_scanner.stopCamera();
-        Toast.makeText(getActivity(), "Contents = " + rawResult.getText() +
-                ", Format = " + rawResult.getBarcodeFormat().toString(), Toast.LENGTH_SHORT).show();
-        aadharDetail = AadharDAO.getAadharDetailFromXML(rawResult.getText());
-        loadAadharForm();
+    public AadharService.AadharDetail getDataFromForm() {
+        return null;
     }
 
+    @Override
+    public void setHasError(boolean hasError) {
+
+    }
 }

@@ -119,31 +119,35 @@ public class MainActivity extends BaseActivity {
 
     protected FinancePagerAdapter getFinancePageAdapter(FragmentManager fragmentManager)
     {
-        financePagerAdapter = new FinancePagerAdapter(fragmentManager);
+        if(financePagerAdapter == null || fragmentManager != financePagerAdapter.getFragmentManager())
+            financePagerAdapter = new FinancePagerAdapter(fragmentManager);
         return financePagerAdapter;
     }
 
     protected SocialPagerAdapter getSocialPageAdapter(FragmentManager fragmentManager)
     {
-        socialPagerAdapter = new SocialPagerAdapter(fragmentManager);
+        if(socialPagerAdapter == null || fragmentManager != socialPagerAdapter.getFragmentManager())
+            socialPagerAdapter = new SocialPagerAdapter(fragmentManager);
         return socialPagerAdapter;
     }
 
     protected WorkPagerAdapter getWorkPagerAdapter(FragmentManager fragmentManager)
     {
-        workPagerAdapter = new WorkPagerAdapter(fragmentManager);
+        if(workPagerAdapter == null || fragmentManager != workPagerAdapter.getFragmentManager())
+            workPagerAdapter = new WorkPagerAdapter(fragmentManager);
         return workPagerAdapter;
     }
     protected IdentityPagerAdapter getIdentityPagerAdapter(FragmentManager fragmentManager)
     {
-        identityPagerAdapter = new IdentityPagerAdapter(fragmentManager);
+        if(identityPagerAdapter == null || fragmentManager != identityPagerAdapter.getFragmentManager())
+                identityPagerAdapter = new IdentityPagerAdapter(fragmentManager);
         return identityPagerAdapter;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        f_pager.onActivityResult(requestCode,resultCode,data);
+  //      f_pager.onActivityResult(requestCode,resultCode,data);
     }
 
     @Override

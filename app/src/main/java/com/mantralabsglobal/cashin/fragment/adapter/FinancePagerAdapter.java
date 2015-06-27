@@ -14,6 +14,7 @@ import com.mantralabsglobal.cashin.fragment.tabs.IncomeFragment;
  */
 public class FinancePagerAdapter extends FragmentPagerAdapter{
 
+    private FragmentManager fragmentManager;
     private String tabtitles[] = new String[] {"Bank", "Credit Card",  "Bank Statement", "Income", "Current Address" , "Permanent Address", "Expenses", "History"};
 
     private IncomeFragment ifragnent;
@@ -22,6 +23,7 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
 
     public FinancePagerAdapter(FragmentManager fm) {
         super(fm);
+        this.fragmentManager = fm;
         ifragnent = new IncomeFragment();
         bankDetailFragment = new BankDetailFragment();
         currentAddressFragment = new CurrentAddressFragment();
@@ -51,4 +53,9 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position) {
         return tabtitles[position];
     }
+
+    public FragmentManager getFragmentManager() {
+        return fragmentManager;
+    }
+
 }

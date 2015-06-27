@@ -55,6 +55,7 @@ public abstract class AbstractPager extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         FragmentPagerAdapter adapter = getPagerAdapter(getChildFragmentManager());
         for(int i=0;i<adapter.getCount();i++)
         {

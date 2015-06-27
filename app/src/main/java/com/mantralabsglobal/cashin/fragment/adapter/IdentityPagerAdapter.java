@@ -18,9 +18,11 @@ public class IdentityPagerAdapter extends FragmentPagerAdapter{
 
     AadharCardFragment aadharCardFragment;
     PANCardFragment panCardFragment;
+    FragmentManager fragmentManager;
 
     public IdentityPagerAdapter(FragmentManager fm) {
         super(fm);
+        this.fragmentManager = fm;
         aadharCardFragment = new AadharCardFragment();
         panCardFragment = new PANCardFragment();
 
@@ -48,5 +50,9 @@ public class IdentityPagerAdapter extends FragmentPagerAdapter{
     @Override
     public CharSequence getPageTitle(int position) {
         return tabtitles[position];
+    }
+
+    public FragmentManager getFragmentManager() {
+        return fragmentManager;
     }
 }

@@ -30,6 +30,54 @@ public interface AadharService {
         @SerializedName(value = "sonOf")
         private String sonOf;
         private String dob;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getGender() {
+            return gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public String getAadharNumber() {
+            return aadharNumber;
+        }
+
+        public void setAadharNumber(String aadharNumber) {
+            this.aadharNumber = aadharNumber;
+        }
+
+        public String getSonOf() {
+            return sonOf;
+        }
+
+        public void setSonOf(String sonOf) {
+            this.sonOf = sonOf;
+        }
+
+        public String getDob() {
+            return dob;
+        }
+
+        public void setDob(String dob) {
+            this.dob = dob;
+        }
     }
 
 }

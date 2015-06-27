@@ -14,12 +14,14 @@ import com.mantralabsglobal.cashin.fragment.tabs.LinkedInFragment;
  */
 public class WorkPagerAdapter extends FragmentPagerAdapter{
 
+    private final FragmentManager fragmentManager;
     private String tabtitles[] = new String[] { "Business Card", "Linked In"};
     private BusinessCardFragment businessCardFragment;
     private LinkedInFragment linkedInFragment;
 
     public WorkPagerAdapter(FragmentManager fm) {
         super(fm);
+        this.fragmentManager = fm;
         businessCardFragment = new BusinessCardFragment();
         linkedInFragment = new LinkedInFragment();
     }
@@ -46,5 +48,9 @@ public class WorkPagerAdapter extends FragmentPagerAdapter{
     @Override
     public CharSequence getPageTitle(int position) {
         return tabtitles[position];
+    }
+
+    public FragmentManager getFragmentManager() {
+        return fragmentManager;
     }
 }

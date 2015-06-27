@@ -13,11 +13,13 @@ import com.mantralabsglobal.cashin.fragment.tabs.FacebookFragment;
  */
 public class SocialPagerAdapter extends FragmentPagerAdapter{
 
+    private final FragmentManager fragmentManager;
     private String tabtitles[] = new String[] { "Facebook"};
     private FacebookFragment facebookFragment;
 
     public SocialPagerAdapter(FragmentManager fm) {
         super(fm);
+        this.fragmentManager = fm;
         facebookFragment = new FacebookFragment();
     }
 
@@ -41,5 +43,9 @@ public class SocialPagerAdapter extends FragmentPagerAdapter{
     @Override
     public CharSequence getPageTitle(int position) {
         return tabtitles[position];
+    }
+
+    public FragmentManager getFragmentManager() {
+        return fragmentManager;
     }
 }

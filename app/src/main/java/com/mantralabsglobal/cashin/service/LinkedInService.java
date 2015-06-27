@@ -2,6 +2,10 @@ package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.brickred.socialauth.Career;
+import org.brickred.socialauth.Education;
+import org.brickred.socialauth.Position;
+
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -16,6 +20,30 @@ public interface LinkedInService {
 
     @POST("/user/linkedIn")
     void setLinkedInDetail(LinkedInDetail linkedInDetail, Callback<LinkedInDetail> callback);
+
+    public static class LinkedInAdapter
+    {
+        public static LinkedInDetail fromCareer(Career career)
+        {
+            LinkedInService.LinkedInDetail linkedInDetail = new LinkedInService.LinkedInDetail();
+            linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
+            linkedInDetail.setEducation(new LinkedInService.Education());
+            if(career.getPositions() != null && career.getPositions().length>0) {
+                Position position = career.getPositions()[0];
+                linkedInDetail.getWorkExperience().setCompany(position.getCompanyName());
+                linkedInDetail.getWorkExperience().setJobTitle(position.getTitle());
+                linkedInDetail.getWorkExperience().setTimePeriod(position.getStartDate().toString());
+            }
+            if(career.getEducations() != null && career.getEducations().length>0)
+            {
+                org.brickred.socialauth.Education education = career.getEducations()[0];
+                linkedInDetail.getEducation().setCollege(education.getSchoolName());
+                linkedInDetail.getEducation().setDegree(education.getDegree());
+                linkedInDetail.getEducation().setFieldOfStudy(education.getFieldOfStudy());
+            }
+            return linkedInDetail;
+        }
+    }
 
     public static class LinkedInDetail{
 
