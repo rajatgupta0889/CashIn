@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +19,16 @@ import com.mantralabsglobal.cashin.Activity.BaseActivity;
 import com.mantralabsglobal.cashin.fragment.AbstractPager;
 import com.mantralabsglobal.cashin.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.IdentityPagerAdapter;
+import com.mantralabsglobal.cashin.fragment.adapter.MainFragmentAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.SocialPagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.WorkPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 
 public class MainActivity extends BaseActivity {
@@ -28,126 +37,102 @@ public class MainActivity extends BaseActivity {
     private IdentityPagerAdapter identityPagerAdapter;
     private WorkPagerAdapter workPagerAdapter;
     private SocialPagerAdapter socialPagerAdapter;
-    private Button yourIdentityButton;
-    private Button yourPhotoButton;
-    private Button workButton;
-    private Button financialButton;
-    private Button socialButton;
-    Fragment f_pager;
+
+    @InjectView(R.id.yourIdentityButton)
+    public Button yourIdentityButton;
+    @InjectView(R.id.yourPhotoButton)
+    public Button yourPhotoButton;
+    @InjectView(R.id.workButton)
+    public Button workButton;
+    @InjectView(R.id.financialButton)
+    public Button financialButton;
+    @InjectView(R.id.socialButton)
+    public Button socialButton;
+
+    private MainFragmentAdapter mainFragmentAdapter;
+
+    private List<Button> buttonList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        yourIdentityButton = (Button)findViewById(R.id.yourIdentityButton);
-        yourIdentityButton.setOnClickListener(clickListener);
+        ButterKnife.inject(this);
 
-        yourPhotoButton = (Button)findViewById(R.id.yourPhotoButton);
-        yourPhotoButton.setOnClickListener(clickListener);
+        buttonList.add(yourPhotoButton);
+        buttonList.add(yourIdentityButton);
+        buttonList.add(workButton);
+        buttonList.add( financialButton);
+        buttonList.add(socialButton);
 
-        workButton = (Button)findViewById(R.id.workButton);
-        workButton.setOnClickListener(clickListener);
+        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        financialButton = (Button)findViewById(R.id.financialButton);
-        financialButton.setOnClickListener(clickListener);
-
-        socialButton = (Button)findViewById(R.id.socialButton);
-        socialButton.setOnClickListener(clickListener);
-
-        //ViewPager financialviewPager = (ViewPager) findViewById(R.id.financial);
-        //financialviewPager.setAdapter(new FinancePagerAdapter(getSupportFragmentManager()));
-    }
-
-    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-
-            final android.support.v4.app.FragmentManager FM = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction FT = FM.beginTransaction();
-
-            f_pager = new AbstractPager() {
-                @Override
-                protected FragmentPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-                    if (v == yourPhotoButton)
-                        return getFinancePageAdapter(fragmentManager);
-                    if (v == yourIdentityButton)
-                        return getIdentityPagerAdapter(fragmentManager);
-                    if (v == workButton)
-                        return getWorkPagerAdapter(fragmentManager);
-                    if (v == financialButton)
-                        return getFinancePageAdapter(fragmentManager);
-                    if (v == socialButton)
-                        return getSocialPageAdapter(fragmentManager);
-                    return null;
-                }
-            };
-
-            if(f_pager != null) {
-                FT.replace(R.id.main_frame, f_pager, "");
-                //FT.addToBackStack(null);
-                FT.commit();
             }
 
-            //Update the button icon
-            if (v == yourPhotoButton)
-                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_photoselected,0,0);
-            else
-                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_photo,0,0);
+            @Override
+            public void onPageSelected(int position) {
+                Button v = buttonList.get(position);
+                if (v == yourPhotoButton)
+                    yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photoselected, 0, 0);
+                else
+                    yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photo, 0, 0);
 
-            if (v == yourIdentityButton)
-                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_identityselected,0,0);
-            else
-                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_identity,0,0);
+                if (v == yourIdentityButton)
+                    yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identityselected, 0, 0);
+                else
+                    yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identity, 0, 0);
 
-            if (v == workButton)
-                workButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_workselected,0,0);
-            else
-                workButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_work,0,0);
+                if (v == workButton)
+                    workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_workselected, 0, 0);
+                else
+                    workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_work, 0, 0);
 
-            if (v == financialButton)
-                financialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_financialselected,0,0);
-            else
-                financialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_financial,0,0);
+                if (v == financialButton)
+                    financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financialselected, 0, 0);
+                else
+                    financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financial, 0, 0);
 
-            if (v == socialButton)
-                socialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_socialselected,0,0);
-            else
-                socialButton.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_social,0,0);
-        }
-    };
+                if (v == socialButton)
+                    socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_socialselected, 0, 0);
+                else
+                    socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
+            }
 
-    protected FinancePagerAdapter getFinancePageAdapter(FragmentManager fragmentManager)
-    {
-        if(financePagerAdapter == null || fragmentManager != financePagerAdapter.getFragmentManager())
-            financePagerAdapter = new FinancePagerAdapter(fragmentManager);
-        return financePagerAdapter;
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+        ((ViewPager)findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
+        ((ViewPager)findViewById(R.id.main_frame)).setCurrentItem(1);
     }
 
-    protected SocialPagerAdapter getSocialPageAdapter(FragmentManager fragmentManager)
-    {
-        if(socialPagerAdapter == null || fragmentManager != socialPagerAdapter.getFragmentManager())
-            socialPagerAdapter = new SocialPagerAdapter(fragmentManager);
-        return socialPagerAdapter;
-    }
+    @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
+    public void onClick(final View v) {
 
-    protected WorkPagerAdapter getWorkPagerAdapter(FragmentManager fragmentManager)
-    {
-        if(workPagerAdapter == null || fragmentManager != workPagerAdapter.getFragmentManager())
-            workPagerAdapter = new WorkPagerAdapter(fragmentManager);
-        return workPagerAdapter;
-    }
-    protected IdentityPagerAdapter getIdentityPagerAdapter(FragmentManager fragmentManager)
-    {
-        if(identityPagerAdapter == null || fragmentManager != identityPagerAdapter.getFragmentManager())
-                identityPagerAdapter = new IdentityPagerAdapter(fragmentManager);
-        return identityPagerAdapter;
+            final ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
+
+            final int newIndex = buttonList.indexOf(v);
+
+            viewPager.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    viewPager.setCurrentItem(newIndex);
+                }
+            }, 100);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-  //      f_pager.onActivityResult(requestCode,resultCode,data);
+        ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
+        mainFragmentAdapter.getItem(viewPager.getCurrentItem()).onActivityResult(requestCode,resultCode,data);
     }
 
     @Override

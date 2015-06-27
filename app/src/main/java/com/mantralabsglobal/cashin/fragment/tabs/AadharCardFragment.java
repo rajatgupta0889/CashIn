@@ -132,7 +132,7 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
         formatList.add(BarcodeFormat.QR_CODE);
         Intent intent = new Intent(getActivity(), ScannerActivity.class);
         intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-        startActivityForResult(intent, SCAN_AADHAR_CARD);
+        getActivity().startActivityForResult(intent, SCAN_AADHAR_CARD);
     }
 
     @Override
@@ -143,14 +143,15 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("AadharCardFragment", "onActivityResult: " + this);
+        Log.d("AadharCardFragment", "requestCode " + requestCode + " , resultCode=" + resultCode);
+
         if (requestCode == SCAN_AADHAR_CARD) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.d("AadharCardFragment", "onActivityResult: " + data.getStringExtra("aadhar_xml"));
                 aadharDetail = AadharDAO.getAadharDetailFromXML(data.getStringExtra("aadhar_xml"));
                 loadAadharForm();
-                //SharedPreferences preferences = getActivity().getSharedPreferences(AadharCardFragment.class.getName(), Context.MODE_PRIVATE);
-                //preferences.edit().putString("aadhar_xml", data.getStringExtra("aadhar_xml")).apply();
-              //  Log.d("AadharCardFragment", "aadharDetail: " + aadharDetail);
+
             }
         }
     }

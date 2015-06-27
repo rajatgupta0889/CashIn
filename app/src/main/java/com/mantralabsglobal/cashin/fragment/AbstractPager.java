@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,30 +25,35 @@ import butterknife.ButterKnife;
  */
 public abstract class AbstractPager extends Fragment {
 
+    ViewPager viewPager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.pager, container, false);
-        ButterKnife.inject(this,view);
-        return view;
-    }
+        ButterKnife.inject(this, view);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
-
-        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.viewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         FragmentPagerAdapter fragmentPagerAdapter = getPagerAdapter(getChildFragmentManager());
-        pager.setAdapter(fragmentPagerAdapter);
+        viewPager.setAdapter(fragmentPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(pager);
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
         if(fragmentPagerAdapter.getCount()<3)
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
         else
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        super.onViewCreated(view, savedInstanceState);
+
+
         //tabLayout.setFillViewport(true);
     }
 
@@ -55,14 +61,13 @@ public abstract class AbstractPager extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-        FragmentPagerAdapter adapter = getPagerAdapter(getChildFragmentManager());
-        for(int i=0;i<adapter.getCount();i++)
-        {
-            Fragment fragment = adapter.getItem(i);
-            if(!fragment.isDetached())
-                fragment.onActivityResult(requestCode,resultCode,data);
-        }
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("AbstractPager", "onActivityResult" + this);
+
+        FragmentPagerAdapter adapter = (FragmentPagerAdapter)viewPager.getAdapter();
+        Fragment fragment = adapter.getItem(viewPager.getCurrentItem());
+        fragment.onActivityResult(requestCode, resultCode, data);
+        Log.d("AbstractPager", "onActivityResult invoked on " + fragment);
     }
 
 }

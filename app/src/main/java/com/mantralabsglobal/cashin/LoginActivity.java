@@ -55,10 +55,10 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
     @OnClick(R.id.loginButton)
     public void onLogin()
     {
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        /*Intent intent = new Intent(getBaseContext(), MainActivity.class);
         startActivity(intent);
-        finish();
-        //validator.validate();
+        finish();*/
+        validator.validate();
     }
 
     @Override
