@@ -9,10 +9,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
+import com.mantralabsglobal.cashin.service.RestClient;
+import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -29,59 +30,54 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class LoginActivity extends BaseActivity implements Validator.ValidationListener {
+public class RegisterActivity extends BaseActivity implements Validator.ValidationListener {
 
     @NotEmpty
     @Email
-    @InjectView(R.id.et_userName)
-    EditText et_userName;
+    @InjectView(R.id.cet_email)
+    CustomEditText et_userName;
 
     @Password
-    @InjectView(R.id.et_password)
-    EditText et_password;
+    @InjectView(R.id.cet_password)
+    CustomEditText et_password;
 
     Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register_user);
         ButterKnife.inject(this);
         validator = new Validator(this);
         validator.setValidationListener(this);
     }
 
 
-    @OnClick(R.id.loginButton)
-    public void onLogin()
+    @OnClick(R.id.btn_create_account)
+    public void onCreateUser()
     {
-        /*Intent intent = new Intent(getBaseContext(), MainActivity.class);
-        startActivity(intent);
-        finish();*/
         validator.validate();
     }
 
-
-    @OnClick(R.id.btn_create_account)
-    public void onRegister()
+    @OnClick(R.id.btn_login_in)
+    public void onLogin()
     {
-        Intent intent = new Intent(getBaseContext(), RegisterActivity.class);
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
     public void onValidationSucceeded() {
-        showProgressDialog( getString(R.string.title_please_wait),getString(R.string.authenticating),true, false);
+        showProgressDialog(getString(R.string.title_please_wait), getString(R.string.registering), true, false);
         RestClient restClient =((Application) getApplication()).getRestClient();
 
-        AuthenticationService.UserPrincipal userPrincipal = new AuthenticationService.UserPrincipal();
+        AuthenticationService.NewUser userPrincipal = new AuthenticationService.NewUser();
         userPrincipal.setEmail(et_userName.getText().toString());
         userPrincipal.setPassword(et_password.getText().toString());
 
         AuthenticationService service = restClient.getAuthenticationService();
-
-        service.authenticateUser(userPrincipal, new Callback<AuthenticationService.AuthenticatedUser>() {
+        service.registerUser(userPrincipal, new Callback<AuthenticationService.AuthenticatedUser>() {
             @Override
             public void success(AuthenticationService.AuthenticatedUser authenticationResult, Response response) {
                 SharedPreferences sharedPreferences = getSharedPreferences("com.mantralabsglobal.cashin", Context.MODE_PRIVATE);
@@ -90,7 +86,8 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
                         .putString(AuthenticationService.USER_ID, authenticationResult.getId());
                 editor.apply();
                 hideProgressDialog();
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                showToastOnUIThread(getString(R.string.registration_sucess));
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

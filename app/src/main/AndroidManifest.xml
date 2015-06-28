@@ -51,6 +51,15 @@
 
         </activity>
 
+        <activity
+            android:name=".ui.activity.app.RegisterActivity"
+            android:theme="@style/loginTheme"
+            android:label="@string/title_register"
+            android:screenOrientation="portrait"
+            >
+
+        </activity>
+
         <activity android:name=".ui.activity.scanner.ScannerActivity"
             android:theme="@style/AppOverlayTheme"
             android:uiOptions="splitActionBarWhenNarrow"

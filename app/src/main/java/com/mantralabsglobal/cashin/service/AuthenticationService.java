@@ -91,16 +91,7 @@ public interface AuthenticationService {
         }
     }
 
-    public static class NewUser{
-        private String email;
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
+    public static class NewUser extends UserPrincipal{
 
     }
 }

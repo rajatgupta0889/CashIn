@@ -20,6 +20,7 @@
         <item name="colorControlActivated">@color/accent</item>
         <item name="colorControlHighlight">@color/accent</item>
         <item name="android:editTextStyle">@style/Login_EditTextStyle</item>
+        <item name="android:textViewStyle">@style/Login_TextViewStyle</item>
     </style>
 
     <style name="spinner_style" parent="Base.Widget.AppCompat.Spinner.Underlined"/>
@@ -34,6 +35,10 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
     <style name="Login_EditTextStyle" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@color/light</item>
+        <item name="android:layout_height">45dip</item>
+    </style>
+    <style name="Login_TextViewStyle" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@color/light</item>
         <item name="android:layout_height">45dip</item>
     </style>

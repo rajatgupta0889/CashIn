@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.EditText;
@@ -49,6 +50,11 @@ public class CustomEditText extends LinearLayout  {
             if (drawable != null)
                 iv_icon.setBackground(drawable);
             et_editText.setText(ta.getString(R.styleable.custom_view_field_text));
+
+            boolean isPassword = ta.getBoolean(R.styleable.custom_view_password, false);
+            if(isPassword)
+                et_editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
         } finally {
             ta.recycle();
         }

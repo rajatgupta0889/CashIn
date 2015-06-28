@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     android:orientation="vertical"
@@ -39,28 +40,28 @@
         android:paddingRight="50dp"
         >
 
-        <EditText android:id="@+id/et_userName" android:layout_marginTop="@dimen/form_input_margin_top" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:drawableStart="@drawable/email_outline"
-            android:gravity="center" />
-        <EditText android:id="@+id/et_password" android:layout_marginTop="@dimen/form_input_margin_top" android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:password="true" android:drawableStart="@drawable/lock_outline"
-            android:gravity="center"
-            android:singleLine="true" android:inputType="textPassword"/>
+        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+            xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+            android:id="@+id/cet_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" custom:field_label="@string/email"/>
+
+
+        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+            xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+            android:id="@+id/cet_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" custom:field_label="@string/password" custom:password="true"/>
 
         <Button android:layout_marginTop="@dimen/form_input_margin_top"
             android:layout_width="match_parent"
             android:textColor="@color/primary"
-            android:layout_height="wrap_content" android:drawableEnd="@drawable/login" android:text="Log In" android:id="@+id/loginButton"/>
+            android:layout_height="wrap_content" android:text="@string/create_account" android:id="@+id/btn_create_account"/>
 
         <Button android:background="@null"
             android:layout_width="match_parent"
             android:textColor="@color/light"
-            android:layout_height="wrap_content" android:text="Forgot your password?" android:capitalize="none" android:id="@+id/forgotPasswordButton" />
-
-        <Button android:background="@null"
-            android:layout_width="wrap_content"
-            android:textColor="@color/light"
-            android:layout_gravity="bottom|center"
-            android:layout_height="wrap_content" android:text="@string/register_on_login_screen" android:capitalize="none" android:id="@+id/btn_create_account" />
+            android:layout_height="wrap_content" android:text="@string/already_registered_login" android:capitalize="none" android:id="@+id/btn_login_in" />
 
 
     </LinearLayout>

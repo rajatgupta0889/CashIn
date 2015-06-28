@@ -115,6 +115,14 @@
     <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
     <string name="processing_image">Processing Image</string>
+    <string name="registering">registering user</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_registered_login">Already registered? Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="registration_sucess">Registration sucessfull. Please login to continue</string>
+    <string name="register_on_login_screen">No account yet? Create one</string>
+    <string name="title_register">Create Account</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">
