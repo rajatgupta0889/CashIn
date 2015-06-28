@@ -128,10 +128,12 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
 
     @OnClick( {R.id.ib_launchScanner, R.id.fab_launchScanner})
     public void loadAadharScanner() {
-        List<BarcodeFormat> formatList = new ArrayList<>();
-        formatList.add(BarcodeFormat.QR_CODE);
+        ArrayList<String> formatList = new ArrayList<>();
+        formatList.add(BarcodeFormat.QR_CODE.toString());
         Intent intent = new Intent(getActivity(), ScannerActivity.class);
-        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+        intent.putStringArrayListExtra("FORMATS", formatList);
+        intent.putExtra("FLASH", false);
+        intent.putExtra("AUTO_FOCUS", true);
         getActivity().startActivityForResult(intent, SCAN_AADHAR_CARD);
     }
 

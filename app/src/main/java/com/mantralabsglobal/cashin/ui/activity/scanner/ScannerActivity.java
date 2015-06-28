@@ -20,12 +20,14 @@ import android.view.MenuItem;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.mantralabsglobal.cashin.Activity.BaseActivity;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.activity.scanner.CameraSelectorDialogFragment;
 import com.mantralabsglobal.cashin.ui.activity.scanner.FormatSelectorDialogFragment;
 import com.mantralabsglobal.cashin.ui.activity.scanner.MessageDialogFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -45,6 +47,7 @@ public class ScannerActivity extends AppCompatActivity implements MessageDialogF
 
     @Override
     public void onCreate(Bundle state) {
+        setTheme(R.style.AppTheme);
         super.onCreate(state);
         if(state != null) {
             mFlash = state.getBoolean(FLASH_STATE, false);
@@ -52,9 +55,28 @@ public class ScannerActivity extends AppCompatActivity implements MessageDialogF
             mSelectedIndices = state.getIntegerArrayList(SELECTED_FORMATS);
             mCameraId = state.getInt(CAMERA_ID, -1);
         } else {
-            mFlash = false;
-            mAutoFocus = true;
-            mSelectedIndices = null;
+
+            Intent intent = getIntent();
+            ArrayList<String> formats = intent.getStringArrayListExtra("FORMATS");
+            boolean flash = intent.getBooleanExtra("FLASH", false);
+            boolean autoFocus = intent.getBooleanExtra("AUTO_FOCUS", true);
+
+            List<BarcodeFormat> formatListFromIntent = new ArrayList<>();
+            if(formats!= null) {
+                for (String strFormat: formats) {
+                    formatListFromIntent.add(BarcodeFormat.valueOf(strFormat));
+                }
+            }
+            for(int i = 0; i < ZXingScannerView.ALL_FORMATS.size(); i++) {
+                if(formatListFromIntent.contains(ZXingScannerView.ALL_FORMATS.get(i))) {
+                    if(mSelectedIndices == null)
+                        mSelectedIndices = new ArrayList<>();
+                    mSelectedIndices.add(i);
+                }
+            }
+
+            mFlash = flash;
+            mAutoFocus = autoFocus;
             mCameraId = -1;
         }
 
