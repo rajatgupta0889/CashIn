@@ -1,4 +1,4 @@
-package com.mantralabsglobal.cashin;
+package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.mantralabsglobal.cashin.Activity.BaseActivity;
+import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.fragment.AbstractPager;
 import com.mantralabsglobal.cashin.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.fragment.adapter.IdentityPagerAdapter;

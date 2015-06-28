@@ -1,4 +1,4 @@
-package com.mantralabsglobal.cashin;
+package com.mantralabsglobal.cashin.views;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;

@@ -1,6 +1,5 @@
-package com.mantralabsglobal.cashin;
+package com.mantralabsglobal.cashin.ui.activity.app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.Activity.BaseActivity;
+import com.mantralabsglobal.cashin.Application;
+import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.rest.RestClient;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mobsandgeeks.saripaar.ValidationError;
