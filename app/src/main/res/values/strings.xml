@@ -114,6 +114,7 @@
     <string name="select_camera">Select a Camera</string>
     <string name="ok_button">OK</string>
     <string name="cancel_button">Cancel</string>
+    <string name="processing_image">Processing Image</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">

@@ -1,7 +1,11 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,11 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.activity.camera.CameraActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
+import com.mantralabsglobal.cashin.utils.CameraUtils;
 
 import butterknife.OnClick;
 
@@ -66,7 +72,37 @@ public class PANCardFragment extends BaseFragment  {
 
         if (requestCode == IMAGE_CAPTURE_AADHAR_CARD) {
             if (resultCode == Activity.RESULT_OK) {
+                Bitmap bitmap;
+                try
+                {
+                    //bitmap = android.provider.MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), new Uri.Builder().path(data.getStringExtra("file_path")).build());
+                    showProgressDialog(getString(R.string.processing_image));
+                    CameraUtils.createBlackAndWhite(data.getStringExtra("file_path"), new CameraUtils.Listener() {
+                        @Override
+                        public void onComplete(final Bitmap bmp) {
+                            getActivity().runOnUiThread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Dialog dialog = new Dialog(getActivity());
+                                            dialog.setContentView(R.layout.dialog_image_preview);
+                                            ImageView imgView=(ImageView)dialog.findViewById(R.id.iv_image);
+                                            imgView.setImageBitmap(bmp);
+                                            hideProgressDialog();
+                                            dialog.show();
+                                        }
+                                    }
+                            );
+                        }
+                    });
 
+
+
+                } catch (Exception e)
+                {
+                    showToastOnUIThread("Failed to load" + e.getMessage());
+                    Log.d("PANCardFragment", "Failed to load", e);
+                }
                 showToastOnUIThread(data.getStringExtra("file_path"));
                 Log.d("PANCardFragment", "onActivityResult, resultCode " + resultCode + " filepath = " +data.getStringExtra("file_path"));
 
