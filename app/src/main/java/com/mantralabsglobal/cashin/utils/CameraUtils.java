@@ -3,11 +3,17 @@ package com.mantralabsglobal.cashin.utils;
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
+import com.mantralabsglobal.cashin.businessobjects.AndroidImage;
 
 /**
  * Created by pk on 6/28/2015.
@@ -18,46 +24,63 @@ public class CameraUtils {
 
         Runnable runnable = new Runnable(){
 
-
             @Override
             public void run() {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.ALPHA_8;
                 Bitmap src = BitmapFactory.decodeFile(filePath, options);
 
-                int width = src.getWidth();
-                int height = src.getHeight();
-                // create output bitmap
-                Bitmap bmOut = Bitmap.createBitmap(width, height, src.getConfig());
-                // color information
-                int A, R, G, B;
-                int pixel;
+                src = toGrayscale(src);
 
-                // scan through all pixels
-                for (int x = 0; x < width; ++x) {
-                    for (int y = 0; y < height; ++y) {
-                        // get pixel color
-                        pixel = src.getPixel(x, y);
-                        A = Color.alpha(pixel);
-                        R = Color.red(pixel);
-                        G = Color.green(pixel);
-                        B = Color.blue(pixel);
-                        int gray = (int) (0.2989 * R + 0.5870 * G + 0.1140 * B);
-
-                        // use 128 as threshold, above -> white, below -> black
-                        if (gray > 110)
-                            gray = 255;
-                        else
-                            gray = 0;
-                        // set new pixel color to output bitmap
-                        bmOut.setPixel(x, y, Color.argb(A, gray, gray, gray));
-                    }
-                }
-                listener.onComplete(bmOut);
+                AndroidImage androidImage = new AndroidImage(src);
+                androidImage = applyThreshold(androidImage,120);
+                listener.onComplete(androidImage.getImage());
             }
         };
 
         new Thread(runnable).start();
+    }
+
+    public static AndroidImage applyThreshold(AndroidImage imageIn, int threshold) {
+
+        // The Resulting image
+        AndroidImage imageOut;
+
+        // Initiate the Output image
+        imageOut = new AndroidImage(imageIn.getImage());
+
+        // Do Threshold process
+        for(int y=0; y<imageIn.getHeight(); y++){
+            for(int x=0; x<imageIn.getWidth(); x++){
+
+                if(imageOut.getRComponent(x,y) < threshold){
+                    imageOut.setPixelColor(x, y, 0,0,0);
+                }
+                else{
+                    imageOut.setPixelColor(x, y, 255,255,255);
+                }
+            }
+        }
+
+        // Return final image
+        return imageOut;
+    }
+
+    public static Bitmap toGrayscale(Bitmap bmpOriginal) {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height,
+                Bitmap.Config.RGB_565);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
     }
 
     public interface Listener {
