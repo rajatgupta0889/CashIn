@@ -23,12 +23,12 @@
 
             </LinearLayout>
 
-            <com.mantralabsglobal.cashin.views.CustomEditText
+            <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/bank_name" custom:field_icon="@drawable/ic_work_address"/>
 
-            <com.mantralabsglobal.cashin.views.CustomEditText
+            <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" custom:field_label="@string/account_number_last_4_digits" custom:field_icon="@drawable/ic_work_address"/>

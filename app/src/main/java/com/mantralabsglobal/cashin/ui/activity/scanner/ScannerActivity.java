@@ -13,21 +13,15 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.mantralabsglobal.cashin.Activity.BaseActivity;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.ui.activity.scanner.CameraSelectorDialogFragment;
-import com.mantralabsglobal.cashin.ui.activity.scanner.FormatSelectorDialogFragment;
-import com.mantralabsglobal.cashin.ui.activity.scanner.MessageDialogFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;

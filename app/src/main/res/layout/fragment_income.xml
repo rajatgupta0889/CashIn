@@ -15,19 +15,19 @@
 
     </LinearLayout>
 
-    <com.mantralabsglobal.cashin.views.CustomEditText
+    <com.mantralabsglobal.cashin.ui.view.CustomEditText
         xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
         android:id="@+id/cc_month_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" custom:field_label="@string/month_one" custom:field_icon="@drawable/ic_work_address"/>
 
-    <com.mantralabsglobal.cashin.views.CustomEditText
+    <com.mantralabsglobal.cashin.ui.view.CustomEditText
         xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
         android:id="@+id/cc_month_two"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" custom:field_label="@string/month_two" custom:field_icon="@drawable/ic_work_address"/>
 
-    <com.mantralabsglobal.cashin.views.CustomEditText
+    <com.mantralabsglobal.cashin.ui.view.CustomEditText
         xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
         android:id="@+id/cc_month_three"
         android:layout_width="match_parent"

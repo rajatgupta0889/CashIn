@@ -59,32 +59,32 @@
             android:layout_width="match_parent" android:layout_height="match_parent"
             android:layout_gravity="start|top" android:orientation="vertical">
 
-            <com.mantralabsglobal.cashin.views.CustomEditText
+            <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/name" app:field_icon="@drawable/ic_name"/>
 
-            <com.mantralabsglobal.cashin.views.CustomEditText
+            <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/address" app:field_icon="@drawable/ic_home_address"/>
 
-            <com.mantralabsglobal.cashin.views.CustomSpinner
+            <com.mantralabsglobal.cashin.ui.view.CustomSpinner
                 android:id="@+id/cs_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/gender" app:field_icon="@drawable/ic_gender"/>
 
-            <com.mantralabsglobal.cashin.views.CustomEditText
+            <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_aadhar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/aadhar_number" app:field_icon="@drawable/ic_aadhar_number"/>
 
-            <com.mantralabsglobal.cashin.views.SonOfSpinner
+            <com.mantralabsglobal.cashin.ui.view.SonOfSpinner
                 android:id="@+id/cs_sonOf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_icon="@drawable/ic_son_of"/>
 
-            <com.mantralabsglobal.cashin.views.BirthDayView
+            <com.mantralabsglobal.cashin.ui.view.BirthDayView
                 android:id="@+id/cc_dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/date_of_birth"/>

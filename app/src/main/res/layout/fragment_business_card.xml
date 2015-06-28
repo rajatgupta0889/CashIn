@@ -52,19 +52,19 @@
             android:layout_height="match_parent" android:id="@+id/ll_business_card_detail" >
             <LinearLayout android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
-                <com.mantralabsglobal.cashin.views.CustomEditText
+                <com.mantralabsglobal.cashin.ui.view.CustomEditText
                     android:id="@+id/cc_employer_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" app:field_label="@string/employer_name" app:field_icon="@drawable/ic_name"/>
 
 
-                <com.mantralabsglobal.cashin.views.CustomEditText
+                <com.mantralabsglobal.cashin.ui.view.CustomEditText
                     android:id="@+id/cc_work_email_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" app:field_label="@string/work_email_id" app:field_icon="@drawable/ic_name"/>
 
 
-                <com.mantralabsglobal.cashin.views.CustomEditText
+                <com.mantralabsglobal.cashin.ui.view.CustomEditText
                     android:id="@+id/cc_work_addess"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" app:field_label="@string/work_address" app:field_icon="@drawable/ic_name"/>
