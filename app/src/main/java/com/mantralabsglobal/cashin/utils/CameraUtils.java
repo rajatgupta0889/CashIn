@@ -15,6 +15,13 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.HybridBinarizer;
 import com.mantralabsglobal.cashin.businessobjects.AndroidImage;
 
 /**
@@ -31,38 +38,12 @@ public class CameraUtils {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
                 Bitmap src = BitmapFactory.decodeFile(filePath, options);
-
-                Log.d("CameraUtils", "File decoded");
-                int width = src.getWidth();
-                int height = src.getHeight();
-                // create output bitmap
-                Bitmap bmOut = Bitmap.createBitmap(width, height, src.getConfig());
-                // color information
-                int A, R, G, B;
-                int pixel;
-
-                // scan through all pixels
-                for (int x = 0; x < width; ++x) {
-                    for (int y = 0; y < height; ++y) {
-                        // get pixel color
-                        pixel = src.getPixel(x, y);
-                        A = Color.alpha(pixel);
-                        R = Color.red(pixel);
-                        G = Color.green(pixel);
-                        B = Color.blue(pixel);
-                        int gray = (int) (0.2989 * R + 0.5870 * G + 0.1140 * B);
-
-                        // use 128 as threshold, above -> white, below -> black
-                        if (gray > 120)
-                            gray = 255;
-                        else
-                            gray = 0;
-                        // set new pixel color to output bitmap
-                        bmOut.setPixel(x, y, Color.argb(A, gray, gray, gray));
-                    }
+                try {
+                    return binarize2(src);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                Log.d("CameraUtils", "File converted to binary");
-                return bmOut;
+                return null;
             }
 
             @Override
@@ -72,6 +53,113 @@ public class CameraUtils {
         };
 
         asyncTask.execute(filePath);
+    }
+
+    private static Bitmap binarize(Bitmap src)
+    {
+        Log.d("CameraUtils", "File decoded");
+        int width = src.getWidth();
+        int height = src.getHeight();
+        // create output bitmap
+        Bitmap bmOut = Bitmap.createBitmap(width, height, src.getConfig());
+        // color information
+        int A, R, G, B;
+        int pixel;
+
+        // scan through all pixels
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                // get pixel color
+                pixel = src.getPixel(x, y);
+                A = Color.alpha(pixel);
+                R = Color.red(pixel);
+                G = Color.green(pixel);
+                B = Color.blue(pixel);
+                int gray = (int) (0.2989 * R + 0.5870 * G + 0.1140 * B);
+
+                // use 128 as threshold, above -> white, below -> black
+                if (gray > 120)
+                    gray = 255;
+                else
+                    gray = 0;
+                // set new pixel color to output bitmap
+                bmOut.setPixel(x, y, Color.argb(A, gray, gray, gray));
+            }
+        }
+        Log.d("CameraUtils", "File converted to binary");
+        return bmOut;
+    }
+
+    private static Bitmap binarize1(Bitmap src) throws NotFoundException {
+        int width = src.getWidth();
+        int height = src.getHeight();
+        // create output bitmap
+        Bitmap bmOut = Bitmap.createBitmap(width, height, src.getConfig());
+
+        int[] intArray = new int[bmOut.getWidth()*bmOut.getHeight()];
+//copy pixel data from the Bitmap into the 'intArray' array
+        bmOut.getPixels(intArray, 0, bmOut.getWidth(), 0, 0, bmOut.getWidth(), bmOut.getHeight());
+
+        LuminanceSource source = new RGBLuminanceSource(bmOut.getWidth(), bmOut.getHeight(),intArray);
+
+        HybridBinarizer binarizer = new HybridBinarizer(source);
+        return toBitmap(binarizer.getBlackMatrix());
+    }
+
+    private static Bitmap binarize2(Bitmap bm) {
+        int[] pixels = new int[bm.getWidth()*bm.getHeight()];
+        bm.getPixels( pixels, 0, bm.getWidth(), 0, 0, bm.getWidth(), bm.getHeight() );
+        int w = bm.getWidth();
+
+        Bitmap bmOut = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(), bm.getConfig());
+
+        // Calculate overall lightness of image
+        long gLightness = 0;
+        int lLightness;
+        int c;
+
+        int size = bm.getWidth()*bm.getHeight();
+
+        for (int i = 0; i < size; i++) {
+                c = pixels[i];
+                lLightness = ((c&0x00FF0000 )>>16) + ((c & 0x0000FF00 )>>8) + (c&0x000000FF);
+                pixels[i] = lLightness;
+                gLightness += lLightness;
+        }
+        gLightness /= bm.getWidth() * bm.getHeight();
+        gLightness = gLightness * 5 / 6;
+
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        // Extract features
+
+        for ( int x = 0; x < width; x++ ) {
+            for (int y = 0; y < height; y++) {
+                if(pixels[x+y*w] <= gLightness)
+                    bmOut.setPixel(x, y, Color.rgb(0, 0, 0));
+                else
+                    bmOut.setPixel(x, y, Color.rgb(255,255, 255));
+            }
+        }
+
+        return bmOut;
+    }
+    /**
+     * Writes the given Matrix on a new Bitmap object.
+     * @param matrix the matrix to write.
+     * @return the new {@link Bitmap}-object.
+     */
+    public static Bitmap toBitmap(BitMatrix matrix){
+        int height = matrix.getHeight();
+        int width = matrix.getWidth();
+        Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        for (int x = 0; x < width; x++){
+            for (int y = 0; y < height; y++){
+                bmp.setPixel(x, y, matrix.get(x,y) ? Color.BLACK : Color.WHITE);
+            }
+        }
+        return bmp;
     }
 
     public static AndroidImage applyThreshold(AndroidImage imageIn, int threshold) {
