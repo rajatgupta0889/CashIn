@@ -14,12 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.activity.camera.CameraActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
 import com.mantralabsglobal.cashin.utils.CameraUtils;
+import com.soundcloud.android.crop.Crop;
+
+import java.io.File;
 
 import butterknife.OnClick;
 
@@ -72,42 +76,45 @@ public class PANCardFragment extends BaseFragment  {
 
         if (requestCode == IMAGE_CAPTURE_AADHAR_CARD) {
             if (resultCode == Activity.RESULT_OK) {
-                Bitmap bitmap;
-                try
-                {
-                    //bitmap = android.provider.MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), new Uri.Builder().path(data.getStringExtra("file_path")).build());
-                    showProgressDialog(getString(R.string.processing_image));
-                    CameraUtils.createBlackAndWhite(data.getStringExtra("file_path"), new CameraUtils.Listener() {
-                        @Override
-                        public void onComplete(final Bitmap bmp) {
-                            getActivity().runOnUiThread(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Dialog dialog = new Dialog(getActivity());
-                                            dialog.setContentView(R.layout.dialog_image_preview);
-                                            ImageView imgView=(ImageView)dialog.findViewById(R.id.iv_image);
-                                            imgView.setImageBitmap(bmp);
-                                            hideProgressDialog();
-                                            dialog.show();
-                                        }
-                                    }
-                            );
-                        }
-                    });
-
-
-
-                } catch (Exception e)
-                {
-                    showToastOnUIThread("Failed to load" + e.getMessage());
-                    Log.d("PANCardFragment", "Failed to load", e);
-                }
                 showToastOnUIThread(data.getStringExtra("file_path"));
+                beginCrop( Uri.fromFile(new File(data.getStringExtra("file_path") )));
                 Log.d("PANCardFragment", "onActivityResult, resultCode " + resultCode + " filepath = " +data.getStringExtra("file_path"));
-
             }
+        }  else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, data);
         }
     }
 
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), "pan-card-cropped.jpg"));
+        Crop.of(source, destination).asSquare().withAspect(4,3).start(getActivity());
+    }
+
+
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == Activity.RESULT_OK) {
+            showProgressDialog(getString(R.string.processing_image));
+            CameraUtils.createBlackAndWhite(Crop.getOutput(result).getPath(), new CameraUtils.Listener() {
+                @Override
+                public void onComplete(final Bitmap bmp) {
+                    getActivity().runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    Dialog dialog = new Dialog(getActivity());
+                                    dialog.setContentView(R.layout.dialog_image_preview);
+                                    ImageView imgView=(ImageView)dialog.findViewById(R.id.iv_image);
+                                    imgView.setImageBitmap(bmp);
+                                    hideProgressDialog();
+                                    dialog.show();
+                                }
+                            }
+                    );
+                }
+            });
+
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            showToastOnUIThread(Crop.getError(result).getMessage());
+        }
+    }
 }
