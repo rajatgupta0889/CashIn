@@ -26,6 +26,7 @@ public class RestClient  {
     private AuthenticationService authenticationService;
     private LinkedInService linkedInService;
     private AddressService addressService;
+    private AadharService aadharService;
 
     public RestClient(Context context)
     {
@@ -55,6 +56,7 @@ public class RestClient  {
         authenticationService = restAdapter.create(AuthenticationService.class);
         linkedInService = restAdapter.create(LinkedInService.class);
         addressService = restAdapter.create(AddressService.class);
+        aadharService = restAdapter.create(AadharService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -70,4 +72,7 @@ public class RestClient  {
         return addressService;
     }
 
+    public AadharService getAadharService() {
+        return aadharService;
+    }
 }

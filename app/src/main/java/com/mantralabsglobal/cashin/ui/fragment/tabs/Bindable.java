@@ -7,8 +7,6 @@ public interface Bindable<T> {
 
     public void bindDataToForm(T value);
 
-    public T getDataFromForm();
-
-    public void setHasError(boolean hasError);
+    public T getDataFromForm(T base);
 
 }

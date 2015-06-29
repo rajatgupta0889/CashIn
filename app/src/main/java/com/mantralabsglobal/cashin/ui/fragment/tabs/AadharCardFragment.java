@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.utils.AadharDAO;
 import com.mantralabsglobal.cashin.service.AadharService;
 import com.mantralabsglobal.cashin.ui.activity.scanner.ScannerActivity;
@@ -25,6 +26,9 @@ import java.util.ArrayList;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 //import eu.livotov.zxscan.ScannerView;
 
@@ -66,8 +70,15 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
     @InjectView(R.id.rl_aadhar_detail)
      ViewGroup vg_form;
 
+    @InjectView(R.id.btn_save)
+    Button btnSave;
+
+    @InjectView(R.id.btn_cancel)
+    Button btnCancel;
+
     static final int SCAN_AADHAR_CARD = 99;
 
+    private AadharService.AadharDetail aadharDetailServer;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -169,12 +180,30 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
     }
 
     @Override
-    public AadharService.AadharDetail getDataFromForm() {
-        return null;
+    public AadharService.AadharDetail getDataFromForm(AadharService.AadharDetail detail) {
+        return detail;
     }
 
-    @Override
-    public void setHasError(boolean hasError) {
+    @OnClick(R.id.btn_save)
+    protected void onSave()
+    {
+        if(canSave()) {
+            AadharService aadharService = ((Application) getActivity().getApplication()).getRestClient().getAadharService();
+            AadharService.AadharDetail aadharDetail = aadharDetailServer;
+            if(aadharDetail == null)
+                aadharDetail = new AadharService.AadharDetail();
+            aadharService.setAadharDetail(getDataFromForm(aadharDetail), new Callback<AadharService.AadharDetail>() {
+                @Override
+                public void success(AadharService.AadharDetail aadharDetail, Response response) {
+                    showToastOnUIThread(getString(R.string.save_sucess));
+                }
 
+                @Override
+                public void failure(RetrofitError error) {
+                    showToastOnUIThread(error.getMessage());
+                }
+            });
+        }
     }
+
 }

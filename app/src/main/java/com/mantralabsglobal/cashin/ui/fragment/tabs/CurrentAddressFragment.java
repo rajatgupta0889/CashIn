@@ -24,6 +24,8 @@ import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mobsandgeeks.saripaar.annotation.Digits;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import java.util.List;
+
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
@@ -64,6 +66,9 @@ public class CurrentAddressFragment extends BaseFragment implements Bindable<Add
     @InjectView(R.id.rb_rent)
     RadioButton rb_rented;
 
+    @InjectView(R.id.rb_own)
+    RadioButton rb_own;
+
     @InjectView(R.id.fab_get_loc_from_gps)
     FloatingActionButton btnGetLocationFromGPS;
 
@@ -75,7 +80,7 @@ public class CurrentAddressFragment extends BaseFragment implements Bindable<Add
 
     private AddressService mAddressService;
 
-    private boolean isFormValid;
+    private AddressService.Address addressOnServer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,27 +103,35 @@ public class CurrentAddressFragment extends BaseFragment implements Bindable<Add
         registerChildView(vg_gpsLauncher, View.VISIBLE);
         registerFloatingActionButton(btnGetLocationFromGPS, vg_addressForm);
 
-        showProgressDialog(getString(R.string.waiting_for_server));
-        getAddressService().getCurrentAddress(new Callback<AddressService.Address>() {
-            @Override
-            public void success(AddressService.Address address, Response response) {
-                hideProgressDialog();
-                if (address != null) {
-                    bindDataToForm(address);
-                    showAddressForm();
-                } else {
-                    showToastOnUIThread(getString(R.string.not_present_on_server));
-                }
-            }
+        if(addressOnServer == null) {
+            showProgressDialog(getString(R.string.waiting_for_server));
+            getAddressService().getAddress(new Callback<List<AddressService.Address>>() {
+                @Override
+                public void success(List<AddressService.Address> addressList, Response response) {
+                    hideProgressDialog();
+                    for (AddressService.Address address : addressList) {
+                        if ("current".equalsIgnoreCase(address.getType())) {
+                            addressOnServer = address;
+                        }
+                    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                hideProgressDialog();
-                if (error != null)
-                    showToastOnUIThread(error.getMessage());
-                hideProgressDialog();
-            }
-        });
+                    if (addressOnServer != null) {
+                        bindDataToForm(addressOnServer);
+                        showAddressForm();
+                    } else {
+                        showToastOnUIThread(getString(R.string.not_present_on_server));
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    hideProgressDialog();
+                    if (error != null)
+                        showToastOnUIThread(error.getMessage());
+                    hideProgressDialog();
+                }
+            });
+        }
     }
 
 
@@ -200,17 +213,23 @@ public class CurrentAddressFragment extends BaseFragment implements Bindable<Add
     @OnClick(R.id.btn_save)
     public void onSave()
     {
-        getValidator().validate(false);
-        if(isFormValid)
+        if(canSave())
         {
-            getAddressService().setCurrentAddress(getDataFromForm(), new Callback<AddressService.Address>() {
+            showProgressDialog( getString(R.string.saving_current_address));
+            AddressService.Address address = addressOnServer;
+            if(address == null)
+               address = new AddressService.Address();
+            getAddressService().setAddress(getDataFromForm(address), new Callback<AddressService.Address>() {
                 @Override
                 public void success(AddressService.Address address, Response response) {
+                    addressOnServer = address;
                     showToastOnUIThread(getString(R.string.save_sucess));
+                    hideProgressDialog();
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
+                    hideProgressDialog();
                     showToastOnUIThread(error.getMessage());
                 }
             });
@@ -245,6 +264,9 @@ public class CurrentAddressFragment extends BaseFragment implements Bindable<Add
                     cc_state.setText(address.getState());
                     cc_pincode.setText(address.getPincode());
                     cc_street.setText(address.getStreet());
+                    rb_rented.setChecked(address.isHouseRented());
+                    rb_own.setChecked(!address.isHouseRented());
+                    cs_own.getSpinner().setSelection(((ArrayAdapter<String>) cs_own.getAdapter()).getPosition(address.getOwn()));
                 }
             });
 
@@ -252,8 +274,7 @@ public class CurrentAddressFragment extends BaseFragment implements Bindable<Add
     }
 
     @Override
-    public AddressService.Address getDataFromForm() {
-        AddressService.Address address = new AddressService.Address();
+    public AddressService.Address getDataFromForm(AddressService.Address address) {
         address.setStreet(cc_street.getText().toString());
         address.setPincode(cc_pincode.getText().toString());
         address.setCity(cc_city.getText().toString());
@@ -263,8 +284,4 @@ public class CurrentAddressFragment extends BaseFragment implements Bindable<Add
         return address;
     }
 
-    @Override
-    public void setHasError(boolean hasError) {
-        this.isFormValid = !hasError;
-    }
 }

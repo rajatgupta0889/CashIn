@@ -123,6 +123,7 @@
     <string name="registration_sucess">Registration sucessfull. Please login to continue</string>
     <string name="register_on_login_screen">No account yet? Create one</string>
     <string name="title_register">Create Account</string>
+    <string name="saving_current_address">Saving current address</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">

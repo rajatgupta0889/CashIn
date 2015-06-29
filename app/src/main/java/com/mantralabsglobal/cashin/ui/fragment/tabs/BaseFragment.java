@@ -31,6 +31,7 @@ public abstract class BaseFragment extends Fragment {
     private List<View> childViews = new ArrayList<>();
     private Map<View, List<FloatingActionButton>> floatingActionButtonViewMap = new HashMap<>();
     private View visibleChildView;
+    private boolean isFormValid;
 
     protected ProgressDialog progressDialog;
 
@@ -60,7 +61,7 @@ public abstract class BaseFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -86,11 +87,10 @@ public abstract class BaseFragment extends Fragment {
 
         if(this instanceof Bindable<?>)
         {
-            final Bindable<?> bindable = (Bindable<?>)this;
             validator.setValidationListener(new Validator.ValidationListener() {
                 @Override
                 public void onValidationSucceeded() {
-                    bindable.setHasError(false);
+                    isFormValid=true;
                 }
 
                 @Override
@@ -100,7 +100,7 @@ public abstract class BaseFragment extends Fragment {
                             ((CustomEditText) ve.getView()).getEditText().setError(ve.getFailedRules().get(0).getMessage(getActivity()));
                         }
                     }
-                    bindable.setHasError(true);
+                    isFormValid=false;
                 }
             });
         }
@@ -184,5 +184,17 @@ public abstract class BaseFragment extends Fragment {
     public Validator getValidator() {
         return validator;
     }
+
+
+    public boolean canSave()
+    {
+        getValidator().validate(false);
+        if(isFormValid)
+        {
+              return true;
+        }
+        return false;
+    }
+
 
 }

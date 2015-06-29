@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:id="@+id/currentLocationLayout" android:layout_height="match_parent" android:orientation="vertical">
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+
     <FrameLayout
         android:id="@+id/current_location_viewflipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout android:visibility="visible" android:id="@+id/vg_current_address_form"
+
+        <ScrollView android:id="@+id/vg_current_address_form" android:visibility="visible"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
             android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
             <TextView android:id="@+id/adressTextView"
@@ -74,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/account_circle"/>
 
-            <LinearLayout
+            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:gravity="center">
                 <Button
@@ -86,7 +88,9 @@
 
             </LinearLayout>
 
+
         </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:visibility="gone"
@@ -128,7 +132,7 @@
 
         </LinearLayout>
     </FrameLayout>
-    </ScrollView>
+
 
 
     <android.support.design.widget.FloatingActionButton

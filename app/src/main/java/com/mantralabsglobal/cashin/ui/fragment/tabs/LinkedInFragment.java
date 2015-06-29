@@ -82,7 +82,7 @@ public class LinkedInFragment extends BaseFragment implements Bindable<LinkedInS
         linkedInService.getLinkedInDetail(new Callback<LinkedInService.LinkedInDetail>() {
             @Override
             public void success(LinkedInService.LinkedInDetail linkedInDetail, Response response) {
-                if(linkedInDetail != null && (linkedInDetail.getEducation() != null || linkedInDetail.getWorkExperience() != null))
+                if (linkedInDetail != null && (linkedInDetail.getEducation() != null || linkedInDetail.getWorkExperience() != null))
                     showLinkedInDetailForm(linkedInDetail);
                 else
                     setVisibleChildView(vg_linkedInConnect);
@@ -125,14 +125,10 @@ public class LinkedInFragment extends BaseFragment implements Bindable<LinkedInS
     }
 
     @Override
-    public LinkedInService.LinkedInDetail getDataFromForm() {
-        return null;
+    public LinkedInService.LinkedInDetail getDataFromForm(LinkedInService.LinkedInDetail linkedInDetail) {
+        return linkedInDetail;
     }
 
-    @Override
-    public void setHasError(boolean hasError) {
-
-    }
 
     private final class ResponseListener implements DialogListener
     {

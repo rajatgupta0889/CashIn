@@ -6,6 +6,7 @@ import com.mantralabsglobal.cashin.businessobjects.AadharDetail;
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
 
@@ -15,10 +16,10 @@ import retrofit.http.POST;
 public interface AadharService {
 
     @GET("/user/aadhar")
-    void getAadharDetail(AuthenticationService.AuthenticatedUser user, Callback<List<AadharDetail>> callback);
+    void getAadharDetail( Callback<List<AadharDetail>> callback);
 
     @POST("/user/aadhar")
-    void setAadharDetail(AuthenticationService.AuthenticatedUser user, AadharDetail aadhar, Callback<List<AadharDetail>> callback);
+    void setAadharDetail(@Body AadharDetail aadhar, Callback<AadharDetail> callback);
 
     public static class AadharDetail{
 

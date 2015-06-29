@@ -3,6 +3,7 @@ package com.mantralabsglobal.cashin.service;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -14,18 +15,11 @@ import retrofit.http.POST;
  */
 public interface AddressService {
 
-    @GET("/user/address/current")
-    void getCurrentAddress(Callback<Address> callback);
+    @GET("/user/address")
+    void getAddress(Callback<List<Address>> callback);
 
-    @GET("/user/address/permanent")
-    void getPermanentAddress(Callback<Address> callback);
-
-    @POST("/user/address/current")
-    void setCurrentAddress(@Body Address address ,Callback<Address> callback);
-
-    @POST("/user/address/permanent")
-    void setPermanentAddress(@Body Address address, Callback<Address> callback);
-
+    @POST("/user/address")
+    void setAddress(@Body Address address ,Callback<Address> callback);
 
     public static class Address{
 
@@ -127,7 +121,6 @@ public interface AddressService {
             return addressId;
         }
     }
-
 
 
 }
