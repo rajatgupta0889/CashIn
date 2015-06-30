@@ -8,6 +8,7 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.BankDetailFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BlankFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.CurrentAddressFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.IncomeFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
 
 /**
  * Created by pk on 13/06/2015.
@@ -20,6 +21,7 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
     private IncomeFragment ifragnent;
     private BankDetailFragment bankDetailFragment;
     private CurrentAddressFragment currentAddressFragment;
+    private PermanentAddressFragment permanentAddressFragment;
 
     public FinancePagerAdapter(FragmentManager fm) {
         super(fm);
@@ -27,6 +29,7 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
         ifragnent = new IncomeFragment();
         bankDetailFragment = new BankDetailFragment();
         currentAddressFragment = new CurrentAddressFragment();
+        permanentAddressFragment = new PermanentAddressFragment();
     }
 
     @Override
@@ -39,6 +42,8 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
                 return ifragnent ;
             case 4:
                 return currentAddressFragment ;
+            case 5:
+                return permanentAddressFragment ;
             // Open FragmentTab3.java
         }
         return new BlankFragment();

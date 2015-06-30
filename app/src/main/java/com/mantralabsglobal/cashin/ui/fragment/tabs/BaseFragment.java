@@ -186,7 +186,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
-    public boolean canSave()
+    public boolean isFormValid()
     {
         getValidator().validate(false);
         if(isFormValid)
@@ -195,6 +195,5 @@ public abstract class BaseFragment extends Fragment {
         }
         return false;
     }
-
 
 }

@@ -8,7 +8,7 @@
         android:layout_height="match_parent">
 
 
-        <ScrollView android:id="@+id/vg_current_address_form" android:visibility="visible"
+        <ScrollView android:id="@+id/vg_address_form" android:visibility="visible"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
         <LinearLayout
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_cancel" android:text="@string/cancel" />
+                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
 
             </LinearLayout>
 

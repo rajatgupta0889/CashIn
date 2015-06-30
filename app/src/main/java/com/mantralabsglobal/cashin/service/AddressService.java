@@ -9,17 +9,31 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 
 /**
  * Created by pk on 6/25/2015.
  */
 public interface AddressService {
 
-    @GET("/user/address")
-    void getAddress(Callback<List<Address>> callback);
+    @GET("/user/address/current")
+    void getCurrentAddress(Callback<Address> callback);
 
-    @POST("/user/address")
-    void setAddress(@Body Address address ,Callback<Address> callback);
+    @POST("/user/address/current")
+    void createCurrentAddress(@Body Address address ,Callback<Address> callback);
+
+    @PUT("/user/address/current")
+    void updateCurrentAddress(@Body Address address ,Callback<Address> callback);
+
+    @GET("/user/address/permanent")
+    void getPermanentAddress(Callback<Address> callback);
+
+    @POST("/user/address/permanent")
+    void createPermanentAddress(@Body Address address ,Callback<Address> callback);
+
+    @PUT("/user/address/permanent")
+    void updatePermanentAddress(@Body Address address ,Callback<Address> callback);
+
 
     public static class Address{
 

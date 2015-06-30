@@ -8,26 +8,26 @@ import retrofit.Callback;
 /**
  * Created by pk on 13/06/2015.
  */
-public class CurrentAddressFragment extends AddressFragment{
+public class PermanentAddressFragment extends AddressFragment {
 
 
     @Override
     protected void getAddressFromServer(Callback<AddressService.Address> serverCallback) {
-        getAddressService().getCurrentAddress(serverCallback);
+        getAddressService().getPermanentAddress(serverCallback);
     }
 
     @Override
     public String getProgressDialogSaveText() {
-        return getString(R.string.saving_current_address);
+        return getString(R.string.saving_permanent_address);
     }
 
     @Override
     public void createAddress(AddressService.Address address, Callback<AddressService.Address> callback) {
-        getAddressService().createCurrentAddress(address, callback);
+        getAddressService().createPermanentAddress(address,callback);
     }
 
     @Override
     public void updateAddress(AddressService.Address address, Callback<AddressService.Address> callback) {
-        getAddressService().updateCurrentAddress(address, callback);
+        getAddressService().updatePermanentAddress(address, callback);
     }
 }

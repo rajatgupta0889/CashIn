@@ -124,6 +124,8 @@
     <string name="register_on_login_screen">No account yet? Create one</string>
     <string name="title_register">Create Account</string>
     <string name="saving_current_address">Saving current address</string>
+    <string name="reset">Reset</string>
+    <string name="saving_permanent_address">Saving permanent address</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">

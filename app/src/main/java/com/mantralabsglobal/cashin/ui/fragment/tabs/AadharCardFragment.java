@@ -187,7 +187,7 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
     @OnClick(R.id.btn_save)
     protected void onSave()
     {
-        if(canSave()) {
+        if(isFormValid()) {
             AadharService aadharService = ((Application) getActivity().getApplication()).getRestClient().getAadharService();
             AadharService.AadharDetail aadharDetail = aadharDetailServer;
             if(aadharDetail == null)

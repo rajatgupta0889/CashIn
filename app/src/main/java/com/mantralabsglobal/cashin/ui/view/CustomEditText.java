@@ -3,6 +3,8 @@ package com.mantralabsglobal.cashin.ui.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
@@ -72,7 +74,7 @@ public class CustomEditText extends LinearLayout  {
 
     private void loadViews() {
         iv_icon = (ImageView)findViewById(R.id.ac_icon);
-        et_editText = (EditText)findViewById(R.id.et_text);
+        et_editText = (EditText)findViewWithTag("et_editText");//  (EditText)findViewById(R.id.et_text);
         tv_label = (TextView)findViewById(R.id.tv_label);
     }
 
@@ -99,4 +101,31 @@ public class CustomEditText extends LinearLayout  {
         return et_editText;
     }
 
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("instanceState", super.onSaveInstanceState());
+        bundle.putString("currentEdit", et_editText.getText().toString());
+        bundle.putBoolean("isFocused", et_editText.hasFocus());
+        return bundle;
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            et_editText.setText(bundle.getString("currentEdit"));
+            if (bundle.getBoolean("isFocused")) {
+                et_editText.requestFocus();
+            }
+            super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
+            return;
+        }
+
+        super.onRestoreInstanceState(state);
+    }
 }
