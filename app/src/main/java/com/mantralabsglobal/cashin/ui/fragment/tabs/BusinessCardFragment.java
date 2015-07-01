@@ -8,11 +8,42 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.service.BusinessCardService;
+import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import butterknife.InjectView;
+import butterknife.OnClick;
+import retrofit.Callback;
 
 /**
  * Created by pk on 13/06/2015.
  */
-public class BusinessCardFragment extends BaseFragment {
+public class BusinessCardFragment extends BaseBindableFragment<BusinessCardService.BusinessCardDetail> {
+
+    @InjectView(R.id.ll_business_card_snap)
+    public ViewGroup vg_snap;
+    @InjectView(R.id.ll_business_card_detail)
+    public ViewGroup vg_form;
+    @InjectView(R.id.enterWorkDetailsButton)
+    public Button btn_enter_details;
+
+    @NotEmpty
+    @InjectView(R.id.cc_employer_name)
+    public CustomEditText employerName;
+
+    @NotEmpty
+    @Email
+    @InjectView(R.id.cc_work_email_id)
+    public CustomEditText emailId;
+
+    @NotEmpty
+    @InjectView(R.id.cc_work_addess)
+    public CustomEditText workAddress;
+
+    private BusinessCardService businessCardService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,36 +59,61 @@ public class BusinessCardFragment extends BaseFragment {
 
         super.onViewCreated(view, savedInstanceState);
 
-        Button btnEdit = (Button) view.findViewById(R.id.enterWorkDetailsButton);
-        btnEdit.setOnClickListener(listener);
+        businessCardService = ((Application)getActivity().getApplication()).getRestClient().getBusinessCardService();
 
-        registerChildView(getCurrentView().findViewById(R.id.ll_business_card_snap), View.VISIBLE);
-        registerChildView(getCurrentView().findViewById(R.id.ll_business_card_detail), View.GONE);
+        registerChildView(vg_snap, View.GONE);
+        registerChildView(vg_form, View.GONE);
+
+        reset(false);
     }
-
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-
-        super.onActivityCreated(savedInstanceState);
-
+    protected void onUpdate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
+        businessCardService.updateBusinessCardDetail(updatedData,saveCallback);
     }
 
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    @Override
+    protected void onCreate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
+        businessCardService.createBusinessCardDetail(updatedData,saveCallback);
+    }
 
-            View child = null;
-            if(v.getId() == getCurrentView().findViewById(R.id.enterWorkDetailsButton).getId())
-            {
-                setVisibleChildView(getCurrentView().findViewById(R.id.ll_business_card_detail));
-            }
-            else
-            {
-                setVisibleChildView(getCurrentView().findViewById(R.id.ll_business_card_snap));
-            }
+    @Override
+    protected void loadDataFromServer(Callback<BusinessCardService.BusinessCardDetail> dataCallback) {
+        businessCardService.getBusinessCardDetail(dataCallback);
+    }
 
+    @Override
+    protected void handleDataNotPresentOnServer() {
+        setVisibleChildView(vg_snap);
+    }
+
+
+    @OnClick(R.id.enterWorkDetailsButton)
+    public void onEnterDetailClick() {
+
+        bindDataToForm(new BusinessCardService.BusinessCardDetail());
+    }
+
+    @Override
+    public void bindDataToForm(BusinessCardService.BusinessCardDetail value) {
+        setVisibleChildView(vg_form);
+        if(value != null)
+        {
+            employerName.setText(value.getEmployerName());
+            workAddress.setText(value.getAddress());
+            emailId.setText(value.getEmail());
         }
-    };
+    }
 
+    @Override
+    public BusinessCardService.BusinessCardDetail getDataFromForm(BusinessCardService.BusinessCardDetail base) {
+        if(base == null)
+            base = new BusinessCardService.BusinessCardDetail();
+
+        base.setEmployerName(employerName.getText().toString());
+        base.setAddress(workAddress.getText().toString());
+        base.setEmail(emailId.getText().toString());
+
+        return base;
+    }
 }

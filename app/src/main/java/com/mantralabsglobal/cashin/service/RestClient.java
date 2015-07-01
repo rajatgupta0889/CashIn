@@ -28,6 +28,8 @@ public class RestClient  {
     private AddressService addressService;
     private AadharService aadharService;
     private PrimaryBankService primaryBankService;
+    private PanCardService panCardService;
+    private BusinessCardService businessCardService;
 
     public RestClient(Context context)
     {
@@ -59,6 +61,8 @@ public class RestClient  {
         addressService = restAdapter.create(AddressService.class);
         aadharService = restAdapter.create(AadharService.class);
         primaryBankService = restAdapter.create(PrimaryBankService.class);
+        panCardService = restAdapter.create(PanCardService.class);
+        businessCardService = restAdapter.create(BusinessCardService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -81,5 +85,13 @@ public class RestClient  {
     public  PrimaryBankService getPrimaryBankService()
     {
         return primaryBankService;
+    }
+
+    public PanCardService getPanCardService() {
+        return panCardService;
+    }
+
+    public BusinessCardService getBusinessCardService() {
+        return businessCardService;
     }
 }

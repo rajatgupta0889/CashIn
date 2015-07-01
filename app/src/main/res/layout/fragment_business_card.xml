@@ -69,10 +69,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" app:field_label="@string/work_address" app:field_icon="@drawable/ic_name"/>
 
+                <LinearLayout android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:gravity="center">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_launchCamera"
+        android:src="@drawable/ic_camera"
+        app:fabSize="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/business_card_viewflipper"
+        android:layout_marginTop="-70dp"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="bottom|right"
+        app:borderWidth="0dp"/>
 
 </LinearLayout>

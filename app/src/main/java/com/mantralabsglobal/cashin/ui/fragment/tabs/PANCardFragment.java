@@ -17,23 +17,52 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.service.PanCardService;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.camera.CameraActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
+import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
 import com.mantralabsglobal.cashin.utils.CameraUtils;
+import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 
+import butterknife.InjectView;
 import butterknife.OnClick;
+import retrofit.Callback;
 
 /**
  * Created by pk on 13/06/2015.
  */
-public class PANCardFragment extends BaseFragment  {
+public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCardDetail>  {
 
     private static final int IMAGE_CAPTURE_AADHAR_CARD = 199;
-    private BirthDayView dobEditText;
+
+    @InjectView(R.id.vg_pan_card_scan)
+    public ViewGroup vg_scan;
+    @InjectView(R.id.vg_pan_card_form)
+    public ViewGroup vg_form;
+
+    @NotEmpty
+    @InjectView(R.id.cc_name)
+    public CustomEditText name;
+
+    @NotEmpty
+    @InjectView(R.id.cc_pan)
+    public CustomEditText panNumber;
+
+    @NotEmpty
+    @InjectView(R.id.cc_father_name)
+    public CustomEditText fatherName;
+
+    @NotEmpty
+    @InjectView(R.id.cc_dob)
+    public BirthDayView dob;
+
+    PanCardService panCardService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,11 +77,33 @@ public class PANCardFragment extends BaseFragment  {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        panCardService = ((Application)getActivity().getApplication()).getRestClient().getPanCardService();
         //SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
-        registerChildView(getCurrentView().findViewById(R.id.vg_pan_card_form), View.GONE);
-        registerChildView(getCurrentView().findViewById(R.id.vg_pan_card_scan), View.VISIBLE);
-        registerFloatingActionButton((FloatingActionButton)getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
+        registerChildView(vg_form, View.GONE);
+        registerChildView(vg_scan, View.GONE);
+        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
 
+        reset(false);
+    }
+
+    @Override
+    protected void onUpdate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
+        panCardService.updatePanCardDetail(updatedData, saveCallback);
+    }
+
+    @Override
+    protected void onCreate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
+        panCardService.createPanCardDetail(updatedData,saveCallback);
+    }
+
+    @Override
+    protected void loadDataFromServer(Callback<PanCardService.PanCardDetail> dataCallback) {
+        panCardService.getPanCardDetail(dataCallback);
+    }
+
+    @Override
+    protected void handleDataNotPresentOnServer() {
+        setVisibleChildView(vg_scan);
     }
 
     @OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera})
@@ -63,8 +114,7 @@ public class PANCardFragment extends BaseFragment  {
 
     @OnClick(R.id.btn_pan_card_detail_form)
     public void onClick(View v) {
-
-        setVisibleChildView(getCurrentView().findViewById(R.id.vg_pan_card_form));
+        bindDataToForm(new PanCardService.PanCardDetail());
     }
 
 
@@ -116,5 +166,30 @@ public class PANCardFragment extends BaseFragment  {
         } else if (resultCode == Crop.RESULT_ERROR) {
             showToastOnUIThread(Crop.getError(result).getMessage());
         }
+    }
+
+    @Override
+    public void bindDataToForm(PanCardService.PanCardDetail value) {
+        setVisibleChildView(vg_form);
+        if(value != null)
+        {
+            name.setText(value.getName());
+            fatherName.setText(value.getSonOf());
+            panNumber.setText(value.getPanNumber());
+            dob.setText(value.getDob());
+        }
+    }
+
+    @Override
+    public PanCardService.PanCardDetail getDataFromForm(PanCardService.PanCardDetail base) {
+        if(base == null)
+            base = new PanCardService.PanCardDetail();
+
+        base.setSonOf(fatherName.getText().toString());
+        base.setName(name.getText().toString());
+        base.setDob(dob.getText().toString());
+        base.setPanNumber(panNumber.getText().toString());
+
+        return base;
     }
 }
