@@ -9,4 +9,8 @@ public interface Bindable<T> {
 
     public T getDataFromForm(T base);
 
+    public void save();
+
+    public void reset();
+
 }

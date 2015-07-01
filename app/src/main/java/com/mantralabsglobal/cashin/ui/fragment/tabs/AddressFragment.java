@@ -29,7 +29,7 @@ import retrofit.client.Response;
 /**
  * Created by pk on 6/30/2015.
  */
-public abstract class AddressFragment extends BaseFragment implements Bindable<AddressService.Address> {
+public abstract class AddressFragment extends BaseBindableFragment<AddressService.Address> {
 
     @NotEmpty
     @InjectView(R.id.cc_street)
@@ -74,7 +74,7 @@ public abstract class AddressFragment extends BaseFragment implements Bindable<A
 
     private AddressService mAddressService;
 
-    private AddressService.Address addressOnServer;
+    //private AddressService.Address addressOnServer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,19 +97,21 @@ public abstract class AddressFragment extends BaseFragment implements Bindable<A
         registerChildView(vg_gpsLauncher, View.GONE);
         registerFloatingActionButton(btnGetLocationFromGPS, vg_addressForm);
 
-        if(addressOnServer == null) {
+        if(serverCopy == null) {
             showProgressDialog(getString(R.string.waiting_for_server));
-            getAddressFromServer(getServerCallback);
+            reset();
         }
         else
         {
-            bindDataToForm(addressOnServer);
+            bindDataToForm(serverCopy);
             showAddressForm();
         }
     }
 
-    protected abstract void getAddressFromServer(Callback<AddressService.Address> serverCallback);
-
+    @Override
+    protected void handleDataNotPresentOnServer() {
+        showGPSLauncher();
+    }
 
     @OnClick(R.id.btn_edit_address)
     public void showAddressForm()
@@ -164,73 +166,6 @@ public abstract class AddressFragment extends BaseFragment implements Bindable<A
         }
     }
 
-
-    Callback<AddressService.Address> getServerCallback = new Callback<AddressService.Address>() {
-        @Override
-        public void success(AddressService.Address address, Response response) {
-            hideProgressDialog();
-            addressOnServer = address;
-            if (addressOnServer != null) {
-                bindDataToForm(addressOnServer);
-                showAddressForm();
-            } else {
-                showGPSLauncher();
-                showToastOnUIThread(getString(R.string.not_present_on_server));
-            }
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            hideProgressDialog();
-            if (error != null)
-                showToastOnUIThread(error.getMessage());
-            hideProgressDialog();
-        }
-    };
-
-    @OnClick(R.id.btn_save)
-    public void onSave() {
-        if(isFormValid())
-        {
-            showProgressDialog( getProgressDialogSaveText());
-            AddressService.Address address = addressOnServer;
-            if(address == null) {
-                address = new AddressService.Address();
-                createAddress(getDataFromForm(address), saveCallback);
-            }else
-            {
-                updateAddress(getDataFromForm(address), saveCallback);
-            }
-        }
-    }
-
-    public abstract String getProgressDialogSaveText();
-    public abstract void createAddress(AddressService.Address address, Callback<AddressService.Address> callback);
-
-    public abstract void updateAddress(AddressService.Address address, Callback<AddressService.Address> callback);
-
-    private Callback<AddressService.Address> saveCallback = new Callback<AddressService.Address>() {
-        @Override
-        public void success(AddressService.Address address, Response response) {
-            addressOnServer = address;
-            showToastOnUIThread(getString(R.string.save_sucess));
-            hideProgressDialog();
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            hideProgressDialog();
-            showToastOnUIThread(error.getMessage());
-        }
-    };
-
-    @OnClick(R.id.btn_reset)
-    public void onReset()
-    {
-        showProgressDialog(getString(R.string.waiting_for_server));
-        getAddressFromServer(getServerCallback);
-    }
-
     public AddressService getAddressService() {
         if(mAddressService == null) {
             mAddressService = ((Application) getActivity().getApplication()).getRestClient().getAddressService();
@@ -244,6 +179,7 @@ public abstract class AddressFragment extends BaseFragment implements Bindable<A
 
     @Override
     public void bindDataToForm(final AddressService.Address address) {
+        setVisibleChildView(vg_addressForm);
         if(address != null) {
 
             getActivity().runOnUiThread(new Runnable() {

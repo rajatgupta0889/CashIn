@@ -25,13 +25,25 @@
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
-                android:layout_width="match_parent"
+                android:layout_width="match_parent" android:id="@+id/cet_bank_name"
                 android:layout_height="wrap_content" custom:field_label="@string/bank_name" custom:field_icon="@drawable/ic_work_address"/>
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
-                android:layout_width="match_parent"
+                android:layout_width="match_parent" android:id="@+id/cet_account_number"
                 android:layout_height="wrap_content" custom:field_label="@string/account_number_last_4_digits" custom:field_icon="@drawable/ic_work_address"/>
+
+            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

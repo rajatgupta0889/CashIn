@@ -10,9 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.ui.view.CustomEditText;
-import com.mobsandgeeks.saripaar.ValidationError;
-import com.mobsandgeeks.saripaar.Validator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,11 +28,9 @@ public abstract class BaseFragment extends Fragment {
     private List<View> childViews = new ArrayList<>();
     private Map<View, List<FloatingActionButton>> floatingActionButtonViewMap = new HashMap<>();
     private View visibleChildView;
-    private boolean isFormValid;
 
     protected ProgressDialog progressDialog;
 
-    private Validator validator;
 
     protected void showProgressDialog( String message)
     {
@@ -83,37 +78,7 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.inject(this, view);
         currentView = view;
         progressDialog = new ProgressDialog(getActivity());
-        validator = new Validator(this);
-
-        if(this instanceof Bindable<?>)
-        {
-            validator.setValidationListener(new Validator.ValidationListener() {
-                @Override
-                public void onValidationSucceeded() {
-                    isFormValid=true;
-                }
-
-                @Override
-                public void onValidationFailed(List<ValidationError> errors) {
-                    for (ValidationError ve : errors) {
-                        if (ve.getView() instanceof CustomEditText) {
-                            ((CustomEditText) ve.getView()).getEditText().setError(ve.getFailedRules().get(0).getMessage(getActivity()));
-                        }
-                    }
-                    isFormValid=false;
-                }
-            });
-        }
-        else {
-            initValidator(validator);
-        }
     }
-
-    protected void initValidator(Validator validator)
-    {
-        //To Be implemented by sub classes
-    }
-
 
     protected void registerChildView(View view, int visibility)
     {
@@ -181,19 +146,5 @@ public abstract class BaseFragment extends Fragment {
         return genderAdapter;
     }
 
-    public Validator getValidator() {
-        return validator;
-    }
-
-
-    public boolean isFormValid()
-    {
-        getValidator().validate(false);
-        if(isFormValid)
-        {
-              return true;
-        }
-        return false;
-    }
 
 }

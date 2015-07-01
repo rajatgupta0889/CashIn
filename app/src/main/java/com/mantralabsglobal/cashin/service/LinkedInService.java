@@ -7,8 +7,10 @@ import org.brickred.socialauth.Education;
 import org.brickred.socialauth.Position;
 
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 
 /**
  * Created by pk on 6/25/2015.
@@ -19,7 +21,10 @@ public interface LinkedInService {
     void getLinkedInDetail(Callback<LinkedInDetail> callback);
 
     @POST("/user/linkedIn")
-    void setLinkedInDetail(LinkedInDetail linkedInDetail, Callback<LinkedInDetail> callback);
+    void createLinkedInDetail(@Body LinkedInDetail linkedInDetail, Callback<LinkedInDetail> callback);
+
+    @PUT("/user/linkedIn")
+    void updateLinkedInDetail(@Body LinkedInDetail linkedInDetail, Callback<LinkedInDetail> callback);
 
     public static class LinkedInAdapter
     {

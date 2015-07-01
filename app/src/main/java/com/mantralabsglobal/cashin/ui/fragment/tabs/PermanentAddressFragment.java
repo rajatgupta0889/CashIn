@@ -12,22 +12,18 @@ public class PermanentAddressFragment extends AddressFragment {
 
 
     @Override
-    protected void getAddressFromServer(Callback<AddressService.Address> serverCallback) {
-        getAddressService().getPermanentAddress(serverCallback);
+    protected void onUpdate(AddressService.Address updatedData, Callback<AddressService.Address> saveCallback) {
+        getAddressService().updatePermanentAddress(updatedData, saveCallback);
     }
 
     @Override
-    public String getProgressDialogSaveText() {
-        return getString(R.string.saving_permanent_address);
+    protected void onCreate(AddressService.Address updatedData, Callback<AddressService.Address> saveCallback) {
+        getAddressService().createPermanentAddress(updatedData, saveCallback);
     }
 
     @Override
-    public void createAddress(AddressService.Address address, Callback<AddressService.Address> callback) {
-        getAddressService().createPermanentAddress(address,callback);
+    protected void loadDataFromServer(Callback<AddressService.Address> dataCallback) {
+        getAddressService().getPermanentAddress(dataCallback);
     }
 
-    @Override
-    public void updateAddress(AddressService.Address address, Callback<AddressService.Address> callback) {
-        getAddressService().updatePermanentAddress(address, callback);
-    }
 }

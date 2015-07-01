@@ -8,6 +8,7 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 
 /**
  * Created by pk on 6/25/2015.
@@ -15,10 +16,14 @@ import retrofit.http.POST;
 public interface PrimaryBankService {
 
     @GET("/user/bank")
-    void getPrimaryBankDetail(AuthenticationService.AuthenticatedUser user, Callback<BankDetail> callback);
+    void getPrimaryBankDetail(Callback<BankDetail> callback);
 
     @POST("/user/bank")
-    void setPrimaryBankDetail(AuthenticationService.AuthenticatedUser user, BankDetail bankDetail,  Callback<BankDetail> callback);
+    void createPrimaryBankDetail(@Body BankDetail bankDetail,  Callback<BankDetail> callback);
+
+    @PUT("/user/bank")
+    void updatePrimaryBankDetail(@Body BankDetail bankDetail,  Callback<BankDetail> callback);
+
 
     public static class BankDetail{
 

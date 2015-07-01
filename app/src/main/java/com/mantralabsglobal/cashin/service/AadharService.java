@@ -9,6 +9,7 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 
 /**
  * Created by pk on 6/25/2015.
@@ -16,10 +17,14 @@ import retrofit.http.POST;
 public interface AadharService {
 
     @GET("/user/aadhar")
-    void getAadharDetail( Callback<List<AadharDetail>> callback);
+    void getAadharDetail( Callback<AadharDetail> callback);
 
     @POST("/user/aadhar")
-    void setAadharDetail(@Body AadharDetail aadhar, Callback<AadharDetail> callback);
+    void createAadharDetail(@Body AadharDetail aadhar, Callback<AadharDetail> callback);
+
+    @PUT("/user/aadhar")
+    void updateAadharDetail(@Body AadharDetail aadhar, Callback<AadharDetail> callback);
+
 
     public static class AadharDetail{
 

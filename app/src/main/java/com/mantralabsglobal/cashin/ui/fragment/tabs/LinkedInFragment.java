@@ -31,7 +31,7 @@ import retrofit.client.Response;
 /**
  * Created by pk on 13/06/2015.
  */
-public class LinkedInFragment extends BaseFragment implements Bindable<LinkedInService.LinkedInDetail> {
+public class LinkedInFragment extends BaseBindableFragment<LinkedInService.LinkedInDetail> {
 
     @InjectView(R.id.btn_linkedIn_connect)
     Button btn_linkedIn;
@@ -96,6 +96,26 @@ public class LinkedInFragment extends BaseFragment implements Bindable<LinkedInS
             }
         });
 
+    }
+
+    @Override
+    protected void onUpdate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
+        linkedInService.updateLinkedInDetail(updatedData,saveCallback);
+    }
+
+    @Override
+    protected void onCreate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
+        linkedInService.createLinkedInDetail(updatedData,saveCallback);
+    }
+
+    @Override
+    protected void loadDataFromServer(Callback<LinkedInService.LinkedInDetail> dataCallback) {
+        linkedInService.getLinkedInDetail(dataCallback);
+    }
+
+    @Override
+    protected void handleDataNotPresentOnServer() {
+        setVisibleChildView(vg_linkedInConnect);
     }
 
     protected void showLinkedInDetailForm(LinkedInService.LinkedInDetail linkedInDetail)

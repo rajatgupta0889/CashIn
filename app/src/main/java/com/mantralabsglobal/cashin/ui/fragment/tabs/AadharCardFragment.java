@@ -21,6 +21,7 @@ import com.mantralabsglobal.cashin.ui.activity.scanner.ScannerActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.ArrayList;
 
@@ -35,17 +36,18 @@ import retrofit.client.Response;
 /**
  * Created by pk on 13/06/2015.
  */
-public class AadharCardFragment extends BaseFragment implements Bindable<AadharService.AadharDetail>
+public class AadharCardFragment extends BaseBindableFragment<AadharService.AadharDetail>
 {
 
     private AadharService.AadharDetail aadharDetail;
 
+    @NotEmpty
     @InjectView(R.id.cc_name)
     CustomEditText name;
-
+    @NotEmpty
     @InjectView(R.id.cc_address)
     CustomEditText address;
-
+    @NotEmpty
     @InjectView(R.id.cc_aadhar)
     CustomEditText aadharNumber;
 
@@ -73,12 +75,10 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
     @InjectView(R.id.btn_save)
     Button btnSave;
 
-    @InjectView(R.id.btn_cancel)
-    Button btnCancel;
-
     static final int SCAN_AADHAR_CARD = 99;
 
-    private AadharService.AadharDetail aadharDetailServer;
+    AadharService aadharService;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,6 +90,7 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        aadharService = ((Application) getActivity().getApplication()).getRestClient().getAadharService();
         gender.setAdapter(getGenderAdapter());
 
         relation.setAdapter(relation.getAdapter());
@@ -98,15 +99,37 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
         registerChildView(vg_form, View.GONE);
         registerFloatingActionButton(fab_launchScanner, vg_form);
 
+        if(serverCopy == null)
+            reset();
+
         Log.d("AadharCardFragment", "On view created");
+    }
+
+    @Override
+    protected void onUpdate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
+        aadharService.updateAadharDetail(updatedData, saveCallback);
+    }
+
+    @Override
+    protected void onCreate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
+        aadharService.createAadharDetail(updatedData,saveCallback);
+    }
+
+    @Override
+    protected void loadDataFromServer(Callback<AadharService.AadharDetail> dataCallback) {
+        aadharService.getAadharDetail(dataCallback);
+    }
+
+    @Override
+    protected void handleDataNotPresentOnServer() {
+        setVisibleChildView(vg_camera);
     }
 
 
     @OnClick(R.id.bt_edit_aadhar_detail)
     public void loadAadharForm()
     {
-        setVisibleChildView(vg_form);
-        bindDataToForm(aadharDetail);
+        bindDataToForm(null);
     }
 
     @OnClick( {R.id.ib_launchScanner, R.id.fab_launchScanner})
@@ -135,39 +158,15 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
             if (resultCode == Activity.RESULT_OK) {
                 Log.d("AadharCardFragment", "onActivityResult: " + data.getStringExtra("aadhar_xml"));
                 aadharDetail = AadharDAO.getAadharDetailFromXML(data.getStringExtra("aadhar_xml"));
-                loadAadharForm();
+                bindDataToForm(aadharDetail);
 
             }
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        /*Log.d("AadharCardFragment", "On resume");
-        Log.d("AadharCardFragment", "aadharDetail: " + aadharDetail);
-
-        SharedPreferences preferences = getActivity().getSharedPreferences(AadharCardFragment.class.getName(), Context.MODE_PRIVATE);
-        String aadhar_xml = preferences.getString("aadhar_xml", null);
-        if(aadhar_xml != null)
-            aadharDetail = AadharDAO.getAadharDetailFromXML(aadhar_xml);
-        if(aadharDetail != null)
-            loadAadharForm();
-        else
-            setVisibleChildView(vg_camera);
-
-*/
-    }
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
-        Log.d("AadharCardFragment", "On attach");
-    }
-
-    @Override
     public void bindDataToForm(AadharService.AadharDetail value) {
+        setVisibleChildView(vg_form);
         //TODO: Replace with form binding
         if(aadharDetail!= null) {
             name.setText(aadharDetail.getName());
@@ -182,28 +181,6 @@ public class AadharCardFragment extends BaseFragment implements Bindable<AadharS
     @Override
     public AadharService.AadharDetail getDataFromForm(AadharService.AadharDetail detail) {
         return detail;
-    }
-
-    @OnClick(R.id.btn_save)
-    protected void onSave()
-    {
-        if(isFormValid()) {
-            AadharService aadharService = ((Application) getActivity().getApplication()).getRestClient().getAadharService();
-            AadharService.AadharDetail aadharDetail = aadharDetailServer;
-            if(aadharDetail == null)
-                aadharDetail = new AadharService.AadharDetail();
-            aadharService.setAadharDetail(getDataFromForm(aadharDetail), new Callback<AadharService.AadharDetail>() {
-                @Override
-                public void success(AadharService.AadharDetail aadharDetail, Response response) {
-                    showToastOnUIThread(getString(R.string.save_sucess));
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    showToastOnUIThread(error.getMessage());
-                }
-            });
-        }
     }
 
 }
