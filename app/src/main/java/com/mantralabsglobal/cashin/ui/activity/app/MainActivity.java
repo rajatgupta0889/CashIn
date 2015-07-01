@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -42,6 +43,7 @@ public class MainActivity extends BaseActivity {
     public Button socialButton;
 
     private MainFragmentAdapter mainFragmentAdapter;
+    private Toolbar toolbar;
 
     private List<Button> buttonList = new ArrayList<>();
 
@@ -49,6 +51,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
+        setSupportActionBar(toolbar);
 
         ButterKnife.inject(this);
 

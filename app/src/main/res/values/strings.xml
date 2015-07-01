@@ -127,6 +127,7 @@
     <string name="reset">Reset</string>
     <string name="saving_permanent_address">Saving permanent address</string>
     <string name="reset_sucess">Reset sucessfull</string>
+    <string name="your_profile">Your Profile</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">

@@ -46,19 +46,23 @@
     <style name="AppOverlayTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:actionBarStyle">@style/ActionBarStyle.Transparent</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle.Transparent.TitleTextStyle</item>
 
         <!-- Support library compatibility -->
         <item name="windowActionBarOverlay">true</item>
     </style>
 
-    <style name="ActionBarStyle.Transparent" parent="@android:Widget.ActionBar">
-        <item name="android:background">#99000000</item>
-        <item name="android:titleTextStyle">@style/ActionBarStyle.Transparent.TitleTextStyle</item>
-        <item name="android:backgroundSplit">#99000000</item>
-    </style>
-
     <style name="ActionBarStyle.Transparent.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Widget.CashIn.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/primary</item>
+        <item name="theme">@style/ThemeOverlay.CashIn.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="ThemeOverlay.CashIn.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/light</item>
     </style>
 </resources>
