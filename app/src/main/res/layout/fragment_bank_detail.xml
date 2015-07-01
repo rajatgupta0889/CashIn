@@ -3,12 +3,12 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_pan_card_fragment">
 
-    <FrameLayout
+    <ScrollView
         android:id="@+id/fl_facebook"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout  android:id="@+id/rl_facebook_details"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:orientation="vertical" android:padding="20dp">
 
@@ -16,7 +16,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp" android:orientation="horizontal" android:gravity="center">
                 <TextView
-                    android:id="@+id/tv_connectedAs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:text="@string/enter_primary_bank_details"
                     />
@@ -48,6 +47,6 @@
         </LinearLayout>
 
 
-    </FrameLayout>
+    </ScrollView>
 
 </LinearLayout>

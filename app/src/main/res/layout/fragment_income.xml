@@ -3,35 +3,54 @@
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
    android:padding="20dp">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="100dp" android:gravity="center">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/last_three_month_salary"
-            android:textAlignment="center" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp" android:gravity="center">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/last_three_month_salary"
+                android:textAlignment="center" />
 
-    <com.mantralabsglobal.cashin.ui.view.CustomEditText
-        xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
-        android:id="@+id/cc_month_one"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" custom:field_label="@string/month_one" custom:field_icon="@drawable/ic_work_address"/>
+        </LinearLayout>
 
-    <com.mantralabsglobal.cashin.ui.view.CustomEditText
-        xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
-        android:id="@+id/cc_month_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" custom:field_label="@string/month_two" custom:field_icon="@drawable/ic_work_address"/>
+        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+            xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+            android:id="@+id/cc_month_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" custom:field_label="@string/month_one" custom:field_icon="@drawable/ic_work_address"/>
 
-    <com.mantralabsglobal.cashin.ui.view.CustomEditText
-        xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
-        android:id="@+id/cc_month_three"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" custom:field_label="@string/month_three" custom:field_icon="@drawable/ic_work_address"/>
+        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+            xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+            android:id="@+id/cc_month_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" custom:field_label="@string/month_two" custom:field_icon="@drawable/ic_work_address"/>
 
+        <com.mantralabsglobal.cashin.ui.view.CustomEditText
+            xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
+            android:id="@+id/cc_month_three"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" custom:field_label="@string/month_three" custom:field_icon="@drawable/ic_work_address"/>
 
+            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
