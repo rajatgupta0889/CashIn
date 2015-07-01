@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.ui;
 
 import com.mantralabsglobal.cashin.service.RestClient;
+import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mobsandgeeks.saripaar.Validator;
@@ -37,6 +38,12 @@ public class Application extends android.app.Application{
             }
         });
 
+        Validator.registerAdapter(BirthDayView.class, new ViewDataAdapter<BirthDayView, String>() {
+            @Override
+            public String getData(BirthDayView view) throws ConversionException {
+                return view.getEditText().getText().toString();
+            }
+        });
 
     }
 

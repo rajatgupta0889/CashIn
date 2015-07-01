@@ -1,5 +1,7 @@
 package com.mantralabsglobal.cashin.utils;
 
+import android.util.Log;
+
 import com.mantralabsglobal.cashin.service.AadharService;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -8,6 +10,9 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * Created by pk on 6/20/2015.
@@ -37,8 +42,23 @@ public class AadharDAO {
                         if(name.equals("PrintLetterBarcodeData")){
                             aadharDetail.setAadharNumber(aadharparser.getAttributeValue(null, "uid"));
                             aadharDetail.setName(aadharparser.getAttributeValue(null, "name"));
-                            aadharDetail.setGender(aadharparser.getAttributeValue(null, "gender"));
-                            aadharDetail.setDob(aadharparser.getAttributeValue(null, "yob"));
+
+                            String yob = aadharparser.getAttributeValue(null, "yob");
+
+                            Calendar c = Calendar.getInstance();
+                            c.set(Integer.parseInt(yob), 1, 1);
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                            aadharDetail.setDob(sdf.format(c.getTime()));
+
+                            String gender = aadharparser.getAttributeValue(null, "gender");
+                            if(Objects.equals(gender, "M"))
+                                gender = "Male";
+                            else if (Objects.equals(gender, "F"))
+                                gender = "Female";
+
+                            aadharDetail.setGender(gender);
+                            Log.d("AadharDAO", "Gender: " + gender);
+
                             aadharDetail.setAddress(aadharparser.getAttributeValue(null, "house") +
                                     aadharparser.getAttributeValue(null, "street") +
                                     aadharparser.getAttributeValue(null, "lm") +

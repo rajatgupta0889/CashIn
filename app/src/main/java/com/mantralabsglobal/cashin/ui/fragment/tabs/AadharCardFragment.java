@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.utils.AadharDAO;
 import com.mantralabsglobal.cashin.service.AadharService;
 import com.mantralabsglobal.cashin.ui.activity.scanner.ScannerActivity;
@@ -39,8 +40,6 @@ import retrofit.client.Response;
 public class AadharCardFragment extends BaseBindableFragment<AadharService.AadharDetail>
 {
 
-    private AadharService.AadharDetail aadharDetail;
-
     @NotEmpty
     @InjectView(R.id.cc_name)
     CustomEditText name;
@@ -54,8 +53,11 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     @InjectView(R.id.cs_gender)
      CustomSpinner gender;
 
-    @InjectView(R.id.cs_sonOf)
-     SonOfSpinner relation;
+    @InjectView(R.id.cc_father_name)
+     CustomEditText fatherName;
+
+    @InjectView(R.id.cc_dob)
+    BirthDayView birthDay;
 
     @InjectView(R.id.ib_launchScanner)
      ImageButton btn_scanner;
@@ -93,7 +95,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         aadharService = ((Application) getActivity().getApplication()).getRestClient().getAadharService();
         gender.setAdapter(getGenderAdapter());
 
-        relation.setAdapter(relation.getAdapter());
+        //sonOfSpinner.setAdapter(sonOfSpinner.getAdapter());
 
         registerChildView(vg_camera, View.VISIBLE);
         registerChildView(vg_form, View.GONE);
@@ -157,7 +159,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         if (requestCode == SCAN_AADHAR_CARD) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.d("AadharCardFragment", "onActivityResult: " + data.getStringExtra("aadhar_xml"));
-                aadharDetail = AadharDAO.getAadharDetailFromXML(data.getStringExtra("aadhar_xml"));
+                AadharService.AadharDetail aadharDetail = AadharDAO.getAadharDetailFromXML(data.getStringExtra("aadhar_xml"));
                 bindDataToForm(aadharDetail);
 
             }
@@ -168,18 +170,27 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     public void bindDataToForm(AadharService.AadharDetail value) {
         setVisibleChildView(vg_form);
         //TODO: Replace with form binding
-        if(aadharDetail!= null) {
-            name.setText(aadharDetail.getName());
-            address.setText(aadharDetail.getAddress());
-            aadharNumber.setText(aadharDetail.getAadharNumber());
-            gender.setSelection(getGenderAdapter().getPosition(aadharDetail.getGender()));
-            relation.setSelection(relation.getRelationAdapter().getPosition(aadharDetail.getSonOf()));
-
+        if(value!= null) {
+            name.setText(value.getName());
+            address.setText(value.getAddress());
+            aadharNumber.setText(value.getAadharNumber());
+            gender.setSelection(getGenderAdapter().getPosition(value.getGender()));
+            fatherName.setText(value.getSonOf());
+            birthDay.setText(value.getDob());
         }
     }
 
     @Override
     public AadharService.AadharDetail getDataFromForm(AadharService.AadharDetail detail) {
+        if(detail == null)
+            detail = new AadharService.AadharDetail();
+
+        detail.setAddress(address.getText().toString());
+        detail.setDob(birthDay.getText().toString());
+        detail.setName(name.getText().toString());
+        detail.setAadharNumber(aadharNumber.getText().toString());
+        detail.setGender(gender.getSpinner().getSelectedItem().toString());
+        detail.setSonOf(fatherName.getText().toString());
         return detail;
     }
 

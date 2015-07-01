@@ -4,10 +4,13 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,9 +131,60 @@ public class BirthDayView extends LinearLayout {
     }
 
     private void loadViews() {
-        et_dob = (EditText)findViewById(R.id.et_dob);
-        tv_age = (TextView)findViewById(R.id.tv_age);
+        et_dob = (EditText) findViewWithTag("et_dob");
+        tv_age = (TextView)findViewWithTag("tv_age");
         tv_dob =  (TextView)findViewById(R.id.tv_dob);
         iv_dob = (ImageView)findViewById(R.id.iv_dob);
+    }
+
+    public CharSequence getLabel()
+    {
+        return tv_dob.getText();
+    }
+
+    public void setLabel(CharSequence value)
+    {
+        tv_dob.setText(value);
+    }
+
+    public void setText(CharSequence name) {
+        et_dob.setText(name);
+    }
+
+    public Editable getText() {
+        return et_dob.getText();
+    }
+
+    public EditText getEditText()
+    {
+        return et_dob;
+    }
+
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("instanceState", super.onSaveInstanceState());
+        bundle.putString("currentEdit", et_dob.getText().toString());
+        bundle.putBoolean("isFocused", et_dob.hasFocus());
+        return bundle;
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
+            et_dob.setText(bundle.getString("currentEdit"));
+            if (bundle.getBoolean("isFocused")) {
+                et_dob.requestFocus();
+            }
+            super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
+            return;
+        }
+
+        super.onRestoreInstanceState(state);
     }
 }

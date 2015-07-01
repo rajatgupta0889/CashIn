@@ -79,11 +79,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/aadhar_number" app:field_icon="@drawable/ic_aadhar_number"/>
 
-            <com.mantralabsglobal.cashin.ui.view.SonOfSpinner
+            <com.mantralabsglobal.cashin.ui.view.CustomEditText
+                android:id="@+id/cc_father_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:field_label="@string/father_name" app:field_icon="@drawable/ic_son_of"/>
+
+            <!--<com.mantralabsglobal.cashin.ui.view.SonOfSpinner
                 android:id="@+id/cs_sonOf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_icon="@drawable/ic_son_of"/>
-
+-->
             <com.mantralabsglobal.cashin.ui.view.BirthDayView
                 android:id="@+id/cc_dob"
                 android:layout_width="match_parent"
