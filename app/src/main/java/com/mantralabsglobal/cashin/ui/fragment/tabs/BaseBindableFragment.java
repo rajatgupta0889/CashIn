@@ -131,6 +131,8 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void success(T value, Response response) {
             hideProgressDialog();
+            if(response!= null && response.getBody() != null && response.getBody().length()<=2)
+                value = null;
             serverCopy = value;
             if(serverCopy != null) {
                 bindDataToForm(value);
