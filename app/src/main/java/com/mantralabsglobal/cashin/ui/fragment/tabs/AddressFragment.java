@@ -97,16 +97,10 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         registerChildView(vg_gpsLauncher, View.GONE);
         registerFloatingActionButton(btnGetLocationFromGPS, vg_addressForm);
 
-        if(serverCopy == null) {
-            showProgressDialog(getString(R.string.waiting_for_server));
-            reset();
-        }
-        else
-        {
-            bindDataToForm(serverCopy);
-            showAddressForm();
-        }
+        reset(false);
+
     }
+
 
     @Override
     protected void handleDataNotPresentOnServer() {
@@ -200,6 +194,8 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
     @Override
     public AddressService.Address getDataFromForm(AddressService.Address address) {
+        if(address == null)
+            address = new AddressService.Address();
         address.setStreet(cc_street.getText().toString());
         address.setPincode(cc_pincode.getText().toString());
         address.setCity(cc_city.getText().toString());

@@ -48,7 +48,7 @@ public class PANCardFragment extends BaseFragment  {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
+        //SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
         registerChildView(getCurrentView().findViewById(R.id.vg_pan_card_form), View.GONE);
         registerChildView(getCurrentView().findViewById(R.id.vg_pan_card_scan), View.VISIBLE);
         registerFloatingActionButton((FloatingActionButton)getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));

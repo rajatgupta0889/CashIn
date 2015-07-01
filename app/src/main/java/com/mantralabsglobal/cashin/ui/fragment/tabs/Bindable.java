@@ -11,6 +11,6 @@ public interface Bindable<T> {
 
     public void save();
 
-    public void reset();
+    public void reset(boolean force);
 
 }

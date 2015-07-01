@@ -10,7 +10,7 @@ import retrofit.Callback;
  */
 public class CurrentAddressFragment extends AddressFragment{
 
-    @Override
+       @Override
     protected void onUpdate(AddressService.Address updatedData, Callback<AddressService.Address> saveCallback) {
         getAddressService().updateCurrentAddress(updatedData, saveCallback);
     }

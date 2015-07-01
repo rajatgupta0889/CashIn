@@ -76,36 +76,20 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         registerChildView(vg_linkedInConnect, View.GONE);
         registerChildView(vg_linkedInProfile, View.GONE);
 
-        showProgressDialog( getString(R.string.query_server),true,false);
-
         linkedInService = restClient.getLinkedInService();
-        linkedInService.getLinkedInDetail(new Callback<LinkedInService.LinkedInDetail>() {
-            @Override
-            public void success(LinkedInService.LinkedInDetail linkedInDetail, Response response) {
-                if (linkedInDetail != null && (linkedInDetail.getEducation() != null || linkedInDetail.getWorkExperience() != null))
-                    showLinkedInDetailForm(linkedInDetail);
-                else
-                    setVisibleChildView(vg_linkedInConnect);
-                hideProgressDialog();
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                setVisibleChildView(vg_linkedInConnect);
-                hideProgressDialog();
-            }
-        });
+        reset(false);
 
     }
 
     @Override
     protected void onUpdate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
-        linkedInService.updateLinkedInDetail(updatedData,saveCallback);
+        linkedInService.updateLinkedInDetail(updatedData, saveCallback);
     }
 
     @Override
     protected void onCreate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
-        linkedInService.createLinkedInDetail(updatedData,saveCallback);
+        linkedInService.createLinkedInDetail(updatedData, saveCallback);
     }
 
     @Override
@@ -118,14 +102,6 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         setVisibleChildView(vg_linkedInConnect);
     }
 
-    protected void showLinkedInDetailForm(LinkedInService.LinkedInDetail linkedInDetail)
-    {
-        setVisibleChildView(vg_linkedInProfile);
-        if(linkedInDetail!= null)
-            bindDataToForm(linkedInDetail);
-    }
-
-
     @OnClick(R.id.btn_linkedIn_connect)
     public void onConnectClick()
     {
@@ -135,6 +111,7 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     public void bindDataToForm(LinkedInService.LinkedInDetail value) {
+        setVisibleChildView(vg_linkedInProfile);
         if(value != null) {
             if(value.getWorkExperience() != null) {
                 this.jobTitle.setText(value.getWorkExperience().getJobTitle());
@@ -159,7 +136,7 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
                 public void onExecute(String s, Career career) {
 
                     LinkedInService.LinkedInDetail linkedInDetail = LinkedInService.LinkedInAdapter.fromCareer(career);
-                    showLinkedInDetailForm(linkedInDetail);
+                    bindDataToForm(linkedInDetail);
                     hideProgressDialog();
 
                 }

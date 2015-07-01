@@ -26,6 +26,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     private boolean isFormValid;
     private Validator validator;
     protected T serverCopy;
+    protected boolean isDataPresentOnServer = true;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -87,12 +88,25 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     protected abstract void onCreate(T updatedData, Callback<T> saveCallback);
 
     @Optional
-    @Override
     @OnClick(R.id.btn_reset)
-    public void reset()
+    public void onResetClick()
     {
-        showProgressDialog(getString(R.string.waiting_for_server));
-        loadDataFromServer(dataCallback);
+        reset(true);
+    }
+
+    @Override
+    public void reset(boolean force)
+    {
+        if(force || (serverCopy == null && isDataPresentOnServer))
+        {
+            showProgressDialog(getString(R.string.waiting_for_server));
+            loadDataFromServer(dataCallback);
+        }
+        else
+        {
+            dataCallback.success(serverCopy,null);
+        }
+
     }
 
     protected abstract void loadDataFromServer(Callback<T> dataCallback);
@@ -118,10 +132,14 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         public void success(T value, Response response) {
             hideProgressDialog();
             serverCopy = value;
-            if(serverCopy != null)
+            if(serverCopy != null) {
                 bindDataToForm(value);
-            else
+                isDataPresentOnServer = true;
+            }
+            else {
+                isDataPresentOnServer = false;
                 handleDataNotPresentOnServer();
+            }
             //showToastOnUIThread(getString(R.string.d));
 
         }

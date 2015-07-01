@@ -101,8 +101,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         registerChildView(vg_form, View.GONE);
         registerFloatingActionButton(fab_launchScanner, vg_form);
 
-        if(serverCopy == null)
-            reset();
+        reset(false);
 
         Log.d("AadharCardFragment", "On view created");
     }

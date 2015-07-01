@@ -46,7 +46,7 @@ public class BankDetailFragment extends BaseBindableFragment<PrimaryBankService.
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         primaryBankService = ((Application)getActivity().getApplication()).getRestClient().getPrimaryBankService();
-        reset();
+        reset(false);
     }
 
     @Override
