@@ -2,13 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:id="@+id/currentLocationLayout" android:layout_height="match_parent" android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/current_location_viewflipper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <ScrollView android:id="@+id/vg_address_form" android:visibility="visible"
+        <ScrollView android:id="@+id/vg_address_form" android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
         <LinearLayout
@@ -93,7 +87,7 @@
         </ScrollView>
 
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/vg_gps_launcher"
             android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
@@ -110,8 +104,9 @@
                 <ImageButton
                     android:id="@+id/ib_get_gps_location"
                     android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:src="@drawable/gps_layer"/>
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/round_button" android:src="@drawable/crosshairs_gps"/>
 
             </LinearLayout>
 
@@ -131,8 +126,6 @@
                 />
 
         </LinearLayout>
-    </FrameLayout>
-
 
 
     <android.support.design.widget.FloatingActionButton

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_aadhar_fragment">
-     <FrameLayout
-        android:id="@+id/aadhar_card_viewflipper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/ll_aadhar_camera"
             android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
 
@@ -22,9 +19,9 @@
 
                 <ImageButton android:id="@+id/ib_launchScanner"
                     android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:src="@drawable/ic_camera"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp" android:src="@drawable/camera"
+                    android:background="@drawable/round_button"
                     android:contentDescription="@string/scan_aadhar_qr_code" />
 
             </LinearLayout>
@@ -52,7 +49,7 @@
         </LinearLayout>
 
         <ScrollView
-            android:id="@+id/rl_aadhar_detail" android:visibility="visible"
+            android:id="@+id/rl_aadhar_detail" android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <LinearLayout android:padding="20dp"
@@ -110,9 +107,6 @@
 
 
         </ScrollView>
-
-
-    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_launchScanner"

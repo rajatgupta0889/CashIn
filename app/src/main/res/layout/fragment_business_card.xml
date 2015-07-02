@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
-    <FrameLayout
-        android:id="@+id/business_card_viewflipper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/business_card_viewflipper">
+
             <LinearLayout
-                android:id="@+id/ll_business_card_snap" android:visibility="gone"
-                android:layout_width="match_parent" android:gravity="center"  android:layout_height="match_parent" android:orientation="vertical">
+                android:id="@+id/ll_business_card_snap" android:visibility="visible"
+                android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -19,10 +16,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:text="@string/take_busininess_card_snap" />
 
-                <ImageView
+                <ImageButton
                     android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:src="@drawable/business_card_layer"/>
+                    android:layout_width="70dp"
+                    android:layout_height="70dp" android:src="@drawable/camera"
+                    android:background="@drawable/round_button"/>
 
             </LinearLayout>
 
@@ -47,7 +45,7 @@
                 />
 
         </LinearLayout>
-        <ScrollView
+        <ScrollView android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/ll_business_card_detail" >
             <LinearLayout android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
@@ -84,16 +82,14 @@
 
             </LinearLayout>
         </ScrollView>
-    </FrameLayout>
-
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_launchCamera"
+        android:id="@+id/fab_launchScanner"
         android:src="@drawable/ic_camera"
         app:fabSize="normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignTop="@+id/business_card_viewflipper"
+        android:layout_alignTop="@+id/fab_launchScanner"
         android:layout_margin="24dp"
         android:layout_gravity="bottom|right"
         app:borderWidth="0dp"/>

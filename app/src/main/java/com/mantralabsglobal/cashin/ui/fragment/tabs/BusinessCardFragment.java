@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,9 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @InjectView(R.id.cc_work_email_id)
     public CustomEditText emailId;
 
+    @InjectView(R.id.fab_launchScanner)
+    public FloatingActionButton fab_launchScanner;
+
     @NotEmpty
     @InjectView(R.id.cc_work_addess)
     public CustomEditText workAddress;
@@ -63,6 +67,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
         registerChildView(vg_snap, View.VISIBLE);
         registerChildView(vg_form, View.GONE);
+        registerFloatingActionButton(fab_launchScanner, vg_form);
 
         reset(false);
     }
