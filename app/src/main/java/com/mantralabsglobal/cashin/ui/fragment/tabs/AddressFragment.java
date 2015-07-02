@@ -94,7 +94,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         spinner.setAdapter(adapter);
 
         registerChildView(vg_addressForm, View.GONE);
-        registerChildView(vg_gpsLauncher, View.GONE);
+        registerChildView(vg_gpsLauncher, View.VISIBLE);
         registerFloatingActionButton(btnGetLocationFromGPS, vg_addressForm);
 
         reset(false);

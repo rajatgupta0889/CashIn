@@ -2,6 +2,8 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.mantralabsglobal.cashin.R;
@@ -123,7 +125,16 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            showToastOnUIThread(error.getMessage());
+            Snackbar snackbar = Snackbar
+                    .make((CoordinatorLayout)getCurrentView(), "Failed to save data. Error: " + error.getMessage() , Snackbar.LENGTH_LONG)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            save();
+                        }
+                    });
+            snackbar.show();
+            //showToastOnUIThread(error.getMessage());
         }
     };
 
@@ -149,7 +160,15 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            showToastOnUIThread(error.getMessage());
+            Snackbar snackbar = Snackbar
+                    .make((CoordinatorLayout)getCurrentView(), "Failed to query server. Error: " + error.getMessage() , Snackbar.LENGTH_LONG)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            reset(true);
+                        }
+                    });
+            snackbar.show();
         }
     };
 

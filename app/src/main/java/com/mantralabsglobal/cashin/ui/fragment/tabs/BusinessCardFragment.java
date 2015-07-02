@@ -61,7 +61,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
         businessCardService = ((Application)getActivity().getApplication()).getRestClient().getBusinessCardService();
 
-        registerChildView(vg_snap, View.GONE);
+        registerChildView(vg_snap, View.VISIBLE);
         registerChildView(vg_form, View.GONE);
 
         reset(false);

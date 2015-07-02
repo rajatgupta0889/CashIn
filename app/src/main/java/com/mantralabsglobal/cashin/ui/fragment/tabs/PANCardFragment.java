@@ -80,7 +80,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         panCardService = ((Application)getActivity().getApplication()).getRestClient().getPanCardService();
         //SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
         registerChildView(vg_form, View.GONE);
-        registerChildView(vg_scan, View.GONE);
+        registerChildView(vg_scan, View.VISIBLE);
         registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
 
         reset(false);

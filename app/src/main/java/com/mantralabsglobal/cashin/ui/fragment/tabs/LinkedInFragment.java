@@ -73,7 +73,7 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         RestClient restClient =((Application) getActivity().getApplication()).getRestClient();
 
 
-        registerChildView(vg_linkedInConnect, View.GONE);
+        registerChildView(vg_linkedInConnect, View.VISIBLE);
         registerChildView(vg_linkedInProfile, View.GONE);
 
         linkedInService = restClient.getLinkedInService();
