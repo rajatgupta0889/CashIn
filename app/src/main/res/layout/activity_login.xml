@@ -39,7 +39,9 @@
         android:paddingRight="50dp"
         >
 
-        <EditText android:id="@+id/et_userName" android:layout_marginTop="@dimen/form_input_margin_top" android:layout_width="match_parent" android:layout_height="wrap_content" android:singleLine="true"  android:drawableStart="@drawable/email_outline"
+        <EditText android:id="@+id/et_userName" android:layout_marginTop="@dimen/form_input_margin_top" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:singleLine="true"  android:drawableStart="@drawable/email_outline"
+            android:inputType="textEmailAddress"
             android:gravity="center" />
         <EditText android:id="@+id/et_password" android:layout_marginTop="@dimen/form_input_margin_top" android:layout_width="match_parent" android:layout_height="wrap_content"
             android:password="true" android:drawableStart="@drawable/lock_outline"
