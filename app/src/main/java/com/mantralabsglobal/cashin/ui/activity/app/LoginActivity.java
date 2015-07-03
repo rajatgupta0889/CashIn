@@ -1,22 +1,17 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.service.RestClient;
+import com.mantralabsglobal.cashin.social.SocialBase;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -63,13 +58,10 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
 
     }
 
-    @Override
-    protected void handleGooglePlusConnectionSuccess(String email)
-    {
-        createServerSession(email, "GOOGLE_PLUS_SIGNIN");
-    }
 
     protected void createServerSession(final String email, final String password) {
+        showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
+
         RestClient restClient =((Application) getApplication()).getRestClient();
         final AuthenticationService service = restClient.getAuthenticationService();
 
@@ -89,25 +81,32 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
 
             @Override
             public void failure(final RetrofitError error) {
-
-                if (RetrofitUtils.isUserNotRegisteredError(error)) {
-                    service.registerUser(new AuthenticationService.NewUser(email, password), new Callback<AuthenticationService.AuthenticatedUser>() {
-                        @Override
-                        public void success(AuthenticationService.AuthenticatedUser authenticatedUser, Response response) {
-                            createServerSession(email, password);
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-                            signInFailed(RetrofitUtils.getErrorMessage(error).getMessage());
-                        }
-                    });
-                } else {
-                    signInFailed(RetrofitUtils.getErrorMessage(error).getMessage());
-                }
+                signInFailed(RetrofitUtils.getErrorMessage(error).getMessage());
             }
         });
 
+    }
+
+    protected void loginGooglePlusUser(final String email)
+    {
+        showProgressDialog(getString(R.string.title_please_wait), getString(R.string.registering), true, false);
+
+        RestClient restClient =((Application) getApplication()).getRestClient();
+
+        AuthenticationService.NewUser userPrincipal = new AuthenticationService.NewUser(email,"GOOGLE_AUTH" );
+
+        AuthenticationService service = restClient.getAuthenticationService();
+        service.registerUser(userPrincipal, new Callback<AuthenticationService.AuthenticatedUser>() {
+            @Override
+            public void success(AuthenticationService.AuthenticatedUser authenticationResult, Response response) {
+                createServerSession(email, "GOOGLE_AUTH");
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+                createServerSession(email, "GOOGLE_AUTH");
+            }
+        });
     }
 
     public void signInFailed(final String error)
@@ -144,7 +143,19 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
 
     @OnClick(R.id.gplus_sign_in_button)
     public void signInWithGoogle() {
-        super.googlePlusSignIn();
+        showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
+        googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
+            @Override
+            public void onSuccess(final String email) {
+                loginGooglePlusUser(email);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                hideProgressDialog();
+                showToastOnUIThread(message);
+            }
+        });
     }
 
     @Override
@@ -168,8 +179,5 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
             }
         }
     }
-
-
-
 
 }
