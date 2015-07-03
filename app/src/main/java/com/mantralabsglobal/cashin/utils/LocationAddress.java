@@ -54,7 +54,7 @@ public class LocationAddress {
                 for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
 
                     String addressLne =  address.getAddressLine(i);
-                    if( addressLne != null && addressLne.length()>0 && addressLne.indexOf(myAddress.getCity())>=0)
+                    if( addressLne != null && addressLne.length()>0 && myAddress.getCity() != null && addressLne.indexOf(myAddress.getCity())>=0)
                         break;
                     else {
                         if(sb.length()>0)

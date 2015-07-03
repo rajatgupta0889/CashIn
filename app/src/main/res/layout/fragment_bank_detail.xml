@@ -17,7 +17,8 @@
                 android:layout_height="100dp" android:orientation="horizontal" android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/enter_primary_bank_details"
+                    android:layout_height="wrap_content" android:text="@string/enter_primary_bank_details" android:gravity="center_horizontal"
+                    style="@android:style/TextAppearance.Material.Headline"
                     />
 
             </LinearLayout>
