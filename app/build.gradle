@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 22
@@ -44,5 +45,6 @@ dependencies {
     compile 'com.mobsandgeeks:android-saripaar:2.0-SNAPSHOT'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.soundcloud.android:android-crop:1.0.0@aar'
+
 
 }

@@ -128,11 +128,11 @@ public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Inco
     public List<IncomeService.Income> getDataFromForm(List<IncomeService.Income> base) {
         if(base == null) {
             base = new ArrayList<>();
-            base.add(new IncomeService.Income());
-            base.add(new IncomeService.Income());
+        }
+        while(base.size()<3)
+        {
             base.add(new IncomeService.Income());
         }
-
         base.get(0).setYear(monthIncomeViewOne.getYear());
         base.get(0).setMonth(monthIncomeViewOne.getMonth() + 1);
         base.get(0).setAmount( Double.parseDouble(monthIncomeViewOne.getAmount().toString()));

@@ -92,6 +92,10 @@ public interface AuthenticationService {
     }
 
     public static class NewUser extends UserPrincipal{
-
+        public NewUser(String email, String password)
+        {
+            setEmail(email);
+            setPassword(password);
+        }
     }
 }

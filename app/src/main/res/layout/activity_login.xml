@@ -51,7 +51,13 @@
         <Button android:layout_marginTop="@dimen/form_input_margin_top"
             android:layout_width="match_parent"
             android:textColor="@color/primary"
-            android:layout_height="wrap_content" android:drawableEnd="@drawable/login" android:text="Log In" android:id="@+id/loginButton"/>
+            android:layout_height="wrap_content" android:drawableStart="@drawable/login" android:text="Log In" android:id="@+id/loginButton"/>
+
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/gplus_sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button android:background="@null"
             android:layout_width="match_parent"

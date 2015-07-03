@@ -131,6 +131,8 @@
     <string name="father_name">Father\'s Name</string>
     <string name="logout">Logout</string>
     <string name="product_tour">Product tour</string>
+    <string name="sign_in_with_google">Sign in</string>
+    <string name="signing_in">Singing in</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">

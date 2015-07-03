@@ -72,9 +72,7 @@ public class RegisterActivity extends BaseActivity implements Validator.Validati
         showProgressDialog(getString(R.string.title_please_wait), getString(R.string.registering), true, false);
         RestClient restClient =((Application) getApplication()).getRestClient();
 
-        AuthenticationService.NewUser userPrincipal = new AuthenticationService.NewUser();
-        userPrincipal.setEmail(et_userName.getText().toString());
-        userPrincipal.setPassword(et_password.getText().toString());
+        AuthenticationService.NewUser userPrincipal = new AuthenticationService.NewUser(et_userName.getText().toString(),et_password.getText().toString() );
 
         AuthenticationService service = restClient.getAuthenticationService();
         service.registerUser(userPrincipal, new Callback<AuthenticationService.AuthenticatedUser>() {
