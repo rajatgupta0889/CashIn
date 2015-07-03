@@ -1,23 +1,14 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.AuthenticationService;
-import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.social.GooglePlus;
-import com.mantralabsglobal.cashin.ui.Application;
 
-import retrofit.Callback;
 import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by pk on 6/26/2015.

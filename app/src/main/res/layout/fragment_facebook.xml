@@ -84,5 +84,11 @@
 
 
     </FrameLayout>
-
+    <ProgressBar
+        android:id="@+id/progres_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_gravity="center" />
 </android.support.design.widget.CoordinatorLayout>

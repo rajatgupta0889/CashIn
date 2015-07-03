@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
@@ -30,7 +34,7 @@ public abstract class BaseFragment extends Fragment {
     private View visibleChildView;
 
     protected ProgressDialog progressDialog;
-
+    protected ProgressBar progressBar;
 
     protected void showProgressDialog( String message)
     {
@@ -41,11 +45,7 @@ public abstract class BaseFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.setTitle(getString(R.string.title_please_wait));
-                progressDialog.setMessage(message);
-                progressDialog.setIndeterminate(indeterminate);
-                progressDialog.setCancelable(cancelable);
-                progressDialog.show();
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -66,7 +66,7 @@ public abstract class BaseFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressDialog.dismiss();
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -78,6 +78,16 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.inject(this, view);
         currentView = view;
         progressDialog = new ProgressDialog(getActivity());
+
+        progressBar = (ProgressBar)view.findViewById(R.id.progres_bar);
+        if(progressBar == null) {
+            progressBar = new ProgressBar(view.getContext(), null, android.R.attr.progressBarStyleLarge);
+            progressBar.setIndeterminate(true);
+
+            ((ViewGroup) view).addView(progressBar);
+
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     protected void registerChildView(View view, int visibility)
