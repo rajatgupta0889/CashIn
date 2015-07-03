@@ -129,6 +129,8 @@
     <string name="reset_sucess">Reset sucessfull</string>
     <string name="your_profile">Your Profile</string>
     <string name="father_name">Father\'s Name</string>
+    <string name="logout">Logout</string>
+    <string name="product_tour">Product tour</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">
