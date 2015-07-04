@@ -1,5 +1,11 @@
 package com.mantralabsglobal.cashin.ui;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.util.Base64;
+import android.util.Log;
+
+import com.facebook.FacebookSdk;
 import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
@@ -8,6 +14,9 @@ import com.mantralabsglobal.cashin.ui.view.MonthIncomeView;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.adapter.ViewDataAdapter;
 import com.mobsandgeeks.saripaar.exception.ConversionException;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by pk on 6/21/2015.
@@ -53,6 +62,25 @@ public class Application extends android.app.Application{
             }
         });
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        getKeyHash();
+
+    }
+
+    private void getKeyHash() {
+        try {
+            PackageInfo info =     getPackageManager().getPackageInfo("com.mantralabsglobal.cashin",     PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                Log.e("MY KEY HASH:", sign);
+                //  Toast.makeText(getApplicationContext(),sign,     Toast.LENGTH_LONG).show();
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }
     }
 
     public RestClient getRestClient() {

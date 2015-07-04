@@ -45,6 +45,7 @@ dependencies {
     compile 'com.mobsandgeeks:android-saripaar:2.0-SNAPSHOT'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.soundcloud.android:android-crop:1.0.0@aar'
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
 
 
 }

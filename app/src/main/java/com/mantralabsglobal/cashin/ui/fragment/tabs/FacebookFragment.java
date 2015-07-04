@@ -1,26 +1,34 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.FacebookService;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 
-import org.brickred.socialauth.Profile;
-import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
-import org.brickred.socialauth.android.SocialAuthError;
-import org.brickred.socialauth.android.SocialAuthListener;
+
+import java.util.Arrays;
 
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 /**
  * Created by pk on 13/06/2015.
@@ -48,6 +56,10 @@ public class FacebookFragment extends BaseFragment  {
     @InjectView(R.id.rl_facebook_details)
     public ViewGroup viewGroup_facebookForm;
 
+    @InjectView(R.id.btn_facebook_connect)
+    public LoginButton loginButton;
+
+    CallbackManager callbackManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,42 +75,54 @@ public class FacebookFragment extends BaseFragment  {
         super.onViewCreated(view, savedInstanceState);
         Button btnFacebookConnect = (Button) view.findViewById(R.id.btn_facebook_connect);
 
-        socialAuthAdapter = new SocialAuthAdapter(dialogListener);
+
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email","user_birthday"));
+        // If using in a fragment
+        //loginButton.setFragment(this);
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+
+                    private ProfileTracker mProfileTracker;
+
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        showToastOnUIThread(loginResult.getAccessToken().toString());
+                        mProfileTracker = new ProfileTracker() {
+                            @Override
+                            protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                                if(profile2 != null) {
+                                    Log.v("facebook - profile", profile2.getFirstName());
+                                    showToastOnUIThread(profile2.getFirstName());
+                                    mProfileTracker.stopTracking();
+                                }
+                            }
+                        };
+                        mProfileTracker.startTracking();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        showToastOnUIThread(exception.getMessage());
+                    }
+                });
 
         registerChildView(getCurrentView().findViewById(R.id.ll_facebook_connect), View.VISIBLE);
         registerChildView(viewGroup_facebookForm, View.GONE);
     }
 
-    @OnClick(R.id.btn_facebook_connect)
-    public void facebook_connect_click()
-    {
-        showProgressDialog(getString(R.string.waiting_for_facebook));
-
-        socialAuthAdapter.authorize(getActivity(), SocialAuthAdapter.Provider.FACEBOOK);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
-    private DialogListener dialogListener = new DialogListener() {
-        @Override
-        public void onComplete(Bundle bundle) {
-            socialAuthAdapter.getUserProfileAsync(FacebookFragment.this.profileSocialAuthListener);
-        }
-
-        @Override
-        public void onError(SocialAuthError socialAuthError) {
-            hideProgressDialog();
-            showToastOnUIThread(socialAuthError.getMessage());
-        }
-
-        @Override
-        public void onCancel() {
-            hideProgressDialog();
-        }
-
-        @Override
-        public void onBack() {
-            hideProgressDialog();
-        }
-    };
 
     private void showFacebookProfileForm(FacebookService.FacebookProfile fbProfile)
     {
@@ -113,7 +137,7 @@ public class FacebookFragment extends BaseFragment  {
         setVisibleChildView(viewGroup_facebookForm);
     }
 
-    private SocialAuthListener<Profile> profileSocialAuthListener = new SocialAuthListener<Profile>() {
+    /*private SocialAuthListener<Profile> profileSocialAuthListener = new SocialAuthListener<Profile>() {
         @Override
         public void onExecute(String s, Profile profile) {
             FacebookService.FacebookProfile facebookProfile = new FacebookService.FacebookProfile();
@@ -129,6 +153,15 @@ public class FacebookFragment extends BaseFragment  {
             hideProgressDialog();
             showToastOnUIThread(socialAuthError.getMessage());
         }
-    };
+    };*/
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Call the 'deactivateApp' method to log an app event for use in analytics and advertising
+        // reporting.  Do so in the onPause methods of the primary Activities that an app may be
+        // launched into.
+        AppEventsLogger.deactivateApp(getActivity());
+    }
 }

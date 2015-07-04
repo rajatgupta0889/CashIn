@@ -30,7 +30,6 @@
     <string name="gender">Gender</string>
     <string name="aadhar_number">Aadhar Number</string>
     <string name="date_of_birth">Date of birth</string>
-    <string name="app_id">1442120239426705</string>
     <string name="facebook">facebook</string>
     <string name="facebook_connect">connnect</string>
     <string name="facebook_connected_as">Connected as</string>
@@ -85,6 +84,7 @@
     <string name="not_present_on_server">Data not available</string>
     <string name="picture">Picture</string>
     <string name="description_info">Info</string>
+    <string name="facebook_app_id">1442098402762222</string>
     <string name="intro_message">
         <![CDATA[
 
