@@ -31,6 +31,7 @@ public class RestClient  {
     private PanCardService panCardService;
     private BusinessCardService businessCardService;
     private IncomeService incomeService;
+    private UserHistoryService userHistoryService;
 
     public RestClient(Context context)
     {
@@ -65,6 +66,7 @@ public class RestClient  {
         panCardService = restAdapter.create(PanCardService.class);
         businessCardService = restAdapter.create(BusinessCardService.class);
         incomeService = restAdapter.create(IncomeService.class);
+        userHistoryService = restAdapter.create(UserHistoryService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -100,4 +102,9 @@ public class RestClient  {
     public IncomeService getIncomeService() {
         return incomeService;
     }
+
+    public UserHistoryService getUserHistoryService() {
+        return userHistoryService;
+    }
+
 }
