@@ -19,9 +19,16 @@ public class RetrofitUtils {
 
     public static ErrorMessage getErrorMessage(RetrofitError error)
     {
-        String json = new String( ((TypedByteArray)error.getResponse().getBody()).getBytes());
-        Gson gson = new Gson();
-        return gson.fromJson(json, ErrorMessage.class);
+        if(error.getResponse() != null) {
+            String json = new String(((TypedByteArray) error.getResponse().getBody()).getBytes());
+            Gson gson = new Gson();
+            return gson.fromJson(json, ErrorMessage.class);
+        }
+        else {
+            ErrorMessage message = new ErrorMessage();
+            message.setMessage(error.getMessage());
+            return message;
+        }
     }
 
     public static class ErrorMessage {

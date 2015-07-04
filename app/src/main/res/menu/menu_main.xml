@@ -7,6 +7,13 @@
         android:orderInCategory="100" app:showAsAction="never" />
 -->
 
+    <item android:id="@+id/action_scan_sms"
+        android:icon="@drawable/logout"
+        android:title="@string/read_transactional_sms"
+        app:showAsAction="never"
+        android:orderInCategory="1"
+        android:menuCategory="secondary"/>
+
     <item android:id="@+id/action_product_tour"
         android:icon="@drawable/logout"
         android:title="@string/product_tour"

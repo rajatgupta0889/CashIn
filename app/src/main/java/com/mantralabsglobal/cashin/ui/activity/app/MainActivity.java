@@ -6,17 +6,25 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.IdentityPagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.SocialPagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.WorkPagerAdapter;
+import com.mantralabsglobal.cashin.utils.SMSProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +151,50 @@ public class MainActivity extends BaseActivity {
             finish();
             return true;
         }
+        if(id == R.id.action_scan_sms)
+        {
+            SMSProvider smsProvider = new SMSProvider();
+            List<SMSProvider.SMSMessage> messageList = smsProvider.readSMS(this, new Predicate<SMSProvider.SMSMessage>() {
+            @Override
+            public boolean apply(SMSProvider.SMSMessage smsMessage) {
+                return smsMessage.getBody().contains("Transaction");
+                }
+             });
+            openSMSDialog(messageList);
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void openSMSDialog(List<SMSProvider.SMSMessage> messageList)
+    {
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(MainActivity.this);
+
+        final ListView listview=new ListView(MainActivity.this);
+        LinearLayout layout = new LinearLayout(MainActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(listview);
+        myDialog.setView(layout);
+        ArrayAdapter<SMSProvider.SMSMessage> adapter = new ArrayAdapter<SMSProvider.SMSMessage>(this, 0, messageList){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Get the data item for this position
+                SMSProvider.SMSMessage smsMessage = getItem(position);
+                // Check if an existing view is being reused, otherwise inflate the view
+                if (convertView == null) {
+                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.smsmessage_row, parent, false);
+                }
+                // Lookup view for data population
+                TextView tvBody = (TextView) convertView.findViewById(R.id.tv_body);
+                TextView tvFrom = (TextView) convertView.findViewById(R.id.tv_from);
+
+                tvBody.setText(smsMessage.getBody());
+                tvFrom.setText(smsMessage.getAddress());
+                return convertView;
+            }
+        };
+        //adapter.addAll(messageList);
+        listview.setAdapter(adapter);
+        myDialog.show();
     }
 
     public void redirectToLogin()
