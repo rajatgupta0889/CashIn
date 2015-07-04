@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mantralabsglobal.cashin.ui.fragment.intro.SelfieFragment" style="@style/Intro" android:background="@color/intro_slider_one">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp" android:text="@string/take_a_selfie"
+        android:gravity="center"
+        style="@android:style/TextAppearance.Material.Large.Inverse" />
+
+</FrameLayout>

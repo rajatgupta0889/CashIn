@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.mantralabsglobal.cashin.ui.activity.app.IntroSliderActivity">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:background="@color/intro_slider_one">
+
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom|center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp">
+
+        <ImageView android:id="@+id/view_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:src="@drawable/page_indicator_dot_selected" android:layout_margin="10dp" />
+
+        <ImageView android:id="@+id/view_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:src="@drawable/page_indicator_dot"  android:layout_margin="10dp"  />
+
+        <ImageView android:id="@+id/view_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:src="@drawable/page_indicator_dot"  android:layout_margin="10dp"  />
+
+        <ImageView android:id="@+id/view_four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:src="@drawable/page_indicator_dot"  android:layout_margin="10dp"  />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

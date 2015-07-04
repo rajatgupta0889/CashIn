@@ -151,6 +151,12 @@ public class MainActivity extends BaseActivity {
             finish();
             return true;
         }
+        if (id == R.id.action_product_tour) {
+            Intent intent = new Intent(getBaseContext(), IntroSliderActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
         if(id == R.id.action_scan_sms)
         {
             SMSProvider smsProvider = new SMSProvider();
