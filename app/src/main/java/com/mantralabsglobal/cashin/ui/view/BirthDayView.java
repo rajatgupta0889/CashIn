@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.fragment.utils.DatepickerDialogFragment;
+import com.mantralabsglobal.cashin.utils.DateUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -29,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by pk on 6/22/2015.
@@ -106,7 +108,7 @@ public class BirthDayView extends LinearLayout {
                         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
 
                         et_dob.setText(dateFormat.format(cal.getTime()));
-                        tv_age.setText(computeAge(year, monthOfYear, dayOfMonth) + " Years");
+                        tv_age.setText(DateUtils.getYearsPassed(year, monthOfYear, dayOfMonth) + " Years");
                     }
                 }, defaultDate);
                 newFragment.show(ft, "date_dialog");
@@ -115,7 +117,7 @@ public class BirthDayView extends LinearLayout {
         });
     }
 
-    private int computeAge(int year, int monthOfYear, int dayOfMonth)
+   /* private int computeAge(int year, int monthOfYear, int dayOfMonth)
     {
         Calendar myBirthDate = Calendar.getInstance();
         myBirthDate.clear();
@@ -128,7 +130,7 @@ public class BirthDayView extends LinearLayout {
             years++;
         }
         return years;
-    }
+    }*/
 
     private void loadViews() {
         et_dob = (EditText) findViewWithTag("et_dob");

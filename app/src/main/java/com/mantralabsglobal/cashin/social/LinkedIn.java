@@ -15,13 +15,13 @@ import com.linkedin.platform.listeners.ApiResponse;
 import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.mantralabsglobal.cashin.utils.DateUtils;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by pk on 7/4/2015.
@@ -56,10 +56,7 @@ public class LinkedIn {
                         StartDate sd = linkedInProfileResponse.getPositions().getValues().get(0).getStartDate();
                         if(sd != null)
                         {
-                            DateTime dt = new DateTime();
-                            dt = dt.withDate(sd.getYear(),sd.getMonth(), 1);
-                            Period period =  new Period(dt, DateTime.now());
-                            linkedInDetail.getWorkExperience().setTimePeriod( period.getYears() + " Years " + period.getMonths() + " Months");
+                            linkedInDetail.getWorkExperience().setTimePeriod( DateUtils.getYearsPassed(sd.getYear(), sd.getMonth(),1) + " Years ");
                         }
                     }
                     listener.onSuccess(linkedInDetail);
