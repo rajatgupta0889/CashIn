@@ -2,10 +2,14 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +30,8 @@ import com.mantralabsglobal.cashin.ui.fragment.adapter.SocialPagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.WorkPagerAdapter;
 import com.mantralabsglobal.cashin.utils.SMSProvider;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +42,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
 
+    public static final String PACKAGE_CASHIN_APP = "com.mantralabsglobal.cashin";
     private FinancePagerAdapter financePagerAdapter;
     private IdentityPagerAdapter identityPagerAdapter;
     private WorkPagerAdapter workPagerAdapter;
@@ -168,7 +175,25 @@ public class MainActivity extends BaseActivity {
              });
             openSMSDialog(messageList);
         }
+        if(id == R.id.action_package_hash){
+            showPckageHash();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void showPckageHash(){
+            try {
+                PackageInfo info =     getPackageManager().getPackageInfo(PACKAGE_CASHIN_APP,     PackageManager.GET_SIGNATURES);
+                for (android.content.pm.Signature signature : info.signatures) {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                    showToastOnUIThread(sign);
+                    Log.i("MY KEY HASH:", sign);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+            } catch (NoSuchAlgorithmException e) {
+            }
     }
 
     protected void openSMSDialog(List<SMSProvider.SMSMessage> messageList)

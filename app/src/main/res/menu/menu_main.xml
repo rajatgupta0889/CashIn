@@ -15,8 +15,14 @@
         android:menuCategory="secondary"/>
 
     <item android:id="@+id/action_product_tour"
-        android:icon="@drawable/logout"
-        android:title="@string/product_tour"
+    android:icon="@drawable/logout"
+    android:title="@string/product_tour"
+    app:showAsAction="never"
+    android:orderInCategory="1"
+    android:menuCategory="secondary"/>
+
+    <item android:id="@+id/action_package_hash"
+        android:title="@string/generate_product_hash"
         app:showAsAction="never"
         android:orderInCategory="1"
         android:menuCategory="secondary"/>
