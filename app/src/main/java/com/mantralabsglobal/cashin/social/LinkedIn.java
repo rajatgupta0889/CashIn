@@ -47,6 +47,7 @@ public class LinkedIn {
                 if(linkedInProfileResponse != null)
                 {
                     LinkedInService.LinkedInDetail linkedInDetail = new LinkedInService.LinkedInDetail();
+                    linkedInDetail.setConnectedAs(linkedInProfileResponse.getFirstName() + " " + linkedInProfileResponse.getLastName());
                     linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
                     linkedInDetail.setEducation(new LinkedInService.Education());
                     if(linkedInProfileResponse.getPositions() != null && linkedInProfileResponse.getPositions().getValues().size()>0)

@@ -41,15 +41,22 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     @InjectView(R.id.rl_linkedin_details)
     ViewGroup vg_linkedInProfile;
 
-    @InjectView(R.id.et_name)
-    EditText et_name;
-
     @InjectView(R.id.cs_job_title)
     CustomEditText jobTitle;
     @InjectView(R.id.cs_company)
     CustomEditText company;
     @InjectView(R.id.cs_time_period)
     CustomEditText period;
+
+    @InjectView(R.id.cs_school)
+    CustomEditText school;
+    @InjectView(R.id.cs_degree)
+    CustomEditText degree;
+    @InjectView(R.id.cs_fieldOfStudy)
+    CustomEditText fieldOdStudy;
+
+    @InjectView(R.id.et_name)
+    EditText connectedAs;
 
     LinkedInService linkedInService;
 
@@ -158,13 +165,19 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     public void bindDataToForm(LinkedInService.LinkedInDetail value) {
         setVisibleChildView(vg_linkedInProfile);
         if(value != null) {
+            this.connectedAs.setText(value.getConnectedAs());
             if(value.getWorkExperience() != null) {
                 this.jobTitle.setText(value.getWorkExperience().getJobTitle());
                 this.company.setText(value.getWorkExperience().getCompany());
                 this.period.setText(value.getWorkExperience().getTimePeriod());
             }
+            if(value.getEducation() != null)
+            {
+                this.school.setText(value.getEducation().getCollege());
+                this.degree.setText(value.getEducation().getDegree());
+                this.fieldOdStudy.setText(value.getEducation().getFieldOfStudy());
+            }
         }
-        //TODO: Set all form fields
     }
 
     @Override
@@ -178,9 +191,15 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         if(linkedInDetail.getEducation() == null)
             linkedInDetail.setEducation(new LinkedInService.Education());
 
+        linkedInDetail.setConnectedAs(connectedAs.getText().toString());
+
         linkedInDetail.getWorkExperience().setCompany(company.getText().toString());
         linkedInDetail.getWorkExperience().setTimePeriod(period.getText().toString());
         linkedInDetail.getWorkExperience().setJobTitle(jobTitle.getText().toString());
+
+        linkedInDetail.getEducation().setDegree(degree.getText().toString());
+        linkedInDetail.getEducation().setFieldOfStudy(fieldOdStudy.getText().toString());
+        linkedInDetail.getEducation().setCollege(school.getText().toString());
 
         return linkedInDetail;
     }

@@ -54,7 +54,9 @@ public interface LinkedInService {
         @SerializedName("education")
         private Education education;
 
-        public WorkExperience getWorkExperience() {
+       private String connectedAs;
+
+       public WorkExperience getWorkExperience() {
             return workExperience;
         }
 
@@ -69,7 +71,15 @@ public interface LinkedInService {
         public void setEducation(Education education) {
             this.education = education;
         }
-    }
+
+       public void setConnectedAs(String connectedAs) {
+           this.connectedAs = connectedAs;
+       }
+
+       public String getConnectedAs() {
+           return connectedAs;
+       }
+   }
 
     public static class WorkExperience
     {

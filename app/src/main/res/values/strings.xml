@@ -173,4 +173,7 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generate_product_hash">Package hash</string>
+    <string name="degree">Degree</string>
+    <string name="field_of_study">Field of study</string>
+    <string name="education">Education</string>
 </resources>

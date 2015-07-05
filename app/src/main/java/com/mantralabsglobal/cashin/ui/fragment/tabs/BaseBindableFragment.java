@@ -162,7 +162,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            if(RetrofitUtils.isDataNotOnServer(error))
+            if(RetrofitUtils.isDataNotOnServerError(error))
             {
                 isDataPresentOnServer = false;
                 handleDataNotPresentOnServer();
