@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_pan_card_fragment">
 
@@ -16,18 +16,19 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/linkedIn" />
+                    android:layout_height="wrap_content" android:text="@string/linkedIn" style="@android:style/TextAppearance.Material.Headline" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_linkedIn_connect"
                     android:layout_marginTop="30dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:drawableLeft="@drawable/linkedin" android:text="@string/linkedIn_connect" />
+                    android:layout_height="wrap_content" android:src="@drawable/linkedin_default"
+                    android:contentDescription="Signin with linkedin" />
 
 
         </LinearLayout>
 
-        <ScrollView
+        <ScrollView android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"  android:id="@+id/rl_linkedin_details">
         <LinearLayout
@@ -103,4 +104,4 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_gravity="center" />
 
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

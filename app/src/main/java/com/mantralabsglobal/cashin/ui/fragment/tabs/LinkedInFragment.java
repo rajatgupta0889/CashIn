@@ -1,40 +1,39 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
-import com.mantralabsglobal.cashin.ui.Application;
+import com.linkedin.platform.LISessionManager;
+import com.linkedin.platform.errors.LIAuthError;
+import com.linkedin.platform.listeners.AuthListener;
+import com.linkedin.platform.utils.Scope;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.service.LinkedInService;
+import com.mantralabsglobal.cashin.service.RestClient;
+import com.mantralabsglobal.cashin.social.LinkedIn;
+import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
-
-import org.brickred.socialauth.Career;
-import org.brickred.socialauth.Profile;
-import org.brickred.socialauth.android.DialogListener;
-import org.brickred.socialauth.android.SocialAuthAdapter;
-import org.brickred.socialauth.android.SocialAuthError;
-import org.brickred.socialauth.android.SocialAuthListener;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
  */
 public class LinkedInFragment extends BaseBindableFragment<LinkedInService.LinkedInDetail> {
 
+    private static final String TAG = "LinkedInFragment";
     @InjectView(R.id.btn_linkedIn_connect)
-    Button btn_linkedIn;
+    ImageButton btn_linkedIn;
 
     @InjectView(R.id.ll_linkedIn_connect)
     ViewGroup vg_linkedInConnect;
@@ -54,8 +53,6 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     LinkedInService linkedInService;
 
-    SocialAuthAdapter socialAuthAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +65,6 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        socialAuthAdapter = new SocialAuthAdapter(new ResponseListener());
 
         RestClient restClient =((Application) getActivity().getApplication()).getRestClient();
 
@@ -99,14 +95,63 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        setVisibleChildView(vg_linkedInConnect);
+        if( LISessionManager.getInstance(getActivity()).getSession() != null &&
+                !LISessionManager.getInstance(getActivity()).getSession().getAccessToken().isExpired())
+        {
+            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
+        }
+        else {
+            setVisibleChildView(vg_linkedInConnect);
+        }
+
     }
 
     @OnClick(R.id.btn_linkedIn_connect)
     public void onConnectClick()
     {
-        showProgressDialog(getString( R.string.waiting_for_linkedIn), true, false);
-        socialAuthAdapter.authorize(getActivity(), SocialAuthAdapter.Provider.LINKEDIN);
+        showProgressDialog(getString(R.string.waiting_for_linkedIn), true, false);
+
+        if( LISessionManager.getInstance(getActivity()).getSession() != null &&
+        !LISessionManager.getInstance(getActivity()).getSession().getAccessToken().isExpired())
+        {
+            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
+        }
+        else {
+            LISessionManager.getInstance(getActivity().getApplicationContext()).init(getActivity(), buildScope(), new AuthListener() {
+                        @Override
+                        public void onAuthSuccess() {
+                            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
+                        }
+
+                        @Override
+                        public void onAuthError(LIAuthError error) {
+                            hideProgressDialog();
+                            Log.v(TAG, error.toString());
+                            setVisibleChildView(vg_linkedInConnect);
+                        }
+                    },
+                    true);
+        }
+    }
+
+    private SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener = new SocialBase.SocialListener<LinkedInService.LinkedInDetail>() {
+        @Override
+        public void onSuccess(LinkedInService.LinkedInDetail linkedInDetail) {
+            hideProgressDialog();
+            bindDataToForm(linkedInDetail);
+        }
+
+        @Override
+        public void onFailure(String message) {
+            hideProgressDialog();
+            showToastOnUIThread(message);
+            setVisibleChildView(vg_linkedInConnect);
+        }
+    };
+
+    // Build the list of member permissions our LinkedIn session requires
+    private static Scope buildScope() {
+        return Scope.build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);
     }
 
     @Override
@@ -116,6 +161,7 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
             if(value.getWorkExperience() != null) {
                 this.jobTitle.setText(value.getWorkExperience().getJobTitle());
                 this.company.setText(value.getWorkExperience().getCompany());
+                this.period.setText(value.getWorkExperience().getTimePeriod());
             }
         }
         //TODO: Set all form fields
@@ -123,11 +169,28 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     public LinkedInService.LinkedInDetail getDataFromForm(LinkedInService.LinkedInDetail linkedInDetail) {
+        if(linkedInDetail == null)
+            linkedInDetail = new LinkedInService.LinkedInDetail();
+
+        if(linkedInDetail.getWorkExperience() == null)
+            linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
+
+        if(linkedInDetail.getEducation() == null)
+            linkedInDetail.setEducation(new LinkedInService.Education());
+
+        linkedInDetail.getWorkExperience().setCompany(company.getText().toString());
+        linkedInDetail.getWorkExperience().setTimePeriod(period.getText().toString());
+        linkedInDetail.getWorkExperience().setJobTitle(jobTitle.getText().toString());
+
         return linkedInDetail;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        LISessionManager.getInstance(getActivity().getApplicationContext()).onActivityResult(getActivity(), requestCode, resultCode, data);
+    }
 
-    private final class ResponseListener implements DialogListener
+   /* private final class ResponseListener implements DialogListener
     {
         public void onComplete(Bundle values) {
             socialAuthAdapter.getUserProfileAsync(new ProfileDataListener());
@@ -150,8 +213,8 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
             });
 
         }
-
-        @Override
+*/
+       /* @Override
         public void onError(SocialAuthError socialAuthError) {
             Log.e("LinkedInFragment", socialAuthError.getMessage(), socialAuthError);
             hideProgressDialog();
@@ -193,7 +256,7 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         public void onError(SocialAuthError socialAuthError) {
             showToastOnUIThread(socialAuthError.getMessage());
         }
-    }
+    }*/
 
 
 }

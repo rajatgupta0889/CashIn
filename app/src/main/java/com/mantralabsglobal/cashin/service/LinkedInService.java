@@ -2,10 +2,6 @@ package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.brickred.socialauth.Career;
-import org.brickred.socialauth.Education;
-import org.brickred.socialauth.Position;
-
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -26,7 +22,7 @@ public interface LinkedInService {
     @PUT("/user/linkedIn")
     void updateLinkedInDetail(@Body LinkedInDetail linkedInDetail, Callback<LinkedInDetail> callback);
 
-    public static class LinkedInAdapter
+   /* public static class LinkedInAdapter
     {
         public static LinkedInDetail fromCareer(Career career)
         {
@@ -49,7 +45,7 @@ public interface LinkedInService {
             return linkedInDetail;
         }
     }
-
+*/
     public static class LinkedInDetail{
 
         @SerializedName("workexperiance")
