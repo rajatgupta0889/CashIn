@@ -30,6 +30,10 @@
 
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <LinearLayout  android:id="@+id/rl_facebook_details"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:orientation="vertical" android:visibility="gone">
@@ -97,7 +101,7 @@
             </LinearLayout>
 
         </LinearLayout>
-
+</ScrollView>
 
     <ProgressBar
         android:id="@+id/progres_bar"
