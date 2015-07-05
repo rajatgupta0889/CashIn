@@ -30,7 +30,6 @@ import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
-import org.brickred.socialauth.android.SocialAuthAdapter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +43,6 @@ import retrofit.Callback;
 public class FacebookFragment extends BaseBindableFragment<FacebookService.FacebookProfile>  {
 
     private EditText dobEditText;
-    private SocialAuthAdapter socialAuthAdapter;
 
     @NotEmpty
     @InjectView(R.id.et_connectedAs)
