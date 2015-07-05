@@ -15,7 +15,10 @@ public interface FacebookService {
     void getFacebookProfile(Callback<FacebookProfile> callback);
 
     @POST("/user/fbrofile")
-    void setFacebokProfile(FacebookProfile linkedInDetail, Callback<FacebookProfile> callback);
+    void createFacebokProfile(FacebookProfile linkedInDetail, Callback<FacebookProfile> callback);
+
+    @POST("/user/fbrofile")
+    void updateFacebokProfile(FacebookProfile linkedInDetail, Callback<FacebookProfile> callback);
 
     public static class FacebookProfile{
 
@@ -24,6 +27,7 @@ public interface FacebookService {
         private String hometown;
         private String relationshipStatus;
         private String dob;
+        private String connectedAs;
 
         public String getWorkspace() {
             return workspace;
@@ -63,6 +67,14 @@ public interface FacebookService {
 
         public void setDob(String dob) {
             this.dob = dob;
+        }
+
+        public String getConnectedAs() {
+            return connectedAs;
+        }
+
+        public void setConnectedAs(String connectedAs) {
+            this.connectedAs = connectedAs;
         }
     }
 

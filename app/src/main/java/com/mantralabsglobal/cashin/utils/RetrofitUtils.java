@@ -17,6 +17,10 @@ public class RetrofitUtils {
         return USER_NOT_REGISTERED_ERROR.equalsIgnoreCase(getErrorMessage(error).message);
     }
 
+    public static boolean isDataNotOnServer(RetrofitError error){
+        return error.getResponse().getStatus() == 404;
+    }
+
     public static ErrorMessage getErrorMessage(RetrofitError error)
     {
         if(error.getResponse() != null) {

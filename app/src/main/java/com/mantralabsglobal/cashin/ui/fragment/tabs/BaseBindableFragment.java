@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 
@@ -65,6 +66,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         return false;
     }
 
+    @Optional
     @Override
     @OnClick(R.id.btn_save)
     public void save() {
@@ -160,15 +162,22 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            Snackbar snackbar = Snackbar
-                    .make((CoordinatorLayout)getCurrentView(), "Failed to query server. Error: " + error.getMessage() , Snackbar.LENGTH_LONG)
-                    .setAction("Retry", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            reset(true);
-                        }
-                    });
-            snackbar.show();
+            if(RetrofitUtils.isDataNotOnServer(error))
+            {
+                isDataPresentOnServer = false;
+                handleDataNotPresentOnServer();
+            }
+            else {
+                Snackbar snackbar = Snackbar
+                        .make((CoordinatorLayout) getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                reset(true);
+                            }
+                        });
+                snackbar.show();
+            }
         }
     };
 

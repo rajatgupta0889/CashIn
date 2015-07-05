@@ -32,6 +32,7 @@ public class RestClient  {
     private BusinessCardService businessCardService;
     private IncomeService incomeService;
     private UserHistoryService userHistoryService;
+    private FacebookService facebookService;
 
     public RestClient(Context context)
     {
@@ -67,6 +68,7 @@ public class RestClient  {
         businessCardService = restAdapter.create(BusinessCardService.class);
         incomeService = restAdapter.create(IncomeService.class);
         userHistoryService = restAdapter.create(UserHistoryService.class);
+        facebookService = restAdapter.create(FacebookService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -107,4 +109,7 @@ public class RestClient  {
         return userHistoryService;
     }
 
+    public FacebookService getFacebookService() {
+        return facebookService;
+    }
 }

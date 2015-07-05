@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -21,52 +23,73 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.FacebookService;
+import com.mantralabsglobal.cashin.social.Facebook;
+import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.brickred.socialauth.android.SocialAuthAdapter;
 
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.InjectView;
+import retrofit.Callback;
 
 /**
  * Created by pk on 13/06/2015.
  */
-public class FacebookFragment extends BaseFragment  {
+public class FacebookFragment extends BaseBindableFragment<FacebookService.FacebookProfile>  {
 
     private EditText dobEditText;
     private SocialAuthAdapter socialAuthAdapter;
 
+    @NotEmpty
+    @InjectView(R.id.et_connectedAs)
+    public EditText connectedAs;
+
+    @NotEmpty
     @InjectView(R.id.cet_workplace)
     public CustomEditText workplace;
 
+    @NotEmpty
     @InjectView(R.id.cet_city)
     public CustomEditText city;
 
+    @NotEmpty
     @InjectView(R.id.cet_hometown)
     public CustomEditText hometown;
 
+    @NotEmpty
     @InjectView(R.id.cet_relationshipStatus)
     public CustomEditText relationshipStatus;
 
+    @NotEmpty
     @InjectView(R.id.cet_dob)
     public BirthDayView dob;
 
     @InjectView(R.id.rl_facebook_details)
-    public ViewGroup viewGroup_facebookForm;
+    public ViewGroup vg_facebookForm;
+
+    @InjectView(R.id.ll_facebook_connect)
+    public ViewGroup vg_facebookConnect;
+
 
     @InjectView(R.id.btn_facebook_connect)
     public LoginButton loginButton;
 
     CallbackManager callbackManager;
 
+    FacebookService facebookService;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_facebook, container, false);
-
+        facebookService = ((Application) getActivity().getApplication()).getRestClient().getFacebookService();
         return view;
     }
 
@@ -76,7 +99,8 @@ public class FacebookFragment extends BaseFragment  {
         Button btnFacebookConnect = (Button) view.findViewById(R.id.btn_facebook_connect);
 
 
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "email","user_birthday"));
+        List<String> permissions = Arrays.asList("public_profile","user_birthday", "user_hometown", "user_location", "user_relationship_details", "user_work_history");
+        loginButton.setReadPermissions(permissions);
         // If using in a fragment
         //loginButton.setFragment(this);
 
@@ -85,22 +109,10 @@ public class FacebookFragment extends BaseFragment  {
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
 
-                    private ProfileTracker mProfileTracker;
-
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         showToastOnUIThread(loginResult.getAccessToken().toString());
-                        mProfileTracker = new ProfileTracker() {
-                            @Override
-                            protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-                                if(profile2 != null) {
-                                    Log.v("facebook - profile", profile2.getFirstName());
-                                    showToastOnUIThread(profile2.getFirstName());
-                                    mProfileTracker.stopTracking();
-                                }
-                            }
-                        };
-                        mProfileTracker.startTracking();
+                        populateFaceBookProfile(loginResult.getAccessToken());
                     }
 
                     @Override
@@ -114,8 +126,59 @@ public class FacebookFragment extends BaseFragment  {
                     }
                 });
 
-        registerChildView(getCurrentView().findViewById(R.id.ll_facebook_connect), View.VISIBLE);
-        registerChildView(viewGroup_facebookForm, View.GONE);
+        registerChildView(vg_facebookConnect, View.VISIBLE);
+        registerChildView(vg_facebookForm, View.GONE);
+        reset(false);
+
+
+
+    }
+
+    protected void populateFaceBookProfile(AccessToken token)
+    {
+        Facebook.getFacebookProfile(token, new SocialBase.SocialListener<FacebookService.FacebookProfile>() {
+            @Override
+            public void onSuccess(FacebookService.FacebookProfile facebookProfile) {
+                bindDataToForm(facebookProfile);
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onUpdate(FacebookService.FacebookProfile updatedData, Callback<FacebookService.FacebookProfile> saveCallback) {
+        facebookService.updateFacebokProfile(updatedData, saveCallback);
+    }
+
+    @Override
+    protected void onCreate(FacebookService.FacebookProfile updatedData, Callback<FacebookService.FacebookProfile> saveCallback) {
+        facebookService.createFacebokProfile(updatedData, saveCallback);
+    }
+
+    @Override
+    protected void loadDataFromServer(Callback<FacebookService.FacebookProfile> dataCallback) {
+        facebookService.getFacebookProfile(dataCallback);
+    }
+
+    @Override
+    protected void handleDataNotPresentOnServer() {
+        Context context = loginButton.getContext();
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if(accessToken != null)
+        {
+            populateFaceBookProfile(accessToken);
+        }
+        else {
+            showFacebookConnect();
+        }
+    }
+
+    private void showFacebookConnect() {
+        setVisibleChildView(vg_facebookConnect);
     }
 
     @Override
@@ -123,37 +186,6 @@ public class FacebookFragment extends BaseFragment  {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
-    private void showFacebookProfileForm(FacebookService.FacebookProfile fbProfile)
-    {
-        if(fbProfile != null)
-        {
-            workplace.setText(fbProfile.getWorkspace());
-            city.setText(fbProfile.getCity());
-            //dob.setText(fbProfile.getDob());
-            relationshipStatus.setText(fbProfile.getRelationshipStatus());
-            hometown.setText(fbProfile.getHometown());
-        }
-        setVisibleChildView(viewGroup_facebookForm);
-    }
-
-    /*private SocialAuthListener<Profile> profileSocialAuthListener = new SocialAuthListener<Profile>() {
-        @Override
-        public void onExecute(String s, Profile profile) {
-            FacebookService.FacebookProfile facebookProfile = new FacebookService.FacebookProfile();
-            facebookProfile.setCity(profile.getLocation());
-            facebookProfile.setDob(profile.getDob().toString());
-            //facebookProfile.setRelationshipStatus(profile.get);
-            showFacebookProfileForm(facebookProfile);
-            hideProgressDialog();
-        }
-
-        @Override
-        public void onError(SocialAuthError socialAuthError) {
-            hideProgressDialog();
-            showToastOnUIThread(socialAuthError.getMessage());
-        }
-    };*/
 
     @Override
     public void onPause() {
@@ -163,5 +195,35 @@ public class FacebookFragment extends BaseFragment  {
         // reporting.  Do so in the onPause methods of the primary Activities that an app may be
         // launched into.
         AppEventsLogger.deactivateApp(getActivity());
+    }
+
+    @Override
+    public void bindDataToForm(FacebookService.FacebookProfile value) {
+
+        setVisibleChildView(vg_facebookForm);
+        if(value != null)
+        {
+            workplace.setText(value.getWorkspace());
+            city.setText(value.getCity());
+            dob.setText(value.getDob());
+            relationshipStatus.setText(value.getRelationshipStatus());
+            hometown.setText(value.getHometown());
+            connectedAs.setText(value.getConnectedAs());
+        }
+    }
+
+    @Override
+    public FacebookService.FacebookProfile getDataFromForm(FacebookService.FacebookProfile base) {
+        if(base == null)
+            base = new FacebookService.FacebookProfile();
+
+        base.setHometown(hometown.getText().toString());
+        base.setRelationshipStatus(relationshipStatus.getText().toString());
+        base.setCity(city.getText().toString());
+        base.setConnectedAs(connectedAs.getText().toString());
+        base.setWorkspace(workplace.getText().toString());
+        base.setDob(dob.getText().toString());
+
+        return base;
     }
 }
