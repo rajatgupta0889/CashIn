@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.linkedin.platform.LISession;
 import com.linkedin.platform.LISessionManager;
 import com.linkedin.platform.errors.LIAuthError;
 import com.linkedin.platform.listeners.AuthListener;
@@ -102,9 +103,10 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        if( LISessionManager.getInstance(getActivity()).getSession() != null &&
-                !LISessionManager.getInstance(getActivity()).getSession().getAccessToken().isExpired())
+        LISession session = LISessionManager.getInstance(getActivity()).getSession();
+        if( session != null && session.getAccessToken() != null && !session.getAccessToken().isExpired())
         {
+            showProgressDialog("");
             LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
         }
         else {
@@ -117,9 +119,8 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     public void onConnectClick()
     {
         showProgressDialog(getString(R.string.waiting_for_linkedIn), true, false);
-
-        if( LISessionManager.getInstance(getActivity()).getSession() != null &&
-        !LISessionManager.getInstance(getActivity()).getSession().getAccessToken().isExpired())
+        LISession session = LISessionManager.getInstance(getActivity()).getSession();
+        if( session != null && session.getAccessToken() != null && !session.getAccessToken().isExpired())
         {
             LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
         }
@@ -208,74 +209,4 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         LISessionManager.getInstance(getActivity().getApplicationContext()).onActivityResult(getActivity(), requestCode, resultCode, data);
     }
-
-   /* private final class ResponseListener implements DialogListener
-    {
-        public void onComplete(Bundle values) {
-            socialAuthAdapter.getUserProfileAsync(new ProfileDataListener());
-            socialAuthAdapter.getCareerAsync(new SocialAuthListener<Career>() {
-                @Override
-                public void onExecute(String s, Career career) {
-
-                    LinkedInService.LinkedInDetail linkedInDetail = LinkedInService.LinkedInAdapter.fromCareer(career);
-                    bindDataToForm(linkedInDetail);
-                    hideProgressDialog();
-
-                }
-
-                @Override
-                public void onError(SocialAuthError socialAuthError) {
-                    Log.e("LinkedInFragment", "failed to get career", socialAuthError);
-                    hideProgressDialog();
-                    showToastOnUIThread(socialAuthError.getMessage());
-                }
-            });
-
-        }
-*/
-       /* @Override
-        public void onError(SocialAuthError socialAuthError) {
-            Log.e("LinkedInFragment", socialAuthError.getMessage(), socialAuthError);
-            hideProgressDialog();
-            showToastOnUIThread(socialAuthError.getMessage());
-        }
-
-        @Override
-        public void onCancel() {
-            Log.w("LinkedInFragment", "Linkedin connect cancelled");
-            hideProgressDialog();
-        }
-
-        @Override
-        public void onBack() {
-            Log.w("LinkedInFragment", "Linkedin connect cancelled by back");
-            hideProgressDialog();
-        }
-    }
-
-    // To receive the profile response after authentication
-    private final class ProfileDataListener implements SocialAuthListener<Profile> {
-
-        @Override
-        public void onExecute(String s, Profile profileMap) {
-            Log.d("LinkedInFragment", "Receiving Data");
-            Log.d("LinkedInFragment", "Validate ID         = " + profileMap.getValidatedId());
-            Log.d("LinkedInFragment", "First Name          = " + profileMap.getFirstName());
-            Log.d("LinkedInFragment", "Last Name           = " + profileMap.getLastName());
-            Log.d("LinkedInFragment", "Email               = " + profileMap.getEmail());
-            Log.d("LinkedInFragment", "Country                  = " + profileMap.getCountry());
-            Log.d("LinkedInFragment", "Language                 = " + profileMap.getLanguage());
-            Log.d("LinkedInFragment", "Location                 = " + profileMap.getLocation());
-            Log.d("LinkedInFragment", "Profile Image URL  = " + profileMap.getProfileImageURL());
-
-
-        }
-
-        @Override
-        public void onError(SocialAuthError socialAuthError) {
-            showToastOnUIThread(socialAuthError.getMessage());
-        }
-    }*/
-
-
 }
