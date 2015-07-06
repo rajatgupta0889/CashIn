@@ -176,4 +176,8 @@
     <string name="degree">Degree</string>
     <string name="field_of_study">Field of study</string>
     <string name="education">Education</string>
+    <string name="account_number">Account Number</string>
+    <string name="bank">Bank</string>
+    <string name="add_more">Add more</string>
+    <string name="primary_bank_details">Primary bank details</string>
 </resources>

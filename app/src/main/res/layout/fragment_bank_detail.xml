@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_pan_card_fragment">
 
+
+
     <ScrollView
-        android:id="@+id/fl_facebook"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:orientation="vertical" android:padding="20dp">
+            android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp" android:orientation="horizontal" android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/enter_primary_bank_details" android:gravity="center_horizontal"
+                    android:layout_height="wrap_content" android:text="@string/primary_bank_details" android:gravity="center_horizontal"
                     style="@android:style/TextAppearance.Material.Headline"
                     />
 
             </LinearLayout>
 
-            <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
-                android:layout_width="match_parent" android:id="@+id/cet_bank_name"
-                android:layout_height="wrap_content" custom:field_label="@string/bank_name" custom:field_icon="@drawable/ic_work_address"/>
-
-            <com.mantralabsglobal.cashin.ui.view.CustomEditText
-                xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
-                android:layout_width="match_parent" android:id="@+id/cet_account_number"
-                android:layout_height="wrap_content" custom:field_label="@string/account_number_last_4_digits" custom:field_icon="@drawable/ic_work_address"/>
-
-            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp"
+            <LinearLayout
+                android:id="@+id/vg_bank_details"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
+                android:layout_height="wrap_content" android:orientation="vertical"></LinearLayout>
 
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content" android:paddingLeft="10dp"
+                        android:layout_height="wrap_content" android:src="@drawable/ic_add_more" android:layout_gravity="center" />
 
+            <Button
+                android:id="@+id/btn_add_more" android:paddingLeft="10dp"
+                android:layout_width="wrap_content" android:background="@null"
+                android:layout_height="wrap_content"  android:text="@string/add_more"  />
         </LinearLayout>
+        </LinearLayout>
+
 
 
     </ScrollView>
@@ -58,4 +56,4 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_gravity="center" />
 
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

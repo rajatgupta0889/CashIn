@@ -168,15 +168,17 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                 handleDataNotPresentOnServer();
             }
             else {
-                Snackbar snackbar = Snackbar
-                        .make((CoordinatorLayout) getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
-                        .setAction("Retry", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                reset(true);
-                            }
-                        });
-                snackbar.show();
+                if(getCurrentView() instanceof CoordinatorLayout) {
+                    Snackbar snackbar = Snackbar
+                            .make((CoordinatorLayout) getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    reset(true);
+                                }
+                            });
+                    snackbar.show();
+                }
             }
         }
     };
