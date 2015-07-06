@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +32,14 @@ import com.mobsandgeeks.saripaar.annotation.Digits;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.soundcloud.android.crop.Crop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
@@ -93,7 +100,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     @Override
     protected void onCreate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
-        panCardService.createPanCardDetail(updatedData,saveCallback);
+        panCardService.createPanCardDetail(updatedData, saveCallback);
     }
 
     @Override
@@ -155,12 +162,13 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
                             new Runnable() {
                                 @Override
                                 public void run() {
-                                    Dialog dialog = new Dialog(getActivity());
+                                    uploadImageToServerForOCR(bmp);
+                                    /*Dialog dialog = new Dialog(getActivity());
                                     dialog.setContentView(R.layout.dialog_image_preview);
                                     ImageView imgView=(ImageView)dialog.findViewById(R.id.iv_image);
                                     imgView.setImageBitmap(bmp);
                                     hideProgressDialog();
-                                    dialog.show();
+                                    dialog.show();*/
                                 }
                             }
                     );
@@ -168,9 +176,41 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             });
 
         } else if (resultCode == Crop.RESULT_ERROR) {
+            hideProgressDialog();
             showToastOnUIThread(Crop.getError(result).getMessage());
             reset(false);
         }
+    }
+
+    private void uploadImageToServerForOCR(final Bitmap bmp) {
+        AsyncTask<Bitmap, Void, Void> asynTask = new AsyncTask<Bitmap, Void, Void>() {
+            @Override
+            protected Void doInBackground(Bitmap... params) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                PanCardService.PanCardImage panCardImage = new PanCardService.PanCardImage();
+                panCardImage.setBase64encodedImage(encoded);
+                panCardService.getPanCardDetailFromImage(panCardImage, new Callback<PanCardService.PanCardDetail>() {
+                    @Override
+                    public void success(PanCardService.PanCardDetail panCardDetail, Response response) {
+                        hideProgressDialog();
+                        bindDataToForm(panCardDetail);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        hideProgressDialog();
+                        Snackbar snackbar = Snackbar
+                                .make((CoordinatorLayout) getCurrentView(), "Failed to process PAN card Image. Error: " + error.getMessage(), Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
+                });
+                return null;
+            }
+        }.execute(bmp);
     }
 
     @Override

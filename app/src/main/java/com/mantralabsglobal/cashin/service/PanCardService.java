@@ -22,6 +22,22 @@ public interface PanCardService {
     @PUT("/user/pancard")
     void updatePanCardDetail(@Body PanCardDetail panCardDetail, Callback<PanCardDetail> callback);
 
+    @POST("/user/ocr/pancard")
+    void getPanCardDetailFromImage(@Body PanCardImage panCardImage, Callback<PanCardDetail> callback);
+
+
+    public static class PanCardImage
+    {
+        private String base64encodedImage;
+
+        public String getBase64encodedImage() {
+            return base64encodedImage;
+        }
+
+        public void setBase64encodedImage(String base64encodedImage) {
+            this.base64encodedImage = base64encodedImage;
+        }
+    }
 
     public static class PanCardDetail{
 
