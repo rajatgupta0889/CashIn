@@ -22,6 +22,7 @@ import com.mantralabsglobal.cashin.social.LinkedIn;
 import com.mantralabsglobal.cashin.social.SocialBase;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -42,17 +43,23 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     @InjectView(R.id.rl_linkedin_details)
     ViewGroup vg_linkedInProfile;
 
+    @NotEmpty
     @InjectView(R.id.cs_job_title)
     CustomEditText jobTitle;
+    @NotEmpty
     @InjectView(R.id.cs_company)
     CustomEditText company;
+    @NotEmpty
     @InjectView(R.id.cs_time_period)
     CustomEditText period;
 
+    @NotEmpty
     @InjectView(R.id.cs_school)
     CustomEditText school;
+    @NotEmpty
     @InjectView(R.id.cs_degree)
     CustomEditText degree;
+    @NotEmpty
     @InjectView(R.id.cs_fieldOfStudy)
     CustomEditText fieldOdStudy;
 

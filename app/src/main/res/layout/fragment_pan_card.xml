@@ -52,7 +52,7 @@
         <ScrollView android:id="@+id/vg_pan_card_form"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-        <LinearLayout android:visibility="gone"  android:padding="20dp"
+        <LinearLayout android:padding="20dp"
             android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText

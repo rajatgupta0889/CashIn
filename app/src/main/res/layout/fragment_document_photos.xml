@@ -2,12 +2,27 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mantralabsglobal.cashin.ui.fragment.intro.SelfieFragment" android:background="@color/intro_slider_one">
+    tools:context="com.mantralabsglobal.cashin.ui.fragment.intro.SelfieFragment" android:background="@color/intro_slider_one" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp" android:text="@string/photos_of_documents"
-        android:gravity="center"
-        style="@android:style/TextAppearance.Material.Large.Inverse" />
+        android:layout_height="match_parent" android:orientation="vertical" android:layout_gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/photos_of_documents"
+            android:gravity="center"
+            android:layout_weight="2"
+            style="@android:style/TextAppearance.Material.Large.Inverse" />
+
+        <ImageView
+            android:layout_weight="5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:src="@drawable/intro_scanned_documents" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="2"/>
+    </LinearLayout>
 
 </FrameLayout>

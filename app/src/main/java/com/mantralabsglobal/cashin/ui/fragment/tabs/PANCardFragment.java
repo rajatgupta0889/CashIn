@@ -130,6 +130,10 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
                 beginCrop( Uri.fromFile(new File(data.getStringExtra("file_path") )));
                 Log.d("PANCardFragment", "onActivityResult, resultCode " + resultCode + " filepath = " +data.getStringExtra("file_path"));
             }
+            else if(resultCode == Activity.RESULT_CANCELED)
+            {
+                reset(false);
+            }
         }  else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, data);
         }
@@ -165,6 +169,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             showToastOnUIThread(Crop.getError(result).getMessage());
+            reset(false);
         }
     }
 
