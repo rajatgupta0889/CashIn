@@ -181,5 +181,6 @@
     <string name="bank">Bank</string>
     <string name="add_more">Add more</string>
     <string name="primary_bank_details">Primary bank details</string>
+    <string name="click_the_bank_icon_in_the__circle_to_select_as_primary_bank">Click the bank icon in the circle to select as primary bank</string>
 
 </resources>
