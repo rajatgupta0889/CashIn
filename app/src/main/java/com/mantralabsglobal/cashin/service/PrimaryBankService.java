@@ -47,6 +47,14 @@ public interface PrimaryBankService {
             return accountNumber;
         }
 
+        public String getAccountNumberLast4Digits() {
+            if(accountNumber!= null && accountNumber.length()>0)
+            {
+                return accountNumber.substring(accountNumber.length()-5);
+            }
+            return accountNumber;
+        }
+
         public void setAccountNumber(String accountNumber) {
             this.accountNumber = accountNumber;
         }
@@ -65,7 +73,8 @@ public interface PrimaryBankService {
             if(obj != null && obj instanceof BankDetail)
             {
                 BankDetail second = (BankDetail)obj;
-                return this.bankName.equals(second.getBankName()) && this.getAccountNumber().equals(second.getAccountNumber());
+                return this.bankName.equals(second.getBankName())
+                        && this.getAccountNumberLast4Digits().equals(second.getAccountNumberLast4Digits());
             }
             return false;
         }

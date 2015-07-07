@@ -66,31 +66,28 @@ public class SMSProvider {
 
     public boolean hasAccountInformation(SMSMessage message)
     {
-        if(HDFC.equals(getBankName(message))) {
-            return message.getBody().indexOf("A/c No") >= 0;
-        }
-        else if(ICICI.equals(getBankName(message))){
-            return message.getBody().indexOf("Your Ac") >= 0;
-        }
-        return false;
+        return getAccountNumber(message) != null;
     }
 
     public String getAccountNumber(SMSMessage message)
     {
-        if(hasAccountInformation(message)) {
-            if(HDFC.equals(getBankName(message))) {
-                int startIndex = message.getBody().indexOf("A/c No");
-                int endIndex = message.getBody().indexOf(" ", startIndex + 7);
-                return message.getBody().substring(startIndex + 7, endIndex);
-            }
-            else if(ICICI.equals(getBankName(message)))
-            {
-                int startIndex = message.getBody().indexOf("Your Ac");
-                int endIndex = message.getBody().indexOf(" ", startIndex + 8);
-                return message.getBody().substring(startIndex + 8, endIndex);
-            }
+        if(HDFC.equals(getBankName(message))) {
+            int startIndex = message.getBody().indexOf("A/c");
+            startIndex = message.getBody().indexOf("XX", startIndex);
+            int endIndex = message.getBody().indexOf(" ", startIndex);
+            if(startIndex>=0 && endIndex>=0)
+                return message.getBody().substring(startIndex, endIndex);
         }
-        return "";
+        else if(ICICI.equals(getBankName(message)))
+        {
+            int startIndex = message.getBody().indexOf("Your Ac");
+            startIndex = message.getBody().indexOf("XX", startIndex);
+            int endIndex = message.getBody().indexOf(" ", startIndex );
+            if(startIndex>=0 && endIndex>=0)
+                return message.getBody().substring(startIndex, endIndex);
+
+        }
+        return null;
     }
 
     public String getBankName(SMSMessage message)
