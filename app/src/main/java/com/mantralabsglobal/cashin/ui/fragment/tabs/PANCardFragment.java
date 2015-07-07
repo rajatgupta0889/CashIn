@@ -70,6 +70,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     public BirthDayView dob;
 
     PanCardService panCardService;
+    PanCardService panCardServiceOCR;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +86,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         super.onViewCreated(view, savedInstanceState);
 
         panCardService = ((Application)getActivity().getApplication()).getRestClient().getPanCardService();
+        panCardServiceOCR = ((Application)getActivity().getApplication()).getRestClient().getPanCardServiceOCR();
         //SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
         registerChildView(vg_form, View.GONE);
         registerChildView(vg_scan, View.VISIBLE);
@@ -193,7 +195,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
                 PanCardService.PanCardImage panCardImage = new PanCardService.PanCardImage();
                 panCardImage.setBase64encodedImage(encoded);
-                panCardService.getPanCardDetailFromImage(panCardImage, new Callback<PanCardService.PanCardDetail>() {
+                panCardServiceOCR.getPanCardDetailFromImage(panCardImage, new Callback<PanCardService.PanCardDetail>() {
                     @Override
                     public void success(PanCardService.PanCardDetail panCardDetail, Response response) {
                         hideProgressDialog();
@@ -204,7 +206,14 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
                     public void failure(RetrofitError error) {
                         hideProgressDialog();
                         Snackbar snackbar = Snackbar
-                                .make((CoordinatorLayout) getCurrentView(), "Failed to process PAN card Image. Error: " + error.getMessage(), Snackbar.LENGTH_LONG);
+                                .make((CoordinatorLayout) getCurrentView(), "Failed to process PAN card Image. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                                .setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        showProgressDialog(getString(R.string.processing_image));
+                                        uploadImageToServerForOCR(bmp);
+                                    }
+                                });
                         snackbar.show();
                     }
                 });

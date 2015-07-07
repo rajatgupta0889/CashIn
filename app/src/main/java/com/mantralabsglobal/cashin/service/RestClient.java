@@ -33,6 +33,7 @@ public class RestClient  {
     private IncomeService incomeService;
     private UserHistoryService userHistoryService;
     private FacebookService facebookService;
+    private PanCardService panCardServiceOCR;
 
     public RestClient(Context context)
     {
@@ -42,8 +43,8 @@ public class RestClient  {
 
         OkHttpClient client = new OkHttpClient(); //create OKHTTPClient
 
-        client.setConnectTimeout(10, TimeUnit.SECONDS);
-        client.setReadTimeout(10, TimeUnit.SECONDS);
+        client.setConnectTimeout(30, TimeUnit.SECONDS);
+        client.setReadTimeout(60, TimeUnit.SECONDS);
 
         CookieManager cookieManager = new CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
@@ -59,6 +60,13 @@ public class RestClient  {
                 .setClient(serviceClient)
                 .build();
 
+        RestAdapter restAdapterOCR = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(context.getString(R.string.server_url_ocr))
+                .setConverter(new GsonConverter(gson))
+                .setClient(serviceClient)
+                .build();
+
         authenticationService = restAdapter.create(AuthenticationService.class);
         linkedInService = restAdapter.create(LinkedInService.class);
         addressService = restAdapter.create(AddressService.class);
@@ -69,6 +77,7 @@ public class RestClient  {
         incomeService = restAdapter.create(IncomeService.class);
         userHistoryService = restAdapter.create(UserHistoryService.class);
         facebookService = restAdapter.create(FacebookService.class);
+        panCardServiceOCR = restAdapterOCR.create(PanCardService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -111,5 +120,9 @@ public class RestClient  {
 
     public FacebookService getFacebookService() {
         return facebookService;
+    }
+
+    public PanCardService getPanCardServiceOCR() {
+        return panCardServiceOCR;
     }
 }
