@@ -60,15 +60,17 @@ public class AadharDAO {
                             aadharDetail.setGender(gender);
                             Log.d("AadharDAO", "Gender: " + gender);
 
-                            aadharDetail.setAddress(aadharparser.getAttributeValue(null, "house") +
-                                    aadharparser.getAttributeValue(null, "street") +
-                                    aadharparser.getAttributeValue(null, "lm") +
-                                    aadharparser.getAttributeValue(null, "po") +
-                                    aadharparser.getAttributeValue(null, "dist") +
-                                    aadharparser.getAttributeValue(null, "subdist")+
-                                            aadharparser.getAttributeValue(null, "state") +
-                                            aadharparser.getAttributeValue(null, "pc")
+                            aadharDetail.setAddress(getAttributeValue(aadharparser, "house") +
+                                    getAttributeValue(aadharparser, "street") +
+                                    getAttributeValue(aadharparser, "lm") +
+                                    getAttributeValue(aadharparser, "po") +
+                                    getAttributeValue(aadharparser, "dist") +
+                                    getAttributeValue(aadharparser, "subdist")+
+                                    getAttributeValue(aadharparser, "state") +
+                                    getAttributeValue(aadharparser, "pc")
                             );
+
+                            aadharDetail.setSonOf(getAttributeValue(aadharparser,"co"));
                             //aadharDetail.setLoc(aadharparser.getAttributeValue(null, "loc"));
                             //aadharDetail.setVtc(aadharparser.getAttributeValue(null, "vtc"));
                             //aadharDetail.setPostOffice(aadharparser.getAttributeValue(null, "po"));
@@ -89,6 +91,14 @@ public class AadharDAO {
             e.printStackTrace();
         }
         return aadharDetail;
+    }
+
+    private static String getAttributeValue(XmlPullParser aadharParser, String attributeName)
+    {
+        String value = aadharParser.getAttributeValue(null, attributeName);
+        if(value== null)
+            value = "";
+        return value;
     }
 
     private static String fixAadharXMLString(String xml)
