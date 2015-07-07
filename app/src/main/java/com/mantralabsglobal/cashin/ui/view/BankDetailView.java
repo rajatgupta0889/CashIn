@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,7 +18,9 @@ import android.widget.TextView;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +32,8 @@ public class BankDetailView extends LinearLayout  {
     private EditText accountNumber;
     private ImageView isPrimaryIcon;
     Map<String, Integer> drawableResourceMap;
+
+    private  List<PrimaryFlagChangedListener> primaryFlagChangedListenerList = new ArrayList<>();
 
     private PrimaryBankService.BankDetail bankDetail;
 
@@ -65,6 +70,18 @@ public class BankDetailView extends LinearLayout  {
         this.bankName = (ImageView)findViewWithTag("iv_bank");
         this.isPrimaryIcon = (ImageView)findViewWithTag("iv_is_primary");
         this.accountNumber = (EditText)findViewWithTag("et_account");//  (EditText)findViewById(R.id.et_text);
+
+        isPrimaryIcon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!BankDetailView.this.getBankDetail().isPrimary()) {
+                    //BankDetailView.this.getBankDetail().setIsPrimary(true);
+                    for (PrimaryFlagChangedListener listener : primaryFlagChangedListenerList) {
+                        listener.onPrimaryChanged(BankDetailView.this);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -100,13 +117,30 @@ public class BankDetailView extends LinearLayout  {
 
     public void setBankDetail(PrimaryBankService.BankDetail bankDetail) {
         this.bankDetail = bankDetail;
-        this.accountNumber.setText(bankDetail.getAccountNumber());
-        if(bankDetail.getBankName() != null)
-            this.bankName.setImageResource(drawableResourceMap.get(bankDetail.getBankName().toUpperCase()));
-        if(bankDetail.isPrimary())
-            this.isPrimaryIcon.setImageResource(R.drawable.ic_primary_bank_icon);
-        else
-            this.isPrimaryIcon.setImageResource(R.drawable.ic_bank_form_icon);
+        updateUI();
+    }
 
+    public void updateUI()
+    {
+        if(bankDetail != null) {
+            this.accountNumber.setText(bankDetail.getAccountNumber());
+            if (bankDetail.getBankName() != null)
+                this.bankName.setImageResource(drawableResourceMap.get(bankDetail.getBankName().toUpperCase()));
+            if (bankDetail.isPrimary())
+                this.isPrimaryIcon.setImageResource(R.drawable.ic_primary_bank_icon);
+            else
+                this.isPrimaryIcon.setImageResource(R.drawable.ic_bank_form_icon);
+        }
+    }
+
+    public void addPrimaryFlagChangeListener(PrimaryFlagChangedListener listener)
+    {
+        if(!primaryFlagChangedListenerList.contains(listener))
+            primaryFlagChangedListenerList.add(listener);
+    }
+
+    public interface PrimaryFlagChangedListener
+    {
+        void onPrimaryChanged(BankDetailView bankDetailView);
     }
 }

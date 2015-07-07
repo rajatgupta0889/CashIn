@@ -18,7 +18,9 @@ import com.mobsandgeeks.saripaar.annotation.Digits;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import butterknife.InjectView;
@@ -33,6 +35,8 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
 
     @InjectView(R.id.vg_bank_details)
     ViewGroup vg_bank_details;
+
+    List<BankDetailView> bankDetailViewList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,14 +99,31 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     }
 
     @Override
-    public void bindDataToForm(List<PrimaryBankService.BankDetail> value) {
+    public void bindDataToForm(final List<PrimaryBankService.BankDetail> value) {
         if(value != null)
         {
-            for(PrimaryBankService.BankDetail bankDetail: value)
+            bankDetailViewList = new ArrayList<>();
+            for(final PrimaryBankService.BankDetail bankDetail: value)
             {
                 BankDetailView view = new BankDetailView(getActivity());
                 view.setBankDetail(bankDetail);
                 vg_bank_details.addView(view);
+                bankDetailViewList.add(view);
+                view.addPrimaryFlagChangeListener(new BankDetailView.PrimaryFlagChangedListener() {
+                    @Override
+                    public void onPrimaryChanged(BankDetailView bankDetailView) {
+                        bankDetailView.getBankDetail().setIsPrimary(true);
+                        bankDetailView.updateUI();
+                        for(BankDetailView bdview : bankDetailViewList)
+                        {
+                            if(bdview != bankDetailView)
+                            {
+                                bdview.getBankDetail().setIsPrimary(false);
+                            }
+                            bdview.updateUI();
+                        }
+                    }
+                });
             }
         }
     }
