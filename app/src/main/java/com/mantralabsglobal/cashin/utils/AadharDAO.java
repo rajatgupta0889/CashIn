@@ -21,6 +21,7 @@ public class AadharDAO {
 
     public static AadharService.AadharDetail getAadharDetailFromXML(String xml)
     {
+        xml = fixAadharXMLString(xml);
         XmlPullParserFactory xmlFactoryObject = null;
         AadharService.AadharDetail aadharDetail = new AadharService.AadharDetail();
 
@@ -39,7 +40,7 @@ public class AadharDAO {
                         break;
 
                     case XmlPullParser.END_TAG:
-                        if(name.equals("PrintLetterBarcodeData")){
+                        if(name != null && name.equals("PrintLetterBarcodeData")){
                             aadharDetail.setAadharNumber(aadharparser.getAttributeValue(null, "uid"));
                             aadharDetail.setName(aadharparser.getAttributeValue(null, "name"));
 
@@ -88,5 +89,14 @@ public class AadharDAO {
             e.printStackTrace();
         }
         return aadharDetail;
+    }
+
+    private static String fixAadharXMLString(String xml)
+    {
+        if(xml.startsWith("<?xml")) {
+            int firstDeclarationTagEnd = xml.indexOf(">");
+            return xml.substring(firstDeclarationTagEnd+1);
+        }
+        return xml;
     }
 }
