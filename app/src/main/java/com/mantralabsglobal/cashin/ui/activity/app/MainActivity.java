@@ -2,9 +2,11 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +42,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity  {
 
     public static final String PACKAGE_CASHIN_APP = "com.mantralabsglobal.cashin";
     private FinancePagerAdapter financePagerAdapter;
@@ -68,7 +70,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        setTitle(R.string.title_activity_main);
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
 
@@ -77,7 +79,7 @@ public class MainActivity extends BaseActivity {
         buttonList.add(yourPhotoButton);
         buttonList.add(yourIdentityButton);
         buttonList.add(workButton);
-        buttonList.add( financialButton);
+        buttonList.add(financialButton);
         buttonList.add(socialButton);
 
         ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -121,10 +123,23 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
-        ((ViewPager)findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
-        ((ViewPager)findViewById(R.id.main_frame)).setCurrentItem(1);
+        handleAuthentication(new IAuthListener() {
+
+            @Override
+            public void onSuccess() {
+                mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+                ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
+                ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(1);
+            }
+
+            @Override
+            public void onFailure(Exception exp) {
+                showToastOnUIThread(exp.getMessage());
+            }
+        });
+
     }
+
 
     @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
     public void onClick(final View v) {
@@ -151,13 +166,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            googlePlus.logout();
-            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        }
         if (id == R.id.action_product_tour) {
             Intent intent = new Intent(getBaseContext(), IntroSliderActivity.class);
             startActivity(intent);
@@ -228,9 +236,19 @@ public class MainActivity extends BaseActivity {
         myDialog.show();
     }
 
-    public void redirectToLogin()
+    protected void handleAuthentication(IAuthListener listener)
     {
+        String userName = appPreference.getString( USER_NAME, EMPTY_STRING);
+        if (EMPTY_STRING.equals(userName)) {
 
+            Intent intent = new Intent(getBaseContext(), IntroSliderActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+            registerAndLogin(userName, true, listener);
+        }
     }
 
     @Override

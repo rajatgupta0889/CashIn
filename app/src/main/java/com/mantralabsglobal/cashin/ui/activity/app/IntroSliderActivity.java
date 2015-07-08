@@ -5,9 +5,15 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.google.android.gms.common.SignInButton;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.social.GooglePlus;
+import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.IntroSliderFragmentAdapter;
 
 import java.util.List;
@@ -15,8 +21,9 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
+import butterknife.OnClick;
 
-public class IntroSliderActivity extends AppCompatActivity {
+public class IntroSliderActivity extends BaseActivity {
 
     @InjectView(R.id.view_pager)
     ViewPager viewPager;
@@ -24,11 +31,24 @@ public class IntroSliderActivity extends AppCompatActivity {
     @InjectViews({R.id.view_one, R.id.view_two, R.id.view_three, R.id.view_four})
     List<ImageView> pageIndicators;
 
+    @InjectView(R.id.gplus_sign_in_button)
+    SignInButton btn_googlePlusSignIn;
+
+    GooglePlus googlePlus;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_slider);
+
+
         ButterKnife.inject(this);
+        googlePlus = new GooglePlus();
+
         final IntroSliderFragmentAdapter adapter = new IntroSliderFragmentAdapter(getSupportFragmentManager());
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public boolean callHappened;
@@ -37,7 +57,7 @@ public class IntroSliderActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if( mPageEnd && position == adapter.getCount()-1 && !callHappened)
+                /*if( mPageEnd && position == adapter.getCount()-1 && !callHappened)
                 {
                     Log.d(getClass().getName(), "Okay");
                     mPageEnd = false;//To avoid multiple calls.
@@ -48,7 +68,7 @@ public class IntroSliderActivity extends AppCompatActivity {
                 }else
                 {
                     mPageEnd = false;
-                }
+                }*/
             }
 
             @Override
@@ -65,14 +85,42 @@ public class IntroSliderActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(selectedIndex == adapter.getCount() - 1)
+                /*if(selectedIndex == adapter.getCount() - 1)
                 {
                     mPageEnd = true;
-                }
+                }*/
             }
         });
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
+    }
+
+    @OnClick(R.id.gplus_sign_in_button)
+    public void signInWithGoogle() {
+        showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
+        googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
+            @Override
+            public void onSuccess(final String email) {
+                putInAppPreference(USER_NAME, email);
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(String message) {
+                hideProgressDialog();
+                showToastOnUIThread(message);
+            }
+        });
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        googlePlus.onActivityResult(requestCode, resultCode, data);
     }
 
 }

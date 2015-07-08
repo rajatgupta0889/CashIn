@@ -141,7 +141,7 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
         finish();
     }
 
-    @OnClick(R.id.gplus_sign_in_button)
+    /*@OnClick(R.id.gplus_sign_in_button)
     public void signInWithGoogle() {
         showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
         googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
@@ -156,7 +156,7 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
                 showToastOnUIThread(message);
             }
         });
-    }
+    }*/
 
     @Override
     public void onValidationSucceeded() {
