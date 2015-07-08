@@ -13,7 +13,7 @@
             android:text="@string/photos_of_documents"
             android:gravity="center"
             android:layout_weight="2"
-            style="@android:style/TextAppearance.Material.Large.Inverse" />
+            style="@style/AppTheme.Form.Header.Inverse" />
 
         <ImageView
             android:layout_weight="5"

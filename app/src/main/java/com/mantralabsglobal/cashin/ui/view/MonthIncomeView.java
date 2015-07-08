@@ -44,12 +44,7 @@ public class MonthIncomeView extends LinearLayout {
     }
 
     public MonthIncomeView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public MonthIncomeView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
+        super(context, attrs, defStyleAttr);
         init();
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.custom_view, 0, 0);
@@ -68,8 +63,6 @@ public class MonthIncomeView extends LinearLayout {
         } finally {
             ta.recycle();
         }
-
-
     }
 
     private void init(){

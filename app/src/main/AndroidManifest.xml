@@ -18,7 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_SMS"/>
 
-    <uses-sdk android:minSdkVersion="21"/>
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="22" />
     <application
         android:name=".ui.Application"
         android:allowBackup="true"

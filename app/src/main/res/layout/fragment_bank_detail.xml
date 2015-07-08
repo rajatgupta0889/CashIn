@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:text="@string/primary_bank_details" android:gravity="center_horizontal"
-                    style="@android:style/TextAppearance.Material.Headline"
+                    style="@style/AppTheme.Form.Header"
                     />
 
             </LinearLayout>

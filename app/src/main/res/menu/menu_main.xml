@@ -8,14 +8,12 @@
 -->
 
     <item android:id="@+id/action_scan_sms"
-        android:icon="@drawable/logout"
         android:title="@string/read_transactional_sms"
         app:showAsAction="never"
         android:orderInCategory="1"
         android:menuCategory="secondary"/>
 
     <item android:id="@+id/action_product_tour"
-    android:icon="@drawable/logout"
     android:title="@string/product_tour"
     app:showAsAction="never"
     android:orderInCategory="1"
@@ -29,7 +27,6 @@
 
 
     <item android:id="@+id/action_logout"
-        android:icon="@drawable/logout"
         android:title="@string/logout"
         app:showAsAction="never"
         android:orderInCategory="2"

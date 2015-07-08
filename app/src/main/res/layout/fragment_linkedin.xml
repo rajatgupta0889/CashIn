@@ -16,7 +16,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/linkedIn" style="@android:style/TextAppearance.Material.Headline" />
+                    android:layout_height="wrap_content" android:text="@string/linkedIn" style="@android:style/TextAppearance.DeviceDefault.Large" />
 
                 <ImageButton
                     android:id="@+id/btn_linkedIn_connect"
@@ -56,7 +56,7 @@
             <TextView
                 android:id="@+id/tv_work_experience"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:text="@string/work_experience"  style="@android:style/TextAppearance.Material.Headline"
+                android:layout_height="wrap_content" android:text="@string/work_experience"  style="@android:style/TextAppearance.DeviceDefault.Large"
                 />
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 xmlns:custom="http://schemas.android.com/apk/res/com.mantralabsglobal.cashin"
@@ -78,7 +78,7 @@
             <TextView
                 android:id="@+id/tv_education_details"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:text="@string/education"  style="@android:style/TextAppearance.Material.Headline"
+                android:layout_height="wrap_content" android:text="@string/education"  style="@style/AppTheme.Form.Header"
                 />
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText android:id="@+id/cs_school"

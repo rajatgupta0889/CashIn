@@ -46,12 +46,7 @@ public class BankDetailView extends LinearLayout  {
     }
 
     public BankDetailView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public BankDetailView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
+        super(context, attrs, defStyleAttr);
         init();
     }
 

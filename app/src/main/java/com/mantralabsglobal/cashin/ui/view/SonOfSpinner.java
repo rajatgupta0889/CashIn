@@ -35,17 +35,13 @@ public class SonOfSpinner extends LinearLayout {
     }
 
     public SonOfSpinner(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public SonOfSpinner(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        super(context, attrs, defStyleAttr);
 
         init();
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.custom_view, 0, 0);
         try {
-           // iv_icon.setImageResource(R.drawable.ic_work_address);
+            // iv_icon.setImageResource(R.drawable.ic_work_address);
 
             Drawable drawable = ta.getDrawable(R.styleable.custom_view_field_icon);
             if (drawable != null)
@@ -54,9 +50,8 @@ public class SonOfSpinner extends LinearLayout {
         } finally {
             ta.recycle();
         }
-
-
     }
+
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(getContext());

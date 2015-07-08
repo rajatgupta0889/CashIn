@@ -52,22 +52,22 @@ public class AadharDAO {
                             aadharDetail.setDob(sdf.format(c.getTime()));
 
                             String gender = aadharparser.getAttributeValue(null, "gender");
-                            if(Objects.equals(gender, "M"))
+                            if(Objects.equals(gender, "M") || Objects.equals(gender, "MALE"))
                                 gender = "Male";
-                            else if (Objects.equals(gender, "F"))
+                            else if (Objects.equals(gender, "F") || Objects.equals(gender, "FEMALE"))
                                 gender = "Female";
 
                             aadharDetail.setGender(gender);
                             Log.d("AadharDAO", "Gender: " + gender);
 
                             aadharDetail.setAddress(getAttributeValue(aadharparser, "house") +
-                                    getAttributeValue(aadharparser, "street") +
-                                    getAttributeValue(aadharparser, "lm") +
-                                    getAttributeValue(aadharparser, "po") +
-                                    getAttributeValue(aadharparser, "dist") +
-                                    getAttributeValue(aadharparser, "subdist")+
-                                    getAttributeValue(aadharparser, "state") +
-                                    getAttributeValue(aadharparser, "pc")
+                                            getAttributeValue(aadharparser, "street") +
+                                            getAttributeValue(aadharparser, "lm") +
+                                            getAttributeValue(aadharparser, "po") +
+                                            getAttributeValue(aadharparser, "dist") +
+                                            getAttributeValue(aadharparser, "subdist") +
+                                            getAttributeValue(aadharparser, "state") +
+                                            getAttributeValue(aadharparser, "pc")
                             );
 
                             aadharDetail.setSonOf(getAttributeValue(aadharparser,"co"));

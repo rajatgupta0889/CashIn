@@ -52,12 +52,7 @@ public class BirthDayView extends LinearLayout {
     }
 
     public BirthDayView(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
-    }
-
-    public BirthDayView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
+        super(context, attrs, defStyleAttr);
         init();
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.custom_view, 0, 0);
@@ -75,6 +70,7 @@ public class BirthDayView extends LinearLayout {
         if(context instanceof  FragmentActivity)
             fragmentManager =((FragmentActivity)context).getSupportFragmentManager();
     }
+
 
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(getContext());

@@ -15,6 +15,16 @@
         <item name="donut_text_color">@color/light</item>
     </style>
 
+    <style name="AppTheme.Form"></style>
+
+    <style name="AppTheme.Form.Header" parent="android:TextAppearance.DeviceDefault.Large">
+
+    </style>
+
+    <style name="AppTheme.Form.Header.Inverse" parent="android:TextAppearance.DeviceDefault.Large.Inverse">
+
+    </style>
+
     <style name="loginTheme" parent="AppTheme">
         <item name="colorControlNormal">@color/light</item>
         <item name="colorControlActivated">@color/accent</item>
@@ -29,7 +39,7 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="primary_nav_button" parent="android:Widget.Material.Button">
+    <style name="primary_nav_button" parent="android:Widget.DeviceDefault.Button">
         <item name="android:textSize">9sp</item>
         <item name="android:textColor">@color/light</item>
         <item name="android:background">?android:attr/selectableItemBackground</item>

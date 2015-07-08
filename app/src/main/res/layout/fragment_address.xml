@@ -15,12 +15,12 @@
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_street"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/street" app:field_icon="@drawable/account_circle"/>
+                android:layout_height="wrap_content" app:field_label="@string/street" app:field_icon="@drawable/ic_identity"/>
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_city"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/city" app:field_icon="@drawable/account_circle"/>
+                android:layout_height="wrap_content" app:field_label="@string/city" app:field_icon="@drawable/ic_identity"/>
 
 
             <LinearLayout
@@ -31,7 +31,7 @@
                     android:id="@+id/cc_state"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:layout_height="match_parent" app:field_label="@string/state" app:field_icon="@drawable/account_circle"/>
+                    android:layout_height="match_parent" app:field_label="@string/state" app:field_icon="@drawable/ic_identity"/>
 
                 <com.mantralabsglobal.cashin.ui.view.CustomEditText
                     android:id="@+id/cc_pincode"
@@ -68,7 +68,7 @@
             <com.mantralabsglobal.cashin.ui.view.CustomSpinner
                 android:id="@+id/cs_owned_by"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/account_circle"/>
+                android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/ic_identity"/>
 
             <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
@@ -100,14 +100,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:text="Get location from GPS" android:gravity="center_horizontal"
-                    style="@android:style/TextAppearance.Material.Headline" />
+                    style="@style/AppTheme.Form.Header" />
 
                 <ImageButton
                     android:id="@+id/ib_get_gps_location"
                     android:layout_marginTop="30dp"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:background="@drawable/round_button" android:src="@drawable/crosshairs_gps"/>
+                    android:background="@drawable/round_button" android:src="@drawable/ic_gps"/>
 
             </LinearLayout>
 
