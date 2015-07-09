@@ -31,9 +31,6 @@ public class IntroSliderActivity extends BaseActivity {
     @InjectViews({R.id.view_one, R.id.view_two, R.id.view_three, R.id.view_four})
     List<ImageView> pageIndicators;
 
-    @InjectView(R.id.gplus_sign_in_button)
-    SignInButton btn_googlePlusSignIn;
-
     GooglePlus googlePlus;
 
 

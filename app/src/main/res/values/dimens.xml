@@ -8,4 +8,15 @@
     <dimen name="form_input_padding_left">30dp</dimen>
     <dimen name="form_seperator_height">5dp</dimen>
     <dimen name="text_size_large_intro">28sp</dimen>
+    <dimen name="sign_in_button_component_height">56.0dip</dimen>
+    <dimen name="margin_outside">16.0dip</dimen>
+    <dimen name="default_border">1.0dip</dimen>
+    <dimen name="text_actionbar_title">18.0dip</dimen>
+    <dimen name="text_big">16.0dip</dimen>
+    <dimen name="text_medium">14.0dip</dimen>
+    <dimen name="text_size_large">22.0sp</dimen>
+    <dimen name="text_size_small">14.0sp</dimen>
+    <dimen name="text_small">12.0dip</dimen>
+    <dimen name="margin_outside_sign_in">32.0dip</dimen>
+    <dimen name="margin_below_sign_in">10dip</dimen>
 </resources>

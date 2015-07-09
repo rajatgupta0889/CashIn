@@ -85,4 +85,15 @@
     <style name="ThemeOverlay.CashIn.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/light</item>
     </style>
+
+    <style name="text_medium_white_nl">
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textColor">@color/white_max</item>
+    </style>
+
+    <style name="sign_up_button_component" parent="@style/text_medium_white_nl">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/sign_up_button_component_selector</item>
+    </style>
+
 </resources>

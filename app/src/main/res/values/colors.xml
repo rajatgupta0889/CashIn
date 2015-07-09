@@ -7,4 +7,7 @@
     <color name="intro_slider_one">#82B8D5</color>
     <color name="info_bar_background">#DBEEF9</color>
     <color name="info_bar_text">#0582C6</color>
+    <color name="white_max">#ffffffff</color>
+    <color name="sign_up_button_component_background">#ff447ca1</color>
+    <color name="sign_up_button_component_background_clicked">#ff4a8cb9</color>
 </resources>

@@ -105,8 +105,7 @@ public class GooglePlus extends SocialBase {
                     onFailure(connectionResult.toString());
                 }
             } else {
-                // Show the signed-out UI
-                //showSignedOutUI();
+                onFailure("Signin cancelled");
             }
         }
     };
@@ -124,14 +123,5 @@ public class GooglePlus extends SocialBase {
             mGoogleApiClient.connect();
         }
     }
-
-    public void logout() {
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-        }
-    }
-
 
 }
