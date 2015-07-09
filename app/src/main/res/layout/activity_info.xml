@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@drawable/gradient" android:padding="@dimen/margin_outside" android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/try_to_keep_these_documents_ready" style="@style/text_large_white_gs" />
+
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/Must" style="@style/text_medium_nl"/>
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/aadhar" style="@style/text_medium_white_gs" />
+
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/pan_card" style="@style/text_medium_white_gs"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dip"/>
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/optional" style="@style/text_medium_nl"/>
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/business_card" style="@style/text_medium_white_gs"/>
+
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/bank_statement" style="@style/text_medium_white_gs"/>
+
+    <TextView
+        android:layout_width="match_parent" android:gravity="center_horizontal"
+        android:layout_height="wrap_content" android:text="@string/salary_slips" style="@style/text_medium_white_gs"/>
+
+    <LinearLayout android:orientation="horizontal" android:id="@+id/get_started_button" android:paddingLeft="@dimen/margin_outside_sign_in" android:paddingRight="@dimen/margin_outside_sign_in" android:layout_margin="@dimen/margin_below_sign_in"  android:layout_width="fill_parent" android:layout_height="@dimen/sign_in_button_component_height">
+        <TextView android:paddingLeft="@dimen/margin_outside" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="@dimen/default_border" android:text="@string/get_started" style="@style/get_started_button_component" />
+    </LinearLayout>
+
+
+</LinearLayout>

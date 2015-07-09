@@ -19,4 +19,6 @@
     <dimen name="text_small">12.0dip</dimen>
     <dimen name="margin_outside_sign_in">32.0dip</dimen>
     <dimen name="margin_below_sign_in">10dip</dimen>
+    <dimen name="text_padding_large">20dip</dimen>
+    <dimen name="text_padding_medium">10dip</dimen>
 </resources>

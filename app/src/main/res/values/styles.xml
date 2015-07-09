@@ -90,10 +90,42 @@
         <item name="android:textSize">@dimen/text_medium</item>
         <item name="android:textColor">@color/white_max</item>
     </style>
+    <style name="text_medium_blue_nl">
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
 
     <style name="sign_up_button_component" parent="@style/text_medium_white_nl">
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/sign_up_button_component_selector</item>
     </style>
 
+    <style name="get_started_button_component" parent="@style/text_medium_blue_nl">
+        <item name="android:background">@drawable/get_started_button_component_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/text_big</item>
+    </style>
+
+    <style name="text_large_white_nl">
+        <item name="android:textSize">@dimen/text_size_large_intro</item>
+        <item name="android:textColor">@color/white_max</item>
+    </style>
+
+    <style name="text_medium_nl">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="text_large_white_gs" parent="text_large_white_nl">
+        <item name="android:padding">@dimen/text_padding_large</item>
+    </style>
+
+    <style name="text_medium_gs" parent="text_medium_nl">
+        <item name="android:padding">@dimen/text_padding_medium</item>
+    </style>
+    <style name="text_medium_white_gs" parent="text_medium_white_nl">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:padding">@dimen/text_padding_medium</item>
+    </style>
 </resources>

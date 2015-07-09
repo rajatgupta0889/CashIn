@@ -3,17 +3,13 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.google.android.gms.common.SignInButton;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.social.GooglePlus;
 import com.mantralabsglobal.cashin.social.SocialBase;
-import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.IntroSliderFragmentAdapter;
 
 import java.util.List;
@@ -99,7 +95,7 @@ public class IntroSliderActivity extends BaseActivity {
             @Override
             public void onSuccess(final String email) {
                 putInAppPreference(USER_NAME, email);
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
                 startActivity(intent);
                 finish();
             }

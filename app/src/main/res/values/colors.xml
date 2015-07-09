@@ -10,4 +10,6 @@
     <color name="white_max">#ffffffff</color>
     <color name="sign_up_button_component_background">#ff447ca1</color>
     <color name="sign_up_button_component_background_clicked">#ff4a8cb9</color>
+    <color name="get_started_button_component_background">#fff</color>
+    <color name="get_started_button_component_background_clicked">#ddd</color>
 </resources>

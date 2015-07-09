@@ -183,4 +183,13 @@
     <string name="primary_bank_details">Primary bank details</string>
     <string name="click_the_bank_icon_in_the__circle_to_select_as_primary_bank">Click the bank icon in the circle to select as primary bank</string>
     <string name="description_image">image</string>
+    <string name="try_to_keep_these_documents_ready">Try to keep these documents ready</string>
+    <string name="Must">Must</string>
+    <string name="aadhar">Aadhar card</string>
+    <string name="pan_card">Pan Card</string>
+    <string name="optional">Optional</string>
+    <string name="business_card">Business card</string>
+    <string name="bank_statement">Bank statement</string>
+    <string name="salary_slips">Salary slips</string>
+    <string name="get_started">Get Started</string>
 </resources>
