@@ -25,6 +25,11 @@
         android:orderInCategory="1"
         android:menuCategory="secondary"/>
 
+    <item android:id="@+id/action_launch_camera"
+        android:title="@string/launch_camera_app"
+        app:showAsAction="never"
+        android:orderInCategory="1"
+        android:menuCategory="secondary"/>
 
     <item android:id="@+id/action_logout"
         android:title="@string/logout"

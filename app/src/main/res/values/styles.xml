@@ -82,6 +82,18 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
+    <style name="Widget.CashIn.ActionBar.Camera">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColorPrimary">@color/primary</item>
+        <item name="android:textColorSecondary">@color/primary</item>
+        <item name="android:actionMenuTextColor">@color/primary</item>
+        <item name="android:titleTextStyle">@style/Widget.CashIn.ActionBar.Camera.Text</item>
+    </style>
+
+    <style name="Widget.CashIn.ActionBar.Camera.Text" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
     <style name="ThemeOverlay.CashIn.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/light</item>
     </style>
@@ -127,5 +139,22 @@
     <style name="text_medium_white_gs" parent="text_medium_white_nl">
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:padding">@dimen/text_padding_medium</item>
+    </style>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+	-->
+    <style name="CWACCameraBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="CWACCameraTheme" parent="CWACCameraBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 </resources>

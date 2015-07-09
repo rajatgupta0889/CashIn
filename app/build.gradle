@@ -27,6 +27,9 @@ allprojects {
         maven {
             url "https://oss.sonatype.org/content/repositories/snapshots/"
         }
+        maven {
+            url "https://repo.commonsware.com.s3.amazonaws.com"
+        }
     }
 }
 
@@ -45,5 +48,6 @@ dependencies {
     compile 'com.soundcloud.android:android-crop:1.0.0@aar'
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     compile project(':linkedin-sdk')
+    compile 'com.commonsware.cwac:camera:0.6.+'
     //compile 'joda-time:joda-time:2.7' // for joda
 }

@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.IdentityPagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
@@ -185,6 +186,12 @@ public class MainActivity extends BaseActivity  {
         }
         if(id == R.id.action_package_hash){
             showPckageHash();
+        }
+        if(id == R.id.action_launch_camera)
+        {
+            Intent intent = new Intent(getBaseContext(), CwacCameraActivity.class);
+            startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

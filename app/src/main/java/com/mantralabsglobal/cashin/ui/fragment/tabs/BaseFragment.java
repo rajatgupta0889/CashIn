@@ -66,7 +66,8 @@ public abstract class BaseFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressBar.setVisibility(View.GONE);
+                if(progressBar != null)
+                    progressBar.setVisibility(View.GONE);
             }
         });
 
