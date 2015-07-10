@@ -39,7 +39,14 @@ public class LocationAddress {
             {
                 Address address = null;
                 try {
-                    address = getAddressFromLocation(location.getLatitude(), location.getLongitude(), context);
+                    if(location != null) {
+                        address = getAddressFromLocation(location.getLatitude(), location.getLongitude(), context);
+                    }
+                    else
+                    {
+                        listener.onError(new RuntimeException("Failed to get GPS Location"));
+                        return;
+                    }
                 } catch (IOException e) {
                     listener.onError(e);
                     return;
