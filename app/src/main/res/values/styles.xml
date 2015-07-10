@@ -17,8 +17,43 @@
 
     <style name="AppTheme.Form"></style>
 
-    <style name="AppTheme.Form.Header" parent="android:TextAppearance.DeviceDefault.Large">
+    <style name="AppTheme.Form.Header" parent="android:TextAppearance.DeviceDefault.Large"/>
 
+    <style name="AppTheme.Form.Fragment.Top" parent="AppTheme.Form.Header">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">5</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Bottom" parent="AppTheme.Form.Header">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Header" parent="AppTheme.Form.Header">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginBottom">@dimen/for_header_margin_bottom</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Image" parent="AppTheme.Form.Header">
+        <item name="android:layout_width">@dimen/form_header_image_width</item>
+        <item name="android:layout_height">@dimen/form_header_image_height</item>
+        <item name="android:background">@drawable/round_button</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Seperator" parent="AppTheme.Form.Header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/form_fragment_seperator_height</item>
+        <item name="android:background">@drawable/gradient_seperator</item>
+        <item name="android:layout_marginBottom">@dimen/form_fragment_seperator_margin_bottom</item>
     </style>
 
     <style name="AppTheme.Form.Header.Inverse" parent="android:TextAppearance.DeviceDefault.Large.Inverse">
@@ -157,4 +192,6 @@
     <style name="CWACCameraTheme" parent="CWACCameraBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+
+
 </resources>

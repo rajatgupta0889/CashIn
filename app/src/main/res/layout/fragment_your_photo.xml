@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/business_card_viewflipper">
+
+        <LinearLayout
+            android:id="@+id/ll_your_photo_first" android:visibility="visible"
+            android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
+
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
+
+                <TextView
+                    android:text="@string/take_a_selfie"
+                    style="@style/AppTheme.Form.Fragment.Header"
+                    />
+
+                <ImageButton
+                    android:id="@+id/launch_camera_button"
+                    android:src="@drawable/ic_action_camera"
+                    style="@style/AppTheme.Form.Fragment.Image" />
+
+            </FrameLayout>
+
+            <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
+
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
+                <TextView
+                    android:layout_width="wrap_content" android:gravity="top|center"
+                    android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/or"
+                    android:layout_gravity="center_horizontal" />
+
+                <Button
+                    android:id="@+id/enterWorkDetailsButton"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_vertical" android:padding="@dimen/text_padding_medium"
+                    android:layout_height="wrap_content" android:text="@string/upload_from_gallery" android:background="@color/transparent" android:drawableRight="@drawable/ic_action_arrow"
+                    />
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+        <ScrollView android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/ll_business_card_detail" >
+            <LinearLayout android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progres_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_gravity="center" />
+
+</FrameLayout>

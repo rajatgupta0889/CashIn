@@ -208,6 +208,8 @@
     <string name="flash">Flash</string>
     <string name="launch_full_screen">Launch Full-Screen</string>
     <string name="mirror_ffc">Mirror FFC</string>
+    <string name="or">Or</string>
+    <string name="upload_from_gallery">Upload from gallery</string>
     <string-array name="cwac_nav">
         <item >@string/standard</item>
         <item >@string/ffc</item>

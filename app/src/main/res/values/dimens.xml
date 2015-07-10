@@ -21,4 +21,9 @@
     <dimen name="margin_below_sign_in">10dip</dimen>
     <dimen name="text_padding_large">20dip</dimen>
     <dimen name="text_padding_medium">10dip</dimen>
+    <dimen name="for_header_margin_bottom">90dp</dimen>
+    <dimen name="form_header_image_width">90dp</dimen>
+    <dimen name="form_header_image_height">90dp</dimen>
+    <dimen name="form_fragment_seperator_height">2dp</dimen>
+    <dimen name="form_fragment_seperator_margin_bottom">0dp</dimen>
 </resources>

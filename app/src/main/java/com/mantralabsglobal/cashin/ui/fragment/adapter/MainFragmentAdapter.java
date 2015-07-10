@@ -59,11 +59,11 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
 
     private Fragment photoPager = new AbstractPager(){
 
-        SocialPagerAdapter adapter;
+        YourPhotoPagerAdapter adapter;
         @Override
-        protected SocialPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
+        protected YourPhotoPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
             if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new SocialPagerAdapter(fragmentManager);
+                adapter = new YourPhotoPagerAdapter(fragmentManager);
             return adapter;
         }
     };
