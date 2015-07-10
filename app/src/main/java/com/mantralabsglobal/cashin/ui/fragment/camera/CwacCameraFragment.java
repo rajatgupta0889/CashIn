@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.Face;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
@@ -26,10 +25,8 @@ import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.mantralabsglobal.cashin.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by pk on 7/9/2015.
@@ -40,7 +37,6 @@ public class CwacCameraFragment extends CameraFragment implements
             "com.commonsware.cwac.camera.demo.USE_FFC";
     private MenuItem singleShotItem=null;
     private MenuItem autoFocusItem=null;
-    private MenuItem takePictureItem=null;
     private MenuItem flashItem=null;
     private MenuItem recordItem=null;
     private MenuItem stopRecordItem=null;
@@ -50,6 +46,7 @@ public class CwacCameraFragment extends CameraFragment implements
     private long lastFaceToast=0L;
     String flashMode=null;
     private File mFile;
+
 
 
     public static CwacCameraFragment newInstance(boolean useFFC) {
@@ -88,6 +85,8 @@ public class CwacCameraFragment extends CameraFragment implements
 
         setRecordingItemVisibility();
 
+        ButterKnife.inject(this, results);
+
         return(results);
     }
 
@@ -108,7 +107,6 @@ public class CwacCameraFragment extends CameraFragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.cwac_camera, menu);
 
-        takePictureItem=menu.findItem(R.id.camera);
         //singleShotItem=menu.findItem(R.id.single_shot);
         //singleShotItem.setChecked(getContract().isSingleShotMode());
         autoFocusItem=menu.findItem(R.id.autofocus);
@@ -122,7 +120,6 @@ public class CwacCameraFragment extends CameraFragment implements
         if (isRecording()) {
             recordItem.setVisible(false);
             stopRecordItem.setVisible(true);
-            takePictureItem.setVisible(false);
         }
 
         setRecordingItemVisibility();
@@ -137,9 +134,7 @@ public class CwacCameraFragment extends CameraFragment implements
                 return(true);
 
             case R.id.autofocus:
-                takePictureItem.setEnabled(false);
                 autoFocus();
-
                 return(true);
 
             /*case R.id.single_shot:
@@ -208,7 +203,6 @@ public class CwacCameraFragment extends CameraFragment implements
     public void takeSimplePicture() {
         if (getContract().isSingleShotMode()) {
             singleShotProcessing=true;
-            takePictureItem.setEnabled(false);
         }
 
         PictureTransaction xact=new PictureTransaction(getHost());
@@ -348,8 +342,6 @@ public class CwacCameraFragment extends CameraFragment implements
         @TargetApi(16)
         public void onAutoFocus(boolean success, Camera camera) {
             super.onAutoFocus(success, camera);
-
-            takePictureItem.setEnabled(true);
         }
 
         @Override

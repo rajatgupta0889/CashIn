@@ -4,6 +4,7 @@
     <color name="accent">#0BAEDF</color>
     <color name="primary">#0288D1</color>
     <color name="light">#ffffff</color>
+    <color name="transparent">#00000000</color>
     <color name="intro_slider_one">#82B8D5</color>
     <color name="info_bar_background">#DBEEF9</color>
     <color name="info_bar_text">#0582C6</color>

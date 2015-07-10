@@ -20,6 +20,9 @@ import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 
 import java.io.File;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by pk on 7/9/2015.
  */
@@ -50,7 +53,7 @@ public class CwacCameraActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.cwac_main_activity);
-
+        ButterKnife.inject(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
 
@@ -164,5 +167,12 @@ public class CwacCameraActivity extends AppCompatActivity implements
     @Override
     public void setSingleShotMode(boolean mode) {
         singleShot=mode;
+    }
+
+    @OnClick(R.id.take_picture_button)
+    public void takePicture()
+    {
+        if(current != null)
+            current.takePicture();
     }
 }
