@@ -1,49 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/business_card_viewflipper">
 
             <LinearLayout
                 android:id="@+id/ll_business_card_snap" android:visibility="visible"
                 android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:paddingTop="50dp" android:gravity="center" android:orientation="vertical"
-                >
+                <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/take_busininess_card_snap" android:gravity="center_horizontal"
-                    style="@style/AppTheme.Form.Header"  />
+                    <TextView
+                        style="@style/AppTheme.Form.Fragment.Top.Header" android:text="@string/take_busininess_card_snap"
+                        />
 
-                <ImageButton
-                    android:layout_marginTop="30dp"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp" android:src="@drawable/ic_camera"
-                    android:background="@drawable/round_button"/>
+                    <ImageButton
+                        style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera"
+                        />
 
-            </LinearLayout>
+                </FrameLayout>
 
 
-            <View
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/gradient_seperator"
-                android:layout_height="2dp"></View>
+            <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
 
+                <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
+                    <TextView
+                        style="@style/AppTheme.Form.Fragment.Bottom.Text" android:text="@string/business_card_not_ready" />
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="@string/business_card_not_ready" />
-
-                <Button
-                android:id="@+id/enterWorkDetailsButton"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" android:capitalize="characters" android:text="@string/enter_work_details" android:background="@null"
-                />
+                        <Button
+                        android:id="@+id/enterWorkDetailsButton"
+                            style="@style/AppTheme.Form.Fragment.Bottom.Button" android:text="@string/enter_work_details"
+                        />
+                </FrameLayout>
 
         </LinearLayout>
         <ScrollView android:visibility="gone"
@@ -86,6 +72,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_launchScanner"
         android:src="@drawable/ic_camera"
+        android:visibility="gone"
         app:fabSize="normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,4 +90,4 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_gravity="center" />
 
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

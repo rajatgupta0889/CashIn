@@ -10,30 +10,30 @@
 
                 <TextView
                     android:text="@string/take_a_selfie"
-                    style="@style/AppTheme.Form.Fragment.Header"
+                    style="@style/AppTheme.Form.Fragment.Top.Header"
                     />
 
                 <ImageButton
                     android:id="@+id/launch_camera_button"
                     android:src="@drawable/ic_action_camera"
-                    style="@style/AppTheme.Form.Fragment.Image" />
+                    style="@style/AppTheme.Form.Fragment.Top.Image" />
 
             </FrameLayout>
 
             <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
 
             <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
-                <TextView
-                    android:layout_width="wrap_content" android:gravity="top|center"
-                    android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/or"
+
+                <TextView style="@style/AppTheme.Form.Fragment.Bottom.Text"
+                   android:gravity="top|center"
+                    android:text="@string/or"
                     android:layout_gravity="center_horizontal" />
 
-                <Button
-                    android:id="@+id/enterWorkDetailsButton"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center_vertical" android:padding="@dimen/text_padding_medium"
-                    android:layout_height="wrap_content" android:text="@string/upload_from_gallery" android:background="@color/transparent" android:drawableRight="@drawable/ic_action_arrow"
+                <Button style="@style/AppTheme.Form.Fragment.Bottom.Button"
+                    android:id="@+id/choose_from_gallery_button"
+                    android:text="@string/upload_from_gallery"
                     />
+
             </FrameLayout>
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:id="@+id/currentLocationLayout" android:layout_height="match_parent" android:orientation="vertical">
 
         <ScrollView android:id="@+id/vg_address_form" android:visibility="gone"
@@ -91,40 +91,28 @@
             android:id="@+id/vg_gps_launcher"
             android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:paddingTop="50dp" android:gravity="center" android:orientation="vertical"
-                >
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="Get location from GPS" android:gravity="center_horizontal"
-                    style="@style/AppTheme.Form.Header" />
+                    android:text="Get location from GPS"
+                    style="@style/AppTheme.Form.Fragment.Top.Header"  />
 
                 <ImageButton
                     android:id="@+id/ib_get_gps_location"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:background="@drawable/round_button" android:src="@drawable/ic_gps"/>
+                    style="@style/AppTheme.Form.Fragment.Top.Image"  android:src="@drawable/ic_gps"/>
 
-            </LinearLayout>
+            </FrameLayout>
 
 
-            <View
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/gradient_seperator"
-                android:layout_height="2dp"></View>
+            <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
 
-            <Button
-                android:id="@+id/btn_edit_address"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" android:capitalize="characters" android:text="Edit your current address  >" android:background="@null"
-                />
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
+
+                <Button
+                    android:id="@+id/btn_edit_address"
+                    style="@style/AppTheme.Form.Fragment.Bottom.Button" android:text="Edit your current address  >"
+                    />
+            </FrameLayout>
 
         </LinearLayout>
 
@@ -132,6 +120,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_get_loc_from_gps"
         android:src="@drawable/gps_layer"
+        android:visibility="gone"
         app:fabSize="normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -148,4 +137,4 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_gravity="center" />
 
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

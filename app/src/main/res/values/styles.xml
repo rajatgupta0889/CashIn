@@ -35,14 +35,32 @@
         <item name="android:orientation">vertical</item>
     </style>
 
-    <style name="AppTheme.Form.Fragment.Header" parent="AppTheme.Form.Header">
+    <style name="AppTheme.Form.Fragment.Bottom.Text">
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/form_header_margin_top_text</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Bottom.Button">
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">@dimen/text_padding_medium</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:drawableRight">@drawable/ic_action_arrow</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Top.Header" parent="AppTheme.Form.Header">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginBottom">@dimen/for_header_margin_bottom</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="AppTheme.Form.Fragment.Image" parent="AppTheme.Form.Header">
+    <style name="AppTheme.Form.Fragment.Top.Image" parent="AppTheme.Form.Header">
         <item name="android:layout_width">@dimen/form_header_image_width</item>
         <item name="android:layout_height">@dimen/form_header_image_height</item>
         <item name="android:background">@drawable/round_button</item>
