@@ -190,8 +190,8 @@ public class MainActivity extends BaseActivity  {
         if(id == R.id.action_launch_camera)
         {
             Intent intent = new Intent(getBaseContext(), CwacCameraActivity.class);
-            startActivity(intent);
-            finish();
+            startActivityForResult(intent, 237);
+            //finish();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,13 +1,14 @@
 package com.mantralabsglobal.cashin.ui.fragment.camera;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.Face;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,13 +17,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
 import com.commonsware.cwac.camera.CameraFragment;
 import com.commonsware.cwac.camera.CameraHost;
 import com.commonsware.cwac.camera.CameraUtils;
-import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.commonsware.cwac.camera.PictureTransaction;
+import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.ui.activity.camera.DisplayActivity;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 /**
  * Created by pk on 7/9/2015.
@@ -42,6 +49,8 @@ public class CwacCameraFragment extends CameraFragment implements
     private SeekBar zoom=null;
     private long lastFaceToast=0L;
     String flashMode=null;
+    private File mFile;
+
 
     public static CwacCameraFragment newInstance(boolean useFFC) {
         CwacCameraFragment f=new CwacCameraFragment();
@@ -80,6 +89,12 @@ public class CwacCameraFragment extends CameraFragment implements
         setRecordingItemVisibility();
 
         return(results);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     @Override
@@ -215,8 +230,17 @@ public class CwacCameraFragment extends CameraFragment implements
             Camera.FaceDetectionListener {
         boolean supportsFaces=false;
 
+        String filePath;
+
         public CwacCameraHost(Context _ctxt) {
             super(_ctxt);
+        }
+
+        @Override
+        protected File getPhotoPath() {
+            File file = new File(getActivity().getExternalFilesDir(null), this.getPhotoFilename());
+            filePath = file.getPath();
+            return file;
         }
 
         @Override
@@ -236,17 +260,14 @@ public class CwacCameraFragment extends CameraFragment implements
         @Override
         public void saveImage(PictureTransaction xact, byte[] image) {
             if (useSingleShotMode()) {
-                singleShotProcessing=false;
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        takePictureItem.setEnabled(true);
-                    }
-                });
+                super.saveImage(xact, image);
 
-                DisplayActivity.imageToShow=image;
-                startActivity(new Intent(getActivity(), DisplayActivity.class));
+                Intent resultIntent = new Intent();
+                // TODO Add extras or a data URI to this intent as appropriate.
+                resultIntent.putExtra("file_path", filePath);
+                getActivity().setResult(Activity.RESULT_OK, resultIntent);
+                getActivity().finish();
             }
             else {
                 super.saveImage(xact, image);
@@ -336,4 +357,5 @@ public class CwacCameraFragment extends CameraFragment implements
             return(mirrorFFC.isChecked());
         }
     }
+
 }

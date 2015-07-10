@@ -24,9 +24,7 @@ import java.io.File;
  * Created by pk on 7/9/2015.
  */
 public class CwacCameraActivity extends AppCompatActivity implements
-        ActionBar.OnNavigationListener, CwacCameraFragment.Contract {
-    private static final String STATE_SELECTED_NAVIGATION_ITEM=
-            "selected_navigation_item";
+    ActionBar.OnNavigationListener, CwacCameraFragment.Contract {
     private static final String STATE_SINGLE_SHOT="single_shot";
     private static final String STATE_LOCK_TO_LANDSCAPE=
             "lock_to_landscape";
@@ -38,6 +36,15 @@ public class CwacCameraActivity extends AppCompatActivity implements
     private boolean singleShot=true;
     private boolean isLockedToLandscape=false;
 
+    private static final String FFC = "FFC";
+    public static final String STANDARD = "STANDARD";
+
+    public static final String DEFAULT_CAMERA = "DEFAULT_CAMERA";
+    public static final String SHOW_CAMERA_SWITCH = "SHOW_CAMERA_SWITCH";
+    boolean showCameraSwitch = false;
+    boolean useFFCByDefault = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +54,17 @@ public class CwacCameraActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
 
-        if (hasTwoCameras) {
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        Intent intent = getIntent();
+
+        String defaultCamera = intent.getStringExtra(DEFAULT_CAMERA);
+
+        useFFCByDefault = FFC.equals(defaultCamera) ?true:false;
+
+        showCameraSwitch = intent.getBooleanExtra(SHOW_CAMERA_SWITCH, false);
+
+        if (hasTwoCameras && showCameraSwitch) {
             final ActionBar actionBar=getSupportActionBar();
 
             actionBar.setDisplayShowTitleEnabled(false);
@@ -66,31 +83,6 @@ public class CwacCameraActivity extends AppCompatActivity implements
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, current).commit();
         }
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (hasTwoCameras) {
-            if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-                getSupportActionBar().setSelectedNavigationItem(savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
-            }
-        }
-
-        isLockedToLandscape=
-                savedInstanceState.getBoolean(STATE_LOCK_TO_LANDSCAPE);
-
-        if (current != null) {
-            current.lockToLandscape(isLockedToLandscape);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        if (hasTwoCameras) {
-            outState.putInt(STATE_SELECTED_NAVIGATION_ITEM,
-                    getSupportActionBar().getSelectedNavigationIndex());
-        }
-        outState.putBoolean(STATE_LOCK_TO_LANDSCAPE, isLockedToLandscape);
     }
 
     @Override
@@ -113,22 +105,12 @@ public class CwacCameraActivity extends AppCompatActivity implements
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, current).commit();
 
-        findViewById(android.R.id.content).post(new Runnable() {
-            @Override
-            public void run() {
-                current.lockToLandscape(isLockedToLandscape);
-            }
-        });
-
         return(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         new MenuInflater(this).inflate(R.menu.cwac_main, menu);
-
-        menu.findItem(R.id.landscape).setChecked(isLockedToLandscape);
-
         return(super.onCreateOptionsMenu(menu));
     }
 
@@ -144,11 +126,11 @@ public class CwacCameraActivity extends AppCompatActivity implements
 
             startActivityForResult(i, CONTENT_REQUEST);
         }
-        else */if (item.getItemId() == R.id.landscape) {
+        else if (item.getItemId() == R.id.landscape) {
             item.setChecked(!item.isChecked());
             current.lockToLandscape(item.isChecked());
             isLockedToLandscape=item.isChecked();
-        }
+        }*/
         return(super.onOptionsItemSelected(item));
     }
 
