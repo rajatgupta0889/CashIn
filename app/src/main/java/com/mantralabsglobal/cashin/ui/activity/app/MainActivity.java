@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity  {
             public void onSuccess() {
                 mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
                 ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
-                ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(1);
+                ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(0);
             }
 
             @Override

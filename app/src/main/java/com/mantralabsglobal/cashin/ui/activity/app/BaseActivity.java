@@ -28,6 +28,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final String EMPTY_STRING = "";
     public static final int GOOGLE_PLUS_LOGIN_REQUEST_CODE = 1000;
     public static final int MAIN_ACTIVITY_REQUEST_CODE = 2000;
+    public static final int SELECT_PHOTO_FROM_GALLERY = 3000;
 
     protected void putInAppPreference(String key, String value) {
         appPreference.edit().putString(key, value).apply();
