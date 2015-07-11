@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 /**
@@ -37,6 +39,7 @@ import retrofit.mime.TypedFile;
  */
 public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarImage>  {
 
+    private static final String TAG = "YourPhotoFragment";
     @InjectView(R.id.photo_viewer)
     ImageView photoViewer;
 
@@ -97,12 +100,12 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
 
-        photoPickerIntent.putExtra("crop", "true");
+     /*   photoPickerIntent.putExtra("crop", "true");
         photoPickerIntent.putExtra("outputX", 512);
         photoPickerIntent.putExtra("outputY", 512);
         photoPickerIntent.putExtra("aspectX", 1);
         photoPickerIntent.putExtra("aspectY", 1);
-        photoPickerIntent.putExtra("scale", true);
+        photoPickerIntent.putExtra("scale", true);*/
 
         startActivityForResult(photoPickerIntent, BaseActivity.SELECT_PHOTO_FROM_GALLERY);
     }
@@ -161,10 +164,14 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
     private void beginCrop(Uri source, String fileName) {
 
         Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), fileName));
-        Crop.of(source, destination).asSquare().withAspect(3,4).withMaxSize(800, 1200).start(getActivity(), BaseActivity.CROP_SELFIE);
+        Crop.of(source, destination).asSquare().withAspect(10,12).withMaxSize(1000, 1200).start(getActivity(), BaseActivity.CROP_SELFIE);
     }
 
-
+    @Override
+    protected boolean beforeBindDataToForm(AvtarService.AvtarImage value, Response response) {
+        Picasso.with(getActivity()).invalidate(value.getImageUri());
+        return false;
+    }
     /*public void bindDataToForm(Uri imageUri) {
         try{
 
@@ -186,7 +193,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 photoViewer.setImageBitmap(selectedImage);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage());
             }
         }
         else if(value != null && value.getAvatar() != null && value.getAvatar().length()>0)
@@ -194,6 +201,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
             showProgressDialog("");
             Picasso.with(getActivity())
                     .load(value.getAvatar())
+                    .fit()
                     .into(photoViewer, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
