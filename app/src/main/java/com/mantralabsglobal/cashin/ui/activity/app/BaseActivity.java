@@ -26,6 +26,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public static final String APP_PREFERENCE = "APP_PREFERENCE";
     public static final String USER_NAME = "USER_NAME";
+    public static final String USER_ID = "USER_ID";
     public static final String EMPTY_STRING = "";
     public static final int GOOGLE_PLUS_LOGIN_REQUEST_CODE = 1000;
     public static final int MAIN_ACTIVITY_REQUEST_CODE = 2000;
@@ -38,6 +39,17 @@ public class BaseActivity extends AppCompatActivity {
         appPreference.edit().putString(key, value).apply();
     }
 
+    public String getUserName()
+    {
+        return appPreference.getString(USER_NAME, null);
+    }
+
+    public String getUserId()
+    {
+        return appPreference.getString(USER_ID, null);
+    }
+
+
     protected void registerAndLogin(final String userName, boolean userExists, final IAuthListener listener) {
         AuthenticationService authService = ((com.mantralabsglobal.cashin.ui.Application) getApplication()).getRestClient().getAuthenticationService();
         AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
@@ -47,6 +59,7 @@ public class BaseActivity extends AppCompatActivity {
             authService.authenticateUser(up, new Callback<AuthenticationService.AuthenticatedUser>() {
                 @Override
                 public void success(AuthenticationService.AuthenticatedUser authenticatedUser, Response response) {
+                    putInAppPreference(USER_ID, authenticatedUser.getId());
                     listener.onSuccess();
                 }
 
