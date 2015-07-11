@@ -13,6 +13,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 
 import com.mantralabsglobal.cashin.R;
@@ -39,7 +41,7 @@ public class CwacCameraActivity extends AppCompatActivity implements
     private boolean singleShot=true;
     private boolean isLockedToLandscape=false;
 
-    private static final String FFC = "FFC";
+    public static final String FFC = "FFC";
     public static final String STANDARD = "STANDARD";
 
     public static final String DEFAULT_CAMERA = "DEFAULT_CAMERA";
@@ -50,6 +52,8 @@ public class CwacCameraActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.cwac_main_activity);
@@ -86,6 +90,13 @@ public class CwacCameraActivity extends AppCompatActivity implements
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, current).commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (useFFCByDefault)
+            getSupportActionBar().setSelectedNavigationItem(1);
     }
 
     @Override

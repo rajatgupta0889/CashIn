@@ -119,7 +119,8 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void success(T value, Response response) {
             serverCopy = value;
-            bindDataToForm(value);
+            if(beforeBindDataToForm(value, response))
+                bindDataToForm(value);
             showToastOnUIThread(getString(R.string.save_sucess));
             hideProgressDialog();
         }
@@ -127,18 +128,24 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            Snackbar snackbar = Snackbar
-                    .make((CoordinatorLayout)getCurrentView(), "Failed to save data. Error: " + error.getMessage() , Snackbar.LENGTH_LONG)
-                    .setAction("Retry", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            save();
-                        }
-                    });
-            snackbar.show();
+            if(getCurrentView() instanceof CoordinatorLayout) {
+                Snackbar snackbar = Snackbar
+                        .make((CoordinatorLayout) getCurrentView(), "Failed to save data. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                save();
+                            }
+                        });
+                snackbar.show();
+            }
             //showToastOnUIThread(error.getMessage());
         }
     };
+
+    protected boolean beforeBindDataToForm(T value, Response response) {
+        return true;
+    }
 
     private Callback<T> dataCallback = new Callback<T>() {
         @Override

@@ -34,6 +34,7 @@ public class RestClient  {
     private UserHistoryService userHistoryService;
     private FacebookService facebookService;
     private PanCardService panCardServiceOCR;
+    private AvtarService avtarService;
 
     public RestClient(Context context)
     {
@@ -78,6 +79,7 @@ public class RestClient  {
         userHistoryService = restAdapter.create(UserHistoryService.class);
         facebookService = restAdapter.create(FacebookService.class);
         panCardServiceOCR = restAdapterOCR.create(PanCardService.class);
+        avtarService = restAdapter.create(AvtarService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -124,5 +126,9 @@ public class RestClient  {
 
     public PanCardService getPanCardServiceOCR() {
         return panCardServiceOCR;
+    }
+
+    public AvtarService getAvtarService() {
+        return avtarService;
     }
 }
