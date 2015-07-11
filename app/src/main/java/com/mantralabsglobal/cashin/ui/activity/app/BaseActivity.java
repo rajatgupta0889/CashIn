@@ -20,6 +20,7 @@ import retrofit.client.Response;
 public class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
+
     protected ProgressDialog progressDialog;
     SharedPreferences appPreference = null;
 
@@ -29,6 +30,9 @@ public class BaseActivity extends AppCompatActivity {
     public static final int GOOGLE_PLUS_LOGIN_REQUEST_CODE = 1000;
     public static final int MAIN_ACTIVITY_REQUEST_CODE = 2000;
     public static final int SELECT_PHOTO_FROM_GALLERY = 3000;
+    public static final int SELFIE_CAPTURE = 4000;
+    public static final int CROP_SELFIE = 5000;
+
 
     protected void putInAppPreference(String key, String value) {
         appPreference.edit().putString(key, value).apply();

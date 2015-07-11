@@ -63,7 +63,7 @@
     <style name="AppTheme.Form.Fragment.Top.Image" parent="AppTheme.Form.Header">
         <item name="android:layout_width">@dimen/form_header_image_width</item>
         <item name="android:layout_height">@dimen/form_header_image_height</item>
-        <item name="android:background">@drawable/round_button</item>
+        <item name="android:background">@drawable/round_button_blue</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
@@ -136,7 +136,7 @@
     </style>
 
     <style name="Widget.CashIn.ActionBar.Camera">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/translucentBlue</item>
         <item name="android:textColorPrimary">@color/primary</item>
         <item name="android:textColorSecondary">@color/primary</item>
         <item name="android:actionMenuTextColor">@color/primary</item>

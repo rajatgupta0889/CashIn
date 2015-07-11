@@ -14,7 +14,11 @@ import android.widget.ImageView;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
+import com.mantralabsglobal.cashin.utils.CameraUtils;
+import com.soundcloud.android.crop.Crop;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -78,7 +82,29 @@ public class YourPhotoFragment extends BaseBindableFragment<Bitmap>  {
     {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
+
+        photoPickerIntent.putExtra("crop", "true");
+        photoPickerIntent.putExtra("outputX", 512);
+        photoPickerIntent.putExtra("outputY", 512);
+        photoPickerIntent.putExtra("aspectX", 1);
+        photoPickerIntent.putExtra("aspectY", 1);
+        photoPickerIntent.putExtra("scale", true);
+
         startActivityForResult(photoPickerIntent, BaseActivity.SELECT_PHOTO_FROM_GALLERY);
+    }
+
+    @OnClick(R.id.launch_camera_button)
+    public void launchCamera()
+    {
+        Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
+        intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, true);
+        intent.putExtra(CwacCameraActivity.DEFAULT_CAMERA, CwacCameraActivity.FFC);
+        getActivity().startActivityForResult(intent, BaseActivity.SELFIE_CAPTURE);
+    }
+
+    @OnClick(R.id.edit_selfie_button)
+    public void editSelfie(){
+        setVisibleChildView(imagePicker);
     }
 
     @Override
@@ -88,21 +114,50 @@ public class YourPhotoFragment extends BaseBindableFragment<Bitmap>  {
         switch(requestCode) {
             case BaseActivity.SELECT_PHOTO_FROM_GALLERY:
                 if(resultCode == Activity.RESULT_OK){
-                    try {
-                        final Uri imageUri = imageReturnedIntent.getData();
-                        final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        bindDataToForm(selectedImage);
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
+                    final Uri imageUri = imageReturnedIntent.getData();
+                    beginCrop(imageUri, "selfie-cropped.jpg");
+                    //bindDataToForm(imageUri);
                 }
+                break;
+            case BaseActivity.SELFIE_CAPTURE:
+                if(resultCode == Activity.RESULT_OK){
+                    String path = imageReturnedIntent.getStringExtra("file_path");
+                    File file = new File(path);
+                    Uri imageUri = Uri.fromFile(file);
+                    beginCrop(imageUri, "selfie-cropped.jpg");
+                    //bindDataToForm(imageUri);
+                }
+                break;
+            case BaseActivity.CROP_SELFIE:
+                if (resultCode == Activity.RESULT_OK) {
+                    bindDataToForm(Uri.fromFile(new File(Crop.getOutput(imageReturnedIntent).getPath())));
+                } else if (resultCode == Crop.RESULT_ERROR) {
+                    showToastOnUIThread(Crop.getError(imageReturnedIntent).getMessage());
+                    reset(false);
+                }
+                break;
+
         }
     }
 
-    @Override
+    private void beginCrop(Uri source, String fileName) {
+
+        Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), fileName));
+        Crop.of(source, destination).asSquare().withAspect(3,4).withMaxSize(800, 1200).start(getActivity(), BaseActivity.CROP_SELFIE);
+    }
+
+
+    public void bindDataToForm(Uri imageUri) {
+        try{
+
+            final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            bindDataToForm(selectedImage);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+        @Override
     public void bindDataToForm(Bitmap value) {
 
         setVisibleChildView(imageViewer);

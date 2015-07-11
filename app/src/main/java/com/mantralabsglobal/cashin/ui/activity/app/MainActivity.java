@@ -83,46 +83,7 @@ public class MainActivity extends BaseActivity  {
         buttonList.add(financialButton);
         buttonList.add(socialButton);
 
-        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Button v = buttonList.get(position);
-                if (v == yourPhotoButton)
-                    yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photoselected, 0, 0);
-                else
-                    yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photo, 0, 0);
-
-                if (v == yourIdentityButton)
-                    yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identityselected, 0, 0);
-                else
-                    yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identity, 0, 0);
-
-                if (v == workButton)
-                    workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_workselected, 0, 0);
-                else
-                    workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_work, 0, 0);
-
-                if (v == financialButton)
-                    financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financialselected, 0, 0);
-                else
-                    financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financial, 0, 0);
-
-                if (v == socialButton)
-                    socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_socialselected, 0, 0);
-                else
-                    socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
 
         handleAuthentication(new IAuthListener() {
 
@@ -130,7 +91,8 @@ public class MainActivity extends BaseActivity  {
             public void onSuccess() {
                 mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
                 ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
-                ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(0);
+                pageChangeListener.onPageSelected(0);
+               // ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(0);
             }
 
             @Override
@@ -141,6 +103,35 @@ public class MainActivity extends BaseActivity  {
 
     }
 
+    private ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
+        public void onPageSelected(int position) {
+            Button v = buttonList.get(position);
+            if (v == yourPhotoButton)
+                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photoselected, 0, 0);
+            else
+                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photo, 0, 0);
+
+            if (v == yourIdentityButton)
+                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identityselected, 0, 0);
+            else
+                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identity, 0, 0);
+
+            if (v == workButton)
+                workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_workselected, 0, 0);
+            else
+                workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_work, 0, 0);
+
+            if (v == financialButton)
+                financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financialselected, 0, 0);
+            else
+                financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financial, 0, 0);
+
+            if (v == socialButton)
+                socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_socialselected, 0, 0);
+            else
+                socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
+        }
+    };
 
     @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
     public void onClick(final View v) {
