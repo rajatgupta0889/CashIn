@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
    android:padding="20dp">
 
-    <ScrollView
+    <ScrollView android:id="@+id/vg_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

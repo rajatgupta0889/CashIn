@@ -103,6 +103,11 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
 
     @Override
+    protected View getFormView() {
+        return vg_addressForm;
+    }
+
+    @Override
     protected void handleDataNotPresentOnServer() {
         showGPSLauncher();
     }

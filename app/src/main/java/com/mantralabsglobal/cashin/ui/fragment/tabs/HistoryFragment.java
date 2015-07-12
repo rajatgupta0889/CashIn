@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import com.mantralabsglobal.cashin.R;
@@ -20,14 +21,17 @@ import retrofit.Callback;
  */
 public class HistoryFragment extends BaseBindableFragment<UserHistoryService.UserHistory> {
 
-    @InjectView(R.id.switch_loan_taken)
-    Switch loanTaken;
-    @InjectView(R.id.switch_defaulted)
-    Switch hasDefaulted;
-    @InjectView(R.id.switch_cheque_bounced)
-    Switch chequeBounced;
-    @InjectView(R.id.switch_application_rejected)
-    Switch applicationRejected;
+    @InjectView(R.id.rg_loan_taken)
+    RadioGroup loanTaken;
+    @InjectView(R.id.rg_defaulted)
+    RadioGroup hasDefaulted;
+    @InjectView(R.id.rg_cheque_bounced)
+    RadioGroup chequeBounced;
+    @InjectView(R.id.rg_application_rejected)
+    RadioGroup applicationRejected;
+
+    @InjectView(R.id.vg_form)
+    ViewGroup vg_form;
 
     UserHistoryService userHistoryService;
 
@@ -37,6 +41,11 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
         // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         return view;
+    }
+
+    @Override
+    protected View getFormView() {
+        return vg_form;
     }
 
     @Override
@@ -71,10 +80,11 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
     public void bindDataToForm(UserHistoryService.UserHistory value) {
         if(value != null)
         {
-            hasDefaulted.setChecked(value.isHasDefaulted());
-            loanTaken.setChecked(value.isLoanTaken());
-            chequeBounced.setChecked(value.isChequeBounced());
-            applicationRejected.setChecked(value.isApplicationRejected());
+            hasDefaulted.check(value.isHasDefaulted() ? R.id.rg_defaulted_yes : R.id.rg_defaulted_no);
+            loanTaken.check(value.isLoanTaken() ? R.id.rg_loan_taken_yes : R.id.rg_loan_taken_no);
+            chequeBounced.check(value.isChequeBounced() ? R.id.rg_cheque_bounced_yes : R.id.rg_cheque_bounced_no);
+            applicationRejected.check(value.isApplicationRejected() ? R.id.rg_application_rejected_yes : R.id.rg_application_rejected_no);
+
         }
     }
 
@@ -86,10 +96,10 @@ public class HistoryFragment extends BaseBindableFragment<UserHistoryService.Use
             base = new UserHistoryService.UserHistory();
         }
 
-        base.setApplicationRejected(applicationRejected.isChecked());
-        base.setHasDefaulted(hasDefaulted.isChecked());
-        base.setIsChequeBounced(chequeBounced.isChecked());
-        base.setLoanTaken(loanTaken.isChecked());
+        base.setApplicationRejected(applicationRejected.getCheckedRadioButtonId()==R.id.rg_application_rejected_yes);
+        base.setHasDefaulted(hasDefaulted.getCheckedRadioButtonId()==R.id.rg_defaulted_yes);
+        base.setIsChequeBounced(chequeBounced.getCheckedRadioButtonId()==R.id.rg_cheque_bounced_yes);
+        base.setLoanTaken(loanTaken.getCheckedRadioButtonId()==R.id.rg_loan_taken_yes);
 
         return base;
     }

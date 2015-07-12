@@ -15,4 +15,5 @@
     <color name="sign_up_button_component_background_clicked">#ff4a8cb9</color>
     <color name="get_started_button_component_background">#fff</color>
     <color name="get_started_button_component_background_clicked">#ddd</color>
+    <color name="seperator_center">#d3d3d3</color>
 </resources>

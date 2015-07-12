@@ -132,6 +132,11 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
 
     }
 
+    @Override
+    protected View getFormView() {
+        return vg_facebookForm;
+    }
+
     protected void populateFaceBookProfile(AccessToken token)
     {
         Facebook.getFacebookProfile(token, new SocialBase.SocialListener<FacebookService.FacebookProfile>() {

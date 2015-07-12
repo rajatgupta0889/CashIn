@@ -47,6 +47,11 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     }
 
     @Override
+    protected View getFormView() {
+        return vg_bank_details;
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         primaryBankService = ((Application)getActivity().getApplication()).getRestClient().getPrimaryBankService();
