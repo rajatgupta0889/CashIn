@@ -84,9 +84,9 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     public void save(boolean force) {
         if(isFormValid())
         {
-            showProgressDialog(getString(R.string.waiting_for_server));
             if(serverCopy == null)
             {
+                showProgressDialog(getString(R.string.waiting_for_server));
                 T formData = getDataFromForm(null);
                 onCreate(formData, saveCallback);
             }
@@ -95,8 +95,9 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                 T data = cloneThroughJson(serverCopy);
                 T updatedData = getDataFromForm(data);
                 if(force || isDataChanged(updatedData)) {
-                onUpdate(updatedData, saveCallback);
-            }
+                    showProgressDialog(getString(R.string.waiting_for_server));
+                    onUpdate(updatedData, saveCallback);
+                }
             }
 
         }
