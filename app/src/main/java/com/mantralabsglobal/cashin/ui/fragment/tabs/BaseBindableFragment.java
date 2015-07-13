@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
@@ -26,6 +28,7 @@ import retrofit.client.Response;
  */
 public abstract class BaseBindableFragment<T> extends BaseFragment implements Bindable<T> {
 
+    private static final String TAG = "BaseBindableFragment";
     private boolean isFormValid;
     private Validator validator;
     protected T serverCopy;
@@ -40,7 +43,10 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         validator.setValidationListener(new Validator.ValidationListener() {
             @Override
             public void onValidationSucceeded() {
-                isFormValid = true;
+                if(getFormView()!= null && getFormView().isShown() && getFormView().isEnabled())
+                    isFormValid = true;
+                else
+                    isFormValid = false;
             }
 
             @Override
@@ -58,33 +64,57 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
 
     public boolean isFormValid()
     {
-        validator.validate(false);
-        if(isFormValid)
-        {
-            return true;
+        try {
+            validator.validate(false);
         }
-        return false;
+        catch(Exception e)
+        {
+            Log.w(TAG, e.getMessage());
+        }
+        return isFormValid ;
     }
 
     @Optional
     @Override
     @OnClick(R.id.btn_save)
     public void save() {
+        save(true);
+    }
+
+    public void save(boolean force) {
         if(isFormValid())
         {
-            showProgressDialog(getString(R.string.waiting_for_server));
             if(serverCopy == null)
             {
+                showProgressDialog(getString(R.string.waiting_for_server));
                 T formData = getDataFromForm(null);
                 onCreate(formData, saveCallback);
             }
             else
             {
-                T updatedData = getDataFromForm(serverCopy);
-                onUpdate(updatedData, saveCallback);
+                T data = cloneThroughJson(serverCopy);
+                T updatedData = getDataFromForm(data);
+                if(force || isDataChanged(updatedData)) {
+                    showProgressDialog(getString(R.string.waiting_for_server));
+                    onUpdate(updatedData, saveCallback);
+                }
             }
 
         }
+    }
+
+
+
+    @SuppressWarnings("unchecked")
+    protected T cloneThroughJson(T t) {
+        Gson gson = new Gson();
+        String json = gson.toJson(t);
+        return (T) gson.fromJson(json, t.getClass());
+    }
+
+    protected boolean isDataChanged(T updatedData) {
+        Gson gson = new Gson();
+        return !gson.toJsonTree(serverCopy).equals(gson.toJsonTree(updatedData));
     }
 
     protected abstract void onUpdate(T updatedData, Callback<T> saveCallback);
@@ -113,6 +143,13 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        save(false);
+    }
+
+
     protected abstract void loadDataFromServer(Callback<T> dataCallback);
 
     private Callback<T> saveCallback = new Callback<T>() {
@@ -121,7 +158,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             serverCopy = value;
             if(beforeBindDataToForm(value, response))
                 bindDataToForm(value);
-            showToastOnUIThread(getString(R.string.save_sucess));
+            //showToastOnUIThread(getString(R.string.save_sucess));
             hideProgressDialog();
         }
 
@@ -191,4 +228,6 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
     };
 
     protected abstract void handleDataNotPresentOnServer();
+
+    protected abstract View getFormView();
 }

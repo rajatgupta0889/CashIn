@@ -44,6 +44,8 @@ public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Inco
     @InjectView(R.id.cc_month_three)
     public MonthIncomeView monthIncomeViewThree;
 
+    @InjectView(R.id.vg_form)
+    ViewGroup vg_form;
 
     IncomeService incomeService;
 
@@ -55,6 +57,12 @@ public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Inco
 
         return view;
     }
+
+    @Override
+    protected View getFormView() {
+        return vg_form;
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

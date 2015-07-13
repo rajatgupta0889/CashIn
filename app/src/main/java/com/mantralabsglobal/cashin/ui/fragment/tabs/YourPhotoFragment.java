@@ -61,6 +61,11 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
     }
 
     @Override
+    protected View getFormView() {
+        return imageViewer;
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 

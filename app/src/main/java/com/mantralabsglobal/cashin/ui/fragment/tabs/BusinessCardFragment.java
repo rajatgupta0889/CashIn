@@ -71,7 +71,10 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
         reset(false);
     }
-
+    @Override
+    protected View getFormView() {
+        return vg_form;
+    }
     @Override
     protected void onUpdate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
         businessCardService.updateBusinessCardDetail(updatedData,saveCallback);

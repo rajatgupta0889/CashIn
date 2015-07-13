@@ -94,6 +94,11 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     }
 
     @Override
+    protected View getFormView() {
+        return vg_linkedInProfile;
+    }
+
+    @Override
     protected void onUpdate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
         linkedInService.updateLinkedInDetail(updatedData, saveCallback);
     }

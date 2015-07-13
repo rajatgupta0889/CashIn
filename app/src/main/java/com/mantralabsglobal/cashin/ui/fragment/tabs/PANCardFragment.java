@@ -97,6 +97,11 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     }
 
     @Override
+    protected View getFormView() {
+        return vg_form;
+    }
+
+    @Override
     protected void onUpdate(PanCardService.PanCardDetail updatedData, Callback<PanCardService.PanCardDetail> saveCallback) {
         panCardService.updatePanCardDetail(updatedData, saveCallback);
     }

@@ -126,6 +126,11 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         setVisibleChildView(vg_camera);
     }
 
+    @Override
+    protected View getFormView() {
+        return vg_form;
+    }
+
 
     @OnClick(R.id.bt_edit_aadhar_detail)
     public void loadAadharForm()

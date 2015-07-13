@@ -11,12 +11,12 @@
     <dimen name="sign_in_button_component_height">56.0dip</dimen>
     <dimen name="margin_outside">16.0dip</dimen>
     <dimen name="default_border">1.0dip</dimen>
-    <dimen name="text_actionbar_title">18.0dip</dimen>
-    <dimen name="text_big">16.0dip</dimen>
-    <dimen name="text_medium">14.0dip</dimen>
+    <dimen name="text_actionbar_title">18.0sp</dimen>
+    <dimen name="text_big">16.0sp</dimen>
+    <dimen name="text_size_medium">18.0sp</dimen>
     <dimen name="text_size_large">22.0sp</dimen>
     <dimen name="text_size_small">14.0sp</dimen>
-    <dimen name="text_small">12.0dip</dimen>
+    <dimen name="text_small">12.0sp</dimen>
     <dimen name="margin_outside_sign_in">32.0dip</dimen>
     <dimen name="margin_below_sign_in">10dip</dimen>
     <dimen name="text_padding_large">20dip</dimen>
