@@ -171,9 +171,11 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
     @Override
     protected boolean beforeBindDataToForm(AvtarService.AvtarImage value, Response response) {
-        Log.i(TAG, "deleting picasso cache " + value.getImageUri());
-        Picasso.with(getActivity()).invalidate(value.getImageUri());
-        dirtyImage = null;
+        if(value.getAvatar() != null && value.getAvatar().length()>0) {
+            Log.i(TAG, "deleting picasso cache " + value.getAvatar());
+            Picasso.with(getActivity()).invalidate(value.getAvatar());
+            dirtyImage = null;
+        }
         return false;
     }
     /*public void bindDataToForm(Uri imageUri) {

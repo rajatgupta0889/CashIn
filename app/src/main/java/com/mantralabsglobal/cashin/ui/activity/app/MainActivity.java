@@ -85,20 +85,19 @@ public class MainActivity extends BaseActivity  {
         buttonList.add(financialButton);
         buttonList.add(socialButton);
 
-        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
-
         checkUserName();
+
+        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
+        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+        ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
-        ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
         ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(appPreference.getInt(SELECTED_TAB_INDEX, 0), false);
         pageChangeListener.onPageSelected(appPreference.getInt(SELECTED_TAB_INDEX, 0));
-
     }
 
     @Override
