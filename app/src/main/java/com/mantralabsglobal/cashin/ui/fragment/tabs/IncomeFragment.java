@@ -116,19 +116,18 @@ public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Inco
             monthIncomeViewOne.setYear(value.get(0).getYear());
             monthIncomeViewOne.setMonth(value.get(0).getMonth()-1);
             monthIncomeViewOne.setAmount(String.valueOf(value.get(0).getAmount()));
-
-            if(value.size()==2)
-            {
-                monthIncomeViewTwo.setYear(value.get(1).getYear());
-                monthIncomeViewTwo.setMonth(value.get(1).getMonth()-1);
-                monthIncomeViewTwo.setAmount(String.valueOf(value.get(1).getAmount()));
-            }
-            if(value.size()==3)
-            {
-                monthIncomeViewThree.setYear(value.get(2).getYear());
-                monthIncomeViewThree.setMonth(value.get(2).getMonth()-1);
-                monthIncomeViewThree.setAmount(String.valueOf(value.get(2).getAmount()));
-            }
+        }
+        if(value.size()>1)
+        {
+            monthIncomeViewTwo.setYear(value.get(1).getYear());
+            monthIncomeViewTwo.setMonth(value.get(1).getMonth()-1);
+            monthIncomeViewTwo.setAmount(String.valueOf(value.get(1).getAmount()));
+        }
+        if(value.size()>2)
+        {
+            monthIncomeViewThree.setYear(value.get(2).getYear());
+            monthIncomeViewThree.setMonth(value.get(2).getMonth()-1);
+            monthIncomeViewThree.setAmount(String.valueOf(value.get(2).getAmount()));
         }
     }
 

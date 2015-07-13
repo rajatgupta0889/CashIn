@@ -18,7 +18,6 @@ import com.mantralabsglobal.cashin.service.AvtarService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
-import com.mantralabsglobal.cashin.utils.CameraUtils;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
@@ -26,11 +25,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
@@ -91,7 +88,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
     @Override
     protected void loadDataFromServer(Callback<AvtarService.AvtarImage> dataCallback) {
-        AvtarService.AvtarUtil.getAvtarImage(dataCallback, (BaseActivity) getActivity());
+        AvtarService.AvtarUtil.getAvtarImage(dataCallback, avtarService,  getActivity());
     }
 
     @Override
@@ -174,7 +171,9 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
 
     @Override
     protected boolean beforeBindDataToForm(AvtarService.AvtarImage value, Response response) {
+        Log.i(TAG, "deleting picasso cache " + value.getImageUri());
         Picasso.with(getActivity()).invalidate(value.getImageUri());
+        dirtyImage = null;
         return false;
     }
     /*public void bindDataToForm(Uri imageUri) {
