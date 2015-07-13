@@ -17,7 +17,7 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
 public class FinancePagerAdapter extends FragmentPagerAdapter{
 
     private FragmentManager fragmentManager;
-    private String tabtitles[] = new String[] {"Bank", "Credit Card",  "Bank Statement", "Income", "Current Address" , "Permanent Address", "Expenses", "History"};
+    private String tabtitles[] = new String[] {"Bank", "Credit Card",  "Bank Statement", "Income", "Current Address" , "Permanent Address", "EMIs", "History"};
 
     private IncomeFragment ifragnent;
     private BankDetailFragment bankDetailFragment;

@@ -83,7 +83,46 @@ public class MainActivity extends BaseActivity  {
         buttonList.add(financialButton);
         buttonList.add(socialButton);
 
-        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
+        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Button v = buttonList.get(position);
+                if (v == yourPhotoButton)
+                    yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photoselected, 0, 0);
+                else
+                    yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photo, 0, 0);
+
+                if (v == yourIdentityButton)
+                    yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identityselected, 0, 0);
+                else
+                    yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identity, 0, 0);
+
+                if (v == workButton)
+                    workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_workselected, 0, 0);
+                else
+                    workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_work, 0, 0);
+
+                if (v == financialButton)
+                    financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financialselected, 0, 0);
+                else
+                    financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financial, 0, 0);
+
+                if (v == socialButton)
+                    socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_socialselected, 0, 0);
+                else
+                    socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         handleAuthentication(new IAuthListener() {
 
@@ -91,8 +130,7 @@ public class MainActivity extends BaseActivity  {
             public void onSuccess() {
                 mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
                 ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
-                pageChangeListener.onPageSelected(0);
-               // ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(0);
+                ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(1);
             }
 
             @Override
@@ -103,50 +141,21 @@ public class MainActivity extends BaseActivity  {
 
     }
 
-    private ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
-        public void onPageSelected(int position) {
-            Button v = buttonList.get(position);
-            if (v == yourPhotoButton)
-                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photoselected, 0, 0);
-            else
-                yourPhotoButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_photo, 0, 0);
-
-            if (v == yourIdentityButton)
-                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identityselected, 0, 0);
-            else
-                yourIdentityButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_identity, 0, 0);
-
-            if (v == workButton)
-                workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_workselected, 0, 0);
-            else
-                workButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_work, 0, 0);
-
-            if (v == financialButton)
-                financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financialselected, 0, 0);
-            else
-                financialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_financial, 0, 0);
-
-            if (v == socialButton)
-                socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_socialselected, 0, 0);
-            else
-                socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
-        }
-    };
 
     @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
     public void onClick(final View v) {
 
-            final ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
+        final ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
 
-            final int newIndex = buttonList.indexOf(v);
+        final int newIndex = buttonList.indexOf(v);
 
-            viewPager.postDelayed(new Runnable() {
+        viewPager.postDelayed(new Runnable() {
 
-                @Override
-                public void run() {
-                    viewPager.setCurrentItem(newIndex);
-                }
-            }, 100);
+            @Override
+            public void run() {
+                viewPager.setCurrentItem(newIndex);
+            }
+        }, 100);
     }
 
     @Override
@@ -164,15 +173,15 @@ public class MainActivity extends BaseActivity  {
             finish();
             return true;
         }
-        if(id == R.id.action_scan_sms)
+        /*if(id == R.id.action_scan_sms)
         {
             SMSProvider smsProvider = new SMSProvider();
             List<SMSProvider.SMSMessage> messageList = smsProvider.readSMS(this, new Predicate<SMSProvider.SMSMessage>() {
-            @Override
-            public boolean apply(SMSProvider.SMSMessage smsMessage) {
-                return smsMessage.getBody().contains("Transaction");
+                @Override
+                public boolean apply(SMSProvider.SMSMessage smsMessage) {
+                    return smsMessage.getBody().contains("Transaction");
                 }
-             });
+            });
             openSMSDialog(messageList);
         }
         if(id == R.id.action_package_hash){
@@ -183,23 +192,23 @@ public class MainActivity extends BaseActivity  {
             Intent intent = new Intent(getBaseContext(), CwacCameraActivity.class);
             startActivityForResult(intent, 237);
             //finish();
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
-    protected void showPckageHash(){
-            try {
-                PackageInfo info =     getPackageManager().getPackageInfo(PACKAGE_CASHIN_APP,     PackageManager.GET_SIGNATURES);
-                for (android.content.pm.Signature signature : info.signatures) {
-                    MessageDigest md = MessageDigest.getInstance("SHA");
-                    md.update(signature.toByteArray());
-                    String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                    showToastOnUIThread(sign);
-                    Log.i("MY KEY HASH:", sign);
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-            } catch (NoSuchAlgorithmException e) {
+   /* protected void showPckageHash(){
+        try {
+            PackageInfo info =     getPackageManager().getPackageInfo(PACKAGE_CASHIN_APP,     PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                showToastOnUIThread(sign);
+                Log.i("MY KEY HASH:", sign);
             }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }
     }
 
     protected void openSMSDialog(List<SMSProvider.SMSMessage> messageList)
@@ -232,7 +241,7 @@ public class MainActivity extends BaseActivity  {
         //adapter.addAll(messageList);
         listview.setAdapter(adapter);
         myDialog.show();
-    }
+    }*/
 
     protected void handleAuthentication(IAuthListener listener)
     {
