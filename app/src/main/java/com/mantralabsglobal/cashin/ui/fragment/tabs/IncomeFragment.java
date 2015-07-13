@@ -27,7 +27,7 @@ import retrofit.Callback;
 /**
  * Created by pk on 14/06/2015.
  */
-public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Income>> {
+public class IncomeFragment extends BaseBindableListFragment<IncomeService.Income> {
 
     @NotEmpty
     @Digits
