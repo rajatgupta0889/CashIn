@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.FinancePagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.IdentityPagerAdapter;
@@ -46,6 +47,7 @@ import butterknife.OnClick;
 public class MainActivity extends BaseActivity  {
 
     public static final String PACKAGE_CASHIN_APP = "com.mantralabsglobal.cashin";
+    private static final String SELECTED_TAB_INDEX = "MAINACTIVITY_SELECTED_TAB_INDEX";
     private FinancePagerAdapter financePagerAdapter;
     private IdentityPagerAdapter identityPagerAdapter;
     private WorkPagerAdapter workPagerAdapter;
@@ -85,22 +87,24 @@ public class MainActivity extends BaseActivity  {
 
         ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
 
-        handleAuthentication(new IAuthListener() {
+        checkUserName();
+    }
 
-            @Override
-            public void onSuccess() {
-                mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
-                ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
-                pageChangeListener.onPageSelected(0);
-               // ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(0);
-            }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-            @Override
-            public void onFailure(Exception exp) {
-                showToastOnUIThread(exp.getMessage());
-            }
-        });
+        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+        ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
+        ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(appPreference.getInt(SELECTED_TAB_INDEX, 0), false);
+        pageChangeListener.onPageSelected(appPreference.getInt(SELECTED_TAB_INDEX, 0));
 
+    }
+
+    @Override
+    protected void onPause() {
+      super.onPause();
+      getCashInApplication().putInAppPreference(SELECTED_TAB_INDEX, ((ViewPager) findViewById(R.id.main_frame)).getCurrentItem());
     }
 
     private ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
@@ -234,18 +238,14 @@ public class MainActivity extends BaseActivity  {
         myDialog.show();
     }
 
-    protected void handleAuthentication(IAuthListener listener)
+    protected void checkUserName()
     {
-        String userName = appPreference.getString( USER_NAME, EMPTY_STRING);
-        if (EMPTY_STRING.equals(userName)) {
+        String userName = getCashInApplication().getAppUser();
+        if ("".equals(userName)) {
 
             Intent intent = new Intent(getBaseContext(), IntroSliderActivity.class);
             startActivity(intent);
             finish();
-        }
-        else
-        {
-            registerAndLogin(userName, true, listener);
         }
     }
 

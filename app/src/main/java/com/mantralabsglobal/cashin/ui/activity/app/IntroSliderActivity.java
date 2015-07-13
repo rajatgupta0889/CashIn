@@ -94,7 +94,7 @@ public class IntroSliderActivity extends BaseActivity {
         googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
             @Override
             public void onSuccess(final String email) {
-                putInAppPreference(USER_NAME, email);
+                getCashInApplication().setAppUserName(email);
                 Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
                 startActivity(intent);
                 finish();

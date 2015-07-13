@@ -5,9 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.AddressService;
-import com.mantralabsglobal.cashin.service.AuthenticationService;
-import com.mantralabsglobal.cashin.service.LinkedInService;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.net.CookieManager;
@@ -46,6 +44,8 @@ public class RestClient  {
 
         client.setConnectTimeout(30, TimeUnit.SECONDS);
         client.setReadTimeout(60, TimeUnit.SECONDS);
+
+        client.interceptors().add( ((Application)context).getAuthInterceptor());
 
         CookieManager cookieManager = new CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);

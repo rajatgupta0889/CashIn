@@ -1,13 +1,13 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.service.AuthenticationService;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 
 import retrofit.Callback;
@@ -24,10 +24,6 @@ public class BaseActivity extends AppCompatActivity {
     protected ProgressDialog progressDialog;
     SharedPreferences appPreference = null;
 
-    public static final String APP_PREFERENCE = "APP_PREFERENCE";
-    public static final String USER_NAME = "USER_NAME";
-    public static final String USER_ID = "USER_ID";
-    public static final String EMPTY_STRING = "";
     public static final int GOOGLE_PLUS_LOGIN_REQUEST_CODE = 1000;
     public static final int MAIN_ACTIVITY_REQUEST_CODE = 2000;
     public static final int SELECT_PHOTO_FROM_GALLERY = 3000;
@@ -39,14 +35,19 @@ public class BaseActivity extends AppCompatActivity {
         appPreference.edit().putString(key, value).apply();
     }
 
+    protected Application getCashInApplication()
+    {
+        return (Application) getApplication();
+    }
+
     public String getUserName()
     {
-        return appPreference.getString(USER_NAME, null);
+        return getCashInApplication().getAppUser();
     }
 
     public String getUserId()
     {
-        return appPreference.getString(USER_ID, null);
+        return getCashInApplication().getAppUserId();
     }
 
 
@@ -59,7 +60,7 @@ public class BaseActivity extends AppCompatActivity {
             authService.authenticateUser(up, new Callback<AuthenticationService.AuthenticatedUser>() {
                 @Override
                 public void success(AuthenticationService.AuthenticatedUser authenticatedUser, Response response) {
-                    putInAppPreference(USER_ID, authenticatedUser.getId());
+                    getCashInApplication().setAppUserId(authenticatedUser.getId());
                     listener.onSuccess();
                 }
 
@@ -96,7 +97,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appPreference = getSharedPreferences(APP_PREFERENCE, 0);
+        appPreference = getCashInApplication().getAppPreference();
         progressDialog = new ProgressDialog(this);
     }
 
