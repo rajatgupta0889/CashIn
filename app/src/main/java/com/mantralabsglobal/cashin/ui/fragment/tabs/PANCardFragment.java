@@ -129,6 +129,8 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         intent.putExtra(CwacCameraActivity.DEFAULT_CAMERA, CwacCameraActivity.STANDARD);
         intent.putExtra(CwacCameraFragment.SHOW_BOUNDS, true);
         intent.putExtra(CwacCameraFragment.ASPECT_RATIO, Double.parseDouble("0.66666666"));
+        intent.putExtra(CwacCameraFragment.SHOW_INFO, getResources().getString(R.string.position_card_inside_frame));
+
         getActivity().startActivityForResult(intent, IMAGE_CAPTURE_AADHAR_CARD);
     }
 

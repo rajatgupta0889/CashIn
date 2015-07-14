@@ -8,6 +8,7 @@ import android.hardware.Camera;
 import android.hardware.Camera.Face;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.commonsware.cwac.camera.CameraFragment;
@@ -39,6 +43,7 @@ public class CwacCameraFragment extends CameraFragment implements
             "com.commonsware.cwac.camera.demo.USE_FFC";
     public static final String SHOW_BOUNDS = "SHOW_BOUNDS";
     public static final String ASPECT_RATIO = "ASPECT_RATIO";
+    public static final String SHOW_INFO = "SHOW_INFO";
     private MenuItem singleShotItem=null;
     private MenuItem autoFocusItem=null;
     private MenuItem flashItem=null;
@@ -87,6 +92,26 @@ public class CwacCameraFragment extends CameraFragment implements
 
         boolean showBounds = getActivity().getIntent().getBooleanExtra(SHOW_BOUNDS, false);
         final double aspectRatio = getActivity().getIntent().getDoubleExtra(ASPECT_RATIO, 1);
+
+        String contextInfo = getActivity().getIntent().getStringExtra(SHOW_INFO);
+
+        if(contextInfo != null && contextInfo.length()>0)
+        {
+            TextView tv = new TextView(getActivity());
+            tv.setGravity(Gravity.CENTER | Gravity.TOP);
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 100, 0, 0);
+            params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            tv.setLayoutParams(params);
+
+            tv.setBackgroundColor(getResources().getColor(R.color.translucent));
+            tv.setTextColor(getResources().getColor(R.color.white_max));
+            tv.setVisibility(View.VISIBLE);
+            tv.setText(contextInfo);
+
+            vgcamera.addView(tv);
+        }
 
         if(showBounds) {
 
