@@ -18,6 +18,9 @@ public interface AuthenticationService {
     @POST("/login")
     void authenticateUser(@Body UserPrincipal userPrincipal  , Callback<AuthenticatedUser> callback);
 
+    @POST("/login")
+    AuthenticatedUser authenticateUserSync(@Body UserPrincipal userPrincipal );
+
     @POST("/signup")
     void registerUser(@Body NewUser user  , Callback<AuthenticatedUser> callback);
 

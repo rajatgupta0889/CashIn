@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
@@ -105,16 +106,28 @@ public class IntroSliderActivity extends BaseActivity {
         googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
             @Override
             public void onSuccess(final String email) {
-                putInAppPreference(USER_NAME, email);
-                Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
-                startActivity(intent);
-                finish();
+                getCashInApplication().setAppUserName(email);
+                registerAndLogin(email, true, new IAuthListener() {
+                    @Override
+                    public void onSuccess() {
+                        hideProgressDialog();
+                        Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Exception exp) {
+                        hideProgressDialog();
+                        Snackbar.make(viewPager, exp.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override
             public void onFailure(String message) {
                 hideProgressDialog();
-                showToastOnUIThread(message);
+                Snackbar.make(viewPager, message, Snackbar.LENGTH_LONG).show();
             }
         });
     }

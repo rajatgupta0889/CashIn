@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -7,12 +8,15 @@ import android.os.AsyncTask;
 import com.google.gson.annotations.SerializedName;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.squareup.okhttp.Call;
 
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Multipart;
@@ -28,51 +32,62 @@ public interface AvtarService {
 
     @Multipart
     @POST("/user/avatar")
-    void uploadAvtarImage(@Part("avatar") TypedFile file, Callback<AvtarImage> callback);
+    public void uploadAvtarImage(@Part("avatar") TypedFile file, Callback<AvtarImage> callback);
+
+    @GET("/user/avatar")
+    public void getAvtarImage(Callback<AvtarImage> callback);
 
     public static class AvtarUtil
     {
-        public static void getAvtarImage(final Callback<AvtarImage> callback, final BaseActivity activity)
+        public static void getAvtarImage(final Callback<AvtarImage> callback, final AvtarService service,final Activity activity)
         {
-            AsyncTask<Void, Void, AvtarImage> asyncTask = new AsyncTask<Void, Void, AvtarImage>() {
+            service.getAvtarImage(new Callback<AvtarImage>(){
+
                 @Override
-                protected AvtarImage doInBackground(Void... params) {
+                public void success(final AvtarImage avtarImage, Response response) {
+                    AsyncTask<Void, Void, Void> asyncTask = new AsyncTask<Void, Void, Void>() {
 
-                    final AvtarImage image = new AvtarImage();
-                    image.setAvatar( activity.getString(R.string.avatar_base_url) + activity.getUserId() +".jpeg");
-                    boolean imageExists = false;
-                    try {
-                        HttpURLConnection.setFollowRedirects(false);
-                        HttpURLConnection con = (HttpURLConnection) new URL(image.getAvatar()).openConnection();
-                        con.setRequestMethod("HEAD");
-                        System.out.println(con.getResponseCode());
-                        imageExists = (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    if(imageExists)
-                    {
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.success(image, null);
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            boolean imageExists = false;
+                            try {
+                                HttpURLConnection.setFollowRedirects(false);
+                                HttpURLConnection con = (HttpURLConnection) new URL(avtarImage.getAvatar()).openConnection();
+                                con.setRequestMethod("HEAD");
+                                System.out.println(con.getResponseCode());
+                                imageExists = (con.getResponseCode() == HttpURLConnection.HTTP_OK);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        });
-                    }
-                    else{
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                callback.success(null, null);
-                            }
-                        });
-                    }
 
-                    return image;
+                            if(imageExists)
+                            {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        callback.success(avtarImage, null);
+                                    }
+                                });
+                            }
+                            else{
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        callback.success(null, null);
+                                    }
+                                });
+                            }
+
+                            return null;
+                        }
+                    }.execute();
                 }
-            }.execute();
+
+                @Override
+                public void failure(RetrofitError error) {
+                    callback.failure(error);
+                }
+            });
         }
     }
 
