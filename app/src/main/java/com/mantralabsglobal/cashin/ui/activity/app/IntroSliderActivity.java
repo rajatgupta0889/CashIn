@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.Window;
 import android.view.WindowManager;
@@ -95,15 +96,27 @@ public class IntroSliderActivity extends BaseActivity {
             @Override
             public void onSuccess(final String email) {
                 getCashInApplication().setAppUserName(email);
-                Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
-                startActivity(intent);
-                finish();
+                registerAndLogin(email, true, new IAuthListener() {
+                    @Override
+                    public void onSuccess() {
+                        hideProgressDialog();
+                        Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Exception exp) {
+                        hideProgressDialog();
+                        Snackbar.make(viewPager, exp.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override
             public void onFailure(String message) {
                 hideProgressDialog();
-                showToastOnUIThread(message);
+                Snackbar.make(viewPager, message, Snackbar.LENGTH_LONG).show();
             }
         });
     }
