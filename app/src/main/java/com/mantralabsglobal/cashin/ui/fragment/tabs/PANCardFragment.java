@@ -25,6 +25,7 @@ import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.camera.CameraActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
+import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
@@ -126,6 +127,8 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
         intent.putExtra(CwacCameraActivity.DEFAULT_CAMERA, CwacCameraActivity.STANDARD);
+        intent.putExtra(CwacCameraFragment.SHOW_BOUNDS, true);
+        intent.putExtra(CwacCameraFragment.ASPECT_RATIO, Double.parseDouble("0.66666666"));
         getActivity().startActivityForResult(intent, IMAGE_CAPTURE_AADHAR_CARD);
     }
 

@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import com.commonsware.cwac.camera.CameraUtils;
 import com.commonsware.cwac.camera.PictureTransaction;
 import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.view.ScanBorderView;
 
 import java.io.File;
 
@@ -35,6 +37,8 @@ public class CwacCameraFragment extends CameraFragment implements
         SeekBar.OnSeekBarChangeListener {
     private static final String KEY_USE_FFC=
             "com.commonsware.cwac.camera.demo.USE_FFC";
+    public static final String SHOW_BOUNDS = "SHOW_BOUNDS";
+    public static final String ASPECT_RATIO = "ASPECT_RATIO";
     private MenuItem singleShotItem=null;
     private MenuItem autoFocusItem=null;
     private MenuItem flashItem=null;
@@ -46,6 +50,7 @@ public class CwacCameraFragment extends CameraFragment implements
     private long lastFaceToast=0L;
     String flashMode=null;
     private File mFile;
+
 
 
 
@@ -62,7 +67,6 @@ public class CwacCameraFragment extends CameraFragment implements
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
-
         setHasOptionsMenu(true);
 
         SimpleCameraHost.Builder builder=
@@ -78,8 +82,24 @@ public class CwacCameraFragment extends CameraFragment implements
         View cameraView=
                 super.onCreateView(inflater, container, savedInstanceState);
         View results=inflater.inflate(R.layout.cwac_camera_fragment, container, false);
+        final ViewGroup vgcamera = ((ViewGroup)results.findViewById(R.id.camera));
+        vgcamera.addView(cameraView);
 
-        ((ViewGroup)results.findViewById(R.id.camera)).addView(cameraView);
+        boolean showBounds = getActivity().getIntent().getBooleanExtra(SHOW_BOUNDS, false);
+        final double aspectRatio = getActivity().getIntent().getDoubleExtra(ASPECT_RATIO, 1);
+
+        if(showBounds) {
+
+            vgcamera.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    ScanBorderView view = new ScanBorderView(getActivity(), null);
+                    view.setAspectRatio(aspectRatio);
+                    vgcamera.addView(view);
+                }
+            });
+        }
+
         zoom=(SeekBar)results.findViewById(R.id.zoom);
         zoom.setKeepScreenOn(true);
 
@@ -89,6 +109,7 @@ public class CwacCameraFragment extends CameraFragment implements
 
         return(results);
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

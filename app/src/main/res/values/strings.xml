@@ -218,4 +218,5 @@
         <item >@string/ffc</item>
     </string-array>
     <string name="title_activity_main_activity_my">MainActivityMy</string>
+    <string name="position_card_inside_frame">Position card inside red marker</string>
 </resources>
