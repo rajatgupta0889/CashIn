@@ -135,10 +135,10 @@
     <string name="sign_in_with_google">Sign in</string>
     <string name="signing_in">Singing in</string>
     <string name="read_transactional_sms">Read transactional SMS</string>
-    <string name="ever_taken_a_loan">Ever taken a loan?</string>
-    <string name="cheque_bounced">Bounced a cheque in last 3 months?</string>
-    <string name="application_rejected">Application rejected?</string>
-    <string name="ever_defaulted">Defaulted?</string>
+    <string name="ever_taken_a_loan">Have you ever taken a loan?</string>
+    <string name="cheque_bounced">Has any of your cheques bounced in the last 3 months?</string>
+    <string name="application_rejected">Has your application for a loan ever been rejected?</string>
+    <string name="ever_defaulted">Have you defaulted on a previous loan?</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">
@@ -217,4 +217,5 @@
         <item >@string/standard</item>
         <item >@string/ffc</item>
     </string-array>
+    <string name="title_activity_main_activity_my">MainActivityMy</string>
 </resources>

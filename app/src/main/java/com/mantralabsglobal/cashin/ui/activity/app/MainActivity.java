@@ -1,57 +1,30 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.support.v4.view.ViewPager;
+        import android.support.v7.app.AlertDialog;
+        import android.support.v7.widget.Toolbar;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
 
-import com.android.internal.util.Predicate;
-import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.ui.Application;
-import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
-import com.mantralabsglobal.cashin.ui.fragment.adapter.FinancePagerAdapter;
-import com.mantralabsglobal.cashin.ui.fragment.adapter.IdentityPagerAdapter;
-import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
-import com.mantralabsglobal.cashin.ui.fragment.adapter.SocialPagerAdapter;
-import com.mantralabsglobal.cashin.ui.fragment.adapter.WorkPagerAdapter;
-import com.mantralabsglobal.cashin.utils.SMSProvider;
+        import android.widget.Button;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+        import com.mantralabsglobal.cashin.R;
+        import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
+        import java.util.ArrayList;
+        import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+        import butterknife.ButterKnife;
+        import butterknife.InjectView;
+        import butterknife.OnClick;
 
 
 public class MainActivity extends BaseActivity  {
 
-    public static final String PACKAGE_CASHIN_APP = "com.mantralabsglobal.cashin";
     private static final String SELECTED_TAB_INDEX = "MAINACTIVITY_SELECTED_TAB_INDEX";
-    private FinancePagerAdapter financePagerAdapter;
-    private IdentityPagerAdapter identityPagerAdapter;
-    private WorkPagerAdapter workPagerAdapter;
-    private SocialPagerAdapter socialPagerAdapter;
 
     @InjectView(R.id.yourIdentityButton)
     public Button yourIdentityButton;
@@ -87,7 +60,7 @@ public class MainActivity extends BaseActivity  {
 
         checkUserName();
 
-        ((ViewPager)findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
+        ((ViewPager) findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
         mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
         ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
 
@@ -102,8 +75,8 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     protected void onPause() {
-      super.onPause();
-      getCashInApplication().putInAppPreference(SELECTED_TAB_INDEX, ((ViewPager) findViewById(R.id.main_frame)).getCurrentItem());
+        super.onPause();
+        getCashInApplication().putInAppPreference(SELECTED_TAB_INDEX, ((ViewPager) findViewById(R.id.main_frame)).getCurrentItem());
     }
 
     private ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener() {
@@ -139,17 +112,17 @@ public class MainActivity extends BaseActivity  {
     @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
     public void onClick(final View v) {
 
-            final ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
+        final ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
 
-            final int newIndex = buttonList.indexOf(v);
+        final int newIndex = buttonList.indexOf(v);
 
-            viewPager.postDelayed(new Runnable() {
+        viewPager.postDelayed(new Runnable() {
 
-                @Override
-                public void run() {
-                    viewPager.setCurrentItem(newIndex);
-                }
-            }, 100);
+            @Override
+            public void run() {
+                viewPager.setCurrentItem(newIndex);
+            }
+        }, 100);
     }
 
     @Override
@@ -167,15 +140,15 @@ public class MainActivity extends BaseActivity  {
             finish();
             return true;
         }
-        if(id == R.id.action_scan_sms)
+       /* if(id == R.id.action_scan_sms)
         {
             SMSProvider smsProvider = new SMSProvider();
             List<SMSProvider.SMSMessage> messageList = smsProvider.readSMS(this, new Predicate<SMSProvider.SMSMessage>() {
-            @Override
-            public boolean apply(SMSProvider.SMSMessage smsMessage) {
-                return smsMessage.getBody().contains("Transaction");
+                @Override
+                public boolean apply(SMSProvider.SMSMessage smsMessage) {
+                    return smsMessage.getBody().contains("Transaction");
                 }
-             });
+            });
             openSMSDialog(messageList);
         }
         if(id == R.id.action_package_hash){
@@ -186,23 +159,23 @@ public class MainActivity extends BaseActivity  {
             Intent intent = new Intent(getBaseContext(), CwacCameraActivity.class);
             startActivityForResult(intent, 237);
             //finish();
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
-    protected void showPckageHash(){
-            try {
-                PackageInfo info =     getPackageManager().getPackageInfo(PACKAGE_CASHIN_APP,     PackageManager.GET_SIGNATURES);
-                for (android.content.pm.Signature signature : info.signatures) {
-                    MessageDigest md = MessageDigest.getInstance("SHA");
-                    md.update(signature.toByteArray());
-                    String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                    showToastOnUIThread(sign);
-                    Log.i("MY KEY HASH:", sign);
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-            } catch (NoSuchAlgorithmException e) {
+   /* protected void showPckageHash(){
+        try {
+            PackageInfo info =     getPackageManager().getPackageInfo(PACKAGE_CASHIN_APP,     PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                showToastOnUIThread(sign);
+                Log.i("MY KEY HASH:", sign);
             }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }
     }
 
     protected void openSMSDialog(List<SMSProvider.SMSMessage> messageList)
@@ -235,7 +208,7 @@ public class MainActivity extends BaseActivity  {
         //adapter.addAll(messageList);
         listview.setAdapter(adapter);
         myDialog.show();
-    }
+    }*/
 
     protected void checkUserName()
     {

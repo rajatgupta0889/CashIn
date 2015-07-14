@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.social.GooglePlus;
@@ -67,8 +70,16 @@ public class IntroSliderActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                int length = pageIndicators.size();
+                LinearLayout one = (LinearLayout) findViewById(R.id.gplus_sign_in_button);
+                if( position == length-1 )
+                    one.setVisibility(View.VISIBLE);
+                else
+                    one.setVisibility(View.INVISIBLE);
+
                 selectedIndex = position;
-                for (int i = 0; i < pageIndicators.size(); i++) {
+
+                for (int i = 0; i < length ; i++) {
                     if (i == position)
                         pageIndicators.get(i).setImageDrawable(getResources().getDrawable(R.drawable.page_indicator_dot_selected));
                     else
