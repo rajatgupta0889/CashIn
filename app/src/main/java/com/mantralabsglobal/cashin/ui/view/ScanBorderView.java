@@ -18,6 +18,30 @@ public class ScanBorderView extends View {
     private Paint mPaint;
     private double aspectRatio=1;
 
+    double scanX;
+    double scanY;
+    double scanHeight;
+    double scanWidth;
+
+    public double getScanX()
+    {
+        return scanX;
+    }
+    public double getScanY()
+    {
+        return scanY;
+    }
+
+    public double getScanWidth()
+    {
+        return scanWidth;
+    }
+
+    public double getScanHeight()
+    {
+        return scanHeight;
+    }
+
     public void setAspectRatio(double aspectRatio) {
         this.aspectRatio= aspectRatio;
 
@@ -76,6 +100,11 @@ public class ScanBorderView extends View {
 
         int boundHeight = (int)rectangleHeight/4;
         int boundWidth = (int) rectangleWidth/4;
+
+        scanX = ((double)bufferWidth)/width;
+        scanY = ((double)bufferHeight)/height;
+        scanWidth =  rectangleWidth/width;
+        scanHeight = rectangleHeight/height;
 
         mBorderHeight = Math.min(boundHeight, boundWidth);
 

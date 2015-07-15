@@ -63,13 +63,13 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @InjectView(R.id.cc_pan)
     public CustomEditText panNumber;
 
-    @NotEmpty
+   /* @NotEmpty
     @InjectView(R.id.cc_father_name)
     public CustomEditText fatherName;
 
     @NotEmpty
     @InjectView(R.id.cc_dob)
-    public BirthDayView dob;
+    public BirthDayView dob;*/
 
     PanCardService panCardService;
     PanCardService panCardServiceOCR;
@@ -241,9 +241,9 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         if(value != null)
         {
             name.setText(value.getName());
-            fatherName.setText(value.getSonOf());
+            //fatherName.setText(value.getSonOf());
             panNumber.setText(value.getPanNumber());
-            dob.setText(value.getDob());
+            //dob.setText(value.getDob());
         }
     }
 
@@ -252,9 +252,9 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         if(base == null)
             base = new PanCardService.PanCardDetail();
 
-        base.setSonOf(fatherName.getText().toString());
+        //base.setSonOf(fatherName.getText().toString());
         base.setName(name.getText().toString());
-        base.setDob(dob.getText().toString());
+        //base.setDob(dob.getText().toString());
         base.setPanNumber(panNumber.getText().toString());
 
         return base;

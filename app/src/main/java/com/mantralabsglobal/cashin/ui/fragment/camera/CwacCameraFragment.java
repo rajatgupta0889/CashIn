@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.Face;
 import android.os.Bundle;
@@ -30,7 +32,9 @@ import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.view.ScanBorderView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.ByteBuffer;
 
 import butterknife.ButterKnife;
 
@@ -55,8 +59,9 @@ public class CwacCameraFragment extends CameraFragment implements
     private long lastFaceToast=0L;
     String flashMode=null;
     private File mFile;
-
-
+    boolean showBounds =false;
+    double aspectRatio = 1;
+    ScanBorderView scanView;
 
 
     public static CwacCameraFragment newInstance(boolean useFFC) {
@@ -90,8 +95,8 @@ public class CwacCameraFragment extends CameraFragment implements
         final ViewGroup vgcamera = ((ViewGroup)results.findViewById(R.id.camera));
         vgcamera.addView(cameraView);
 
-        boolean showBounds = getActivity().getIntent().getBooleanExtra(SHOW_BOUNDS, false);
-        final double aspectRatio = getActivity().getIntent().getDoubleExtra(ASPECT_RATIO, 1);
+        showBounds = getActivity().getIntent().getBooleanExtra(SHOW_BOUNDS, false);
+        aspectRatio = getActivity().getIntent().getDoubleExtra(ASPECT_RATIO, 1);
 
         String contextInfo = getActivity().getIntent().getStringExtra(SHOW_INFO);
 
@@ -115,14 +120,9 @@ public class CwacCameraFragment extends CameraFragment implements
 
         if(showBounds) {
 
-            vgcamera.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    ScanBorderView view = new ScanBorderView(getActivity(), null);
-                    view.setAspectRatio(aspectRatio);
-                    vgcamera.addView(view);
-                }
-            });
+            scanView = new ScanBorderView(getActivity(), null);
+            scanView.setAspectRatio(aspectRatio);
+            vgcamera.addView(scanView);
         }
 
         zoom=(SeekBar)results.findViewById(R.id.zoom);
@@ -301,7 +301,21 @@ public class CwacCameraFragment extends CameraFragment implements
         public void saveImage(PictureTransaction xact, byte[] image) {
             if (useSingleShotMode()) {
 
-                super.saveImage(xact, image);
+               /* if(showBounds)
+                {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+
+                    bitmap = Bitmap.createBitmap(bitmap,(int)(scanView.getScanX()*bitmap.getWidth()) ,(int)(scanView.getScanY()*bitmap.getHeight())
+                            ,(int)(scanView.getScanWidth()*bitmap.getWidth()),(int)(scanView.getScanHeight()*bitmap.getHeight()));
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    super.saveImage(xact, stream.toByteArray());
+                }
+                else {*/
+
+                    super.saveImage(xact, image);
+                /*}*/
 
                 Intent resultIntent = new Intent();
                 // TODO Add extras or a data URI to this intent as appropriate.

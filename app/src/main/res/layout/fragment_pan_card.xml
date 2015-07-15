@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/pan_number" app:field_icon="@drawable/ic_aadhar_number"/>
 
-            <com.mantralabsglobal.cashin.ui.view.BirthDayView
+            <!--<com.mantralabsglobal.cashin.ui.view.BirthDayView
                 android:id="@+id/cc_dob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/date_of_birth"/>
@@ -60,9 +60,9 @@
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_father_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" app:field_label="@string/father_name" app:field_icon="@drawable/ic_son_of"/>
+                android:layout_height="wrap_content" app:field_label="@string/father_name" app:field_icon="@drawable/ic_son_of"/>-->
 
-            <LinearLayout android:layout_alignParentBottom="true"
+            <!--<LinearLayout android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:gravity="center">
                 <Button
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
 
-            </LinearLayout>
+            </LinearLayout>-->
 
         </LinearLayout>
         </ScrollView>
