@@ -22,6 +22,8 @@ public interface BusinessCardService {
     @PUT("/user/businessCard")
     void updateBusinessCardDetail(@Body BusinessCardDetail businessCardDetail, Callback<BusinessCardDetail> callback);
 
+    @POST("/user/ocr/businessCard")
+    void getBusinessCardDetailFromImage(@Body OCRServiceProvider.CardImage businessCardImage, Callback<BusinessCardDetail> callback);
 
     public static class BusinessCardDetail{
 

@@ -21,6 +21,8 @@ public class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
 
+
+
     protected ProgressDialog progressDialog;
     SharedPreferences appPreference = null;
 
@@ -29,7 +31,10 @@ public class BaseActivity extends AppCompatActivity {
     public static final int SELECT_PHOTO_FROM_GALLERY = 3000;
     public static final int SELFIE_CAPTURE = 4000;
     public static final int CROP_SELFIE = 5000;
-
+    public static final int IMAGE_CAPTURE_PAN_CARD = 6000;
+    public static final int IMAGE_CROP_PAN_CARD = 6001;
+    public static final int IMAGE_CAPTURE_BUSINESS_CARD = 7000;
+    public static final int IMAGE_CROP_BUSINESS_CARD = 7001;
 
     protected void putInAppPreference(String key, String value) {
         appPreference.edit().putString(key, value).apply();

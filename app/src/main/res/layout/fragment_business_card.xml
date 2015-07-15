@@ -12,7 +12,7 @@
                         style="@style/AppTheme.Form.Fragment.Top.Header" android:text="@string/take_busininess_card_snap"
                         />
 
-                    <ImageButton
+                    <ImageButton android:id="@+id/ib_launch_camera"
                         style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera"
                         />
 
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" app:field_label="@string/work_address" app:field_icon="@drawable/ic_name"/>
 
-                <LinearLayout android:layout_alignParentBottom="true"
+                <!--<LinearLayout android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:gravity="center">
                     <Button
@@ -64,13 +64,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
 
-                </LinearLayout>
+                </LinearLayout>-->
 
 
             </LinearLayout>
         </ScrollView>
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_launchScanner"
+        android:id="@+id/fab_launch_camera"
         android:src="@drawable/ic_camera"
         android:visibility="gone"
         app:fabSize="normal"

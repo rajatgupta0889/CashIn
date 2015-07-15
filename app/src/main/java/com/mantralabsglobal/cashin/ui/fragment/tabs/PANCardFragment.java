@@ -21,8 +21,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CameraActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
@@ -46,9 +48,7 @@ import retrofit.client.Response;
 /**
  * Created by pk on 13/06/2015.
  */
-public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCardDetail>  {
-
-    private static final int IMAGE_CAPTURE_AADHAR_CARD = 199;
+public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCardDetail> implements OCRServiceProvider<PanCardService.PanCardDetail> {
 
     @InjectView(R.id.vg_pan_card_scan)
     public ViewGroup vg_scan;
@@ -131,7 +131,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         intent.putExtra(CwacCameraFragment.ASPECT_RATIO, Double.parseDouble("0.66666666"));
         intent.putExtra(CwacCameraFragment.SHOW_INFO, getResources().getString(R.string.position_card_inside_frame));
 
-        getActivity().startActivityForResult(intent, IMAGE_CAPTURE_AADHAR_CARD);
+        getActivity().startActivityForResult(intent, BaseActivity.IMAGE_CAPTURE_PAN_CARD);
     }
 
     @OnClick(R.id.btn_pan_card_detail_form)
@@ -146,7 +146,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         Log.d("AadharCardFragment", "onActivityResult: " + this);
         Log.d("AadharCardFragment", "requestCode " + requestCode + " , resultCode=" + resultCode);
 
-        if (requestCode == IMAGE_CAPTURE_AADHAR_CARD) {
+        if (requestCode == BaseActivity.IMAGE_CAPTURE_PAN_CARD) {
             if (resultCode == Activity.RESULT_OK) {
                 showToastOnUIThread(data.getStringExtra("file_path"));
                 beginCrop( Uri.fromFile(new File(data.getStringExtra("file_path") )));
@@ -156,14 +156,14 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             {
                 reset(false);
             }
-        }  else if (requestCode == Crop.REQUEST_CROP) {
+        }  else if (requestCode == BaseActivity.IMAGE_CROP_PAN_CARD) {
             handleCrop(resultCode, data);
         }
     }
 
     private void beginCrop(Uri source) {
         Uri destination = Uri.fromFile(new File(getActivity().getExternalFilesDir(null), "pan-card-cropped.jpg"));
-        Crop.of(source, destination).asSquare().withAspect(4,3).start(getActivity());
+        Crop.of(source, destination).asSquare().withAspect(3,2).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
     }
 
 
@@ -177,13 +177,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
                             new Runnable() {
                                 @Override
                                 public void run() {
-                                    uploadImageToServerForOCR(bmp);
-                                    /*Dialog dialog = new Dialog(getActivity());
-                                    dialog.setContentView(R.layout.dialog_image_preview);
-                                    ImageView imgView=(ImageView)dialog.findViewById(R.id.iv_image);
-                                    imgView.setImageBitmap(bmp);
-                                    hideProgressDialog();
-                                    dialog.show();*/
+                                    uploadImageToServerForOCR(bmp, PANCardFragment.this);
                                 }
                             }
                     );
@@ -195,44 +189,6 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             showToastOnUIThread(Crop.getError(result).getMessage());
             reset(false);
         }
-    }
-
-    private void uploadImageToServerForOCR(final Bitmap bmp) {
-        AsyncTask<Bitmap, Void, Void> asynTask = new AsyncTask<Bitmap, Void, Void>() {
-            @Override
-            protected Void doInBackground(Bitmap... params) {
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream .toByteArray();
-                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-                PanCardService.PanCardImage panCardImage = new PanCardService.PanCardImage();
-                panCardImage.setBase64encodedImage(encoded);
-                panCardServiceOCR.getPanCardDetailFromImage(panCardImage, new Callback<PanCardService.PanCardDetail>() {
-                    @Override
-                    public void success(PanCardService.PanCardDetail panCardDetail, Response response) {
-                        hideProgressDialog();
-                        bindDataToForm(panCardDetail);
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        hideProgressDialog();
-                        Snackbar snackbar = Snackbar
-                                .make((CoordinatorLayout) getCurrentView(), "Failed to process PAN card Image. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
-                                .setAction("Retry", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        showProgressDialog(getString(R.string.processing_image));
-                                        uploadImageToServerForOCR(bmp);
-                                    }
-                                });
-                        snackbar.show();
-                    }
-                });
-                return null;
-            }
-        }.execute(bmp);
     }
 
     @Override
@@ -258,5 +214,10 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         base.setPanNumber(panNumber.getText().toString());
 
         return base;
+    }
+
+    @Override
+    public void getDetailFromImage(CardImage image, Callback<PanCardService.PanCardDetail> callback) {
+        panCardServiceOCR.getPanCardDetailFromImage(image, callback);
     }
 }

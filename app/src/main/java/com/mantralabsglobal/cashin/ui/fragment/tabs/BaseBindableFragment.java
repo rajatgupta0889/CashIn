@@ -1,19 +1,25 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.service.OCRServiceProvider;
+import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -226,6 +232,45 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             }
         }
     };
+
+    protected void uploadImageToServerForOCR(final Bitmap bmp, final OCRServiceProvider<T> service) {
+        AsyncTask<Bitmap, Void, Void> asynTask = new AsyncTask<Bitmap, Void, Void>() {
+            @Override
+            protected Void doInBackground(Bitmap... params) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream .toByteArray();
+                String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                OCRServiceProvider.CardImage cardImage = new OCRServiceProvider.CardImage();
+                cardImage.setBase64encodedImage(encoded);
+                service.getDetailFromImage(cardImage, new Callback<T>() {
+                    @Override
+                    public void success(T detail, Response response) {
+                        hideProgressDialog();
+                        bindDataToForm(detail);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        hideProgressDialog();
+                        Snackbar snackbar = Snackbar
+                                .make((CoordinatorLayout) getCurrentView(), "Failed to process Image. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                                .setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        showProgressDialog(getString(R.string.processing_image));
+                                        uploadImageToServerForOCR(bmp, service);
+                                    }
+                                });
+                        snackbar.show();
+                    }
+                });
+                return null;
+            }
+        }.execute(bmp);
+    }
+
 
     protected abstract void handleDataNotPresentOnServer();
 
