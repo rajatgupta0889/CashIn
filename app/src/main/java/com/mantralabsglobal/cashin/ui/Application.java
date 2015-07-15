@@ -110,9 +110,9 @@ public class Application extends android.app.Application{
                     up.setEmail(getAppUser());
                     up.setPassword("dummy");
                     AuthenticationService.AuthenticatedUser au = getRestClient().getAuthenticationService().authenticateUserSync(up);
-                    Request newRequest = chain.request();
-                    response = chain.proceed(newRequest);
                 }
+                Request newRequest = chain.request();
+                response = chain.proceed(newRequest);
             }
             return response;
         }
