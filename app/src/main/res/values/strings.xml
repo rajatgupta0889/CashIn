@@ -219,4 +219,6 @@
     </string-array>
     <string name="title_activity_main_activity_my">MainActivityMy</string>
     <string name="position_card_inside_frame">Position card inside red marker</string>
+    <string name="linkedin_key">754dods2c70xsz</string>
+    <string name="linkedin_secret">EfnEG97mqeDpXxCW</string>
 </resources>

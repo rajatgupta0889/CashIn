@@ -1,6 +1,9 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -21,8 +24,12 @@ import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.social.LinkedIn;
 import com.mantralabsglobal.cashin.social.SocialBase;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.social.LinkedinActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import org.scribe.model.Token;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -115,43 +122,58 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        LISession session = LISessionManager.getInstance(getActivity()).getSession();
-        if( session != null && session.getAccessToken() != null && !session.getAccessToken().isExpired())
+        String accessToken = ((Application)getActivity().getApplication()).getAppPreference().getString("linkedin_access_token", null);
+        String accessSecret = ((Application)getActivity().getApplication()).getAppPreference().getString("linkedin_access_secret", null);
+        if(accessToken!= null && accessSecret != null)
         {
-            showProgressDialog("");
-            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
+            new AsyncLinkedInProfileTask().execute(accessToken, accessSecret);
         }
         else {
             setVisibleChildView(vg_linkedInConnect);
         }
-
     }
 
-    @OnClick(R.id.btn_linkedIn_connect)
-    public void onConnectClick()
-    {
-        showProgressDialog(getString(R.string.waiting_for_linkedIn), true, false);
-        LISession session = LISessionManager.getInstance(getActivity()).getSession();
-        if( session != null && session.getAccessToken() != null && !session.getAccessToken().isExpired())
-        {
-            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
-        }
-        else {
-            LISessionManager.getInstance(getActivity().getApplicationContext()).init(getActivity(), buildScope(), new AuthListener() {
-                        @Override
-                        public void onAuthSuccess() {
-                            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
-                        }
+    private class AsyncLinkedInProfileTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                final LinkedInService.LinkedInDetail linkedInDetail = LinkedIn.getLinkedInProfile2(getActivity(), params[0], params[1]);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindDataToForm(linkedInDetail);
+                    }
+                });
 
-                        @Override
-                        public void onAuthError(LIAuthError error) {
-                            hideProgressDialog();
-                            Log.v(TAG, error.toString());
-                            setVisibleChildView(vg_linkedInConnect);
-                        }
-                    },
-                    true);
+            }
+            catch(Exception e)
+            {
+                showToastOnUIThread(e.getMessage());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setVisibleChildView(vg_linkedInConnect);
+                    }
+                });
+
+            }
+            finally {
+
+                hideProgressDialog();
+            }
+            return null;
         }
+    };
+
+
+    @OnClick(R.id.btn_linkedIn_connect)
+    public void onConnectClick() {
+        //showProgressDialog(getString(R.string.waiting_for_linkedIn), true, false);
+
+        Intent intent = new Intent(getActivity(), LinkedinActivity.class);
+        getActivity().startActivityForResult(intent, BaseActivity.LINKEDIN_SIGNIN);
+
+        //new AsyncLinkedInProfileTask().execute();
     }
 
     private SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener = new SocialBase.SocialListener<LinkedInService.LinkedInDetail>() {
@@ -219,6 +241,18 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LISessionManager.getInstance(getActivity().getApplicationContext()).onActivityResult(getActivity(), requestCode, resultCode, data);
+        //LISessionManager.getInstance(getActivity().getApplicationContext()).onActivityResult(getActivity(), requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( resultCode == Activity.RESULT_OK && requestCode == BaseActivity.LINKEDIN_SIGNIN) {
+            String access_token = data.getStringExtra("linkedin_access_token");
+            String access_secret = data.getStringExtra("linkedin_access_secret");
+
+            ((Application)getActivity().getApplication()).putInAppPreference("linkedin_access_token", access_token);
+            ((Application)getActivity().getApplication()).putInAppPreference("linkedin_access_secret", access_secret);
+
+            handleDataNotPresentOnServer();
+
+        }
     }
 }

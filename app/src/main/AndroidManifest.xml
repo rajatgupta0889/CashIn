@@ -78,6 +78,8 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
+        <activity android:name=".ui.activity.social.LinkedinActivity"/>
+
         <activity
             android:name=".ui.activity.app.IntroSliderActivity"
             android:label="@string/title_activity_intro_slider" >

@@ -12,15 +12,25 @@ import com.linkedin.platform.APIHelper;
 import com.linkedin.platform.errors.LIApiError;
 import com.linkedin.platform.listeners.ApiListener;
 import com.linkedin.platform.listeners.ApiResponse;
+import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.mantralabsglobal.cashin.utils.DateUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.LinkedInApi;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.model.Verifier;
+import org.scribe.oauth.OAuthService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,9 +39,64 @@ import java.util.concurrent.TimeUnit;
 public class LinkedIn {
 
     //private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address,school-name,degree,start-date,end-date)";
-   private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address)";
+    private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address)?format=json";
     private static final String TAG = LinkedIn.class.getSimpleName();
+    final static String CALLBACK = "oauth://linkedin";
 
+    //private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/people/~/connections:(id,last-name)";
+
+    public static OAuthService getService(Context context, String callback)
+    {
+
+        return new ServiceBuilder()
+                .provider(LinkedInApi.class)
+                .apiKey(context.getResources().getString(R.string.linkedin_key))
+                .apiSecret(context.getResources().getString(R.string.linkedin_secret))
+                .callback(callback==null?CALLBACK:callback)
+                .build();
+
+
+    }
+
+    public static LinkedInService.LinkedInDetail getLinkedInProfile2(Context context, String token, String secret )
+    {
+        OAuthService service = getService(context, null);
+        Token accessToken = new Token(token, secret);
+
+        OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_URL);
+        service.signRequest(accessToken, request);
+        Response response = request.send();
+
+        Gson gson = new Gson();
+        LinkedInProfileResponse linkedInProfileResponse = gson.fromJson(response.getBody(), LinkedInProfileResponse.class);
+
+        return convertToLinkedInDetail(linkedInProfileResponse);
+
+    }
+
+    private static LinkedInService.LinkedInDetail convertToLinkedInDetail(LinkedInProfileResponse linkedInProfileResponse)
+    {
+        if(linkedInProfileResponse != null)
+        {
+            LinkedInService.LinkedInDetail linkedInDetail = new LinkedInService.LinkedInDetail();
+            linkedInDetail.setConnectedAs(linkedInProfileResponse.getFirstName() + " " + linkedInProfileResponse.getLastName());
+            linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
+            linkedInDetail.setEducation(new LinkedInService.Education());
+            if(linkedInProfileResponse.getPositions() != null && linkedInProfileResponse.getPositions().getValues().size()>0)
+            {
+                linkedInDetail.getWorkExperience().setCompany(linkedInProfileResponse.getPositions().getValues().get(0).getCompany().getName());
+                linkedInDetail.getWorkExperience().setJobTitle(linkedInProfileResponse.getPositions().getValues().get(0).getTitle());
+                StartDate sd = linkedInProfileResponse.getPositions().getValues().get(0).getStartDate();
+                if(sd != null)
+                {
+                    linkedInDetail.getWorkExperience().setTimePeriod( DateUtils.getYearsPassed(sd.getYear(), sd.getMonth(),1) + " Years ");
+                }
+            }
+            return linkedInDetail;
+
+        }
+        return null;
+    }
 
     public static void getLinkedInProfile(Context context, Activity activity, final SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener)
     {
@@ -46,22 +111,7 @@ public class LinkedIn {
                 LinkedInProfileResponse linkedInProfileResponse = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),LinkedInProfileResponse.class);
                 if(linkedInProfileResponse != null)
                 {
-                    LinkedInService.LinkedInDetail linkedInDetail = new LinkedInService.LinkedInDetail();
-                    linkedInDetail.setConnectedAs(linkedInProfileResponse.getFirstName() + " " + linkedInProfileResponse.getLastName());
-                    linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
-                    linkedInDetail.setEducation(new LinkedInService.Education());
-                    if(linkedInProfileResponse.getPositions() != null && linkedInProfileResponse.getPositions().getValues().size()>0)
-                    {
-                        linkedInDetail.getWorkExperience().setCompany(linkedInProfileResponse.getPositions().getValues().get(0).getCompany().getName());
-                        linkedInDetail.getWorkExperience().setJobTitle(linkedInProfileResponse.getPositions().getValues().get(0).getTitle());
-                        StartDate sd = linkedInProfileResponse.getPositions().getValues().get(0).getStartDate();
-                        if(sd != null)
-                        {
-                            linkedInDetail.getWorkExperience().setTimePeriod( DateUtils.getYearsPassed(sd.getYear(), sd.getMonth(),1) + " Years ");
-                        }
-                    }
-                    listener.onSuccess(linkedInDetail);
-
+                    listener.onSuccess( convertToLinkedInDetail(linkedInProfileResponse));
                 }
             }
 

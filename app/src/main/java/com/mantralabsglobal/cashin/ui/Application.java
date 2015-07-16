@@ -160,6 +160,10 @@ public class Application extends MultiDexApplication{
         appPreference.edit().putInt(key, value).apply();
     }
 
+    public void putInAppPreference(String key, String value) {
+        appPreference.edit().putString(key, value).apply();
+    }
+
     public void setAppUserName(String appUserName) {
         appPreference.edit().putString(USER_NAME, appUserName ).apply();
     }
