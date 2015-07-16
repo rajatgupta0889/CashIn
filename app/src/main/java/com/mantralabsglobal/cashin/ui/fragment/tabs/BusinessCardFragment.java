@@ -3,6 +3,7 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.BusinessCardService;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
@@ -22,6 +24,7 @@ import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.CameraUtils;
+import com.mantralabsglobal.cashin.utils.ImageUtils;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.soundcloud.android.crop.Crop;
@@ -180,20 +183,11 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            CameraUtils.createBlackAndWhite(Crop.getOutput(result).getPath(), new CameraUtils.Listener() {
-                @Override
-                public void onComplete(final Bitmap bmp) {
-                    getActivity().runOnUiThread(
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    uploadImageToServerForOCR(bmp, BusinessCardFragment.this);
-
-                                }
-                            }
-                    );
-                }
-            });
+            Bitmap binary = new ImageUtils().binarize( BitmapFactory.decodeFile(Crop.getOutput(result).getPath()));
+            uploadImageToServerForOCR(binary, BusinessCardFragment.this);
+            if (BuildConfig.DEBUG) {
+                showImageDialog(binary);
+            }
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             hideProgressDialog();

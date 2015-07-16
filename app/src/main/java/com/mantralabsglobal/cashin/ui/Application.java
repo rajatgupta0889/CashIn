@@ -3,6 +3,7 @@ package com.mantralabsglobal.cashin.ui;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.multidex.MultiDexApplication;
 import android.util.Base64;
 import android.util.Log;
 
@@ -32,7 +33,7 @@ import retrofit.client.Response;
 /**
  * Created by pk on 6/21/2015.
  */
-public class Application extends android.app.Application{
+public class Application extends MultiDexApplication{
 
     private static final String APP_ID = "1442120239426705";
     private static final String APP_NAMESPACE = "pk_cashin_test";
@@ -43,6 +44,8 @@ public class Application extends android.app.Application{
 
     private RestClient restClient;
     private SharedPreferences appPreference = null;
+
+   /* static{ System.loadLibrary("opencv_java3");}*/
 
     @Override
     public void onCreate() {

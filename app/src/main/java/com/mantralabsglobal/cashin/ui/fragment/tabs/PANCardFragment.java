@@ -2,9 +2,11 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +19,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
@@ -32,12 +37,15 @@ import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
 import com.mantralabsglobal.cashin.utils.CameraUtils;
+import com.mantralabsglobal.cashin.utils.ImageUtils;
 import com.mobsandgeeks.saripaar.annotation.Digits;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -150,6 +158,7 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             if (resultCode == Activity.RESULT_OK) {
                 showToastOnUIThread(data.getStringExtra("file_path"));
                 beginCrop( Uri.fromFile(new File(data.getStringExtra("file_path") )));
+
                 Log.d("PANCardFragment", "onActivityResult, resultCode " + resultCode + " filepath = " +data.getStringExtra("file_path"));
             }
             else if(resultCode == Activity.RESULT_CANCELED)
@@ -170,19 +179,11 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {
             showProgressDialog(getString(R.string.processing_image));
-            CameraUtils.createBlackAndWhite(Crop.getOutput(result).getPath(), new CameraUtils.Listener() {
-                @Override
-                public void onComplete(final Bitmap bmp) {
-                    getActivity().runOnUiThread(
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    uploadImageToServerForOCR(bmp, PANCardFragment.this);
-                                }
-                            }
-                    );
-                }
-            });
+            Bitmap binary = new ImageUtils().binarize( BitmapFactory.decodeFile(Crop.getOutput(result).getPath()));
+            uploadImageToServerForOCR(binary, PANCardFragment.this);
+            if (BuildConfig.DEBUG) {
+                showImageDialog(binary);
+            }
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             hideProgressDialog();

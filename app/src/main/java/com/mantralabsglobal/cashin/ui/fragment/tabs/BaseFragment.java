@@ -1,6 +1,10 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -8,9 +12,12 @@ import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
@@ -155,6 +162,28 @@ public abstract class BaseFragment extends Fragment {
             genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         }
         return genderAdapter;
+    }
+
+    public void showImageDialog(Bitmap bmp) {
+        Dialog builder = new Dialog(getActivity());
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        builder.getWindow().setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                //nothing;
+            }
+        });
+
+        ImageView imageView = new ImageView(getActivity());
+        imageView.setImageBitmap(bmp);
+        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        builder.setCanceledOnTouchOutside(true);
+        builder.show();
+
     }
 
 
