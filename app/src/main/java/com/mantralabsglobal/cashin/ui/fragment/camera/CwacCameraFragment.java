@@ -95,6 +95,14 @@ public class CwacCameraFragment extends CameraFragment implements
         final ViewGroup vgcamera = ((ViewGroup)results.findViewById(R.id.camera));
         vgcamera.addView(cameraView);
 
+        cameraView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoFocus();
+
+            }
+        });
+
         showBounds = getActivity().getIntent().getBooleanExtra(SHOW_BOUNDS, false);
         aspectRatio = getActivity().getIntent().getDoubleExtra(ASPECT_RATIO, 1);
 
@@ -170,6 +178,7 @@ public class CwacCameraFragment extends CameraFragment implements
 
         setRecordingItemVisibility();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
