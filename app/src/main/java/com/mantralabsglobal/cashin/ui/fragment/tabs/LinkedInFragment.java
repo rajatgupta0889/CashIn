@@ -2,22 +2,15 @@ package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.linkedin.platform.LISession;
-import com.linkedin.platform.LISessionManager;
-import com.linkedin.platform.errors.LIAuthError;
-import com.linkedin.platform.listeners.AuthListener;
-import com.linkedin.platform.utils.Scope;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.mantralabsglobal.cashin.service.RestClient;
@@ -28,8 +21,6 @@ import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.social.LinkedinActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
-
-import org.scribe.model.Token;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -190,11 +181,11 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
             setVisibleChildView(vg_linkedInConnect);
         }
     };
-
+/*
     // Build the list of member permissions our LinkedIn session requires
     private static Scope buildScope() {
         return Scope.build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);
-    }
+    }*/
 
     @Override
     public void bindDataToForm(LinkedInService.LinkedInDetail value) {

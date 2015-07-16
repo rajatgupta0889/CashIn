@@ -1,37 +1,24 @@
 package com.mantralabsglobal.cashin.social;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.linkedin.platform.APIHelper;
-import com.linkedin.platform.errors.LIApiError;
-import com.linkedin.platform.listeners.ApiListener;
-import com.linkedin.platform.listeners.ApiResponse;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.mantralabsglobal.cashin.utils.DateUtils;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.LinkedInApi;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
 import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by pk on 7/4/2015.
@@ -98,7 +85,7 @@ public class LinkedIn {
         return null;
     }
 
-    public static void getLinkedInProfile(Context context, Activity activity, final SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener)
+    /*public static void getLinkedInProfile(Context context, Activity activity, final SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener)
     {
 
         APIHelper apiHelper = APIHelper.getInstance(context);
@@ -121,7 +108,7 @@ public class LinkedIn {
                 listener.onFailure(LIApiError.getMessage());
             }
         });
-    }
+    }*/
 
     public class Company {
 
