@@ -27,6 +27,7 @@ public class LinkedinActivity extends BaseActivity {
     final static String APIKEY = "754dods2c70xsz";
     final static String APISECRET = "EfnEG97mqeDpXxCW";
     final static String CALLBACK = "oauth://linkedin";
+    final static String CALLBACK_FAILURE = "http://localhost:9000?oauth_problem";
     private static final String TAG ="LinkedinActivity" ;
     OAuthService mService;
     @InjectView(R.id.linkedin_webview)
@@ -84,11 +85,16 @@ public class LinkedinActivity extends BaseActivity {
                                 intent.putExtra("linkedin_access_token", accessToken.getToken());
                                 intent.putExtra("linkedin_access_secret", accessToken.getSecret());
                                 setResult(RESULT_OK, intent);
-                                
+
                                 finish();
                             }
                         };
                         t1.start();
+                    }
+                    else if(url.contains("oauth_problem")) {
+                        Intent intent = new Intent();
+                        setResult(RESULT_CANCELED, intent);
+                        finish();
                     }
 
                     return false;

@@ -25,8 +25,8 @@ import java.util.List;
  */
 public class LinkedIn {
 
-    //private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address,school-name,degree,start-date,end-date)";
-    private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address)?format=json";
+    private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address,educations)?format=json";
+    //private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address)?format=json";
     private static final String TAG = LinkedIn.class.getSimpleName();
     final static String CALLBACK = "oauth://linkedin";
 
@@ -36,6 +36,7 @@ public class LinkedIn {
     {
 
         return new ServiceBuilder()
+                //.provider(LinkedInApi.withScopes("r_fullprofile"))
                 .provider(LinkedInApi.class)
                 .apiKey(context.getResources().getString(R.string.linkedin_key))
                 .apiSecret(context.getResources().getString(R.string.linkedin_secret))
@@ -78,6 +79,12 @@ public class LinkedIn {
                 {
                     linkedInDetail.getWorkExperience().setTimePeriod( DateUtils.getYearsPassed(sd.getYear(), sd.getMonth(),1) + " Years ");
                 }
+            }
+            if(linkedInProfileResponse.getEducations() != null && linkedInProfileResponse.getEducations().getValues().size()>0)
+            {
+                linkedInDetail.getEducation().setCollege(linkedInProfileResponse.getEducations().getValues().get(0).getSchoolName());
+                linkedInDetail.getEducation().setDegree(linkedInProfileResponse.getEducations().getValues().get(0).getDegree());
+                linkedInDetail.getEducation().setFieldOfStudy(linkedInProfileResponse.getEducations().getValues().get(0).getFieldOfStudy());
             }
             return linkedInDetail;
 
@@ -275,6 +282,27 @@ public class LinkedIn {
         @Expose
         private Positions positions;
 
+        @Expose
+        private Educations educations;
+
+
+        /**
+         *
+         * @return
+         * The educations
+         */
+        public Educations getEducations() {
+            return educations;
+        }
+
+        /**
+         *
+         * @param educations
+         * The educations
+         */
+        public void setEducations(Educations educations) {
+            this.educations = educations;
+        }
         /**
          *
          * @return
@@ -381,6 +409,202 @@ public class LinkedIn {
          */
         public void setPositions(Positions positions) {
             this.positions = positions;
+        }
+
+    }
+
+    public class Educations {
+
+        @SerializedName("_total")
+        @Expose
+        private Integer Total;
+        @Expose
+        private List<Education> values = new ArrayList<Education>();
+
+        /**
+         *
+         * @return
+         * The Total
+         */
+        public Integer getTotal() {
+            return Total;
+        }
+
+        /**
+         *
+         * @param Total
+         * The _total
+         */
+        public void setTotal(Integer Total) {
+            this.Total = Total;
+        }
+
+        /**
+         *
+         * @return
+         * The values
+         */
+        public List<Education> getValues() {
+            return values;
+        }
+
+        /**
+         *
+         * @param values
+         * The values
+         */
+        public void setValues(List<Education> values) {
+            this.values = values;
+        }
+
+    }
+
+    public class EndDate {
+
+        @Expose
+        private Integer year;
+
+        /**
+         *
+         * @return
+         * The year
+         */
+        public Integer getYear() {
+            return year;
+        }
+
+        /**
+         *
+         * @param year
+         * The year
+         */
+        public void setYear(Integer year) {
+            this.year = year;
+        }
+
+    }
+
+    public class Education {
+
+        @Expose
+        private String degree;
+        @Expose
+        private EndDate endDate;
+        @Expose
+        private String fieldOfStudy;
+        @Expose
+        private Integer id;
+        @Expose
+        private String schoolName;
+        @Expose
+        private StartDate startDate;
+
+        /**
+         *
+         * @return
+         * The degree
+         */
+        public String getDegree() {
+            return degree;
+        }
+
+        /**
+         *
+         * @param degree
+         * The degree
+         */
+        public void setDegree(String degree) {
+            this.degree = degree;
+        }
+
+        /**
+         *
+         * @return
+         * The endDate
+         */
+        public EndDate getEndDate() {
+            return endDate;
+        }
+
+        /**
+         *
+         * @param endDate
+         * The endDate
+         */
+        public void setEndDate(EndDate endDate) {
+            this.endDate = endDate;
+        }
+
+        /**
+         *
+         * @return
+         * The fieldOfStudy
+         */
+        public String getFieldOfStudy() {
+            return fieldOfStudy;
+        }
+
+        /**
+         *
+         * @param fieldOfStudy
+         * The fieldOfStudy
+         */
+        public void setFieldOfStudy(String fieldOfStudy) {
+            this.fieldOfStudy = fieldOfStudy;
+        }
+
+        /**
+         *
+         * @return
+         * The id
+         */
+        public Integer getId() {
+            return id;
+        }
+
+        /**
+         *
+         * @param id
+         * The id
+         */
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        /**
+         *
+         * @return
+         * The schoolName
+         */
+        public String getSchoolName() {
+            return schoolName;
+        }
+
+        /**
+         *
+         * @param schoolName
+         * The schoolName
+         */
+        public void setSchoolName(String schoolName) {
+            this.schoolName = schoolName;
+        }
+
+        /**
+         *
+         * @return
+         * The startDate
+         */
+        public StartDate getStartDate() {
+            return startDate;
+        }
+
+        /**
+         *
+         * @param startDate
+         * The startDate
+         */
+        public void setStartDate(StartDate startDate) {
+            this.startDate = startDate;
         }
 
     }
@@ -626,5 +850,7 @@ public class LinkedIn {
         }
 
     }
+
+
 
 }
