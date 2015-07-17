@@ -79,6 +79,8 @@
     <string name="waiting_for_facebook">Waiting for facebook</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
     <string name="gps_failed">Failed to get location from GPS</string>
     <string name="save_sucess">Data saved sucessfully</string>
     <string name="waiting_for_server">Waiting for server</string>
@@ -129,11 +131,11 @@
     <string name="saving_permanent_address">Saving permanent address</string>
     <string name="reset_sucess">Reset sucessfull</string>
     <string name="your_profile">Your Profile</string>
-    <string name="father_name">Father\'s Name</string>
+    <string name="father_name">Father\'s Name/Spouse Name</string>
     <string name="logout">Logout</string>
     <string name="product_tour">Product tour</string>
     <string name="sign_in_with_google">Sign in</string>
-    <string name="signing_in">Singing in</string>
+    <string name="signing_in">Signing in</string>
     <string name="read_transactional_sms">Read transactional SMS</string>
     <string name="ever_taken_a_loan">Have you ever taken a loan?</string>
     <string name="cheque_bounced">Has any of your cheques bounced in the last 3 months?</string>
