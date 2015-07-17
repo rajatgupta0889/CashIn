@@ -3,9 +3,9 @@ package com.mantralabsglobal.cashin.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import com.android.internal.util.Predicate;
+import com.mantralabsglobal.cashin.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +17,30 @@ public class SMSProvider {
 
     private static final String TAG = "SMSProvider";
 
-    private static final String HDFC = "HDFC";
+    private String [] banks;
+    private String [] debitKeywords;
+    private String [] creditKeywords;
+    private String [] loanKeywords;
+    private String [] billKeywords;
+    private String [] accountKeywords;
+    private Context context;
 
-    private static final String ICICI = "ICICI";
+    public SMSProvider(Context context)
+    {
+        this.context = context;
+        banks = context.getResources().getStringArray(R.array.bank_code);
+        debitKeywords = context.getResources().getStringArray(R.array.debit_keywords);
+        creditKeywords = context.getResources().getStringArray(R.array.credit_keywords);
+        loanKeywords = context.getResources().getStringArray(R.array.loan_keywords);
+        billKeywords = context.getResources().getStringArray(R.array.bill_keywords);
+        accountKeywords = context.getResources().getStringArray(R.array.account_keyword);
+    }
 
-    public List<SMSMessage> readSMS(Context context, Predicate<SMSMessage> filter)
+    public List<SMSMessage> readSMS(Predicate<SMSMessage> filter)
+    {
+        return readSMS(filter, Long.MIN_VALUE);
+    }
+    public List<SMSMessage> readSMS( Predicate<SMSMessage> filter, long since)
     {
         // public static final String INBOX = "content://sms/inbox";
 // public static final String SENT = "content://sms/sent";
@@ -32,6 +51,8 @@ public class SMSProvider {
 
         if (cursor.moveToFirst()) { // must check the result to prevent exception
             do {
+                if(cursor.getLong(cursor.getColumnIndex("date"))<since)
+                    break;
                 //String msgData = "";
                 SMSMessage message = new SMSMessage();
                 message.setBody(cursor.getString(cursor.getColumnIndex("body")));
@@ -59,6 +80,16 @@ public class SMSProvider {
         return smsList;
     }
 
+    public List<SMSMessage> getTransactionList(long since)
+    {
+        return readSMS(new Predicate<SMSMessage>() {
+            @Override
+            public boolean apply(SMSMessage message) {
+                return isTransactionMessage(message);
+            }
+        }, since);
+    }
+
     public boolean isSenderBank(SMSMessage message)
     {
         return getBankName(message) != null;
@@ -71,34 +102,43 @@ public class SMSProvider {
 
     public String getAccountNumber(SMSMessage message)
     {
-        if(HDFC.equals(getBankName(message))) {
-            int startIndex = message.getBody().indexOf("A/c");
-            startIndex = message.getBody().indexOf("XX", startIndex);
+        String bankName = getBankName(message);
+        if(bankName!= null && bankName.length()>=0)
+        {
+          //int startIndex = message.getBody().indexOf("A/c");
+            int startIndex = message.getBody().indexOf("XX", 0);
             int endIndex = message.getBody().indexOf(" ", startIndex);
             if(startIndex>=0 && endIndex>=0)
                 return message.getBody().substring(startIndex, endIndex);
-        }
-        else if(ICICI.equals(getBankName(message)))
-        {
-            int startIndex = message.getBody().indexOf("Your Ac");
-            startIndex = message.getBody().indexOf("XX", startIndex);
-            int endIndex = message.getBody().indexOf(" ", startIndex );
-            if(startIndex>=0 && endIndex>=0)
-                return message.getBody().substring(startIndex, endIndex);
-
         }
         return null;
     }
 
     public String getBankName(SMSMessage message)
     {
-        if(message.getAddress().indexOf(HDFC)>=0) {
-           return HDFC;
-        }
-        else if(message.getAddress().indexOf(ICICI)>=0 || message.getBody().indexOf(ICICI)>=0) {
-            return ICICI;
+        for(String bankCode: banks)
+        {
+            if(message.getAddress().indexOf(bankCode)>=0)
+                return bankCode;
         }
         return null;
+    }
+
+    public boolean isTransactionMessage(SMSMessage message)
+    {
+        int sum = 0;
+        for(String debit: debitKeywords)
+            sum += message.getBody().toLowerCase().indexOf(debit.toLowerCase())>1?1:0;
+        for(String account: accountKeywords)
+            sum += message.getBody().toLowerCase().indexOf(account.toLowerCase())>1?1:0;
+        for(String credit: creditKeywords)
+            sum += message.getBody().toLowerCase().indexOf(credit.toLowerCase())>1?1:0;
+        for(String loan: loanKeywords)
+            sum += message.getBody().toLowerCase().indexOf(loan.toLowerCase())>1?1:0;
+        for(String bill: billKeywords)
+            sum += message.getBody().toLowerCase().indexOf(bill.toLowerCase())>1?1:0;
+
+        return sum >2;
     }
 
     public static class SMSMessage

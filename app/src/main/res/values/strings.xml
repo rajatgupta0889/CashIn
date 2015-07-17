@@ -221,4 +221,5 @@
     <string name="position_card_inside_frame">Position card inside red marker</string>
     <string name="linkedin_key">754dods2c70xsz</string>
     <string name="linkedin_secret">EfnEG97mqeDpXxCW</string>
+    <string name="press_back_again_to_exit">Please BACK again to exit</string>
 </resources>

@@ -1,25 +1,42 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.support.v4.view.ViewPager;
-        import android.support.v7.app.AlertDialog;
-        import android.support.v7.widget.Toolbar;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import android.widget.Button;
+import com.mantralabsglobal.cashin.BuildConfig;
+import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
+import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
+import com.mantralabsglobal.cashin.utils.SMSProvider;
 
-        import com.mantralabsglobal.cashin.R;
-        import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
-        import butterknife.ButterKnife;
-        import butterknife.InjectView;
-        import butterknife.OnClick;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 
 public class MainActivity extends BaseActivity  {
@@ -41,6 +58,7 @@ public class MainActivity extends BaseActivity  {
     private Toolbar toolbar;
 
     private List<Button> buttonList = new ArrayList<>();
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +145,13 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if(BuildConfig.DEBUG)
+        {
+            getMenuInflater().inflate(R.menu.menu_main_debug, menu);
+        }
+        else {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
         return true;
     }
 
@@ -140,17 +164,13 @@ public class MainActivity extends BaseActivity  {
             finish();
             return true;
         }
-       /* if(id == R.id.action_scan_sms)
+       if(id == R.id.action_scan_sms)
         {
-            SMSProvider smsProvider = new SMSProvider();
-            List<SMSProvider.SMSMessage> messageList = smsProvider.readSMS(this, new Predicate<SMSProvider.SMSMessage>() {
-                @Override
-                public boolean apply(SMSProvider.SMSMessage smsMessage) {
-                    return smsMessage.getBody().contains("Transaction");
-                }
-            });
+            SMSProvider smsProvider = new SMSProvider(this);
+            List<SMSProvider.SMSMessage> messageList = smsProvider.getTransactionList(Long.MIN_VALUE);
             openSMSDialog(messageList);
         }
+
         if(id == R.id.action_package_hash){
             showPckageHash();
         }
@@ -159,13 +179,13 @@ public class MainActivity extends BaseActivity  {
             Intent intent = new Intent(getBaseContext(), CwacCameraActivity.class);
             startActivityForResult(intent, 237);
             //finish();
-        }*/
+        }
         return super.onOptionsItemSelected(item);
     }
 
-   /* protected void showPckageHash(){
+    protected void showPckageHash(){
         try {
-            PackageInfo info =     getPackageManager().getPackageInfo(PACKAGE_CASHIN_APP,     PackageManager.GET_SIGNATURES);
+            PackageInfo info =     getPackageManager().getPackageInfo("com.mantralabsglobal.cashin",     PackageManager.GET_SIGNATURES);
             for (android.content.pm.Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
@@ -208,7 +228,7 @@ public class MainActivity extends BaseActivity  {
         //adapter.addAll(messageList);
         listview.setAdapter(adapter);
         myDialog.show();
-    }*/
+    }
 
     protected void checkUserName()
     {
@@ -230,20 +250,20 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Closing Application")
-                .setMessage(R.string.confirm_on_close)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
 
-                })
-                .setNegativeButton("No", null)
-                .show();
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, getString(R.string.press_back_again_to_exit), Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
 }

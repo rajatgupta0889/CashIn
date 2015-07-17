@@ -119,7 +119,7 @@ public class BankDetailView extends LinearLayout  {
     {
         if(bankDetail != null) {
             this.accountNumber.setText(bankDetail.getAccountNumber());
-            if (bankDetail.getBankName() != null)
+            if (bankDetail.getBankName() != null && drawableResourceMap.get(bankDetail.getBankName().toUpperCase()) != null)
                 this.bankName.setImageResource(drawableResourceMap.get(bankDetail.getBankName().toUpperCase()));
             if (bankDetail.isPrimary())
                 this.isPrimaryIcon.setImageResource(R.drawable.ic_primary_bank_icon);

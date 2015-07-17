@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mantralabsglobal.cashin.ui.activity.app.MainActivity">
+
+    <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="100" app:showAsAction="never" />
+-->
+
+    <item android:id="@+id/action_scan_sms"
+        android:title="@string/read_transactional_sms"
+        app:showAsAction="never"
+        android:orderInCategory="1"
+        android:menuCategory="secondary"/>
+
+    <item android:id="@+id/action_product_tour"
+        android:title="@string/product_tour"
+        app:showAsAction="never"
+        android:orderInCategory="1"
+        android:menuCategory="secondary"/>
+
+    <item android:id="@+id/action_package_hash"
+        android:title="@string/generate_product_hash"
+        app:showAsAction="never"
+        android:orderInCategory="1"
+        android:menuCategory="secondary"/>
+
+    <item android:id="@+id/action_launch_camera"
+        android:title="@string/launch_camera_app"
+        app:showAsAction="never"
+        android:orderInCategory="1"
+        android:menuCategory="secondary"/>
+
+    <item android:id="@+id/action_logout"
+        android:title="@string/logout"
+        app:showAsAction="never"
+        android:orderInCategory="2"
+        android:menuCategory="secondary"/>
+
+
+</menu>
