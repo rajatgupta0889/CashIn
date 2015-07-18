@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -32,17 +33,34 @@ public abstract class AbstractPager extends Fragment {
         ButterKnife.inject(this, view);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        FragmentPagerAdapter fragmentPagerAdapter = getPagerAdapter(getChildFragmentManager());
+        final FragmentPagerAdapter fragmentPagerAdapter = getPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        if(fragmentPagerAdapter.getCount()<3)
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        else
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(viewPager);
+                setTabLayoutMode(fragmentPagerAdapter, tabLayout);
+            }
+        }, 250);
+
 
         return view;
+    }
+
+    protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
+    {
+        if(fragmentPagerAdapter.getCount()<3) {
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+        }
+        else
+        {
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        }
     }
 
     @Override

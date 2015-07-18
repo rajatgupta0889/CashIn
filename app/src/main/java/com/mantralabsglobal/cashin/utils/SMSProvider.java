@@ -23,6 +23,7 @@ public class SMSProvider {
     private String [] loanKeywords;
     private String [] billKeywords;
     private String [] accountKeywords;
+    private String [] currencyKeywords;
     private Context context;
 
     public SMSProvider(Context context)
@@ -34,6 +35,7 @@ public class SMSProvider {
         loanKeywords = context.getResources().getStringArray(R.array.loan_keywords);
         billKeywords = context.getResources().getStringArray(R.array.bill_keywords);
         accountKeywords = context.getResources().getStringArray(R.array.account_keyword);
+        currencyKeywords = context.getResources().getStringArray(R.array.currency_keywords);
     }
 
     public List<SMSMessage> readSMS(Predicate<SMSMessage> filter)
@@ -127,6 +129,8 @@ public class SMSProvider {
     public boolean isTransactionMessage(SMSMessage message)
     {
         int sum = 0;
+        for(String currency: currencyKeywords)
+            sum += message.getBody().toLowerCase().indexOf(currency.toLowerCase())>1?2:0;
         for(String debit: debitKeywords)
             sum += message.getBody().toLowerCase().indexOf(debit.toLowerCase())>1?1:0;
         for(String account: accountKeywords)

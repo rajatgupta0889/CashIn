@@ -82,6 +82,11 @@
         <item>PJSB</item>
     </array>
 
+    <array name="currency_keywords">
+        <item>INR</item>
+        <item>Rs.</item>
+        <item>USD</item>
+    </array>
     <array name="debit_keywords">
         <item>DR</item>
         <item>debited</item>
@@ -98,7 +103,6 @@
         <item>overdue</item>
         <item>Transaction</item>
         <item>Txn</item>
-
     </array>
     <array name="credit_keywords">
         <item>CR</item>
@@ -112,8 +116,6 @@
     </array>
     <array name="bill_keywords">
         <item>bill</item>
-        <item>account</item>
-        <item>stmt</item>
         <item>payable</item>
     </array>
     <array name="account_keyword">
@@ -124,6 +126,7 @@
         <item>stmt</item>
         <item>statement</item>
         <item>Min due</item>
+        <item>Credit card</item>
     </array>
 
 </resources>
