@@ -173,7 +173,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             hideProgressDialog();
             if(getCurrentView() instanceof CoordinatorLayout) {
                 Snackbar snackbar = Snackbar
-                        .make((CoordinatorLayout) getCurrentView(), "Failed to save data. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                        .make((CoordinatorLayout) getCurrentView(), "Failed to save data. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -220,7 +220,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
             else {
                 if(getCurrentView() instanceof CoordinatorLayout) {
                     Snackbar snackbar = Snackbar
-                            .make((CoordinatorLayout) getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                            .make((CoordinatorLayout) getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
                             .setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -255,7 +255,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                     public void failure(RetrofitError error) {
                         hideProgressDialog();
                         Snackbar snackbar = Snackbar
-                                .make((CoordinatorLayout) getCurrentView(), "Failed to process Image. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
+                                .make((CoordinatorLayout) getCurrentView(), "Failed to process Image. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Retry", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
