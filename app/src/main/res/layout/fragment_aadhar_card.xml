@@ -81,10 +81,10 @@
                 android:layout_height="wrap_content" android:gravity="center">
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
+                    android:layout_height="wrap_content" android:id="@+id/btn_back" android:text="@string/back" />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
+                    android:layout_height="wrap_content" android:id="@+id/btn_next" android:text="@string/next" />
 
             </LinearLayout>
 

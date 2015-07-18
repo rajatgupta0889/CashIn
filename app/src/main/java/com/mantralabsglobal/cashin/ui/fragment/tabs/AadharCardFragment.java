@@ -74,8 +74,8 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     @InjectView(R.id.rl_aadhar_detail)
      ViewGroup vg_form;
 
-    @InjectView(R.id.btn_save)
-    Button btnSave;
+    @InjectView(R.id.btn_next)
+    Button btnNext;
 
     static final int SCAN_AADHAR_CARD = 99;
 
@@ -179,7 +179,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
             address.setText(value.getAddress());
             aadharNumber.setText(value.getAadharNumber());
             gender.setSelection(getGenderAdapter().getPosition(value.getGender()));
-            fatherName.setText(value.getSonOf());
+            fatherName.setText(value.getSonOf().trim().substring(5));
             birthDay.setText(value.getDob());
         }
     }
