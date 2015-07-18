@@ -1,40 +1,34 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.FacebookService;
 import com.mantralabsglobal.cashin.social.Facebook;
-import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.social.SocialFactory;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.social.OAuthActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import org.scribe.model.Token;
 
 import java.util.Arrays;
 import java.util.List;
 
 import butterknife.InjectView;
+import butterknife.OnClick;
 import retrofit.Callback;
 
 /**
@@ -76,9 +70,7 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
 
 
     @InjectView(R.id.btn_facebook_connect)
-    public LoginButton loginButton;
-
-    CallbackManager callbackManager;
+    public Button loginButton;
 
     FacebookService facebookService;
 
@@ -97,32 +89,7 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
         Button btnFacebookConnect = (Button) view.findViewById(R.id.btn_facebook_connect);
 
 
-        List<String> permissions = Arrays.asList("public_profile","user_birthday", "user_hometown", "user_location", "user_relationship_details", "user_work_history");
-        loginButton.setReadPermissions(permissions);
-        // If using in a fragment
-        //loginButton.setFragment(this);
-
-        callbackManager = CallbackManager.Factory.create();
-
-        LoginManager.getInstance().registerCallback(callbackManager,
-                new FacebookCallback<LoginResult>() {
-
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        showToastOnUIThread(loginResult.getAccessToken().toString());
-                        populateFaceBookProfile(loginResult.getAccessToken());
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        // App code
-                    }
-
-                    @Override
-                    public void onError(FacebookException exception) {
-                        showToastOnUIThread(exception.getMessage());
-                    }
-                });
+        //List<String> permissions = Arrays.asList("public_profile","user_birthday", "user_hometown", "user_location", "user_relationship_details", "user_work_history");
 
         registerChildView(vg_facebookConnect, View.VISIBLE);
         registerChildView(vg_facebookForm, View.GONE);
@@ -137,19 +104,14 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
         return vg_facebookForm;
     }
 
-    protected void populateFaceBookProfile(AccessToken token)
-    {
-        Facebook.getFacebookProfile(token, new SocialBase.SocialListener<FacebookService.FacebookProfile>() {
-            @Override
-            public void onSuccess(FacebookService.FacebookProfile facebookProfile) {
-                bindDataToForm(facebookProfile);
-            }
+    @OnClick(R.id.btn_facebook_connect)
+    public void onConnectClick() {
 
-            @Override
-            public void onFailure(String message) {
+        Intent intent = new Intent(getActivity(), OAuthActivity.class);
+        intent.putExtra("SOCIAL_NAME", SocialFactory.FACEBOOK);
+        getActivity().startActivityForResult(intent, BaseActivity.FACEBOOK_SIGNIN);
 
-            }
-        });
+        //new AsyncLinkedInProfileTask().execute();
     }
 
     @Override
@@ -169,16 +131,52 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        Context context = loginButton.getContext();
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if(accessToken != null)
+        String accessToken = ((Application)getActivity().getApplication()).getAppPreference().getString("facebook_access_token", null);
+        String accessSecret = ((Application)getActivity().getApplication()).getAppPreference().getString("facebook_access_secret", null);
+        if(accessToken!= null && accessSecret != null)
         {
-            populateFaceBookProfile(accessToken);
+            new AsyncFacebookProfileTask ().execute(accessToken, accessSecret);
         }
         else {
             showFacebookConnect();
         }
+
     }
+
+    private class AsyncFacebookProfileTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                Facebook facebook = SocialFactory.getSocialHelper(SocialFactory.FACEBOOK, Facebook.class);
+                Token token = facebook.getAccessToken(params[0], params[1]);
+                final FacebookService.FacebookProfile facebookProfile= facebook.getSocialProfile(getActivity(), token );
+                hideProgressDialog();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindDataToForm(facebookProfile);
+                    }
+                });
+
+            }
+            catch(Exception e)
+            {
+                showToastOnUIThread(e.getMessage());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showFacebookConnect();
+                    }
+                });
+
+            }
+            finally {
+
+                hideProgressDialog();
+            }
+            return null;
+        }
+    };
 
     private void showFacebookConnect() {
         setVisibleChildView(vg_facebookConnect);
@@ -187,7 +185,17 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if ( resultCode == Activity.RESULT_OK && requestCode == BaseActivity.FACEBOOK_SIGNIN) {
+
+            String access_token = data.getStringExtra("access_token");
+            String access_secret = data.getStringExtra("access_secret");
+
+            ((Application)getActivity().getApplication()).putInAppPreference("facebook_access_token", access_token);
+            ((Application)getActivity().getApplication()).putInAppPreference("facebook_access_secret", access_secret);
+
+            handleDataNotPresentOnServer();
+
+        }
     }
 
     @Override
@@ -197,7 +205,7 @@ public class FacebookFragment extends BaseBindableFragment<FacebookService.Faceb
         // Call the 'deactivateApp' method to log an app event for use in analytics and advertising
         // reporting.  Do so in the onPause methods of the primary Activities that an app may be
         // launched into.
-        AppEventsLogger.deactivateApp(getActivity());
+        //AppEventsLogger.deactivateApp(getActivity());
     }
 
     @Override

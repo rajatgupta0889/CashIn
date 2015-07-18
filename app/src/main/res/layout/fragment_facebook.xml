@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:padding="20dp" android:orientation="vertical" android:id="@+id/fl_facebook">
 
@@ -14,29 +14,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:text="@string/facebook" style="@style/AppTheme.Form.Header" />
 
-                <!--<Button
+                <Button
                     android:id="@+id/btn_facebook_connect"
                     android:layout_marginTop="30dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:drawableLeft="@drawable/facebook" android:text="@string/facebook_connect" />-->
-            <com.facebook.login.widget.LoginButton
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content" style="@style/com_facebook_button" android:drawableLeft="@drawable/com_facebook_button_icon" android:text="@string/facebook_connect" />
+            <!--<com.facebook.login.widget.LoginButton
                 android:id="@+id/btn_facebook_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
+                android:layout_marginBottom="30dp" />-->
 
 
         </LinearLayout>
 
-        <ScrollView
+        <ScrollView android:id="@+id/rl_facebook_details" android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <LinearLayout  android:id="@+id/rl_facebook_details"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:orientation="vertical" android:visibility="gone">
+            android:layout_height="match_parent" android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -110,4 +110,4 @@
         android:visibility="gone"
         style="?android:attr/progressBarStyleLarge"
         android:layout_gravity="center" />
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

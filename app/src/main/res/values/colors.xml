@@ -16,4 +16,9 @@
     <color name="get_started_button_component_background">#fff</color>
     <color name="get_started_button_component_background_clicked">#ddd</color>
     <color name="seperator_center">#d3d3d3</color>
+    <color name="com_facebook_button_background_color">#415dae</color>
+    <color name="com_facebook_button_background_color_disabled">#bdc1c9</color>
+    <color name="com_facebook_button_background_color_pressed">#2f477a</color>
+    <color name="com_facebook_button_login_silver_background_color">#f4f6f8</color>
+    <color name="com_facebook_button_login_silver_background_color_pressed">#e9eaf0</color>
 </resources>
