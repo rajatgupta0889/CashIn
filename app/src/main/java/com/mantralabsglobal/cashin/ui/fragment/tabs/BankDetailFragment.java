@@ -18,10 +18,14 @@ import com.mobsandgeeks.saripaar.annotation.Digits;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import butterknife.InjectView;
 import retrofit.Callback;
@@ -70,8 +74,8 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        final SMSProvider provider = new SMSProvider();
-        List<SMSProvider.SMSMessage> smsList = provider.readSMS(getActivity(), new Predicate<SMSProvider.SMSMessage>() {
+        final SMSProvider provider = new SMSProvider(getActivity());
+        List<SMSProvider.SMSMessage> smsList = provider.readSMS(new Predicate<SMSProvider.SMSMessage>() {
             @Override
             public boolean apply(SMSProvider.SMSMessage smsMessage) {
                 if (provider.hasAccountInformation(smsMessage) && provider.isSenderBank(smsMessage)) {
@@ -82,6 +86,7 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         });
 
         List<PrimaryBankService.BankDetail> bankDetailList = new ArrayList<>();
+        final Map<String, Integer> bankCount = new HashMap<>();
         for(SMSProvider.SMSMessage smsMessage: smsList)
         {
             PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
@@ -90,10 +95,23 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
             bankDetail.setIsPrimary(smsList.size() == 1);
             if(!bankDetailList.contains(bankDetail))
                 bankDetailList.add(bankDetail);
+            if(!bankCount.containsKey(bankDetail.getAccountNumberLast4Digits()))
+                bankCount.put(bankDetail.getAccountNumberLast4Digits(), 0);
+            int newCount = bankCount.get(bankDetail.getAccountNumberLast4Digits()) + 1;
+            bankCount.put(bankDetail.getAccountNumberLast4Digits(), newCount);
         }
 
-        if(bankDetailList.size()==1)
+
+        if(bankDetailList.size()>0) {
+            Collections.sort(bankDetailList, new Comparator<PrimaryBankService.BankDetail>() {
+
+                @Override
+                public int compare(PrimaryBankService.BankDetail lhs, PrimaryBankService.BankDetail rhs) {
+                    return bankCount.get(rhs.getAccountNumberLast4Digits()).compareTo(bankCount.get(lhs.getAccountNumberLast4Digits()));
+                }
+            });
             bankDetailList.get(0).setIsPrimary(true);
+         }
 
         bindDataToForm(bankDetailList);
     }

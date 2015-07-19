@@ -9,6 +9,8 @@ import android.webkit.WebViewClient;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.social.LinkedIn;
+import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.social.SocialFactory;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 
 import org.scribe.exceptions.OAuthException;
@@ -22,24 +24,24 @@ import butterknife.InjectView;
 /**
  * Created by pk on 7/16/2015.
  */
-public class LinkedinActivity extends BaseActivity {
+public class OAuthActivity extends BaseActivity {
 
-    final static String APIKEY = "754dods2c70xsz";
-    final static String APISECRET = "EfnEG97mqeDpXxCW";
-    final static String CALLBACK = "oauth://linkedin";
     final static String CALLBACK_FAILURE = "http://localhost:9000?oauth_problem";
-    private static final String TAG ="LinkedinActivity" ;
+    private static final String TAG ="OAuthActivity" ;
     OAuthService mService;
-    @InjectView(R.id.linkedin_webview)
+    @InjectView(R.id.webview)
      WebView mWebView;
     private Token mRequestToken;
+    SocialBase<?> socialBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_linkedin_signin);
+        setContentView(R.layout.activity_oauth_signin);
         ButterKnife.inject(this);
-        mService = LinkedIn.getService(this, CALLBACK);
+        String socialName = getIntent().getStringExtra("SOCIAL_NAME");
+        socialBase = SocialFactory.getSocialHelper(socialName);
+        mService = socialBase.getOAuthService(this);
         new AsyncLinkedInProfileTask().execute();
     }
 
@@ -51,7 +53,7 @@ public class LinkedinActivity extends BaseActivity {
             String authURL = "http://api.linkedin.com/";
 
             try {
-                mRequestToken = mService.getRequestToken();
+                mRequestToken = socialBase.getRequestToken(mService);
                 authURL = mService.getAuthorizationUrl(mRequestToken);
             }
             catch ( OAuthException e ) {
@@ -70,20 +72,20 @@ public class LinkedinActivity extends BaseActivity {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     super.shouldOverrideUrlLoading(view, url);
 
-                    if (url.startsWith("oauth")) {
+                    if (url.startsWith(socialBase.getCallBackUrl())) {
                         mWebView.setVisibility(WebView.GONE);
 
                         final String url1 = url;
                         Thread t1 = new Thread() {
                             public void run() {
-                                Uri uri = Uri.parse(url1);
+                                //Uri uri = Uri.parse(url1);
 
-                                String verifier = uri.getQueryParameter("oauth_verifier");
+                                String verifier = socialBase.getVerifierCode(url1);
                                 Verifier v = new Verifier(verifier);
                                 Token accessToken = mService.getAccessToken(mRequestToken, v);
                                 Intent intent = new Intent();
-                                intent.putExtra("linkedin_access_token", accessToken.getToken());
-                                intent.putExtra("linkedin_access_secret", accessToken.getSecret());
+                                intent.putExtra("access_token", accessToken.getToken());
+                                intent.putExtra("access_secret", accessToken.getSecret());
                                 setResult(RESULT_OK, intent);
 
                                 finish();

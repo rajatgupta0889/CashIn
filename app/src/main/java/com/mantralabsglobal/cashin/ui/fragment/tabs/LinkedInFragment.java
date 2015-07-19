@@ -16,11 +16,14 @@ import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.social.LinkedIn;
 import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.social.SocialFactory;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
-import com.mantralabsglobal.cashin.ui.activity.social.LinkedinActivity;
+import com.mantralabsglobal.cashin.ui.activity.social.OAuthActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import org.scribe.model.Token;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -70,7 +73,6 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_linkedin, container, false);
         return view;
     }
@@ -128,7 +130,9 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         @Override
         protected Void doInBackground(String... params) {
             try {
-                final LinkedInService.LinkedInDetail linkedInDetail = LinkedIn.getLinkedInProfile2(getActivity(), params[0], params[1]);
+                LinkedIn linkedIn = SocialFactory.getSocialHelper(SocialFactory.LINKEDIN, LinkedIn.class);
+                Token token = linkedIn.getAccessToken(params[0], params[1]);
+                final LinkedInService.LinkedInDetail linkedInDetail = linkedIn.getSocialProfile(getActivity(), token );
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -161,7 +165,8 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     public void onConnectClick() {
         //showProgressDialog(getString(R.string.waiting_for_linkedIn), true, false);
 
-        Intent intent = new Intent(getActivity(), LinkedinActivity.class);
+        Intent intent = new Intent(getActivity(), OAuthActivity.class);
+        intent.putExtra("SOCIAL_NAME", SocialFactory.LINKEDIN);
         getActivity().startActivityForResult(intent, BaseActivity.LINKEDIN_SIGNIN);
 
         //new AsyncLinkedInProfileTask().execute();
@@ -236,8 +241,8 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
         super.onActivityResult(requestCode, resultCode, data);
 
         if ( resultCode == Activity.RESULT_OK && requestCode == BaseActivity.LINKEDIN_SIGNIN) {
-            String access_token = data.getStringExtra("linkedin_access_token");
-            String access_secret = data.getStringExtra("linkedin_access_secret");
+            String access_token = data.getStringExtra("access_token");
+            String access_secret = data.getStringExtra("access_secret");
 
             ((Application)getActivity().getApplication()).putInAppPreference("linkedin_access_token", access_token);
             ((Application)getActivity().getApplication()).putInAppPreference("linkedin_access_secret", access_secret);

@@ -7,7 +7,6 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Base64;
 import android.util.Log;
 
-import com.facebook.FacebookSdk;
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.service.RestClient;
@@ -83,8 +82,6 @@ public class Application extends MultiDexApplication{
                 return String.valueOf(view.getAmount().toString());
             }
         });
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
 
         getKeyHash();
 

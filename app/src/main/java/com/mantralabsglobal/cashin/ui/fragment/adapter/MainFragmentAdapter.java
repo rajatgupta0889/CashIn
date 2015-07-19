@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.ui.fragment.adapter;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -21,6 +22,12 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
             if(adapter == null || fragmentManager != adapter.getFragmentManager())
                 adapter = new FinancePagerAdapter(fragmentManager);
             return adapter;
+        }
+
+        @Override
+        protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
+        {
+                tabLayout.setTabMode(TabLayout.MODE_FIXED);
         }
     };
 

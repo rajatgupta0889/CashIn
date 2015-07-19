@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.social;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
@@ -11,10 +12,6 @@ import com.mantralabsglobal.cashin.utils.DateUtils;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.LinkedInApi;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ import java.util.List;
 /**
  * Created by pk on 7/4/2015.
  */
-public class LinkedIn {
+public class LinkedIn extends SocialBase<LinkedInService.LinkedInDetail>{
 
     private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address,educations)?format=json";
     //private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address)?format=json";
@@ -32,7 +29,7 @@ public class LinkedIn {
 
     //private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/people/~/connections:(id,last-name)";
 
-    public static OAuthService getService(Context context, String callback)
+    public OAuthService getOAuthService(Context context)
     {
 
         return new ServiceBuilder()
@@ -40,29 +37,24 @@ public class LinkedIn {
                 .provider(LinkedInApi.class)
                 .apiKey(context.getResources().getString(R.string.linkedin_key))
                 .apiSecret(context.getResources().getString(R.string.linkedin_secret))
-                .callback(callback==null?CALLBACK:callback)
+                .callback(CALLBACK)
                 .build();
-
-
     }
 
-    public static LinkedInService.LinkedInDetail getLinkedInProfile2(Context context, String token, String secret )
-    {
-        OAuthService service = getService(context, null);
-        Token accessToken = new Token(token, secret);
+    @Override
+    protected String getProfileUrl() {
+        return PROFILE_URL;
+    }
 
-        OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_URL);
-        service.signRequest(accessToken, request);
-        Response response = request.send();
-
+    @Override
+    protected LinkedInService.LinkedInDetail getProfileFromResponse(String responseBody) {
         Gson gson = new Gson();
-        LinkedInProfileResponse linkedInProfileResponse = gson.fromJson(response.getBody(), LinkedInProfileResponse.class);
+        LinkedInProfileResponse linkedInProfileResponse = gson.fromJson(responseBody, LinkedInProfileResponse.class);
 
         return convertToLinkedInDetail(linkedInProfileResponse);
-
     }
 
-    private static LinkedInService.LinkedInDetail convertToLinkedInDetail(LinkedInProfileResponse linkedInProfileResponse)
+    private LinkedInService.LinkedInDetail convertToLinkedInDetail(LinkedInProfileResponse linkedInProfileResponse)
     {
         if(linkedInProfileResponse != null)
         {
@@ -92,30 +84,18 @@ public class LinkedIn {
         return null;
     }
 
-    /*public static void getLinkedInProfile(Context context, Activity activity, final SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener)
-    {
 
-        APIHelper apiHelper = APIHelper.getInstance(context);
-        apiHelper.getRequest(activity, PROFILE_URL, new ApiListener() {
-            @Override
-            public void onApiSuccess(ApiResponse apiResponse) {
-                Log.i(TAG, apiResponse.getResponseDataAsJson().toString());
-                JSONObject response = apiResponse.getResponseDataAsJson();
-                Gson gson = new Gson();
-                LinkedInProfileResponse linkedInProfileResponse = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),LinkedInProfileResponse.class);
-                if(linkedInProfileResponse != null)
-                {
-                    listener.onSuccess( convertToLinkedInDetail(linkedInProfileResponse));
-                }
-            }
+    @Override
+    public String getCallBackUrl() {
+        return CALLBACK;
+    }
 
-            @Override
-            public void onApiError(LIApiError LIApiError) {
-
-                listener.onFailure(LIApiError.getMessage());
-            }
-        });
-    }*/
+    @Override
+    public String getVerifierCode(String callbackUrl) {
+        Uri uri = Uri.parse(callbackUrl);
+        String verifier = uri.getQueryParameter("oauth_verifier");
+        return verifier;
+    }
 
     public class Company {
 

@@ -35,6 +35,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final int IMAGE_CAPTURE_BUSINESS_CARD = 7000;
     public static final int IMAGE_CROP_BUSINESS_CARD = 7001;
     public static final int LINKEDIN_SIGNIN = 8000;
+    public static final int FACEBOOK_SIGNIN = 9000;
 
     protected void putInAppPreference(String key, String value) {
         appPreference.edit().putString(key, value).apply();

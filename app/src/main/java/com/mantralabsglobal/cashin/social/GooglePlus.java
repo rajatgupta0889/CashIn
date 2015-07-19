@@ -13,10 +13,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 
+import org.scribe.oauth.OAuthService;
+
 /**
  * Created by pk on 7/4/2015.
  */
-public class GooglePlus extends SocialBase {
+public class GooglePlus{
 
     private static final String TAG = "GooglePlus";
     /* Client used to interact with Google APIs. */
@@ -31,7 +33,7 @@ public class GooglePlus extends SocialBase {
     /* Should we automatically resolve ConnectionResults when possible? */
     protected boolean mShouldResolve = false;
 
-    public void authenticate(Activity activity, final SocialListener<String> listener)
+    public void authenticate(Activity activity, final SocialBase.SocialListener<String> listener)
     {
         mGoogleApiClient = new GoogleApiClient.Builder(activity)
                 .addConnectionCallbacks(new AuthenticateCallback() {
