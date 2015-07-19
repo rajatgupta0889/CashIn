@@ -102,20 +102,16 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         }
 
 
-
-        if(bankDetailList.size()==1)
-            bankDetailList.get(0).setIsPrimary(true);
-        else
-        {
-            Collections.sort(bankDetailList, new Comparator<PrimaryBankService.BankDetail>(){
+        if(bankDetailList.size()>0) {
+            Collections.sort(bankDetailList, new Comparator<PrimaryBankService.BankDetail>() {
 
                 @Override
                 public int compare(PrimaryBankService.BankDetail lhs, PrimaryBankService.BankDetail rhs) {
-                    return bankCount.get(rhs.getAccountNumberLast4Digits()).compareTo( bankCount.get(lhs.getAccountNumberLast4Digits()));
+                    return bankCount.get(rhs.getAccountNumberLast4Digits()).compareTo(bankCount.get(lhs.getAccountNumberLast4Digits()));
                 }
             });
             bankDetailList.get(0).setIsPrimary(true);
-        }
+         }
 
         bindDataToForm(bankDetailList);
     }
