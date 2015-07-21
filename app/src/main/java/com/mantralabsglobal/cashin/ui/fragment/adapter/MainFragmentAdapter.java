@@ -27,7 +27,8 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
         @Override
         protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
         {
-                tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         }
     };
 
