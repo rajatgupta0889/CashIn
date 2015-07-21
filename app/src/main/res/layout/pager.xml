@@ -8,8 +8,7 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabMode="scrollable" app:tabSelectedTextColor="@color/primary" app:tabIndicatorColor="@color/primary" app:tabGravity="center"/>
+        android:layout_height="wrap_content" app:tabSelectedTextColor="@color/primary" app:tabIndicatorColor="@color/primary" app:tabGravity="center"/>
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/viewPager"

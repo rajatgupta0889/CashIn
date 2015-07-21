@@ -37,12 +37,14 @@ public abstract class AbstractPager extends Fragment {
         viewPager.setAdapter(fragmentPagerAdapter);
 
         final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        setTabLayoutMode(fragmentPagerAdapter, tabLayout);
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 tabLayout.setupWithViewPager(viewPager);
-                setTabLayoutMode(fragmentPagerAdapter, tabLayout);
+
             }
         }, 250);
 
@@ -54,7 +56,7 @@ public abstract class AbstractPager extends Fragment {
     {
         if(fragmentPagerAdapter.getCount()<3) {
             tabLayout.setTabMode(TabLayout.MODE_FIXED);
-
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         }
         else
         {

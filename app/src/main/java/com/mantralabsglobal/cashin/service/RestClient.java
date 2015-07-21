@@ -33,6 +33,7 @@ public class RestClient  {
     private FacebookService facebookService;
     private PanCardService panCardServiceOCR;
     private AvtarService avtarService;
+    private ReferenceService referenceService;
 
     public RestClient(Context context)
     {
@@ -80,6 +81,7 @@ public class RestClient  {
         facebookService = restAdapter.create(FacebookService.class);
         panCardServiceOCR = restAdapterOCR.create(PanCardService.class);
         avtarService = restAdapter.create(AvtarService.class);
+        referenceService = restAdapter.create(ReferenceService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -130,5 +132,9 @@ public class RestClient  {
 
     public AvtarService getAvtarService() {
         return avtarService;
+    }
+
+    public ReferenceService getReferenceService() {
+        return referenceService;
     }
 }

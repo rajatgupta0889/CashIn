@@ -227,4 +227,5 @@
     <string name="press_back_again_to_exit">Please BACK again to exit</string>
     <string name="facebook_secret">b620dc218af76f7d8f1cde28a0da5844</string>
     <string name="server_client_id">773614146127-rf4nm56jh0vc076bu37cdg8foefbna54.apps.googleusercontent.com</string>
+    <string name="select_three_reference">Select 3 people from your contact list</string>
 </resources>
