@@ -14,7 +14,7 @@
                     style="@style/AppTheme.Form.Fragment.Top.Header" />
 
                 <ImageButton android:id="@+id/ib_launchScanner"
-                    style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera"
+                    style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera_background"
                     android:contentDescription="@string/scan_aadhar_qr_code" />
 
             </FrameLayout>

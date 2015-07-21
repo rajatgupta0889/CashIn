@@ -13,7 +13,7 @@
 
     <string name="username_hint">someone@example.com</string>
     <string name="password_hint">Password</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="your_photo">Your Photo</string>
     <string name="confirm_on_close">Exit Cash In</string>
     <string name="default_dateof_birth">01-Jan-1990</string>
@@ -30,8 +30,8 @@
     <string name="gender">Gender</string>
     <string name="aadhar_number">Aadhar Number</string>
     <string name="date_of_birth">Date of birth</string>
-    <string name="facebook">facebook</string>
-    <string name="facebook_connect">connnect</string>
+    <string name="facebook">Facebook</string>
+    <string name="facebook_connect">Connect</string>
     <string name="facebook_connected_as">Connected as</string>
     <string name="facebook_profile_details">Profile Details</string>
     <string name="workplace">Workplace</string>
@@ -55,6 +55,7 @@
     <string name="school">School</string>
     <string name="enter_primary_bank_details">Enter your primary bank details</string>
     <string name="bank_name">Bank Name</string>
+    <string name="bank_statement_details">Bank statement details</string>
     <string name="account_number_last_4_digits">Account Number (Last 4 digits)</string>
     <string name="last_three_month_salary">Please enter your last 3 months income</string>
     <string name="month_one">Month One</string>
@@ -173,7 +174,7 @@
     <string name="recieve_money_card">Recieve money card</string>
     <string name="photos_of_documents">Photos of documents</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generate_product_hash">Package hash</string>
     <string name="degree">Degree</string>
@@ -222,7 +223,7 @@
     <string name="title_activity_main_activity_my">MainActivityMy</string>
     <string name="position_card_inside_frame">Position card inside red marker</string>
     <string name="linkedin_key">754dods2c70xsz</string>
-    <string name="linkedin_secret">EfnEG97mqeDpXxCW</string>
+    <string name="linkedin_secret">E`fnEG97mqeDpXxCW</string>
     <string name="press_back_again_to_exit">Please BACK again to exit</string>
     <string name="facebook_secret">b620dc218af76f7d8f1cde28a0da5844</string>
     <string name="server_client_id">773614146127-rf4nm56jh0vc076bu37cdg8foefbna54.apps.googleusercontent.com</string>

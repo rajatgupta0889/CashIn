@@ -14,7 +14,7 @@
 
                 <ImageButton
                     android:id="@+id/ib_launch_camera"
-                    style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera"
+                    style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera_background"
                     />
 
             </FrameLayout>

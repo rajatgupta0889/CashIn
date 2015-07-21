@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity  {
             finish();
             return true;
         }
-       if(id == R.id.action_scan_sms)
+      /* if(id == R.id.action_scan_sms)
         {
             SMSProvider smsProvider = new SMSProvider(this);
             List<SMSProvider.SMSMessage> messageList = smsProvider.getTransactionList(Long.MIN_VALUE);
@@ -179,11 +179,11 @@ public class MainActivity extends BaseActivity  {
             Intent intent = new Intent(getBaseContext(), CwacCameraActivity.class);
             startActivityForResult(intent, 237);
             //finish();
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
-    protected void showPckageHash(){
+   /* protected void showPckageHash(){
         try {
             PackageInfo info =     getPackageManager().getPackageInfo("com.mantralabsglobal.cashin",     PackageManager.GET_SIGNATURES);
             for (android.content.pm.Signature signature : info.signatures) {
@@ -228,7 +228,7 @@ public class MainActivity extends BaseActivity  {
         //adapter.addAll(messageList);
         listview.setAdapter(adapter);
         myDialog.show();
-    }
+    }*/
 
     protected void checkUserName()
     {

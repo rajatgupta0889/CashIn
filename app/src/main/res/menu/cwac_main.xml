@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+  <!--  <item
         android:id="@+id/landscape"
         android:checkable="true"
         android:checked="false"
         app:showAsAction="never"
         android:title="@string/lock_to_landscape">
-    </item>
+    </item>-->
     <!--<item
         android:id="@+id/content"
         android:icon="@android:drawable/ic_menu_gallery"

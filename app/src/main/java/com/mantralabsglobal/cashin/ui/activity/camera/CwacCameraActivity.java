@@ -29,7 +29,7 @@ import butterknife.OnClick;
  * Created by pk on 7/9/2015.
  */
 public class CwacCameraActivity extends AppCompatActivity implements
-    ActionBar.OnNavigationListener, CwacCameraFragment.Contract {
+   /* ActionBar.OnNavigationListener,*/ CwacCameraFragment.Contract {
     private static final String STATE_SINGLE_SHOT="single_shot";
     private static final String STATE_LOCK_TO_LANDSCAPE=
             "lock_to_landscape";
@@ -59,10 +59,10 @@ public class CwacCameraActivity extends AppCompatActivity implements
 
         setContentView(R.layout.cwac_main_activity);
         ButterKnife.inject(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
-        setSupportActionBar(toolbar);
+      //  Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
+        //setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+      //  getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
 
@@ -70,7 +70,7 @@ public class CwacCameraActivity extends AppCompatActivity implements
 
         useFFCByDefault = FFC.equals(defaultCamera) ?true:false;
 
-        showCameraSwitch = intent.getBooleanExtra(SHOW_CAMERA_SWITCH, false);
+      /*  showCameraSwitch = intent.getBooleanExtra(SHOW_CAMERA_SWITCH, false);
 
         if (hasTwoCameras && showCameraSwitch) {
             final ActionBar actionBar=getSupportActionBar();
@@ -85,22 +85,22 @@ public class CwacCameraActivity extends AppCompatActivity implements
 
             actionBar.setListNavigationCallbacks(adapter, this);
         }
-        else {
-            current= CwacCameraFragment.newInstance(false);
+        else {*/
+            current= CwacCameraFragment.newInstance(useFFCByDefault);
 
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, current).commit();
-        }
+        //}
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (useFFCByDefault)
-            getSupportActionBar().setSelectedNavigationItem(1);
+   //     if (useFFCByDefault)
+     //       getSupportActionBar().setSelectedNavigationItem(1);
     }
 
-    @Override
+   /* @Override
     public boolean onNavigationItemSelected(int position, long id) {
         if (position == 0) {
             if (std == null) {
@@ -122,10 +122,10 @@ public class CwacCameraActivity extends AppCompatActivity implements
 
         return(true);
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        new MenuInflater(this).inflate(R.menu.cwac_main, menu);
+       new MenuInflater(this).inflate(R.menu.cwac_main, menu);
         return(super.onCreateOptionsMenu(menu));
     }
 

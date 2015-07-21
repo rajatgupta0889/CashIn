@@ -99,7 +99,7 @@
 
                 <ImageButton
                     android:id="@+id/ib_get_gps_location"
-                    style="@style/AppTheme.Form.Fragment.Top.Image"  android:src="@drawable/ic_gps"/>
+                    style="@style/AppTheme.Form.Fragment.Top.Image"  android:src="@drawable/ic_gps_icon"/>
 
             </FrameLayout>
 
