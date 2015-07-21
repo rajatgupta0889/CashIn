@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 
 /**
  * Created by pk on 6/20/2015.
@@ -113,13 +117,52 @@ public abstract class BaseFragment extends Fragment {
         if(fabList == null)
         {
             fabList = new ArrayList<>();
-            floatingActionButtonViewMap.put(childView,fabList);
+            floatingActionButtonViewMap.put(childView, fabList);
         }
         if(!fabList.contains(fab)) {
             fabList.add(fab);
             fab.setVisibility(childView.getVisibility());
         }
     }
+
+    @Optional
+    @OnClick(R.id.btn_back)
+    public void onPreviousTabClick()
+    {
+        ((MainActivity)getActivity()).previousTab();
+    }
+
+    @Optional
+    @OnClick(R.id.btn_next)
+    public void onNextTabClick()
+    {
+        ((MainActivity)getActivity()).nextTab();
+    }
+/*
+
+    protected void registerBackNextButton(Button backButton, Button nextButton)
+    {
+        if(backButton != null)
+        {
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    previousTab();
+                }
+            });
+        }
+
+        if(nextButton != null)
+        {
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity)getActivity()).nextTab();
+                }
+            });
+        }
+    }
+*/
 
     protected void setVisibleChildView(View view)
     {
