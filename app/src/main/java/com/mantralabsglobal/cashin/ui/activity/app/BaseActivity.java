@@ -1,14 +1,23 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.Scopes;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
+
+import java.io.IOException;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -20,6 +29,7 @@ import retrofit.client.Response;
 public class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
+    protected static final int REQ_SIGN_IN_REQUIRED = 10000;
 
 
     protected ProgressDialog progressDialog;
@@ -57,23 +67,26 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    protected void registerAndLogin(final String userName, boolean userExists, final IAuthListener listener) {
+    protected void registerAndLogin(final String userName, final String token,  boolean userExists, final IAuthListener listener) {
         AuthenticationService authService = ((com.mantralabsglobal.cashin.ui.Application) getApplication()).getRestClient().getAuthenticationService();
         AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
         up.setEmail(userName);
-        up.setPassword("dummy");
+        up.setToken(token);
         if(userExists) {
+
             authService.authenticateUser(up, new Callback<AuthenticationService.AuthenticatedUser>() {
                 @Override
                 public void success(AuthenticationService.AuthenticatedUser authenticatedUser, Response response) {
                     getCashInApplication().setAppUserId(authenticatedUser.getId());
+                    getCashInApplication().setAppUserName(authenticatedUser.getEmail());
+                    getCashInApplication().setGoogleToken(token);
                     listener.onSuccess();
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
                     if (RetrofitUtils.isUserNotRegisteredError(error))
-                        registerAndLogin(userName, false, listener);
+                        registerAndLogin(userName,token, false, listener);
                     else {
                         showToastOnUIThread(error.getMessage());
                         listener.onFailure(error);
@@ -83,12 +96,12 @@ public class BaseActivity extends AppCompatActivity {
         }
         else
         {
-            AuthenticationService.NewUser nu = new AuthenticationService.NewUser(up.getEmail(),up.getPassword());
+            AuthenticationService.NewUser nu = new AuthenticationService.NewUser(up.getEmail(),"");
 
             authService.registerUser(nu, new Callback<AuthenticationService.AuthenticatedUser>() {
                 @Override
                 public void success(AuthenticationService.AuthenticatedUser authenticatedUser, Response response) {
-                    registerAndLogin(userName, true, listener);
+                    registerAndLogin(userName,token, true, listener);
                 }
 
                 @Override
@@ -139,6 +152,46 @@ public class BaseActivity extends AppCompatActivity {
     public interface IAuthListener{
         public void onSuccess();
         public void onFailure(Exception exp);
+    }
+
+    protected abstract class RetrieveTokenTask extends AsyncTask<String, Void, String> {
+
+        private String email;
+        @Override
+        protected String doInBackground(String... params) {
+
+            //String scope = String.format("oauth2:server:client_id:%s:api_scope:%s", activity.getString(R.string.server_client_id), TextUtils.join(" ", Arrays.asList(Scopes.PROFILE, Scopes.PLUS_LOGIN)));
+            String scope = "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN;
+            String serverToken = null;
+
+            try {
+                email = params[0];
+                serverToken = GoogleAuthUtil.getToken(BaseActivity.this.getBaseContext(), params[0], scope);
+
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to get token for server", e);
+                showToastOnUIThread(e.getMessage());
+            } catch (UserRecoverableAuthException e) {
+                BaseActivity.this.startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
+            } catch (GoogleAuthException e) {
+                showToastOnUIThread(e.getMessage());
+                Log.e(TAG, "Failed to get token for server", e);
+            }
+            return serverToken;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            afterTokenRecieved(email, s);
+        }
+
+        protected abstract void afterTokenRecieved(String email, String token);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 }

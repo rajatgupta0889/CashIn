@@ -39,6 +39,7 @@ public class Application extends MultiDexApplication{
     public static final String APP_PREFERENCE = "APP_PREFERENCE";
     public static final String USER_NAME = "USER_NAME";
     public static final String USER_ID = "USER_ID";
+    public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
     public static final String EMPTY_STRING = "";
 
     private RestClient restClient;
@@ -108,7 +109,7 @@ public class Application extends MultiDexApplication{
                 {
                     AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
                     up.setEmail(getAppUser());
-                    up.setPassword("dummy");
+                    up.setToken(getGoogleToken());
                     AuthenticationService.AuthenticatedUser au = getRestClient().getAuthenticationService().authenticateUserSync(up);
                 }
                 Request newRequest = chain.request();
@@ -163,6 +164,15 @@ public class Application extends MultiDexApplication{
 
     public void setAppUserName(String appUserName) {
         appPreference.edit().putString(USER_NAME, appUserName ).apply();
+    }
+
+    public void setGoogleToken(String token) {
+        appPreference.edit().putString(GOOGLE_TOKEN, token).apply();
+    }
+
+    public String getGoogleToken()
+    {
+        return appPreference.getString(GOOGLE_TOKEN, null);
     }
 }
 

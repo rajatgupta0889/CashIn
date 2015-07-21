@@ -27,15 +27,8 @@ public interface AuthenticationService {
     public static class UserPrincipal{
 
         private String email;
-        private String password;
+        private String token;
 
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
 
         public String getEmail() {
             return email;
@@ -43,6 +36,14 @@ public interface AuthenticationService {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
         }
     }
 
@@ -95,10 +96,10 @@ public interface AuthenticationService {
     }
 
     public static class NewUser extends UserPrincipal{
-        public NewUser(String email, String password)
+        public NewUser(String email, String token)
         {
             setEmail(email);
-            setPassword(password);
+            setToken(token);
         }
     }
 }

@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -106,22 +105,8 @@ public class IntroSliderActivity extends BaseActivity {
         googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
             @Override
             public void onSuccess(final String email) {
-                getCashInApplication().setAppUserName(email);
-                registerAndLogin(email, true, new IAuthListener() {
-                    @Override
-                    public void onSuccess() {
-                        hideProgressDialog();
-                        Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
 
-                    @Override
-                    public void onFailure(Exception exp) {
-                        hideProgressDialog();
-                        Snackbar.make(viewPager, exp.getMessage(), Snackbar.LENGTH_LONG).show();
-                    }
-                });
+                tokenTask.execute(email);
             }
 
             @Override
@@ -132,11 +117,34 @@ public class IntroSliderActivity extends BaseActivity {
         });
     }
 
+    private RetrieveTokenTask tokenTask = new RetrieveTokenTask(){
 
+        @Override
+        protected void afterTokenRecieved(String email, String token) {
+            registerAndLogin(email, token, true, new IAuthListener() {
+                @Override
+                public void onSuccess() {
+                    hideProgressDialog();
+                    Intent intent = new Intent(getBaseContext(), GetStartedActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Exception exp) {
+                    hideProgressDialog();
+                    Snackbar.make(viewPager, exp.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_SIGN_IN_REQUIRED && resultCode == RESULT_OK) {
+            tokenTask.execute(getCashInApplication().getAppUser());
+        }
         googlePlus.onActivityResult(requestCode, resultCode, data);
     }
 
