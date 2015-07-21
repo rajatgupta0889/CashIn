@@ -85,4 +85,43 @@ public abstract class AbstractPager extends Fragment {
         Log.d("AbstractPager", "onActivityResult invoked on " + fragment);
     }
 
+    public boolean nextTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex < viewPager.getAdapter().getCount()-1)
+        {
+            viewPager.setCurrentItem(currentIndex+1, true);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean previousTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex > 0)
+        {
+            viewPager.setCurrentItem(currentIndex-1, true);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moveToFirstTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex != 0)
+        {
+            viewPager.setCurrentItem(0, true);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moveToLastTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex <= viewPager.getAdapter().getCount()-1)
+        {
+            viewPager.setCurrentItem(viewPager.getAdapter().getCount()-1, true);
+            return true;
+        }
+        return false;
+    }
 }

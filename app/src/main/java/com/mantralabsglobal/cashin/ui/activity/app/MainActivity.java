@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
+import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
 import com.mantralabsglobal.cashin.utils.SMSProvider;
 
@@ -53,6 +54,8 @@ public class MainActivity extends BaseActivity  {
     public Button financialButton;
     @InjectView(R.id.socialButton)
     public Button socialButton;
+    @InjectView(R.id.main_frame)
+    public ViewPager viewPager;
 
     private MainFragmentAdapter mainFragmentAdapter;
     private Toolbar toolbar;
@@ -78,16 +81,16 @@ public class MainActivity extends BaseActivity  {
 
         checkUserName();
 
-        ((ViewPager) findViewById(R.id.main_frame)).addOnPageChangeListener(pageChangeListener);
+        viewPager.addOnPageChangeListener(pageChangeListener);
         mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
-        ((ViewPager) findViewById(R.id.main_frame)).setAdapter(mainFragmentAdapter);
+        viewPager.setAdapter(mainFragmentAdapter);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ((ViewPager) findViewById(R.id.main_frame)).setCurrentItem(appPreference.getInt(SELECTED_TAB_INDEX, 0), false);
+        viewPager.setCurrentItem(appPreference.getInt(SELECTED_TAB_INDEX, 0), false);
         pageChangeListener.onPageSelected(appPreference.getInt(SELECTED_TAB_INDEX, 0));
     }
 
@@ -126,6 +129,32 @@ public class MainActivity extends BaseActivity  {
                 socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
         }
     };
+
+    public void nextTab()
+    {
+        int currentIndex = viewPager.getCurrentItem();
+        AbstractPager currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
+        if(!currentPager.nextTab() && mainFragmentAdapter.getCount()-1>currentIndex)
+        {
+            currentIndex++;
+            viewPager.setCurrentItem(currentIndex, true);
+            currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
+            currentPager.moveToFirstTab();
+        }
+    }
+
+    public void previousTab()
+    {
+        int currentIndex = viewPager.getCurrentItem();
+        AbstractPager currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
+        if(!currentPager.previousTab() && currentIndex > 0)
+        {
+            currentIndex--;
+            viewPager.setCurrentItem(currentIndex, true);
+            currentPager = (AbstractPager) mainFragmentAdapter.getItem(currentIndex);
+            currentPager.moveToLastTab();
+        }
+    }
 
     @OnClick({R.id.yourPhotoButton, R.id.yourIdentityButton, R.id.workButton, R.id.financialButton, R.id.socialButton})
     public void onClick(final View v) {
@@ -244,7 +273,6 @@ public class MainActivity extends BaseActivity  {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ViewPager viewPager = ((ViewPager)findViewById(R.id.main_frame));
         mainFragmentAdapter.getItem(viewPager.getCurrentItem()).onActivityResult(requestCode,resultCode,data);
     }
 
