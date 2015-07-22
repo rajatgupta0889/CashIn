@@ -14,12 +14,7 @@
                 <TextView
                    android:text="@string/select_three_reference"
                     style="@style/AppTheme.Form.Fragment.Top.Header"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:id="@+id/texts"
-                    android:layout_width="wrap_content" />
+                    />
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/fab_select_reference"
@@ -30,6 +25,7 @@
                     android:layout_margin="24dp"
                     android:layout_gravity="center"
                     android:scaleType="fitCenter"
+                    app:elevation="10dp"
                     app:borderWidth="0dp"/>
             </FrameLayout>
 
