@@ -227,4 +227,9 @@
     <string name="facebook_secret">b620dc218af76f7d8f1cde28a0da5844</string>
     <string name="server_client_id">773614146127-rf4nm56jh0vc076bu37cdg8foefbna54.apps.googleusercontent.com</string>
     <string name="select_three_reference">Select 3 people from your contact list</string>
+    <string name="title_contact_picker">Your Contacts</string>
+    <string name="loading_contacts">Loading contacts</string>
+    <string name="menu_search">Search</string>
+    <string name="select_status">0/3</string>
+    <string name="done">done</string>
 </resources>

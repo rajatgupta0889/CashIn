@@ -135,7 +135,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="Widget.CashIn.ActionBar" parent="Widget.AppCompat.ActionBar">
+    <style name="Widget.CashIn.ActionBar" parent="Widget.AppCompat.Light.ActionBar.TabBar.Inverse">
         <item name="android:background">@color/primary</item>
         <item name="theme">@style/ThemeOverlay.CashIn.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -153,7 +153,7 @@
         <item name="android:textColor">@color/primary</item>
     </style>
 
-    <style name="ThemeOverlay.CashIn.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+    <style name="ThemeOverlay.CashIn.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/light</item>
     </style>
 

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.ReferenceService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.ContactPickerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +91,9 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
 
     @OnClick( {R.id.fab_select_reference})
     public void loadReferences() {
-
+        Intent intent = new Intent(getActivity(), ContactPickerActivity.class);
+        intent.putExtra("ContactCount", 3);
+        getActivity().startActivityForResult(intent, BaseActivity.CONTACT_PICKER);
     }
 
     @Override

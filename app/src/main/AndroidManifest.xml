@@ -84,6 +84,17 @@
             android:label="@string/title_activity_intro_slider" >
         </activity>
 
+        <activity
+            android:name=".ui.activity.app.ContactPickerActivity"
+            android:label="@string/title_contact_picker" >
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/references_searchable">
+            </meta-data>
+        </activity>
+
+
         <activity android:name=".ui.activity.app.GetStartedActivity" android:label="@string/get_started"/>
 
         <activity

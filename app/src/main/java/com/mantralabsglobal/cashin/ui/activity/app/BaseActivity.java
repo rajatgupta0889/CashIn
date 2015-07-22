@@ -29,7 +29,6 @@ import retrofit.client.Response;
 public class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
-    protected static final int REQ_SIGN_IN_REQUIRED = 10000;
 
 
     protected ProgressDialog progressDialog;
@@ -46,6 +45,8 @@ public class BaseActivity extends AppCompatActivity {
     public static final int IMAGE_CROP_BUSINESS_CARD = 7001;
     public static final int LINKEDIN_SIGNIN = 8000;
     public static final int FACEBOOK_SIGNIN = 9000;
+    protected static final int REQ_SIGN_IN_REQUIRED = 10000;
+    public static final int CONTACT_PICKER = 11000;
 
     protected void putInAppPreference(String key, String value) {
         appPreference.edit().putString(key, value).apply();
