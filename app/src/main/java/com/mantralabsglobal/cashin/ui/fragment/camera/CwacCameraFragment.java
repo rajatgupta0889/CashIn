@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.commonsware.cwac.camera.CameraUtils;
 import com.commonsware.cwac.camera.PictureTransaction;
 import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.view.ScanBorderView;
 
 import java.io.ByteArrayOutputStream;
@@ -41,8 +43,8 @@ import butterknife.ButterKnife;
 /**
  * Created by pk on 7/9/2015.
  */
-public class CwacCameraFragment extends CameraFragment implements
-        SeekBar.OnSeekBarChangeListener {
+public class CwacCameraFragment extends CameraFragment /*implements
+        SeekBar.OnSeekBarChangeListener*/ {
     private static final String KEY_USE_FFC=
             "com.commonsware.cwac.camera.demo.USE_FFC";
     public static final String SHOW_BOUNDS = "SHOW_BOUNDS";
@@ -51,11 +53,11 @@ public class CwacCameraFragment extends CameraFragment implements
     private MenuItem singleShotItem=null;
     private MenuItem autoFocusItem=null;
     private MenuItem flashItem=null;
-    private MenuItem recordItem=null;
+    // private MenuItem recordItem=null;
     private MenuItem stopRecordItem=null;
     private MenuItem mirrorFFC=null;
     private boolean singleShotProcessing=false;
-    private SeekBar zoom=null;
+    //private SeekBar zoom=null;
     private long lastFaceToast=0L;
     String flashMode=null;
     private File mFile;
@@ -133,10 +135,10 @@ public class CwacCameraFragment extends CameraFragment implements
             vgcamera.addView(scanView);
         }
 
-        zoom=(SeekBar)results.findViewById(R.id.zoom);
-        zoom.setKeepScreenOn(true);
+        /*zoom=(SeekBar)results.findViewById(R.id.zoom);
+        zoom.setKeepScreenOn(true);*/
 
-        setRecordingItemVisibility();
+        //    setRecordingItemVisibility();
 
         ButterKnife.inject(this, results);
 
@@ -168,15 +170,15 @@ public class CwacCameraFragment extends CameraFragment implements
         //recordItem=menu.findItem(R.id.record);
         //stopRecordItem=menu.findItem(R.id.stop);
         mirrorFFC=menu.findItem(R.id.mirror_ffc);
-        MenuItem showZoom = menu.findItem(R.id.show_zoom);
-        zoom.setVisibility(showZoom.isChecked() ? View.VISIBLE : View.GONE);
+        /*MenuItem showZoom = menu.findItem(R.id.show_zoom);
+        zoom.setVisibility(showZoom.isChecked() ? View.VISIBLE : View.GONE);*/
 
-        if (isRecording()) {
+      /*  if (isRecording()) {
             recordItem.setVisible(false);
             stopRecordItem.setVisible(true);
         }
-
-        setRecordingItemVisibility();
+*/
+        //     setRecordingItemVisibility();
     }
 
 
@@ -198,11 +200,11 @@ public class CwacCameraFragment extends CameraFragment implements
 
                 return(true);
 */
-            case R.id.show_zoom:
+           /* case R.id.show_zoom:
                 item.setChecked(!item.isChecked());
                 zoom.setVisibility(item.isChecked() ? View.VISIBLE : View.GONE);
 
-                return(true);
+                return(true);*/
 
             case R.id.flash:
             case R.id.mirror_ffc:
@@ -218,7 +220,7 @@ public class CwacCameraFragment extends CameraFragment implements
         return(singleShotProcessing);
     }
 
-    @Override
+   /* @Override
     public void onProgressChanged(SeekBar seekBar, int progress,
                                   boolean fromUser) {
         if (fromUser) {
@@ -240,34 +242,49 @@ public class CwacCameraFragment extends CameraFragment implements
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         // ignore
-    }
+    }*/
 
-    void setRecordingItemVisibility() {
+  /*  void setRecordingItemVisibility() {
         if (zoom != null && recordItem != null) {
             if (getDisplayOrientation() != 0
                     && getDisplayOrientation() != 180) {
                 recordItem.setVisible(false);
             }
         }
-    }
+    }*/
 
     Contract getContract() {
         return((Contract)getActivity());
     }
 
     public void takeSimplePicture() {
-        if (getContract().isSingleShotMode()) {
+        if (singleShotItem!=null && singleShotItem.isChecked()) {
             singleShotProcessing=true;
+//            takePictureItem.setEnabled(false);
         }
 
         PictureTransaction xact=new PictureTransaction(getHost());
 
-        if (flashItem!=null && flashItem.isChecked()) {
+        if (CwacCameraActivity.flashOn) {
             xact.flashMode(flashMode);
         }
 
         takePicture(xact);
+//        if (getContract().isSingleShotMode()) {
+//            singleShotProcessing=true;
+//        }
+//        // flashOnOff();
+//        PictureTransaction xact=new PictureTransaction(getHost());
+//
+//        if (CwacCameraActivity.flashOn) {
+//            setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+//            flashMode = getFlashMode();
+//            xact.flashMode(flashMode);
+//        }
+//
+//        takePicture(xact);
     }
+
 
     public interface Contract {
         boolean isSingleShotMode();
@@ -323,7 +340,7 @@ public class CwacCameraFragment extends CameraFragment implements
                 }
                 else {*/
 
-                    super.saveImage(xact, image);
+                super.saveImage(xact, image);
                 /*}*/
 
                 Intent resultIntent = new Intent();
@@ -374,13 +391,13 @@ public class CwacCameraFragment extends CameraFragment implements
                             Camera.Parameters.FLASH_MODE_AUTO,
                             Camera.Parameters.FLASH_MODE_ON);
 
-            if (doesZoomReallyWork() && parameters.getMaxZoom() > 0) {
+          /*  if (doesZoomReallyWork() && parameters.getMaxZoom() > 0) {
                 zoom.setMax(parameters.getMaxZoom());
                 zoom.setOnSeekBarChangeListener(CwacCameraFragment.this);
             }
             else {
                 zoom.setEnabled(false);
-            }
+            }*/
 
             if (parameters.getMaxNumDetectedFaces() > 0) {
                 supportsFaces=true;
@@ -413,10 +430,10 @@ public class CwacCameraFragment extends CameraFragment implements
             super.onAutoFocus(success, camera);
         }
 
-        @Override
+        /*@Override
         public boolean mirrorFFC() {
             return(mirrorFFC.isChecked());
-        }
+        }*/
     }
 
 }

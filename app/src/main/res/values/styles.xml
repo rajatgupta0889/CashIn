@@ -63,7 +63,7 @@
     <style name="AppTheme.Form.Fragment.Top.Image" parent="AppTheme.Form.Header">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/round_button_blue</item>
+        <item name="android:background">@null</item>
         <item name="android:layout_gravity">center</item>
     </style>
 

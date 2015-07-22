@@ -21,12 +21,17 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/info_bar">
-
+        android:layout_below="@+id/info_bar"
+        android:id="@+id/scrollView"
+        android:fillViewport="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp">
+<!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp">-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +51,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="horizontal">
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:id="@+id/bank_detail">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:src="@drawable/ic_add_more" android:layout_gravity="center" />
@@ -58,9 +64,46 @@
         </LinearLayout>
         </LinearLayout>
 
+          <!--  <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left" android:paddingTop="10dp" android:paddingBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/bank_statement_details" android:gravity="center_horizontal"
+                        style="@style/AppTheme.Form.Header"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vg_bank_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal"
+                    android:id="@+id/bank_statement_detail">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:src="@drawable/ic_add_more" android:layout_gravity="center" />
+
+                    <Button
+                        android:id="@+id/btn2_add_more" android:paddingLeft="10dp"
+                        android:layout_width="wrap_content" android:background="@null"
+                        android:layout_height="wrap_content"  android:text="@string/add_more"  />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>-->
 
     </ScrollView>
+
+
     </RelativeLayout>
 
     <ProgressBar
