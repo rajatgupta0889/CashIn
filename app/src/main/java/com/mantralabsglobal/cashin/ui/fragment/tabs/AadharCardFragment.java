@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.utils.AadharDAO;
 import com.mantralabsglobal.cashin.service.AadharService;
@@ -113,7 +114,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
 
     @Override
     protected void onCreate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
-        aadharService.createAadharDetail(updatedData,saveCallback);
+        aadharService.createAadharDetail(updatedData, saveCallback);
     }
 
     @Override
@@ -198,4 +199,13 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         return detail;
     }
 
+    @OnClick(R.id.btn_next)
+    public void btnNext(){
+        ((MainActivity)getActivity()).nextTab();
+    }
+
+    @OnClick(R.id.btn_back)
+    public void btnBack(){
+        ((MainActivity)getActivity()).previousTab();
+    }
 }

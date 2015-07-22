@@ -30,6 +30,7 @@ import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CameraActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
@@ -220,5 +221,15 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @Override
     public void getDetailFromImage(CardImage image, Callback<PanCardService.PanCardDetail> callback) {
         panCardServiceOCR.getPanCardDetailFromImage(image, callback);
+    }
+
+    @OnClick(R.id.btn_next)
+    public void btnNext(){
+        ((MainActivity)getActivity()).nextTab();
+    }
+
+    @OnClick(R.id.btn_back)
+    public void btnBack(){
+        ((MainActivity)getActivity()).previousTab();
     }
 }

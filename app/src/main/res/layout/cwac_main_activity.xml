@@ -39,7 +39,7 @@
         android:layout_gravity="right|bottom"
         android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:src="@drawable/ic_action_flash_on" android:background="@color/transparent"
+        android:layout_height="wrap_content" android:src="@drawable/ic_action_flash_off" android:background="@color/transparent"
         android:layout_marginRight="20dp" />
 
     <ImageButton android:id="@+id/flip_camera_button"

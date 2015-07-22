@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
@@ -30,25 +32,25 @@ import butterknife.OnClick;
  */
 public class CwacCameraActivity extends AppCompatActivity implements
    /* ActionBar.OnNavigationListener,*/ CwacCameraFragment.Contract {
-    private static final String STATE_SINGLE_SHOT="single_shot";
-    private static final String STATE_LOCK_TO_LANDSCAPE=
+    private static final String STATE_SINGLE_SHOT = "single_shot";
+    private static final String STATE_LOCK_TO_LANDSCAPE =
             "lock_to_landscape";
-    private static final int CONTENT_REQUEST=1337;
-    private CwacCameraFragment std=null;
-    private CwacCameraFragment ffc=null;
-    private CwacCameraFragment current=null;
-    private boolean hasTwoCameras=(Camera.getNumberOfCameras() > 1);
-    private boolean singleShot=true;
-    private boolean isLockedToLandscape=false;
+    private static final int CONTENT_REQUEST = 1337;
+    private CwacCameraFragment std = null;
+    private CwacCameraFragment ffc = null;
+    private CwacCameraFragment current = null;
+    private boolean hasTwoCameras = (Camera.getNumberOfCameras() > 1);
+    private boolean singleShot = true;
+    private boolean isLockedToLandscape = false;
 
     public static final String FFC = "FFC";
     public static final String STANDARD = "STANDARD";
-
+    private static ImageButton flashBtn, flipCameraBtn;
     public static final String DEFAULT_CAMERA = "DEFAULT_CAMERA";
     public static final String SHOW_CAMERA_SWITCH = "SHOW_CAMERA_SWITCH";
     boolean showCameraSwitch = false;
     boolean useFFCByDefault = false;
-
+    public static boolean flashOn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +61,27 @@ public class CwacCameraActivity extends AppCompatActivity implements
 
         setContentView(R.layout.cwac_main_activity);
         ButterKnife.inject(this);
-      //  Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
+        //  Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         //setSupportActionBar(toolbar);
 
-      //  getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //  getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Intent intent = getIntent();
 
         String defaultCamera = intent.getStringExtra(DEFAULT_CAMERA);
 
-        useFFCByDefault = FFC.equals(defaultCamera) ?true:false;
+
+
+        useFFCByDefault = FFC.equals(defaultCamera) ? true : false;
+
+        flashBtn = (ImageButton) findViewById(R.id.flash_button);
+
+        flipCameraBtn = (ImageButton) findViewById(R.id.flip_camera_button);
+
+        if(defaultCamera.equals( CwacCameraActivity.STANDARD ))
+            flipCameraBtn.setImageResource(R.drawable.ic_action_back_camera);
+        else
+            flipCameraBtn.setImageResource(R.drawable.ic_action_front_camera);
 
       /*  showCameraSwitch = intent.getBooleanExtra(SHOW_CAMERA_SWITCH, false);
 
@@ -86,47 +99,53 @@ public class CwacCameraActivity extends AppCompatActivity implements
             actionBar.setListNavigationCallbacks(adapter, this);
         }
         else {*/
-            current= CwacCameraFragment.newInstance(useFFCByDefault);
+        if (useFFCByDefault) {
+            ffc = CwacCameraFragment.newInstance(useFFCByDefault);
+            current = ffc;
+        } else {
+            std = CwacCameraFragment.newInstance(useFFCByDefault);
+            current = std;
+        }
 
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, current).commit();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, current).commit();
         //}
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-   //     if (useFFCByDefault)
-     //       getSupportActionBar().setSelectedNavigationItem(1);
+        //     if (useFFCByDefault)
+        //       getSupportActionBar().setSelectedNavigationItem(1);
     }
 
-   /* @Override
-    public boolean onNavigationItemSelected(int position, long id) {
-        if (position == 0) {
-            if (std == null) {
-                std= CwacCameraFragment.newInstance(false);
-            }
+    /* @Override
+     public boolean onNavigationItemSelected(int position, long id) {
+         if (position == 0) {
+             if (std == null) {
+                 std= CwacCameraFragment.newInstance(false);
+             }
 
-            current=std;
-        }
-        else {
-            if (ffc == null) {
-                ffc= CwacCameraFragment.newInstance(true);
-            }
+             current=std;
+         }
+         else {
+             if (ffc == null) {
+                 ffc= CwacCameraFragment.newInstance(true);
+             }
 
-            current=ffc;
-        }
+             current=ffc;
+         }
 
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, current).commit();
+         getFragmentManager().beginTransaction()
+                 .replace(R.id.container, current).commit();
 
-        return(true);
-    }
-*/
+         return(true);
+     }
+ */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       new MenuInflater(this).inflate(R.menu.cwac_main, menu);
-        return(super.onCreateOptionsMenu(menu));
+        new MenuInflater(this).inflate(R.menu.cwac_main, menu);
+        return (super.onCreateOptionsMenu(menu));
     }
 
     @Override
@@ -146,7 +165,7 @@ public class CwacCameraActivity extends AppCompatActivity implements
             current.lockToLandscape(item.isChecked());
             isLockedToLandscape=item.isChecked();
         }*/
-        return(super.onOptionsItemSelected(item));
+        return (super.onOptionsItemSelected(item));
     }
 
     @Override
@@ -165,26 +184,65 @@ public class CwacCameraActivity extends AppCompatActivity implements
                 && !current.isSingleShotProcessing()) {
             current.takePicture();
 
-            return(true);
+            return (true);
         }
 
-        return(super.onKeyDown(keyCode, event));
+        return (super.onKeyDown(keyCode, event));
     }
 
     @Override
     public boolean isSingleShotMode() {
-        return(singleShot);
+        return (singleShot);
     }
 
     @Override
     public void setSingleShotMode(boolean mode) {
-        singleShot=mode;
+        singleShot = mode;
     }
 
     @OnClick(R.id.take_picture_button)
-    public void takePicture()
-    {
-        if(current != null)
-            current.takePicture();
+    public void takePicture() {
+        if (current != null)
+            current.takeSimplePicture();
+    }
+
+    @OnClick(R.id.flash_button)
+    public void flashCamera() {
+        if (current != null) {
+            if (!useFFCByDefault) {
+                flashOn = !(Boolean) flashBtn.getTag();
+                if (flashOn) {
+                    flashBtn.setImageResource(R.drawable.ic_action_flash_on);
+                } else {
+                    flashBtn.setImageResource(R.drawable.ic_action_flash_off);
+                }
+                // current.flashOnOff();
+            } else {
+                Toast.makeText(getApplicationContext(), "No flash for front screen!", Toast.LENGTH_SHORT).show();
+                flashOn = false;
+                flashBtn.setImageResource(R.drawable.ic_action_flash_on);
+            }
+        }
+    }
+
+    @OnClick(R.id.flip_camera_button)
+    public void flipCamera() {
+        if (current != null) {
+            useFFCByDefault = !useFFCByDefault;
+            if(useFFCByDefault){
+                if(ffc == null)
+                    ffc = CwacCameraFragment.newInstance(true);
+                current = ffc;
+                flipCameraBtn.setImageResource(R.drawable.ic_action_front_camera);
+            }
+            else {
+                if(std == null)
+                    std = CwacCameraFragment.newInstance(false);
+                current = std;
+                flipCameraBtn.setImageResource(R.drawable.ic_action_back_camera);
+            }
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container, current).commit();
+        }
     }
 }

@@ -20,6 +20,7 @@ import com.mantralabsglobal.cashin.service.BusinessCardService;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
@@ -94,7 +95,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     }
     @Override
     protected void onUpdate(BusinessCardService.BusinessCardDetail updatedData, Callback<BusinessCardService.BusinessCardDetail> saveCallback) {
-        businessCardService.updateBusinessCardDetail(updatedData,saveCallback);
+        businessCardService.updateBusinessCardDetail(updatedData, saveCallback);
     }
 
     @Override
@@ -198,6 +199,17 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @Override
     public void getDetailFromImage(CardImage image, Callback<BusinessCardService.BusinessCardDetail> callback) {
-        businessCardService.getBusinessCardDetailFromImage(image,callback);
+        businessCardService.getBusinessCardDetailFromImage(image, callback);
     }
+
+    @OnClick(R.id.btn_next)
+    public void btnNext(){
+        ((MainActivity)getActivity()).nextTab();
+    }
+
+    @OnClick(R.id.btn_back)
+    public void btnBack(){
+        ((MainActivity)getActivity()).previousTab();
+    }
+
 }

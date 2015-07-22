@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.commonsware.cwac.camera.CameraUtils;
 import com.commonsware.cwac.camera.PictureTransaction;
 import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.view.ScanBorderView;
 
 import java.io.ByteArrayOutputStream;
@@ -51,7 +53,7 @@ public class CwacCameraFragment extends CameraFragment /*implements
     private MenuItem singleShotItem=null;
     private MenuItem autoFocusItem=null;
     private MenuItem flashItem=null;
-   // private MenuItem recordItem=null;
+    // private MenuItem recordItem=null;
     private MenuItem stopRecordItem=null;
     private MenuItem mirrorFFC=null;
     private boolean singleShotProcessing=false;
@@ -136,7 +138,7 @@ public class CwacCameraFragment extends CameraFragment /*implements
         /*zoom=(SeekBar)results.findViewById(R.id.zoom);
         zoom.setKeepScreenOn(true);*/
 
-    //    setRecordingItemVisibility();
+        //    setRecordingItemVisibility();
 
         ButterKnife.inject(this, results);
 
@@ -176,7 +178,7 @@ public class CwacCameraFragment extends CameraFragment /*implements
             stopRecordItem.setVisible(true);
         }
 */
-   //     setRecordingItemVisibility();
+        //     setRecordingItemVisibility();
     }
 
 
@@ -256,18 +258,33 @@ public class CwacCameraFragment extends CameraFragment /*implements
     }
 
     public void takeSimplePicture() {
-        if (getContract().isSingleShotMode()) {
+        if (singleShotItem!=null && singleShotItem.isChecked()) {
             singleShotProcessing=true;
+//            takePictureItem.setEnabled(false);
         }
 
         PictureTransaction xact=new PictureTransaction(getHost());
 
-        if (flashItem!=null && flashItem.isChecked()) {
+        if (CwacCameraActivity.flashOn) {
             xact.flashMode(flashMode);
         }
 
         takePicture(xact);
+//        if (getContract().isSingleShotMode()) {
+//            singleShotProcessing=true;
+//        }
+//        // flashOnOff();
+//        PictureTransaction xact=new PictureTransaction(getHost());
+//
+//        if (CwacCameraActivity.flashOn) {
+//            setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+//            flashMode = getFlashMode();
+//            xact.flashMode(flashMode);
+//        }
+//
+//        takePicture(xact);
     }
+
 
     public interface Contract {
         boolean isSingleShotMode();
@@ -323,7 +340,7 @@ public class CwacCameraFragment extends CameraFragment /*implements
                 }
                 else {*/
 
-                    super.saveImage(xact, image);
+                super.saveImage(xact, image);
                 /*}*/
 
                 Intent resultIntent = new Intent();

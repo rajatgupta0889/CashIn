@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AddressService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mantralabsglobal.cashin.utils.LocationAddress;
@@ -193,7 +194,6 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                     cs_own.getSpinner().setSelection(((ArrayAdapter<String>) cs_own.getAdapter()).getPosition(address.getOwn()));
                 }
             });
-
         }
     }
 
@@ -208,6 +208,16 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         address.setIsHouseRented(rb_rented.isChecked());
         address.setOwn(cs_own.getSpinner().getSelectedItem().toString());
         return address;
+    }
+
+    @OnClick(R.id.btn_next)
+    public void btnNext(){
+        ((MainActivity)getActivity()).nextTab();
+    }
+
+    @OnClick(R.id.btn_back)
+    public void btnBack(){
+        ((MainActivity)getActivity()).previousTab();
     }
 
 }
