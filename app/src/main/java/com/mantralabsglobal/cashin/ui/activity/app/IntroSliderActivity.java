@@ -10,11 +10,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.social.GooglePlus;
+import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
 import com.mantralabsglobal.cashin.social.SocialBase;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.IntroSliderFragmentAdapter;
 
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -32,6 +36,7 @@ public class IntroSliderActivity extends BaseActivity {
 
     GooglePlus googlePlus;
 
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +110,8 @@ public class IntroSliderActivity extends BaseActivity {
         googlePlus.authenticate(this, new SocialBase.SocialListener<String>() {
             @Override
             public void onSuccess(final String email) {
-
-                tokenTask.execute(email);
+                IntroSliderActivity.this.email = email;
+                tokenTask.execute(IntroSliderActivity.this);
             }
 
             @Override
@@ -117,7 +122,30 @@ public class IntroSliderActivity extends BaseActivity {
         });
     }
 
-    private RetrieveTokenTask tokenTask = new RetrieveTokenTask(){
+    private GoogleTokenRetrieverTask tokenTask = new GoogleTokenRetrieverTask(){
+
+
+        @Override
+        protected String getEmail() {
+            return IntroSliderActivity.this.email;
+        }
+
+        @Override
+        public void onException(UserRecoverableAuthException e) {
+            startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
+        }
+
+        @Override
+        public void onException(IOException e) {
+            super.onException(e);
+            showToastOnUIThread(e.getMessage());
+        }
+
+        @Override
+        public void onException(GoogleAuthException e) {
+            super.onException(e);
+            showToastOnUIThread(e.getMessage());
+        }
 
         @Override
         protected void afterTokenRecieved(String email, String token) {
@@ -137,15 +165,18 @@ public class IntroSliderActivity extends BaseActivity {
                 }
             });
         }
+
     };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQ_SIGN_IN_REQUIRED && resultCode == RESULT_OK) {
-            tokenTask.execute(getCashInApplication().getAppUser());
+            tokenTask.execute(this);
         }
-        googlePlus.onActivityResult(requestCode, resultCode, data);
+        else {
+            googlePlus.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

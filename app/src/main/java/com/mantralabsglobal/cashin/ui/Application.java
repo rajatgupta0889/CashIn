@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.service.RestClient;
+import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
@@ -25,22 +26,17 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
 /**
  * Created by pk on 6/21/2015.
  */
 public class Application extends MultiDexApplication{
 
-    private static final String APP_ID = "1442120239426705";
-    private static final String APP_NAMESPACE = "pk_cashin_test";
-    public static final String APP_PREFERENCE = "APP_PREFERENCE";
+     public static final String APP_PREFERENCE = "APP_PREFERENCE";
     public static final String USER_NAME = "USER_NAME";
     public static final String USER_ID = "USER_ID";
     public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
     public static final String EMPTY_STRING = "";
+    private static final String TAG = Application.class.getSimpleName();
 
     private RestClient restClient;
     private SharedPreferences appPreference = null;
@@ -107,6 +103,21 @@ public class Application extends MultiDexApplication{
                 RetrofitUtils.ErrorMessage errorMessage = gson.fromJson(json, RetrofitUtils.ErrorMessage.class);
                 if(errorMessage != null && "user is not logged in".equals(errorMessage.getMessage()))
                 {
+                    GoogleTokenRetrieverTask task = new GoogleTokenRetrieverTask() {
+                        @Override
+                        protected String getEmail() {
+                            return getAppUser();
+                        }
+                        @Override
+                        protected void afterTokenRecieved(String email, String token) {
+                            //Ignore
+                        }
+                    };
+                    String token  = task.executeSync(getBaseContext());
+                    if(token != null)
+                    {
+                        setGoogleToken(token);
+                    }
                     AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
                     up.setEmail(getAppUser());
                     up.setToken(getGoogleToken());
@@ -163,10 +174,12 @@ public class Application extends MultiDexApplication{
     }
 
     public void setAppUserName(String appUserName) {
+        Log.i(TAG, "App User Name " + appUserName);
         appPreference.edit().putString(USER_NAME, appUserName ).apply();
     }
 
     public void setGoogleToken(String token) {
+        Log.i(TAG, "Google Token " + token);
         appPreference.edit().putString(GOOGLE_TOKEN, token).apply();
     }
 

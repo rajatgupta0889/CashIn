@@ -3,21 +3,13 @@ package com.mantralabsglobal.cashin.ui.activity.app;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.Scopes;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
-
-import java.io.IOException;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -45,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
     public static final int IMAGE_CROP_BUSINESS_CARD = 7001;
     public static final int LINKEDIN_SIGNIN = 8000;
     public static final int FACEBOOK_SIGNIN = 9000;
-    protected static final int REQ_SIGN_IN_REQUIRED = 10000;
+    public static final int REQ_SIGN_IN_REQUIRED = 10000;
     public static final int CONTACT_PICKER = 11000;
 
     protected void putInAppPreference(String key, String value) {
@@ -153,41 +145,6 @@ public class BaseActivity extends AppCompatActivity {
     public interface IAuthListener{
         public void onSuccess();
         public void onFailure(Exception exp);
-    }
-
-    protected abstract class RetrieveTokenTask extends AsyncTask<String, Void, String> {
-
-        private String email;
-        @Override
-        protected String doInBackground(String... params) {
-
-            //String scope = String.format("oauth2:server:client_id:%s:api_scope:%s", activity.getString(R.string.server_client_id), TextUtils.join(" ", Arrays.asList(Scopes.PROFILE, Scopes.PLUS_LOGIN)));
-            String scope = "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN;
-            String serverToken = null;
-
-            try {
-                email = params[0];
-                serverToken = GoogleAuthUtil.getToken(BaseActivity.this.getBaseContext(), params[0], scope);
-
-            } catch (IOException e) {
-                Log.e(TAG, "Failed to get token for server", e);
-                showToastOnUIThread(e.getMessage());
-            } catch (UserRecoverableAuthException e) {
-                BaseActivity.this.startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
-            } catch (GoogleAuthException e) {
-                showToastOnUIThread(e.getMessage());
-                Log.e(TAG, "Failed to get token for server", e);
-            }
-            return serverToken;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            afterTokenRecieved(email, s);
-        }
-
-        protected abstract void afterTokenRecieved(String email, String token);
     }
 
     @Override
