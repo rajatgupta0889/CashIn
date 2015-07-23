@@ -180,7 +180,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
             address.setText(value.getAddress());
             aadharNumber.setText(value.getAadharNumber());
             gender.setSelection(getGenderAdapter().getPosition(value.getGender()));
-            fatherName.setText(value.getSonOf().trim().substring(5));
+            fatherName.setText(value.getSonOf());
             birthDay.setText(value.getDob());
         }
     }

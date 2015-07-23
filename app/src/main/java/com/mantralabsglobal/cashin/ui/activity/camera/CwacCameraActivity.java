@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -48,6 +49,8 @@ public class CwacCameraActivity extends AppCompatActivity implements
     private static ImageButton flashBtn, flipCameraBtn;
     public static final String DEFAULT_CAMERA = "DEFAULT_CAMERA";
     public static final String SHOW_CAMERA_SWITCH = "SHOW_CAMERA_SWITCH";
+    public static final String FLIP_CAMERA = "FLIP_CAMERA";
+    public static final String FLASH = "FLASH";
     boolean showCameraSwitch = false;
     boolean useFFCByDefault = false;
     public static boolean flashOn = true;
@@ -69,19 +72,24 @@ public class CwacCameraActivity extends AppCompatActivity implements
         Intent intent = getIntent();
 
         String defaultCamera = intent.getStringExtra(DEFAULT_CAMERA);
-
-
-
         useFFCByDefault = FFC.equals(defaultCamera) ? true : false;
 
-        flashBtn = (ImageButton) findViewById(R.id.flash_button);
+        boolean flipCamera = intent.getBooleanExtra(FLIP_CAMERA, false);
+        boolean useFlash = intent.getBooleanExtra(FLASH, false);
 
+        flashBtn = (ImageButton) findViewById(R.id.flash_button);
         flipCameraBtn = (ImageButton) findViewById(R.id.flip_camera_button);
 
-        if(defaultCamera.equals( CwacCameraActivity.STANDARD ))
-            flipCameraBtn.setImageResource(R.drawable.ic_action_back_camera);
+        if(!flipCamera)
+            flipCameraBtn.setVisibility(View.INVISIBLE);
+
+        if(!useFlash)
+            flashBtn.setVisibility(View.INVISIBLE);
+
+        if(defaultCamera.equals( CwacCameraActivity.STANDARD ) && flipCamera)
+            flipCameraBtn.setImageResource(R.drawable.ic_back_camera_icon);
         else
-            flipCameraBtn.setImageResource(R.drawable.ic_action_front_camera);
+            flipCameraBtn.setImageResource(R.drawable.ic_front_camera_icon);
 
       /*  showCameraSwitch = intent.getBooleanExtra(SHOW_CAMERA_SWITCH, false);
 
@@ -212,15 +220,15 @@ public class CwacCameraActivity extends AppCompatActivity implements
             if (!useFFCByDefault) {
                 flashOn = !(Boolean) flashBtn.getTag();
                 if (flashOn) {
-                    flashBtn.setImageResource(R.drawable.ic_action_flash_on);
+                    flashBtn.setImageResource(R.drawable.ic_flash_icon);
                 } else {
-                    flashBtn.setImageResource(R.drawable.ic_action_flash_off);
+                    flashBtn.setImageResource(R.drawable.ic_flash_off_icon);
                 }
                 // current.flashOnOff();
             } else {
                 Toast.makeText(getApplicationContext(), "No flash for front screen!", Toast.LENGTH_SHORT).show();
                 flashOn = false;
-                flashBtn.setImageResource(R.drawable.ic_action_flash_on);
+                flashBtn.setImageResource(R.drawable.ic_flash_off_icon);
             }
         }
     }
@@ -233,13 +241,13 @@ public class CwacCameraActivity extends AppCompatActivity implements
                 if(ffc == null)
                     ffc = CwacCameraFragment.newInstance(true);
                 current = ffc;
-                flipCameraBtn.setImageResource(R.drawable.ic_action_front_camera);
+                flipCameraBtn.setImageResource(R.drawable.ic_front_camera_icon);
             }
             else {
                 if(std == null)
                     std = CwacCameraFragment.newInstance(false);
                 current = std;
-                flipCameraBtn.setImageResource(R.drawable.ic_action_back_camera);
+                flipCameraBtn.setImageResource(R.drawable.ic_back_camera_icon);
             }
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, current).commit();

@@ -33,20 +33,20 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:src="@drawable/ic_action_camera_icon" android:background="@color/transparent" />
+        android:layout_height="wrap_content" android:src="@drawable/ic_camera_click_icon" android:background="@color/transparent" />
 
     <ImageButton android:id="@+id/flash_button"
         android:layout_gravity="right|bottom"
         android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:src="@drawable/ic_action_flash_off" android:background="@color/transparent"
+        android:layout_height="wrap_content" android:src="@drawable/ic_flash_off_icon" android:background="@color/transparent"
         android:layout_marginRight="20dp" />
 
     <ImageButton android:id="@+id/flip_camera_button"
         android:layout_gravity="left|bottom"
         android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:src="@drawable/ic_action_back_camera" android:background="@color/transparent"
+        android:layout_height="wrap_content" android:src="@drawable/ic_back_camera_icon" android:background="@color/transparent"
         android:layout_marginLeft="20dp" />
 
 </FrameLayout>

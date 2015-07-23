@@ -151,7 +151,8 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         intent.putExtra(CwacCameraFragment.SHOW_BOUNDS, true);
         intent.putExtra(CwacCameraFragment.ASPECT_RATIO, Double.parseDouble("0.66666666"));
         intent.putExtra(CwacCameraFragment.SHOW_INFO, getResources().getString(R.string.position_card_inside_frame));
-
+        intent.putExtra("FLASH", false);
+        intent.putExtra("FLIP_CAMERA", false);
         getActivity().startActivityForResult(intent, BaseActivity.IMAGE_CAPTURE_BUSINESS_CARD);
     }
 

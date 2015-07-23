@@ -70,7 +70,7 @@ public class AadharDAO {
                                             getAttributeValue(aadharparser, "pc")
                             );
 
-                            aadharDetail.setSonOf(getAttributeValue(aadharparser,"co"));
+                            aadharDetail.setSonOf(getAttributeValue(aadharparser,"co").trim().split(" ")[1]);
                             //aadharDetail.setLoc(aadharparser.getAttributeValue(null, "loc"));
                             //aadharDetail.setVtc(aadharparser.getAttributeValue(null, "vtc"));
                             //aadharDetail.setPostOffice(aadharparser.getAttributeValue(null, "po"));

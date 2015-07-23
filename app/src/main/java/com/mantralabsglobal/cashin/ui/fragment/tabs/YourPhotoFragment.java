@@ -118,6 +118,8 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, true);
         intent.putExtra(CwacCameraActivity.DEFAULT_CAMERA, CwacCameraActivity.FFC);
+        intent.putExtra("FLASH", true);
+        intent.putExtra("FLIP_CAMERA", true);
         getActivity().startActivityForResult(intent, BaseActivity.SELFIE_CAPTURE);
     }
 
