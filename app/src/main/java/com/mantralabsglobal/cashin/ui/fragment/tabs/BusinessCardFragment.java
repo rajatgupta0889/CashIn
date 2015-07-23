@@ -202,14 +202,4 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         businessCardService.getBusinessCardDetailFromImage(image, callback);
     }
 
-    @OnClick(R.id.btn_next)
-    public void btnNext(){
-        ((MainActivity)getActivity()).nextTab();
-    }
-
-    @OnClick(R.id.btn_back)
-    public void btnBack(){
-        ((MainActivity)getActivity()).previousTab();
-    }
-
 }

@@ -209,15 +209,4 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         address.setOwn(cs_own.getSpinner().getSelectedItem().toString());
         return address;
     }
-
-    @OnClick(R.id.btn_next)
-    public void btnNext(){
-        ((MainActivity)getActivity()).nextTab();
-    }
-
-    @OnClick(R.id.btn_back)
-    public void btnBack(){
-        ((MainActivity)getActivity()).previousTab();
-    }
-
 }
