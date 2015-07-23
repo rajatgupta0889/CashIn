@@ -3,17 +3,11 @@
     xmlns:appcompat="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/tools">
 
-    <item android:id="@+id/menu_select_count"
-        android:title="@string/select_status"
-        appcompat:actionViewClass="com.mantralabsglobal.cashin.ui.view.SelectedContactStatus"
+    <item android:id="@+id/contacts_done"
+        android:title="@android:string/ok"
+        android:icon="@drawable/ic_check"
         appcompat:showAsAction="always"/>
-
-    <item
-        android:id="@+id/menu_search"
-        android:title="@string/menu_search"
-        appcompat:actionViewClass="android.support.v7.widget.SearchView"
+    <item android:id="@+id/contacts_cancel"
+        android:title="@android:string/cancel"
         appcompat:showAsAction="always"/>
-
-
-
 </menu>

@@ -92,8 +92,9 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
     @OnClick( {R.id.fab_select_reference})
     public void loadReferences() {
         Intent intent = new Intent(getActivity(), ContactPickerActivity.class);
-        intent.putExtra("ContactCount", 3);
+        intent.putExtra(ContactPickerActivity.PICKER_TYPE, ContactPickerActivity.PICKER_TYPE_PHONE);
         getActivity().startActivityForResult(intent, BaseActivity.CONTACT_PICKER);
+        /*startActivityForResult(new Intent(getActivity(), ContactsPickerActivity.class), BaseActivity.CONTACT_PICKER);*/
     }
 
     @Override
