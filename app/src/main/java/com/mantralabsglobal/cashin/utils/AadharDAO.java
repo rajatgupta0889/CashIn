@@ -19,6 +19,8 @@ import java.util.Objects;
  */
 public class AadharDAO {
 
+    public static final int FATHER_SPOUSE_NAME_FIRST_PART_REMOVAL = 4;
+
     public static AadharService.AadharDetail getAadharDetailFromXML(String xml)
     {
         xml = fixAadharXMLString(xml);
@@ -70,7 +72,7 @@ public class AadharDAO {
                                             getAttributeValue(aadharparser, "pc")
                             );
 
-                            aadharDetail.setSonOf(getAttributeValue(aadharparser,"co").trim().split(" ")[1]);
+                            aadharDetail.setSonOf(getAttributeValue(aadharparser,"co").trim().substring(FATHER_SPOUSE_NAME_FIRST_PART_REMOVAL));
                             //aadharDetail.setLoc(aadharparser.getAttributeValue(null, "loc"));
                             //aadharDetail.setVtc(aadharparser.getAttributeValue(null, "vtc"));
                             //aadharDetail.setPostOffice(aadharparser.getAttributeValue(null, "po"));
