@@ -198,14 +198,4 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         detail.setSonOf(fatherName.getText().toString());
         return detail;
     }
-
-    @OnClick(R.id.btn_next)
-    public void btnNext(){
-        ((MainActivity)getActivity()).nextTab();
-    }
-
-    @OnClick(R.id.btn_back)
-    public void btnBack(){
-        ((MainActivity)getActivity()).previousTab();
-    }
 }
