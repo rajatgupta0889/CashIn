@@ -31,7 +31,7 @@ deploy:
   file: app/build/outputs/apk/cashin-release.apk
   skip_cleanup: true
   on:
-    repo: larsgrefer/bpm-meter-android
+    repo: pravk/CashIn
     tags: true
     jdk: oraclejdk8
 
