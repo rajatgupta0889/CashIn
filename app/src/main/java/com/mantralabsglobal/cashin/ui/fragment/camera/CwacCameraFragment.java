@@ -161,15 +161,14 @@ public class CwacCameraFragment extends CameraFragment /*implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.cwac_camera, menu);
-
+//        inflater.inflate(R.menu.cwac_camera, menu);
         //singleShotItem=menu.findItem(R.id.single_shot);
         //singleShotItem.setChecked(getContract().isSingleShotMode());
-        autoFocusItem=menu.findItem(R.id.autofocus);
-        flashItem=menu.findItem(R.id.flash);
+  //      autoFocusItem=menu.findItem(R.id.autofocus);
+    //    flashItem=menu.findItem(R.id.flash);
         //recordItem=menu.findItem(R.id.record);
         //stopRecordItem=menu.findItem(R.id.stop);
-        mirrorFFC=menu.findItem(R.id.mirror_ffc);
+       // mirrorFFC=menu.findItem(R.id.mirror_ffc);
         /*MenuItem showZoom = menu.findItem(R.id.show_zoom);
         zoom.setVisibility(showZoom.isChecked() ? View.VISIBLE : View.GONE);*/
 
@@ -270,19 +269,6 @@ public class CwacCameraFragment extends CameraFragment /*implements
         }
 
         takePicture(xact);
-//        if (getContract().isSingleShotMode()) {
-//            singleShotProcessing=true;
-//        }
-//        // flashOnOff();
-//        PictureTransaction xact=new PictureTransaction(getHost());
-//
-//        if (CwacCameraActivity.flashOn) {
-//            setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-//            flashMode = getFlashMode();
-//            xact.flashMode(flashMode);
-//        }
-//
-//        takePicture(xact);
     }
 
 
@@ -430,10 +416,6 @@ public class CwacCameraFragment extends CameraFragment /*implements
             super.onAutoFocus(success, camera);
         }
 
-        /*@Override
-        public boolean mirrorFFC() {
-            return(mirrorFFC.isChecked());
-        }*/
     }
 
 }

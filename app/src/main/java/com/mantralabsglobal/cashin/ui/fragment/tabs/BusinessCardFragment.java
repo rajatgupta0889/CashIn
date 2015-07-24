@@ -201,6 +201,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @Override
     public void getDetailFromImage(CardImage image, Callback<BusinessCardService.BusinessCardDetail> callback) {
         businessCardService.getBusinessCardDetailFromImage(image, callback);
+
     }
 
 }
