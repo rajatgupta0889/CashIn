@@ -25,3 +25,13 @@ before_script:
   - adb shell input keyevent 82 &
 
 /*script: ./gradlew connectedAndroidTest*/
+deploy:
+  provider: releases
+  api_key: "8580e5b546fa73180c53ad98c104697db335f5c6"
+  file: app/build/outputs/apk/cashin-release.apk
+  skip_cleanup: true
+  on:
+    repo: larsgrefer/bpm-meter-android
+    tags: true
+    jdk: oraclejdk8
+
