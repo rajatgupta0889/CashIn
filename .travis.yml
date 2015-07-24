@@ -27,11 +27,12 @@ before_script:
 /*script: ./gradlew connectedAndroidTest*/
 deploy:
   provider: releases
-  api_key: "8580e5b546fa73180c53ad98c104697db335f5c6"
+  api_key: "${GH_TOKEN}"
   file: app/build/outputs/apk/cashin-release.apk
   skip_cleanup: true
   on:
     repo: pravk/CashIn
     tags: true
+    all_branches: true
     jdk: oraclejdk8
 
