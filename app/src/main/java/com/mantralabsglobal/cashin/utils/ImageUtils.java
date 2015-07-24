@@ -22,6 +22,7 @@ import boofcv.abst.geo.Estimate1ofEpipolar;
 import boofcv.alg.distort.DistortImageOps;
 import boofcv.alg.distort.PointToPixelTransform_F32;
 import boofcv.alg.distort.PointTransformHomography_F32;
+import boofcv.alg.enhance.EnhanceImageOps;
 import boofcv.alg.feature.detect.edge.CannyEdge;
 import boofcv.alg.feature.detect.edge.EdgeContour;
 import boofcv.alg.feature.detect.edge.EdgeSegment;
@@ -71,12 +72,18 @@ public class ImageUtils {
         ImageUInt8 binary = new ImageUInt8(gray.width,gray.height);
 
         // Select a global threshold using Otsu's method.
-        double threshold = GThresholdImageOps.computeOtsu(gray, 0, 256);
+       // double threshold = GThresholdImageOps.computeOtsu(gray, 0, 256);
 
         // Apply the threshold to create a binary image
         //ThresholdImageOps.threshold(gray, binary, (int) threshold, false);
 
+
+
         GThresholdImageOps.adaptiveSauvola(gray, binary, 20, 0.30f, false);
+
+        ImageUInt8 adjusted = new ImageUInt8(gray.width, gray.height);
+
+        EnhanceImageOps.sharpen8(binary, adjusted);
 
         // remove small blobs through erosion and dilation
         // The null in the input indicates that it should internally declare the work image it needs
@@ -85,7 +92,7 @@ public class ImageUtils {
         filtered = BinaryImageOps.dilate8(filtered, 1, null);*/
         Bitmap  result = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
 
-        VisualizeImageData.binaryToBitmap(binary, result, null );
+        VisualizeImageData.binaryToBitmap(adjusted, result, null );
         return result;
     }
 
