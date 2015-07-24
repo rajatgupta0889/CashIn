@@ -166,6 +166,12 @@
         <item>Female</item>
         <item>Others</item>
     </string-array>
+    <string-array name="reference_relationship_array">
+        <item>Friend</item>
+        <item>Family</item>
+        <item>Neighbour</item>
+        <item>Acquaintance</item>
+    </string-array>
     <string name="title_activity_intro_slider">IntroSliderActivity</string>
 
     <string name="hello_world">Hello world!</string>
@@ -232,7 +238,10 @@
     <string name="loading_contacts">Loading contacts</string>
     <string name="menu_search">Search</string>
     <string name="select_status">0/3</string>
-    <string name="done">done</string>
+    <string name="done">Done</string>
     <string name="contactImage">Contact Image</string>
     <string name="contactName">Contact Name</string>
+    <string name="relationship">Relationship</string>
+    <string name="send_request">Send Request</string>
+    <string name="max_reference_selection_reached">Maximum references selected. Unselect existing to select a different contact.</string>
 </resources>

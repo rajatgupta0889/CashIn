@@ -7,10 +7,12 @@ import java.util.List;
 public class ContactResult implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String contactId;
+	private String contactName;
 	private List<ResultItem> results;
 	
-	public ContactResult(String id, List<ResultItem> results) {
+	public ContactResult(String id, String name, List<ResultItem> results) {
 		this.contactId = id;
+        this.contactName = name;
 		this.results = results;
 	}
 	
@@ -28,6 +30,14 @@ public class ContactResult implements Serializable {
 
 	public void setResults(List<ResultItem> results) {
 		this.results = results;
+	}
+
+	public String getContactName() {
+		return contactName;
+	}
+
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
 	}
 
 	public static class ResultItem implements Serializable {

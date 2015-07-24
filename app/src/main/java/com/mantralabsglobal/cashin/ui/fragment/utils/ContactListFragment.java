@@ -38,6 +38,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.ContactResult;
@@ -153,11 +154,13 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 		Cursor cursor = mCursorAdapter.getCursor();
 		cursor.moveToPosition(pos);
 		String id = cursor.getString(0);
+        String name = cursor.getString(1);
 		
 		if (checkbox.isChecked()) {
 			checkbox.setChecked(false);
 			removeFromResult(id);
-		} else {
+		} else if(canSelectMore()){
+
 			checkbox.setChecked(true);
 			
 			Cursor itemCursor = getActivity().getContentResolver().query(
@@ -183,14 +186,22 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 			
 			if (resultItems.size() > 1) {
 				// contact has multiple items - user needs to choose from them
-				chooseFromMultipleItems(resultItems, checkbox, id);
+				chooseFromMultipleItems(resultItems, checkbox, id, name);
 			} else {
 				// only one result or all items are similar for this contact
-				putInResult(id, new ContactResult(id, resultItems));
+				putInResult(id, new ContactResult(id,name,  resultItems));
 			}
 		}
+        else
+        {
+            Toast.makeText(getActivity(),getString(R.string.max_reference_selection_reached), Toast.LENGTH_LONG).show();
+        }
 	}
 
+    protected boolean canSelectMore()
+    {
+        return ((ContactPickerActivity)getActivity()).canSelectMore();
+    }
 	protected void putInResult(String key, ContactResult result)
 	{
 		results.put(key, result);
@@ -204,7 +215,7 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 		((ContactPickerActivity)getActivity()).setSelectionCount(results.size());
 	}
 	
-	protected void chooseFromMultipleItems(List<ContactResult.ResultItem> items, CheckBox checkbox, String id) {
+	protected void chooseFromMultipleItems(List<ContactResult.ResultItem> items, CheckBox checkbox, String id, String name) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		ArrayList<String> itemLabels = new ArrayList<String>(items.size());
 		
@@ -212,40 +223,42 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 			itemLabels.add(resultItem.getResult());
 		}
 		
-		class ClickListener implements OnCancelListener, OnClickListener, OnMultiChoiceClickListener {
+		class ClickListener implements OnCancelListener, OnClickListener {
 			private List<ContactResult.ResultItem> items;
 			private CheckBox checkbox;
 			private String id;
-			private boolean[] checked;
+			private int checkedWhich;
+            private String name;
 			
-			public ClickListener(List<ContactResult.ResultItem> items, CheckBox checkbox, String id) {
+			public ClickListener(List<ContactResult.ResultItem> items, CheckBox checkbox, String id, String name) {
 				this.items = items;
 				this.checkbox = checkbox;
 				this.id = id;
-				checked = new boolean[items.size()];
+                this.name = name;
+                checkedWhich = 9999;
 			}
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				finish();
-			}
-
-			@Override
-			public void onClick(DialogInterface arg0, int which, boolean isChecked) {
-				checked[which] = isChecked;
+                if(which != DialogInterface.BUTTON_POSITIVE && which != DialogInterface.BUTTON_NEGATIVE && which!=DialogInterface.BUTTON_NEUTRAL)
+                {
+                    checkedWhich = which;
+                }
+                finish();
 			}
 
 			private void finish() {
 				ArrayList<ContactResult.ResultItem> result = new ArrayList<ContactResult.ResultItem>(items.size());
-				for (int i = 0; i < items.size(); ++i) {
-					if (checked[i]) {
-						result.add(items.get(i));
-					}
-				}
+                if(checkedWhich >=0 && checkedWhich != 9999)
+                {
+                    result.clear();
+                    result.add(items.get(checkedWhich));
+                }
+
 				if (result.size() == 0) {
 					checkbox.setChecked(false);
 				} else {
-					putInResult(id, new ContactResult(id, result));
+					putInResult(id, new ContactResult(id, name, result));
 				}
 			}
 
@@ -256,11 +269,12 @@ public class ContactListFragment extends Fragment implements LoaderCallbacks<Cur
 			
 		}
 		
-		ClickListener clickListener = new ClickListener(items, checkbox, id);
+		ClickListener clickListener = new ClickListener(items, checkbox, id, name);
 		
 		builder
-			.setMultiChoiceItems(itemLabels.toArray(new String[0]), null, clickListener)
-			.setOnCancelListener(clickListener)
+                .setSingleChoiceItems(itemLabels.toArray(new String[0]),-1,clickListener)
+			//.setMultiChoiceItems(itemLabels.toArray(new String[0]), null, clickListener)
+                .setOnCancelListener(clickListener)
 			.setPositiveButton(android.R.string.ok, clickListener)
 			.show();
 	}

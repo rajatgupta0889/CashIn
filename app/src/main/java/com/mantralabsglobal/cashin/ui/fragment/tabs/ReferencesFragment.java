@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.businessobjects.ContactResult;
 import com.mantralabsglobal.cashin.service.ReferenceService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.ContactPickerActivity;
+import com.mantralabsglobal.cashin.ui.fragment.adapter.ReferenceListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,7 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
     FloatingActionButton fab_selectReference;
 
     ReferenceService referenceService;
+    ReferenceListAdapter referenceListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,14 +113,35 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
         Log.d(TAG, "onActivityResult: " + this);
         Log.d(TAG, "requestCode " + requestCode + " , resultCode=" + resultCode);
 
+        if(requestCode == BaseActivity.CONTACT_PICKER && resultCode == Activity.RESULT_OK)
+        {
+            ArrayList<ContactResult> resultList =  (ArrayList<ContactResult> )data.getSerializableExtra(ContactPickerActivity.CONTACT_PICKER_RESULT);
+            List<ReferenceService.Reference> referenceList = new ArrayList<>();
+            for(ContactResult cr: resultList)
+            {
+                ReferenceService.Reference reference = new ReferenceService.Reference();
+                reference.setName(cr.getContactName());
+                reference.setNumber(cr.getResults().get(0).getResult());
+                referenceList.add(reference);
+            }
+            if(referenceList.size()>0)
+                bindDataToForm(referenceList);
+        }
+
     }
+
 
     @Override
     public void bindDataToForm(List<ReferenceService.Reference> value) {
         setVisibleChildView(vgReferenceDetail);
-        //TODO: Replace with form binding
         if(value!= null) {
-
+            ExpandableListView expandableListView = (ExpandableListView) getCurrentView().findViewById(R.id.elv_reference_list);
+            expandableListView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+            if(referenceListAdapter == null)
+                referenceListAdapter= new ReferenceListAdapter(getActivity(), value);
+            else
+                referenceListAdapter.setReferenceData(value);
+            expandableListView.setAdapter(referenceListAdapter);
         }
     }
 
@@ -123,6 +149,11 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
     public List<ReferenceService.Reference> getDataFromForm(List<ReferenceService.Reference> detail) {
         if(detail == null)
             detail = new ArrayList<>();
+        if(referenceListAdapter != null)
+        {
+            detail.clear();
+            detail.addAll(referenceListAdapter.getReferenceList());
+        }
         return detail;
     }
 

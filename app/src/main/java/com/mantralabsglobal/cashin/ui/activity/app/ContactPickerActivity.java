@@ -54,6 +54,10 @@ public class ContactPickerActivity extends BaseActivity {
 
     }
 
+    public boolean canSelectMore(){
+        return selectionCount<maxSelection;
+    }
+
     public void setSelectionCount(int count){
         this.selectionCount = count;
         updateTitle();
@@ -75,10 +79,10 @@ public class ContactPickerActivity extends BaseActivity {
         if (item.getItemId() == R.id.contacts_done) {
             returnResults();
             return true;
-        } else if (item.getItemId() == R.id.contacts_cancel) {
+        } /*else if (item.getItemId() == R.id.contacts_cancel) {
             cancel();
             return true;
-        } else {
+        } */else {
             return super.onOptionsItemSelected(item);
         }
     }
