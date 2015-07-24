@@ -53,7 +53,7 @@ public class CwacCameraActivity extends AppCompatActivity implements
     public static final String FLASH = "FLASH";
     boolean showCameraSwitch = false;
     boolean useFFCByDefault = false;
-    public static boolean flashOn = true;
+    public static boolean flashOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +152,7 @@ public class CwacCameraActivity extends AppCompatActivity implements
  */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        new MenuInflater(this).inflate(R.menu.cwac_main, menu);
+     //   new MenuInflater(this).inflate(R.menu.cwac_main, menu);
         return (super.onCreateOptionsMenu(menu));
     }
 
@@ -218,7 +218,7 @@ public class CwacCameraActivity extends AppCompatActivity implements
     public void flashCamera() {
         if (current != null) {
             if (!useFFCByDefault) {
-                flashOn = !(Boolean) flashBtn.getTag();
+                flashOn = !flashOn;
                 if (flashOn) {
                     flashBtn.setImageResource(R.drawable.ic_flash_icon);
                 } else {

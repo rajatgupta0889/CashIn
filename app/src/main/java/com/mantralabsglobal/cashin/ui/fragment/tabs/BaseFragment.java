@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -208,7 +210,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showImageDialog(Bitmap bmp) {
-        Dialog builder = new Dialog(getActivity());
+        final Dialog builder = new Dialog(getActivity());
         builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
         builder.getWindow().setBackgroundDrawable(
                 new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -226,6 +228,14 @@ public abstract class BaseFragment extends Fragment {
                 ViewGroup.LayoutParams.MATCH_PARENT));
         builder.setCanceledOnTouchOutside(true);
         builder.show();
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                builder.dismiss(); // when the task active then close the dialog
+                t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+            }
+        }, 3000);
 
     }
 
