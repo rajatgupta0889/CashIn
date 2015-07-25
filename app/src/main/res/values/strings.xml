@@ -244,4 +244,22 @@
     <string name="relationship">Relationship</string>
     <string name="send_request">Send Request</string>
     <string name="max_reference_selection_reached">Maximum references selected. Unselect existing to select a different contact.</string>
+    <string name="send_message_to_referrals">Send message to referrals</string>
+    <string name="your_referrals">Your Referrals</string>
+    <string name="message">Message</string>
+    <string name="default_message">Default Message</string>
+    <string name="send_message">Send Message</string>
+    <string name="default_referral_message_content">
+        <![CDATA[
+            <p>Hello Friends,</p>
+            <p>I am applying for a loan on the CashIn app. I need references to qualify me. Please help me to get the loan by qualifying me.</p>
+            <p>Thank you</p>
+            <p>My referral link: cashinapp.slack.com/@user</p>
+        ]]>
+    </string>
+    <string name="default_referral_message_content_new">
+        <![CDATA[
+            Hello Friends,\nI am applying for a loan on the CashIn app. I need references to qualify me. Please help me to get the loan by qualifying me.\nThank you\nMy referral link: cashinapp.slack.com/%s
+        ]]>
+    </string>
 </resources>

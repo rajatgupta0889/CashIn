@@ -17,6 +17,7 @@ import com.mantralabsglobal.cashin.service.ReferenceService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.ContactPickerActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.SendReferralMessageActivity;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.ReferenceListAdapter;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
     }
 
 
-    @OnClick( {R.id.fab_select_reference})
+    @OnClick( {R.id.fab_select_reference, R.id.fab_edit_reference})
     public void loadReferences() {
         Intent intent = new Intent(getActivity(), ContactPickerActivity.class);
         intent.putExtra(ContactPickerActivity.PICKER_TYPE, ContactPickerActivity.PICKER_TYPE_PHONE);
@@ -127,9 +128,20 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
             if(referenceList.size()>0)
                 bindDataToForm(referenceList);
         }
+        else if(requestCode == BaseActivity.SEND_REFERRAL_MESSAGE && resultCode == Activity.RESULT_OK)
+        {
+            //Do something
+        }
 
     }
 
+    @OnClick(R.id.btn_send_request)
+    public void onSendMessageClick()
+    {
+        Intent intent = new Intent(getActivity(), SendReferralMessageActivity.class);
+        intent.putExtra(SendReferralMessageActivity.REFERRALS, new ArrayList<>(referenceListAdapter.getReferenceList()));
+        getActivity().startActivityForResult(intent, BaseActivity.SEND_REFERRAL_MESSAGE);
+    }
 
     @Override
     public void bindDataToForm(List<ReferenceService.Reference> value) {

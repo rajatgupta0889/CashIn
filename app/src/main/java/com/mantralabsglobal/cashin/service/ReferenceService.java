@@ -2,6 +2,7 @@ package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 import retrofit.Callback;
@@ -20,7 +21,7 @@ public interface ReferenceService {
     @POST("/user/references")
     void addReferences(@Body List<Reference> bankDetail, Callback<List<Reference>> callback);
 
-    public static class Reference{
+    public static class Reference implements Serializable{
 
         private String name;
         private String number;
