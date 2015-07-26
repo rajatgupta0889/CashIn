@@ -13,7 +13,6 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
-import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -248,6 +247,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                     @Override
                     public void success(T detail, Response response) {
                         hideProgressDialog();
+                        preProcessOCRData(detail);
                         bindDataToForm(detail);
                     }
 
@@ -269,6 +269,10 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                 return null;
             }
         }.execute(bmp);
+    }
+
+    protected void preProcessOCRData(T detail) {
+        //Override in child classes
     }
 
 

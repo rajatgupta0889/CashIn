@@ -1,28 +1,17 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
@@ -30,28 +19,21 @@ import com.mantralabsglobal.cashin.service.OCRServiceProvider;
 import com.mantralabsglobal.cashin.service.PanCardService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
-import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
-import com.mantralabsglobal.cashin.ui.activity.camera.CameraActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
-import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
-import com.mantralabsglobal.cashin.ui.view.SonOfSpinner;
-import com.mantralabsglobal.cashin.utils.CameraUtils;
 import com.mantralabsglobal.cashin.utils.ImageUtils;
-import com.mobsandgeeks.saripaar.annotation.Digits;
+import com.mantralabsglobal.cashin.utils.PANUtils;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.soundcloud.android.crop.Crop;
 
-import java.io.ByteArrayOutputStream;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
@@ -178,6 +160,15 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         Crop.of(source, destination).asSquare().withAspect(3,2).start(getActivity(), BaseActivity.IMAGE_CROP_PAN_CARD);
     }
 
+    @Override
+    protected void preProcessOCRData(PanCardService.PanCardDetail detail) {
+        String newName = PANUtils.getName(detail.getContentarr(), 5);
+        String newPAN = PANUtils.getPANNumber(detail.getContentarr(), 5);
+        if(StringUtils.isNotEmpty(newName))
+            detail.setName(newName);
+        if(StringUtils.isNoneEmpty(newPAN))
+            detail.setPanNumber(newPAN);
+    }
 
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == Activity.RESULT_OK) {

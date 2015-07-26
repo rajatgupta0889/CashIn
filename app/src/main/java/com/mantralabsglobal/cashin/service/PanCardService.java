@@ -36,6 +36,7 @@ public interface PanCardService {
         @SerializedName(value = "sonOf")
         private String sonOf;
         private String dob;
+        private String[] contentarr;
 
         public String getName() {
             return name;
@@ -67,6 +68,14 @@ public interface PanCardService {
 
         public void setPanNumber(String panNumber) {
             this.panNumber = panNumber;
+        }
+
+        public String[] getContentarr() {
+            return contentarr;
+        }
+
+        public void setContentarr(String[] contentarr) {
+            this.contentarr = contentarr;
         }
     }
 
