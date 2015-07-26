@@ -88,11 +88,12 @@ public class ImageUtils {
         // remove small blobs through erosion and dilation
         // The null in the input indicates that it should internally declare the work image it needs
         // this is less efficient, but easier to code.
-        /*ImageUInt8 filtered = BinaryImageOps.erode8(binary, 1, null);
-        filtered = BinaryImageOps.dilate8(filtered, 1, null);*/
+        ImageUInt8 filtered = BinaryImageOps.erode8(binary, 1, null);
+        filtered = BinaryImageOps.dilate8(filtered, 1, null);
+
         Bitmap  result = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
 
-        VisualizeImageData.binaryToBitmap(adjusted, result, null );
+        VisualizeImageData.binaryToBitmap(filtered, result, null );
         return result;
     }
 
