@@ -18,6 +18,8 @@ import java.io.IOException;
 public abstract class GoogleTokenRetrieverTask extends AsyncTask<Context, Void, String> {
 
     private static final String GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+    private static String serverToken = null;
+    private static boolean gmail_scope = false;
 
     private static final String TAG = GoogleTokenRetrieverTask.class.getSimpleName();
 
@@ -26,14 +28,29 @@ public abstract class GoogleTokenRetrieverTask extends AsyncTask<Context, Void, 
         return doInBackground(context);
     }
 
+    public void setServerTokenNull(){
+        serverToken = null;
+    }
+
+    public void appendGmailScope(boolean gmailScopeRequired){
+        if(gmailScopeRequired)
+            gmail_scope = true;
+    }
+
     @Override
     protected String doInBackground(Context... params) {
 
+
+
         //String scope = String.format("oauth2:server:client_id:%s:api_scope:%s", activity.getString(R.string.server_client_id), TextUtils.join(" ", Arrays.asList(Scopes.PROFILE, Scopes.PLUS_LOGIN)));
-        String scope = "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN + " " + GMAIL_SCOPE;
-        String serverToken = null;
+        String scope = "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN ;
+
+        if(gmail_scope)
+            scope = scope+ " " + GMAIL_SCOPE;
+
         Context context = params[0];
         try {
+            setServerTokenNull();
             serverToken = GoogleAuthUtil.getToken(context, getEmail() , scope);
 
         } catch (IOException e) {

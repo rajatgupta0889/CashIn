@@ -145,7 +145,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout"
         android:layout_alignParentLeft="true">
-
     </android.support.v4.view.ViewPager>
 
 </LinearLayout>

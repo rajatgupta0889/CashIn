@@ -24,22 +24,22 @@ import java.util.List;
 import butterknife.InjectView;
 import retrofit.Callback;
 
-/**
+/**++
  * Created by pk on 14/06/2015.
  */
 public class IncomeFragment extends BaseBindableListFragment<IncomeService.Income> {
 
     @NotEmpty
-    @Digits
+    @Digits(integer = 6)
     @InjectView(R.id.cc_month_one)
     public MonthIncomeView monthIncomeViewOne;
 
-    @Digits
+    @Digits(integer = 6)
     @NotEmpty
     @InjectView(R.id.cc_month_two)
     public MonthIncomeView monthIncomeViewTwo;
 
-    @Digits
+    @Digits (integer = 6)
     @NotEmpty
     @InjectView(R.id.cc_month_three)
     public MonthIncomeView monthIncomeViewThree;
@@ -106,7 +106,6 @@ public class IncomeFragment extends BaseBindableListFragment<IncomeService.Incom
         monthIncomeViewThree.setYear(cal.get(Calendar.YEAR));
 
     }
-
 
 
     @Override
