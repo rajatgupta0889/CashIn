@@ -32,9 +32,9 @@ public class GooglePlus{
     /* Should we automatically resolve ConnectionResults when possible? */
     protected boolean mShouldResolve = false;
 
-    public void authenticate(final Activity activity, final SocialBase.SocialListener<String> listener)
+    public void authenticate(final Activity activity, boolean isGmailRequired, final SocialBase.SocialListener<String> listener)
     {
-        mGoogleApiClient = new GoogleApiClient.Builder(activity)
+     GoogleApiClient.Builder mGoogleApiClientBuilder = new GoogleApiClient.Builder(activity)
                 .addConnectionCallbacks(new AuthenticateCallback() {
                     @Override
                     public void onSuccess(final String email) {
@@ -49,9 +49,12 @@ public class GooglePlus{
                 })
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
-                .addScope(new Scope(Scopes.PLUS_LOGIN))
-                .addScope(new Scope(GMAIL_SCOPE))
-                .build();
+                .addScope(new Scope(Scopes.PLUS_LOGIN));
+
+        if(isGmailRequired)
+            mGoogleApiClientBuilder.addScope(new Scope(GMAIL_SCOPE));
+
+        mGoogleApiClient = mGoogleApiClientBuilder.build();
 
         mShouldResolve = true;
         mGoogleApiClient.connect();
@@ -68,6 +71,7 @@ public class GooglePlus{
             // establish a service connection to Google Play services.
             Log.d(TAG, "onConnected:" + bundle);
             mShouldResolve = false;
+
             String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
             onSuccess(email);
@@ -79,7 +83,7 @@ public class GooglePlus{
         public void onConnectionSuspended(int i) {
 
         }
-    };
+    }
 
     protected abstract class ConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -114,7 +118,7 @@ public class GooglePlus{
                 onFailure("Signin cancelled");
             }
         }
-    };
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);

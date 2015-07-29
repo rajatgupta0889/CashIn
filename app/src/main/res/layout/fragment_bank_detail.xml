@@ -25,10 +25,13 @@
         android:id="@+id/scrollView"
         android:fillViewport="false">
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp">
-<!--
+            android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp"
+            android:layout_alignTop="@+id/scrollView"
+            android:layout_alignParentStart="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp">-->
@@ -64,9 +67,11 @@
         </LinearLayout>
         </LinearLayout>
 
-          <!--  <LinearLayout
+           <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp">
+                android:visibility="invisible"
+                android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp"
+               android:id="@+id/bank_statement">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,29 +85,39 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/vg_bank_details"
+                    android:id="@+id/vg_bank_stmt_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:orientation="vertical"></LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:orientation="horizontal"
-                    android:id="@+id/bank_statement_detail">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:src="@drawable/ic_add_more" android:layout_gravity="center" />
 
-                    <Button
-                        android:id="@+id/btn2_add_more" android:paddingLeft="10dp"
-                        android:layout_width="wrap_content" android:background="@null"
-                        android:layout_height="wrap_content"  android:text="@string/add_more"  />
-                </LinearLayout>
-            </LinearLayout>
+               <TabHost
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:id="@android:id/tabhost">
 
-        </LinearLayout>-->
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:orientation="vertical">
 
+                       <TabWidget
+                           android:id="@android:id/tabs"
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:orientation="horizontal"></TabWidget>
+
+                       <FrameLayout
+                           android:id="@android:id/tabcontent"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"/>
+
+                   </LinearLayout>
+               </TabHost>
+
+           </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
-
 
     </RelativeLayout>
 

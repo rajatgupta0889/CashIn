@@ -61,7 +61,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    protected void registerAndLogin(final String userName, final String token,  boolean userExists, final IAuthListener listener) {
+    public void registerAndLogin(final String userName, final String token,  boolean userExists, final IAuthListener listener) {
         AuthenticationService authService = ((com.mantralabsglobal.cashin.ui.Application) getApplication()).getRestClient().getAuthenticationService();
         AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
         up.setEmail(userName);
@@ -114,7 +114,7 @@ public class BaseActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-    protected void showProgressDialog(String title, String message, boolean indeterminate, boolean cancelable)
+    public void showProgressDialog(String title, String message, boolean indeterminate, boolean cancelable)
     {
         progressDialog.setTitle(title);
         progressDialog.setMessage(message);
@@ -123,12 +123,12 @@ public class BaseActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
-    protected void hideProgressDialog()
+    public void hideProgressDialog()
     {
         progressDialog.dismiss();
     }
 
-    protected void showToastOnUIThread(final String message)
+    public void showToastOnUIThread(final String message)
     {
         runOnUiThread(new Runnable() {
             @Override
@@ -139,13 +139,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected interface ServerResponseListener{
-        public void onSuccess();
-        public void onError(RetrofitError error);
+        void onSuccess();
+        void onError(RetrofitError error);
     }
 
     public interface IAuthListener{
-        public void onSuccess();
-        public void onFailure(Exception exp);
+        void onSuccess();
+        void onFailure(Exception exp);
     }
 
     @Override

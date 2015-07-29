@@ -37,7 +37,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     CustomEditText cc_street;
 
     @NotEmpty
-    @Digits()
+    @Digits(integer = 6)
     @InjectView(R.id.cc_pincode)
     CustomEditText cc_pincode;
 
