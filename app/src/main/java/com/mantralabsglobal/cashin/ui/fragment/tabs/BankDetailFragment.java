@@ -48,6 +48,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mTabManager = new TabManager(getActivity(),getChildFragmentManager(),android.R.id.tabcontent);
+
     }
 
 
@@ -56,22 +57,24 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
                              Bundle savedInstanceState) {
         // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_bank_detail, container, false);
-        TabHost host = mTabManager.handleCreateView(view);
 
         mainLayout = (LinearLayout)view.findViewById(R.id.bank_statement);
 
         bank_detail_add_more = (LinearLayout)view.findViewById(R.id.bank_detail);
-        mTabManager.addTab(host.newTabSpec("blank").setIndicator("Blank Fragment"),
+
+        mTabHost  = mTabManager.handleCreateView(view);
+
+        mTabManager.addTab(mTabHost.newTabSpec("blank").setIndicator("Blank Fragment"),
                 BlankFragment.class, null);
-        mTabManager.addTab(host.newTabSpec("e_statement").setIndicator("E-Statement"),
+        mTabManager.addTab(mTabHost.newTabSpec("e_statement").setIndicator("E-Statement"),
                 EStatementFragment.class, null);
-        mTabManager.addTab(host.newTabSpec("net_banking").setIndicator("Net Banking"),
+        mTabManager.addTab(mTabHost.newTabSpec("net_banking").setIndicator("Net Banking"),
                 NetBankingFragment.class, null);
-        mTabManager.addTab(host.newTabSpec("take_snap").setIndicator("Take a Snap"),
+        mTabManager.addTab(mTabHost.newTabSpec("take_snap").setIndicator("Take a Snap"),
                 TakeSnapFragment.class, null);
 
-        host.setCurrentTab(0);
-        host.getTabWidget().getChildAt(0).setVisibility(View.GONE);
+        mTabHost.setCurrentTab(0);
+        mTabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
 
         return view;
     }
@@ -160,22 +163,31 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
                     public void onPrimaryChanged(BankDetailView bankDetailView) {
                         bankDetailView.getBankDetail().setIsPrimary(true);
                         bankDetailView.updateUI();
-                        bank_detail_add_more.setVisibility(View.INVISIBLE);
-                        mainLayout.setVisibility(View.VISIBLE);
-                        for(BankDetailView bdview : bankDetailViewList)
-                        {
-                            if(bdview != bankDetailView)
-                            {
-                                bdview.getBankDetail().setIsPrimary(false);
-                                vg_bank_details.removeView(bdview);
-                            }
-                            bdview.updateUI();
-                        }
+                        handlePrimaryBankSelected(bankDetailView);
+
                     }
                 });
             }
         }
     }
+
+    private void handlePrimaryBankSelected(BankDetailView bankDetailView) {
+
+        bank_detail_add_more.setVisibility(View.GONE);
+        mainLayout.setVisibility(View.VISIBLE);
+        for(BankDetailView bdview : bankDetailViewList)
+        {
+            if(bdview != bankDetailView)
+            {
+                bdview.getBankDetail().setIsPrimary(false);
+                vg_bank_details.removeView(bdview);
+            }
+            bdview.updateUI();
+        }
+
+    }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,7 +209,8 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        mTabManager.handleViewStateRestored(savedInstanceState);
+        if(mTabManager != null)
+            mTabManager.handleViewStateRestored(savedInstanceState);
     }
 
     @Override

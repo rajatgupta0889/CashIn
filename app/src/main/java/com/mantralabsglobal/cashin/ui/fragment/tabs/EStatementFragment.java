@@ -35,8 +35,13 @@ public class EStatementFragment extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_e_statement, container, false);
-        scanGmailForBankStatements();
         return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        scanGmailForBankStatements();
     }
 
     protected void scanGmailForBankStatements() {
@@ -102,12 +107,6 @@ public class EStatementFragment extends BaseFragment
             //((Application)getActivity().getApplication()).setGmailAccount(accountName);
             requestForGmailToken(accountName);
         }
-    }
-
-    @Override
-    public void onAttach(Activity activity)
-    {
-        super.onAttach(activity);
     }
 
     @Override
