@@ -11,14 +11,7 @@ import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
-import com.mantralabsglobal.cashin.ui.view.BirthDayView;
-import com.mantralabsglobal.cashin.ui.view.CustomEditText;
-import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
-import com.mantralabsglobal.cashin.ui.view.MonthIncomeView;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
-import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.adapter.ViewDataAdapter;
-import com.mobsandgeeks.saripaar.exception.ConversionException;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
 
@@ -37,6 +30,7 @@ public class Application extends MultiDexApplication{
     public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
     public static final String EMPTY_STRING = "";
     private static final String TAG = Application.class.getSimpleName();
+    private static final String GMAIL_ACCOUNT = "GMAIL_ACCOUNT";
 
     private RestClient restClient;
     private SharedPreferences appPreference = null;
@@ -51,34 +45,6 @@ public class Application extends MultiDexApplication{
         appPreference = getSharedPreferences(APP_PREFERENCE, 0);
 
         restClient = new RestClient(this);
-
-        Validator.registerAdapter(CustomEditText.class, new ViewDataAdapter<CustomEditText, String>() {
-            @Override
-            public String getData(CustomEditText view) throws ConversionException {
-                return view.getEditText().getText().toString();
-            }
-        });
-
-        Validator.registerAdapter(CustomSpinner.class, new ViewDataAdapter<CustomSpinner, Integer>() {
-            @Override
-            public Integer getData(CustomSpinner view) throws ConversionException {
-                return view.getSpinner().getSelectedItemPosition();
-            }
-        });
-
-        Validator.registerAdapter(BirthDayView.class, new ViewDataAdapter<BirthDayView, String>() {
-            @Override
-            public String getData(BirthDayView view) throws ConversionException {
-                return view.getEditText().getText().toString();
-            }
-        });
-
-        Validator.registerAdapter(MonthIncomeView.class, new ViewDataAdapter<MonthIncomeView, String>() {
-            @Override
-            public String getData(MonthIncomeView view) throws ConversionException {
-                return String.valueOf(view.getAmount().toString());
-            }
-        });
 
         getKeyHash();
 
@@ -186,6 +152,15 @@ public class Application extends MultiDexApplication{
     public String getGoogleToken()
     {
         return appPreference.getString(GOOGLE_TOKEN, null);
+    }
+
+    public void setGmailAccount(String gmailAccount) {
+        Log.i(TAG, "Gmail Account" + gmailAccount);
+        appPreference.edit().putString(GMAIL_ACCOUNT, gmailAccount).apply();
+    }
+
+    public String getGmailAccount() {
+        return appPreference.getString(GMAIL_ACCOUNT, EMPTY_STRING);
     }
 }
 

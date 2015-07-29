@@ -111,7 +111,6 @@ public class IntroSliderActivity extends BaseActivity {
             @Override
             public void onSuccess(final String email) {
                 IntroSliderActivity.this.email = email;
-                tokenTask.appendGmailScope(false);
                 tokenTask.execute(IntroSliderActivity.this);
             }
 

@@ -13,10 +13,15 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.OCRServiceProvider;
+import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
+import com.mantralabsglobal.cashin.ui.view.MonthIncomeView;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.adapter.ViewDataAdapter;
+import com.mobsandgeeks.saripaar.exception.ConversionException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -62,6 +67,38 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                     }
                 }
                 isFormValid = false;
+            }
+        });
+
+    }
+
+    protected void registerValidationAdapters(Validator validator)
+    {
+        validator.registerAdapter(CustomEditText.class, new ViewDataAdapter<CustomEditText, String>() {
+            @Override
+            public String getData(CustomEditText view) throws ConversionException {
+                return view.getEditText().getText().toString();
+            }
+        });
+
+        validator.registerAdapter(CustomSpinner.class, new ViewDataAdapter<CustomSpinner, Integer>() {
+            @Override
+            public Integer getData(CustomSpinner view) throws ConversionException {
+                return view.getSpinner().getSelectedItemPosition();
+            }
+        });
+
+        validator.registerAdapter(BirthDayView.class, new ViewDataAdapter<BirthDayView, String>() {
+            @Override
+            public String getData(BirthDayView view) throws ConversionException {
+                return view.getEditText().getText().toString();
+            }
+        });
+
+        validator.registerAdapter(MonthIncomeView.class, new ViewDataAdapter<MonthIncomeView, String>() {
+            @Override
+            public String getData(MonthIncomeView view) throws ConversionException {
+                return String.valueOf(view.getAmount().toString());
             }
         });
 

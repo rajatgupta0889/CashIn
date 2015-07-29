@@ -1,130 +1,108 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.AccountPicker;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.social.GooglePlus;
 import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
-import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
-import com.mantralabsglobal.cashin.ui.activity.app.GetStartedActivity;
-import com.mantralabsglobal.cashin.ui.activity.app.IntroSliderActivity;
 
 import java.io.IOException;
 
-public class EStatementFragment extends Fragment
+public class EStatementFragment extends BaseFragment
 {
-    BaseActivity activity;
-    GooglePlus googlePlus;
-    private String eMail;
-    private boolean isExecutedOnce= false;
+    private static final String TAG = EStatementFragment.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        googlePlus = new GooglePlus();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_e_statement, container, false);
-        activity = (BaseActivity)getActivity();
-        googleAuthentication();
+        scanGmailForBankStatements();
         return view;
     }
 
-   private void  googleAuthentication(){
-        if(!isExecutedOnce) {
-            activity.showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
+    protected void scanGmailForBankStatements() {
+        String gmailAccount =  ((Application)getActivity().getApplication()).getGmailAccount();
+        if(TextUtils.isEmpty(gmailAccount))
+        {
+            //Get the gmail account from user
+            Intent googlePicker = AccountPicker.newChooseAccountIntent(null, null,
+                    new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null);
+            getActivity().startActivityForResult(googlePicker, BaseActivity.PICK_ACCOUNT_REQUEST);
 
-            googlePlus.authenticate(getActivity(), true, new SocialBase.SocialListener<String>() {
-                @Override
-                public void onSuccess(final String email) {
-                    eMail = email;
-                    isExecutedOnce = true;
-                    tokenTask.appendGmailScope(true);
-                    tokenTask.execute(getActivity());
-                    activity.showToastOnUIThread("Now you have access rights for gmail!");
-                }
-
-                @Override
-                public void onFailure(String message) {
-                    activity.hideProgressDialog();
-                    //   Snackbar.make(viewPager, message, Snackbar.LENGTH_LONG).show();
-                    startActivityForResult(getActivity().getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
-                }
-            });
         }
-        else {
-            activity.showToastOnUIThread("Already Signed In");
-
+        else
+        {
+            requestForGmailToken(gmailAccount);
         }
     }
 
+    protected void requestForGmailToken(final String gmailAccount) {
+        new GoogleTokenRetrieverTask() {
+
+            @Override
+            protected String getEmail() {
+                return gmailAccount;
+            }
+
+            protected String getScope()
+            {
+                return super.getScope() + " " + GMAIL_SCOPE;
+            }
+
+            @Override
+            public void onException(UserRecoverableAuthException e) {
+                startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
+            }
+
+            @Override
+            public void onException(IOException e) {
+                super.onException(e);
+                showToastOnUIThread(e.getMessage());
+            }
+
+            @Override
+            public void onException(GoogleAuthException e) {
+                super.onException(e);
+                showToastOnUIThread(e.getMessage());
+            }
+
+            @Override
+            protected void afterTokenRecieved(String email, String token) {
+                //TODO: Invoke server API to scan email
+                Log.d(TAG, token);
+            }
+        }.execute(getActivity());
+    }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        if (requestCode == BaseActivity.PICK_ACCOUNT_REQUEST && resultCode == Activity.RESULT_OK) {
+            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+            Log.d(TAG, "Account Name=" + accountName);
+            //Uncomment below line to remember the gmail account
+            //((Application)getActivity().getApplication()).setGmailAccount(accountName);
+            requestForGmailToken(accountName);
+        }
     }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    private GoogleTokenRetrieverTask tokenTask = new GoogleTokenRetrieverTask() {
-
-        @Override
-        protected String getEmail() {
-            return eMail;
-        }
-
-        @Override
-        public void onException(UserRecoverableAuthException e) {
-            startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
-        }
-
-        @Override
-        public void onException(IOException e) {
-            super.onException(e);
-            activity.showToastOnUIThread(e.getMessage());
-        }
-
-        @Override
-        public void onException(GoogleAuthException e) {
-            super.onException(e);
-            activity.showToastOnUIThread(e.getMessage());
-        }
-
-        @Override
-        protected void afterTokenRecieved(String email, String token) {
-            activity.registerAndLogin(email, token, true, new BaseActivity.IAuthListener() {
-                @Override
-                public void onSuccess() {
-                    activity.hideProgressDialog();
-                }
-
-                @Override
-                public void onFailure(Exception exp) {
-                    activity.hideProgressDialog();
-                    googleAuthentication();
-                }
-            });
-        }
-    };
 
     @Override
     public void onAttach(Activity activity)

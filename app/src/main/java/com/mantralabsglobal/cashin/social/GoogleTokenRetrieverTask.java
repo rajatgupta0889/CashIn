@@ -17,9 +17,7 @@ import java.io.IOException;
  */
 public abstract class GoogleTokenRetrieverTask extends AsyncTask<Context, Void, String> {
 
-    private static final String GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
-    private static String serverToken = null;
-    private static boolean gmail_scope = false;
+    protected static final String GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
 
     private static final String TAG = GoogleTokenRetrieverTask.class.getSimpleName();
 
@@ -28,30 +26,13 @@ public abstract class GoogleTokenRetrieverTask extends AsyncTask<Context, Void, 
         return doInBackground(context);
     }
 
-    public void setServerTokenNull(){
-        serverToken = null;
-    }
-
-    public void appendGmailScope(boolean gmailScopeRequired){
-        if(gmailScopeRequired)
-            gmail_scope = true;
-    }
-
     @Override
     protected String doInBackground(Context... params) {
-
-
-
-        //String scope = String.format("oauth2:server:client_id:%s:api_scope:%s", activity.getString(R.string.server_client_id), TextUtils.join(" ", Arrays.asList(Scopes.PROFILE, Scopes.PLUS_LOGIN)));
-        String scope = "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN ;
-
-        if(gmail_scope)
-            scope = scope+ " " + GMAIL_SCOPE;
+        String scope = getScope();
 
         Context context = params[0];
         try {
-            setServerTokenNull();
-            serverToken = GoogleAuthUtil.getToken(context, getEmail() , scope);
+            return GoogleAuthUtil.getToken(context, getEmail() , scope);
 
         } catch (IOException e) {
             Log.e(TAG, "Failed to get token for server", e);
@@ -59,13 +40,16 @@ public abstract class GoogleTokenRetrieverTask extends AsyncTask<Context, Void, 
         } catch (UserRecoverableAuthException e) {
             Log.e(TAG, "Failed to get token for server", e);
             onException(e);
-            //baseActivity.startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
         } catch (GoogleAuthException e) {
             Log.e(TAG, "Failed to get token for server", e);
             onException(e);
-//            baseActivity.showToastOnUIThread(e.getMessage());
         }
-        return serverToken;
+        return null;
+    }
+
+    protected String getScope()
+    {
+        return "oauth2:" + Scopes.PROFILE + " " + Scopes.PLUS_LOGIN;
     }
 
     protected abstract String getEmail();

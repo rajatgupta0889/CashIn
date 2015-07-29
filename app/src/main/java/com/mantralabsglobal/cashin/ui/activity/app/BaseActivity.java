@@ -40,6 +40,8 @@ public class BaseActivity extends AppCompatActivity {
     public static final int REQ_SIGN_IN_REQUIRED = 10000;
     public static final int CONTACT_PICKER = 11000;
     public static final int SEND_REFERRAL_MESSAGE = 12000;
+    public static final int PICK_ACCOUNT_REQUEST = 13000;
+
 
     protected void putInAppPreference(String key, String value) {
         appPreference.edit().putString(key, value).apply();
@@ -61,7 +63,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    public void registerAndLogin(final String userName, final String token,  boolean userExists, final IAuthListener listener) {
+    protected void registerAndLogin(final String userName, final String token,  boolean userExists, final IAuthListener listener) {
         AuthenticationService authService = ((com.mantralabsglobal.cashin.ui.Application) getApplication()).getRestClient().getAuthenticationService();
         AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
         up.setEmail(userName);
