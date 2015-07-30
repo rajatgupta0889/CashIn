@@ -91,7 +91,7 @@ public class NameExtractor implements Extractor {
 			
 			String[] tokens = this.tokenizeLine(line);
 			for(String token : tokens) {
-				if(emailFirst.contains(token.toLowerCase())) {
+				if(token.length()>=3 && emailFirst.contains(token.toLowerCase())) {
 					System.out.println(emailFirst + " matched " + token);
 					return true;
 				}
