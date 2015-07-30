@@ -71,7 +71,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
         mTabManager.addTab(mTabHost.newTabSpec("net_banking").setIndicator("Net Banking"),
                 NetBankingFragment.class, null);
         mTabManager.addTab(mTabHost.newTabSpec("take_snap").setIndicator("Take a Snap"),
-                TakeSnapFragment.class, null);
+                SnapBankStatementFragment.class, null);
 
         mTabHost.setCurrentTab(0);
         mTabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);

@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.ui;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -69,24 +70,9 @@ public class Application extends MultiDexApplication{
                 RetrofitUtils.ErrorMessage errorMessage = gson.fromJson(json, RetrofitUtils.ErrorMessage.class);
                 if(errorMessage != null && "user is not logged in".equals(errorMessage.getMessage()))
                 {
-                    GoogleTokenRetrieverTask task = new GoogleTokenRetrieverTask() {
-                        @Override
-                        protected String getEmail() {
-                            return getAppUser();
-                        }
-                        @Override
-                        protected void afterTokenRecieved(String email, String token) {
-                            //Ignore
-                        }
-                    };
-                    String token  = task.executeSync(getBaseContext());
-                    if(token != null)
-                    {
-                        setGoogleToken(token);
-                    }
                     AuthenticationService.UserPrincipal up = new AuthenticationService.UserPrincipal();
                     up.setEmail(getAppUser());
-                    up.setToken(getGoogleToken());
+                    up.setToken(getGoogleTokenSync(getBaseContext(), getAppUser()));
                     AuthenticationService.AuthenticatedUser au = getRestClient().getAuthenticationService().authenticateUserSync(up);
                 }
                 Request newRequest = chain.request();
@@ -144,14 +130,19 @@ public class Application extends MultiDexApplication{
         appPreference.edit().putString(USER_NAME, appUserName ).apply();
     }
 
-    public void setGoogleToken(String token) {
-        Log.i(TAG, "Google Token " + token);
-        appPreference.edit().putString(GOOGLE_TOKEN, token).apply();
-    }
-
-    public String getGoogleToken()
+    public String getGoogleTokenSync(Context context, final String email)
     {
-        return appPreference.getString(GOOGLE_TOKEN, null);
+        GoogleTokenRetrieverTask task = new GoogleTokenRetrieverTask() {
+            @Override
+            protected String getEmail() {
+                return email;
+            }
+            @Override
+            protected void afterTokenRecieved(String email, String token) {
+                //Ignore
+            }
+        };
+        return task.executeSync(context);
     }
 
     public void setGmailAccount(String gmailAccount) {

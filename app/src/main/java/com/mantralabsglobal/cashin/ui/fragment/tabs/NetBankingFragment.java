@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
 
-public class NetBankingFragment extends Fragment
+public class NetBankingFragment extends BaseFragment
 {
     @Override
     public void onCreate(Bundle savedInstanceState)

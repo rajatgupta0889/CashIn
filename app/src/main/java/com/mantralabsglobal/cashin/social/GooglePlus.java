@@ -32,7 +32,7 @@ public class GooglePlus{
     /* Should we automatically resolve ConnectionResults when possible? */
     protected boolean mShouldResolve = false;
 
-    public void authenticate(final Activity activity, boolean isGmailRequired, final SocialBase.SocialListener<String> listener)
+    public void authenticate(final Activity activity, final SocialBase.SocialListener<String> listener)
     {
      GoogleApiClient.Builder mGoogleApiClientBuilder = new GoogleApiClient.Builder(activity)
                 .addConnectionCallbacks(new AuthenticateCallback() {
@@ -50,9 +50,6 @@ public class GooglePlus{
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .addScope(new Scope(Scopes.PLUS_LOGIN));
-
-        if(isGmailRequired)
-            mGoogleApiClientBuilder.addScope(new Scope(GMAIL_SCOPE));
 
         mGoogleApiClient = mGoogleApiClientBuilder.build();
 

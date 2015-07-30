@@ -107,7 +107,7 @@ public class IntroSliderActivity extends BaseActivity {
     @OnClick(R.id.gplus_sign_in_button)
     public void signInWithGoogle() {
         showProgressDialog(getString(R.string.title_please_wait), getString(R.string.signing_in), true, false);
-        googlePlus.authenticate(this, false , new SocialBase.SocialListener<String>() {
+        googlePlus.authenticate(this , new SocialBase.SocialListener<String>() {
             @Override
             public void onSuccess(final String email) {
                 IntroSliderActivity.this.email = email;

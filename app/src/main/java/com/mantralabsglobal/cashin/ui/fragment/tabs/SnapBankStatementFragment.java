@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
 
-public class TakeSnapFragment extends Fragment
+public class SnapBankStatementFragment extends BaseFragment
 {
     @Override
     public void onCreate(Bundle savedInstanceState)

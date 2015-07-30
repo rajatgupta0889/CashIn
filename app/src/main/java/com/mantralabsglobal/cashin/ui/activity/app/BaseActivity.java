@@ -75,7 +75,6 @@ public class BaseActivity extends AppCompatActivity {
                 public void success(AuthenticationService.AuthenticatedUser authenticatedUser, Response response) {
                     getCashInApplication().setAppUserId(authenticatedUser.getId());
                     getCashInApplication().setAppUserName(authenticatedUser.getEmail());
-                    getCashInApplication().setGoogleToken(token);
                     listener.onSuccess();
                 }
 
@@ -116,7 +115,7 @@ public class BaseActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
     }
 
-    public void showProgressDialog(String title, String message, boolean indeterminate, boolean cancelable)
+    protected void showProgressDialog(String title, String message, boolean indeterminate, boolean cancelable)
     {
         progressDialog.setTitle(title);
         progressDialog.setMessage(message);
@@ -125,12 +124,12 @@ public class BaseActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
-    public void hideProgressDialog()
+    protected void hideProgressDialog()
     {
         progressDialog.dismiss();
     }
 
-    public void showToastOnUIThread(final String message)
+    protected void showToastOnUIThread(final String message)
     {
         runOnUiThread(new Runnable() {
             @Override

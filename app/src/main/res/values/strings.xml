@@ -262,4 +262,6 @@
             Hello Friends,\nI am applying for a loan on the CashIn app. I need references to qualify me. Please help me to get the loan by qualifying me.\nThank you\nMy referral link: cashinapp.slack.com/%s
         ]]>
     </string>
+    <string name="existing_emis">Existing EMIs</string>
+    <string name="last_three_month_cc_bill">Last 3 months credit card bill</string>
 </resources>
