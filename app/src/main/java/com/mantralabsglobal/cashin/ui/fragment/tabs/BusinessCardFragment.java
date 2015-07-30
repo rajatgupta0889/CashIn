@@ -24,13 +24,18 @@ import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.camera.CwacCameraFragment;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
+import com.mantralabsglobal.cashin.utils.BusinessCardUtils;
 import com.mantralabsglobal.cashin.utils.CameraUtils;
 import com.mantralabsglobal.cashin.utils.ImageUtils;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.soundcloud.android.crop.Crop;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -126,7 +131,8 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         if(value != null)
         {
             employerName.setText(value.getEmployerName());
-            workAddress.setText(value.getAddress());
+            String concatAddress = StringUtils.join(value.getaddressLines(), ",");
+            workAddress.setText(concatAddress);
             emailId.setText(value.getEmail());
         }
     }
@@ -137,7 +143,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             base = new BusinessCardService.BusinessCardDetail();
 
         base.setEmployerName(employerName.getText().toString());
-        base.setAddress(workAddress.getText().toString());
+        base.setAddress(Arrays.asList(workAddress.getText().toString()));
         base.setEmail(emailId.getText().toString());
 
         return base;
@@ -197,6 +203,12 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             reset(false);
         }
     }
+
+    @Override
+    protected void preProcessOCRData(BusinessCardService.BusinessCardDetail detail) {
+        BusinessCardUtils.enrich(detail.getContentArr(), detail);
+    }
+
 
     @Override
     public void getDetailFromImage(CardImage image, Callback<BusinessCardService.BusinessCardDetail> callback) {
