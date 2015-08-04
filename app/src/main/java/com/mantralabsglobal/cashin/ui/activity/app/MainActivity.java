@@ -186,78 +186,9 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_product_tour) {
-            Intent intent = new Intent(getBaseContext(), IntroSliderActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        }
-      /* if(id == R.id.action_scan_sms)
-        {
-            SMSProvider smsProvider = new SMSProvider(this);
-            List<SMSProvider.SMSMessage> messageList = smsProvider.getTransactionList(Long.MIN_VALUE);
-            openSMSDialog(messageList);
-        }
 
-        if(id == R.id.action_package_hash){
-            showPckageHash();
-        }
-        if(id == R.id.action_launch_camera)
-        {
-            Intent intent = new Intent(getBaseContext(), CwacCameraActivity.class);
-            startActivityForResult(intent, 237);
-            //finish();
-        }*/
         return super.onOptionsItemSelected(item);
     }
-
-   /* protected void showPckageHash(){
-        try {
-            PackageInfo info =     getPackageManager().getPackageInfo("com.mantralabsglobal.cashin",     PackageManager.GET_SIGNATURES);
-            for (android.content.pm.Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                showToastOnUIThread(sign);
-                Log.i("MY KEY HASH:", sign);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-        } catch (NoSuchAlgorithmException e) {
-        }
-    }
-
-    protected void openSMSDialog(List<SMSProvider.SMSMessage> messageList)
-    {
-        AlertDialog.Builder myDialog = new AlertDialog.Builder(MainActivity.this);
-
-        final ListView listview=new ListView(MainActivity.this);
-        LinearLayout layout = new LinearLayout(MainActivity.this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.addView(listview);
-        myDialog.setView(layout);
-        ArrayAdapter<SMSProvider.SMSMessage> adapter = new ArrayAdapter<SMSProvider.SMSMessage>(this, 0, messageList){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                // Get the data item for this position
-                SMSProvider.SMSMessage smsMessage = getItem(position);
-                // Check if an existing view is being reused, otherwise inflate the view
-                if (convertView == null) {
-                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.smsmessage_row, parent, false);
-                }
-                // Lookup view for data population
-                TextView tvBody = (TextView) convertView.findViewById(R.id.tv_body);
-                TextView tvFrom = (TextView) convertView.findViewById(R.id.tv_from);
-
-                tvBody.setText(smsMessage.getBody());
-                tvFrom.setText(smsMessage.getAddress());
-                return convertView;
-            }
-        };
-        //adapter.addAll(messageList);
-        listview.setAdapter(adapter);
-        myDialog.show();
-    }*/
 
     protected void checkUserName()
     {

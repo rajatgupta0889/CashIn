@@ -34,6 +34,7 @@ public class RestClient  {
     private PanCardService panCardServiceOCR;
     private AvtarService avtarService;
     private ReferenceService referenceService;
+    private BankSnapService bankSnapService;
 
     public RestClient(Context context)
     {
@@ -82,6 +83,7 @@ public class RestClient  {
         panCardServiceOCR = restAdapterOCR.create(PanCardService.class);
         avtarService = restAdapter.create(AvtarService.class);
         referenceService = restAdapter.create(ReferenceService.class);
+        bankSnapService = restAdapter.create(BankSnapService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -91,6 +93,14 @@ public class RestClient  {
 
     public LinkedInService getLinkedInService() {
         return linkedInService;
+    }
+
+    public BankSnapService getBankSnapService() {
+        return bankSnapService;
+    }
+
+    public void setBankSnapService(BankSnapService bankSnapService) {
+        this.bankSnapService = bankSnapService;
     }
 
     public AddressService getAddressService() {
@@ -137,4 +147,6 @@ public class RestClient  {
     public ReferenceService getReferenceService() {
         return referenceService;
     }
+
+
 }
