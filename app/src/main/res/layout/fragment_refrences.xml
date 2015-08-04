@@ -13,6 +13,7 @@
 
                 <TextView
                    android:text="@string/select_three_reference"
+                    android:gravity="center"
                     style="@style/AppTheme.Form.Fragment.Top.Header"
                     />
 
