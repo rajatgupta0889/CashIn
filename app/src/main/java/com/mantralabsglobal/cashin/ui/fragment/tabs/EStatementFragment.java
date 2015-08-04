@@ -20,10 +20,16 @@ import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class EStatementFragment extends BaseFragment
 {
     private static final String TAG = EStatementFragment.class.getSimpleName();
+    final private List<String> SCOPES = Arrays.asList(new String[]{
+            "https://www.googleapis.com/auth/plus.login",
+            "https://www.googleapis.com/auth/gmail.readonly"
+    });
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,7 +76,9 @@ public class EStatementFragment extends BaseFragment
 
             protected String getScope()
             {
-                return super.getScope() + " " + GMAIL_SCOPE;
+                return String.format("oauth2:server:client_id:%s:api_scope:%s", getResources().getString(R.string.server_client_id), TextUtils.join(" ", SCOPES));
+
+  //              return super.getScope() + " " + GMAIL_SCOPE;
             }
 
             @Override
@@ -104,8 +112,11 @@ public class EStatementFragment extends BaseFragment
             String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
             Log.d(TAG, "Account Name=" + accountName);
             //Uncomment below line to remember the gmail account
-            //((Application)getActivity().getApplication()).setGmailAccount(accountName);
+            ((Application)getActivity().getApplication()).setGmailAccount(accountName);
             requestForGmailToken(accountName);
+        }
+        else if (requestCode == BaseActivity.REQ_SIGN_IN_REQUIRED && resultCode == Activity.RESULT_OK) {
+            scanGmailForBankStatements();
         }
     }
 

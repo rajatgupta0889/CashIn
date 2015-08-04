@@ -57,8 +57,8 @@ public abstract class GoogleTokenRetrieverTask extends AsyncTask<Context, Void, 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-
-        afterTokenRecieved(getEmail(), s);
+        if(s != null)
+            afterTokenRecieved(getEmail(), s);
     }
 
     public void onException(UserRecoverableAuthException e) {
