@@ -35,8 +35,6 @@ import retrofit.Callback;
 public class LinkedInFragment extends BaseBindableFragment<LinkedInService.LinkedInDetail> {
 
     private static final String TAG = "LinkedInFragment";
-    @InjectView(R.id.btn_linkedIn_connect)
-    ImageButton btn_linkedIn;
 
     @InjectView(R.id.ll_linkedIn_connect)
     ViewGroup vg_linkedInConnect;

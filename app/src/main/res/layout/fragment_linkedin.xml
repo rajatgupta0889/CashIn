@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_pan_card_fragment">
 
-    <FrameLayout
-        android:id="@+id/fl_linkedIn"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
         <LinearLayout
             android:visibility="visible"
             android:id="@+id/ll_linkedIn_connect"
@@ -16,7 +12,22 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/linkedIn" style="@android:style/TextAppearance.DeviceDefault.Large" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:text="@string/linkedIn" style="@android:style/TextAppearance.DeviceDefault.Large" />
+
+            <com.beardedhen.androidbootstrap.BootstrapButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_linkedIn_connect"
+                android:layout_margin="10dp"
+                android:textSize="18sp"
+                android:text="Connect with LinkedIn"
+                bootstrap:bb_size="large"
+                bootstrap:bb_icon_left="fa-linkedin"
+                bootstrap:bb_type="primary"
+                />
+<!--
 
                 <ImageButton
                     android:id="@+id/btn_linkedIn_connect"
@@ -24,13 +35,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:src="@drawable/linkedin_default"
                     android:contentDescription="Signin with linkedin" />
+-->
 
 
         </LinearLayout>
 
-        <ScrollView android:visibility="gone"
+    <FrameLayout android:id="@+id/rl_linkedin_details" android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"  android:id="@+id/rl_linkedin_details">
+            android:layout_height="match_parent" style="@style/AppTheme.Form.ScrollView">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:orientation="vertical">
@@ -94,20 +110,10 @@
                 android:layout_height="wrap_content" custom:field_label="@string/field_of_study" custom:field_icon="@drawable/ic_work_address"/>
 
 
-            <LinearLayout android:layout_alignParentBottom="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
-
-            </LinearLayout>
-
         </LinearLayout>
         </ScrollView>
+
+        <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
 
     </FrameLayout>
     <ProgressBar

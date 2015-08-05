@@ -2,7 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/business_card_viewflipper">
 
-            <LinearLayout
+    <LinearLayout
                 android:id="@+id/ll_business_card_snap" android:visibility="gone"
                 android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
 
@@ -38,8 +38,9 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-            <LinearLayout android:padding="16dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            android:layout_height="match_parent"  style="@style/AppTheme.Form.ScrollView">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <com.mantralabsglobal.cashin.ui.view.CustomEditText
                     android:id="@+id/cc_employer_name"
@@ -71,9 +72,7 @@
             app:fabSize="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fab_bottom_margin"
-            android:layout_marginRight="@dimen/fab_right_margin"
-            android:layout_gravity="bottom|right"
+            style="@style/AppTheme.Form.FAB"
             app:borderWidth="0dp"/>
 
     </FrameLayout>
