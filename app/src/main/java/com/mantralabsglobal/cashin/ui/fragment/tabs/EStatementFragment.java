@@ -110,7 +110,7 @@ public class EStatementFragment extends BaseFragment
 
             @Override
             public void onException(UserRecoverableAuthException e) {
-                startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
+                getActivity().startActivityForResult(e.getIntent(), BaseActivity.REQ_SIGN_IN_REQUIRED);
             }
 
             @Override
@@ -148,6 +148,8 @@ public class EStatementFragment extends BaseFragment
 
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+
+        Log.d(TAG, "On activity result" + requestCode);
         if (requestCode == BaseActivity.PICK_ACCOUNT_REQUEST && resultCode == Activity.RESULT_OK) {
             String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
             Log.d(TAG, "Account Name=" + accountName);
