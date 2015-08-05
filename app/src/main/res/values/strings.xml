@@ -229,10 +229,10 @@
     <string name="title_activity_main_activity_my">MainActivityMy</string>
     <string name="position_card_inside_frame">Position card inside red marker</string>
     <string name="linkedin_key">754dods2c70xsz</string>
-    <string name="linkedin_secret">E`fnEG97mqeDpXxCW</string>
+    <string name="linkedin_secret">EfnEG97mqeDpXxCW</string>
     <string name="press_back_again_to_exit">Please BACK again to exit</string>
     <string name="facebook_secret">b620dc218af76f7d8f1cde28a0da5844</string>
-    <string name="server_client_id">773614146127-hed2fd9ba8a703eth8ogab8klgslgumt.apps.googleusercontent.com</string>
+    <string name="server_client_id">773614146127-u3nif8uven9pk6416ge9d462qjcde86a.apps.googleusercontent.com</string>
     <string name="select_three_reference">Select 3 people from your contact list</string>
     <string name="title_contact_picker">Your Contacts</string>
     <string name="loading_contacts">Loading contacts</string>
