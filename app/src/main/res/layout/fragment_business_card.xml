@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/business_card_viewflipper">
 
             <LinearLayout
-                android:id="@+id/ll_business_card_snap" android:visibility="visible"
+                android:id="@+id/ll_business_card_snap" android:visibility="gone"
                 android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
 
                 <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
@@ -32,10 +32,14 @@
                 </FrameLayout>
 
         </LinearLayout>
-        <ScrollView android:visibility="gone"
+    <FrameLayout android:id="@+id/ll_business_card_detail" android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/ll_business_card_detail" >
-            <LinearLayout android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+            android:layout_height="match_parent" >
+            <LinearLayout android:padding="16dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
                 <com.mantralabsglobal.cashin.ui.view.CustomEditText
                     android:id="@+id/cc_employer_name"
@@ -54,38 +58,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" app:field_label="@string/work_address" app:field_icon="@drawable/ic_name"/>
 
-                <LinearLayout android:layout_alignParentBottom="true"
-                    android:layout_width="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignTop="@+id/fab_launchScanner"
-                    android:layout_height="wrap_content" android:gravity="center">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/btn_back" android:text="@string/back" />
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/fab_launch_camera"
-                        android:src="@drawable/ic_camera"
-                        android:visibility="gone"
-                        app:fabSize="normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:layout_margin="24dp"
-                        android:layout_gravity="bottom|center"
-                        app:borderWidth="0dp"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/btn_next" android:text="@string/next" />
-
-                </LinearLayout>
 
 
             </LinearLayout>
         </ScrollView>
 
+        <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_launch_camera"
+            android:src="@drawable/ic_camera"
+            app:fabSize="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_bottom_margin"
+            android:layout_marginRight="@dimen/fab_right_margin"
+            android:layout_gravity="bottom|right"
+            app:borderWidth="0dp"/>
+
+    </FrameLayout>
     <ProgressBar
         android:id="@+id/progres_bar"
         android:layout_width="wrap_content"

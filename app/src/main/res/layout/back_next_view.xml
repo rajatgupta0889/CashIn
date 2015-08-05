@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_back"
+            android:layout_margin="10dp"
+            android:text="@string/back"
+            bootstrap:bb_size="small"
+            bootstrap:bb_icon_left="fa-backward"
+            bootstrap:bb_type="default"
+            />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="0dp" android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_next"
+            android:layout_margin="10dp"
+            bootstrap:bb_size="small"
+            android:text="@string/next"
+            bootstrap:bb_icon_right="fa-forward"
+            bootstrap:bb_type="primary"
+            />
+
+</LinearLayout>

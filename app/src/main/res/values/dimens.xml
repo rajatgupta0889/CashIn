@@ -27,4 +27,6 @@
     <dimen name="form_fragment_seperator_height">2dp</dimen>
     <dimen name="form_fragment_seperator_margin_bottom">0dp</dimen>
     <dimen name="form_header_margin_top_text">10dp</dimen>
+    <dimen name="fab_bottom_margin">64dp</dimen>
+    <dimen name="fab_right_margin">16dp</dimen>
 </resources>

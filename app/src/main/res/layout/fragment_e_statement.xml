@@ -1,6 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
     tools:context="com.mantralabsglobal.cashin.ui.fragment.tabs.EStatementFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -8,4 +10,14 @@
         android:text="e-statement"
         android:id="@+id/text"/>
 
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/btn_scan_gmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/select_gmail_acccount"
+        bootstrap:bb_icon_left="fa-google"
+        bootstrap:bb_type="primary"
+        android:layout_gravity="center"
+        />
 </FrameLayout>

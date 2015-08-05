@@ -264,4 +264,6 @@
     </string>
     <string name="existing_emis">Existing EMIs</string>
     <string name="last_three_month_cc_bill">Last 3 months credit card bill</string>
+    <string name="select_gmail_acccount">Select gmail Account</string>
+    <string name="change_gmail_account">Change gmail account</string>
 </resources>

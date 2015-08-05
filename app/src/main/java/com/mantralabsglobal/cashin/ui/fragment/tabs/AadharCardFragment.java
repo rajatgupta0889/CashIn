@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.Application;
@@ -76,7 +77,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
      ViewGroup vg_form;
 
     @InjectView(R.id.btn_next)
-    Button btnNext;
+    BootstrapButton btnNext;
 
     static final int SCAN_AADHAR_CARD = 99;
 

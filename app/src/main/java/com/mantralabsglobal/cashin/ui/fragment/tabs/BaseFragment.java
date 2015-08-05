@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 
 import java.util.ArrayList;
@@ -62,6 +63,11 @@ public abstract class BaseFragment extends Fragment {
             }
         });
 
+    }
+
+    protected Application getCashInApplication()
+    {
+       return ((Application)getActivity().getApplication());
     }
 
     protected void showToastOnUIThread(final String message)

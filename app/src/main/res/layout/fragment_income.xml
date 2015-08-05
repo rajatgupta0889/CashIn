@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-   android:padding="20dp">
+   >
 
-    <ScrollView android:id="@+id/vg_form"
+    <FrameLayout android:id="@+id/vg_form" android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"  android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp" android:gravity="center">
+            android:layout_height="wrap_content" android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,19 +41,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></com.mantralabsglobal.cashin.ui.view.MonthIncomeView>
 
-        <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_back" android:text="@string/back" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_next" android:text="@string/next" />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+        <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
+
+    </FrameLayout>
     <ProgressBar
         android:id="@+id/progres_bar"
         android:layout_width="wrap_content"
