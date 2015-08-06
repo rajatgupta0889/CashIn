@@ -71,7 +71,7 @@ public class ReferencesFragment extends BaseBindableListFragment<ReferenceServic
 
     @Override
     protected void onUpdate(List<ReferenceService.Reference> updatedData, Callback<List<ReferenceService.Reference>> saveCallback) {
-        referenceService.addReferences(updatedData, saveCallback);
+        referenceService.updateReferences(updatedData, saveCallback);
     }
 
     @Override

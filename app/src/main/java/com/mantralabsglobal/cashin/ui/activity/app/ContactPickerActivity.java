@@ -23,6 +23,7 @@ public class ContactPickerActivity extends BaseActivity {
     public static final String CONTACT_PICKER_RESULT = "contacts";
     int selectionCount = 0;
     int maxSelection = 3;
+    int minSelection = 3;
     String title;
 
     public static final int RESULT_ERROR = RESULT_FIRST_USER;
@@ -58,13 +59,17 @@ public class ContactPickerActivity extends BaseActivity {
         return selectionCount<maxSelection;
     }
 
+    public boolean shouldSelectMore(){
+        return selectionCount < minSelection;
+    }
+
     public void setSelectionCount(int count){
         this.selectionCount = count;
         updateTitle();
     }
 
     private void updateTitle() {
-        this.setTitle(title + "(" + selectionCount  + "/" + maxSelection + ")");
+        this.setTitle(title + "(" + selectionCount + "/" + maxSelection + ")");
     }
 
     @Override
@@ -77,8 +82,15 @@ public class ContactPickerActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.contacts_done) {
-            returnResults();
-            return true;
+            if(!shouldSelectMore()) {
+                returnResults();
+                return true;
+            }
+            else
+            {
+                showToastOnUIThread(String.format("Please select at least %d references", minSelection));
+                return false;
+            }
         } /*else if (item.getItemId() == R.id.contacts_cancel) {
             cancel();
             return true;

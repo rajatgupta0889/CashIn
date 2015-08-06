@@ -15,17 +15,25 @@ import retrofit.http.POST;
  */
 public interface ReferenceService {
 
-    @GET("/user/references")
+    @GET("/user/referenceDetail")
     void getReferences(Callback<List<Reference>> callback);
 
-    @POST("/user/references")
+    @POST("/user/addReference")
     void addReferences(@Body List<Reference> bankDetail, Callback<List<Reference>> callback);
+
+    @POST("/user/editReference")
+    void updateReferences(@Body List<Reference> bankDetail, Callback<List<Reference>> callback);
 
     public static class Reference implements Serializable{
 
+        @SerializedName("refName")
         private String name;
+        @SerializedName("refMobile")
         private String number;
+        @SerializedName("relationship")
         private String relationship;
+        @SerializedName("refEmail")
+        private String email;
 
         public String getName() {
             return name;
@@ -49,6 +57,14 @@ public interface ReferenceService {
 
         public void setRelationship(String relationship) {
             this.relationship = relationship;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
         }
     }
 
