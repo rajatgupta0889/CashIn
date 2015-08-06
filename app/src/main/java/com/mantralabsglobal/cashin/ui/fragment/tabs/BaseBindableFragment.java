@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.util.Log;
@@ -53,7 +52,7 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         validator.setValidationListener(new Validator.ValidationListener() {
             @Override
             public void onValidationSucceeded() {
-                if(getFormView()!= null && getFormView().isShown() && getFormView().isEnabled())
+                if (getFormView() != null && getFormView().isShown() && getFormView().isEnabled())
                     isFormValid = true;
                 else
                     isFormValid = false;
@@ -207,9 +206,9 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
         @Override
         public void failure(RetrofitError error) {
             hideProgressDialog();
-            if(getCurrentView() instanceof CoordinatorLayout) {
+            if(getCurrentView() != null) {
                 Snackbar snackbar = Snackbar
-                        .make((CoordinatorLayout) getCurrentView(), "Failed to save data. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                        .make(getCurrentView(), "Failed to save data. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
                         .setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -254,9 +253,9 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                 handleDataNotPresentOnServer();
             }
             else {
-                if(getCurrentView() instanceof CoordinatorLayout) {
+                if(getCurrentView() != null) {
                     Snackbar snackbar = Snackbar
-                            .make((CoordinatorLayout) getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                            .make(getCurrentView(), "Failed to query server. Error: " + error.getMessage(), Snackbar.LENGTH_LONG)
                             .setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -291,16 +290,18 @@ public abstract class BaseBindableFragment<T> extends BaseFragment implements Bi
                     @Override
                     public void failure(RetrofitError error) {
                         hideProgressDialog();
-                        Snackbar snackbar = Snackbar
-                                .make((CoordinatorLayout) getCurrentView(), "Failed to process Image. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Retry", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        showProgressDialog(getString(R.string.processing_image));
-                                        uploadImageToServerForOCR(bmp, service);
-                                    }
-                                });
-                        snackbar.show();
+                        if(getCurrentView() != null) {
+                            Snackbar snackbar = Snackbar
+                                    .make(getCurrentView(), "Failed to process Image. Error: " + error.getMessage(), Snackbar.LENGTH_INDEFINITE)
+                                    .setAction("Retry", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            showProgressDialog(getString(R.string.processing_image));
+                                            uploadImageToServerForOCR(bmp, service);
+                                        }
+                                    });
+                            snackbar.show();
+                        }
                     }
                 });
                 return null;
