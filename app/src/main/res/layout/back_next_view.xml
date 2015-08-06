@@ -24,7 +24,7 @@
             bootstrap:bb_size="small"
             android:text="@string/next"
             bootstrap:bb_icon_right="fa-forward"
-            bootstrap:bb_type="primary"
+            bootstrap:bb_type="default"
             />
 
 </LinearLayout>

@@ -40,6 +40,9 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
 
     @InjectView(R.id.vg_bank_details)
     ViewGroup vg_bank_details;
+
+    @InjectView(R.id.info_bar)
+    ViewGroup vgInfoBar;
     private TabHost mTabHost;
 
     List<BankDetailView> bankDetailViewList;
@@ -174,6 +177,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
     private void handlePrimaryBankSelected(BankDetailView bankDetailView) {
 
         bank_detail_add_more.setVisibility(View.GONE);
+        vgInfoBar.setVisibility(View.GONE);
         mainLayout.setVisibility(View.VISIBLE);
         for(BankDetailView bdview : bankDetailViewList)
         {
