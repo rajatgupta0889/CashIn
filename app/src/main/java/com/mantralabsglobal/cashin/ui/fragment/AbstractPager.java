@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.mantralabsglobal.cashin.R;
 
@@ -48,6 +50,17 @@ public abstract class AbstractPager extends Fragment {
             }
         }, 250);
 
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if(state == ViewPager.SCROLL_STATE_IDLE && getContext() != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (inputMethodManager != null) {
+                        inputMethodManager.hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
+                    }
+                }
+            }
+        });
 
         return view;
     }
@@ -126,4 +139,6 @@ public abstract class AbstractPager extends Fragment {
         }
         return false;
     }
+
+    protected abstract Context getContext();
 }
