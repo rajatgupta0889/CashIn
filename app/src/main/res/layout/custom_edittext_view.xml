@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent" android:id="@+id/rl_custom_view"
-    android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent" android:id="@+id/rl_custom_view"
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/tv_label" android:layout_toEndOf="@+id/ac_icon"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="@string/label"
-        />
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/ac_icon"
-        android:layout_below="@+id/tv_label"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:scaleType="fitCenter" />
+        android:layout_height="wrap_content" android:scaleType="center" android:layout_gravity="center" />
 
-    <EditText android:layout_toEndOf="@+id/ac_icon" android:layout_below="@+id/tv_label" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:singleLine="true"
-        android:tag="et_editText"
-        />
+    </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" android:layout_weight="1" android:text="@string/label"
+            />
+
+        <EditText android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="2" android:singleLine="true"
+            android:tag="et_editText"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>
