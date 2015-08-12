@@ -110,7 +110,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
         List<SMSProvider.SMSMessage> smsList = provider.readSMS(new Predicate<SMSProvider.SMSMessage>() {
             @Override
             public boolean apply(SMSProvider.SMSMessage smsMessage) {
-                return provider.hasAccountInformation(smsMessage) && provider.isSenderBank(smsMessage);
+                return provider.isSenderBank(smsMessage) && provider.hasAccountInformation(smsMessage) ;
             }
         });
 
@@ -121,7 +121,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
             PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
             bankDetail.setAccountNumber(provider.getAccountNumber(smsMessage));
             bankDetail.setBankName(provider.getBankName(smsMessage));
-            bankDetail.setIsPrimary(smsList.size() == 1);
+           // bankDetail.setIsPrimary(smsList.size() == 1);
             if(!bankDetailList.contains(bankDetail))
                 bankDetailList.add(bankDetail);
             if(!bankCount.containsKey(bankDetail.getAccountNumberLast4Digits()))

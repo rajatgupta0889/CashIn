@@ -9,6 +9,8 @@ import com.mantralabsglobal.cashin.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by pk on 7/2/2015.
@@ -25,6 +27,8 @@ public class SMSProvider {
     private String [] accountKeywords;
     private String [] currencyKeywords;
     private Context context;
+    private Pattern accountNumberPattern;
+    private Pattern bankNamePattern;
 
     public SMSProvider(Context context)
     {
@@ -36,6 +40,8 @@ public class SMSProvider {
         billKeywords = context.getResources().getStringArray(R.array.bill_keywords);
         accountKeywords = context.getResources().getStringArray(R.array.account_keyword);
         currencyKeywords = context.getResources().getStringArray(R.array.currency_keywords);
+        accountNumberPattern = Pattern.compile(context.getString(R.string.account_name_regex));
+        bankNamePattern = Pattern.compile(context.getString(R.string.bank_name_regex));
     }
 
     public List<SMSMessage> readSMS(Predicate<SMSMessage> filter)
@@ -107,21 +113,19 @@ public class SMSProvider {
         String bankName = getBankName(message);
         if(bankName!= null && bankName.length()>=0)
         {
-          //int startIndex = message.getBody().indexOf("A/c");
-            int startIndex = message.getBody().indexOf("XX", 0);
-            int endIndex = message.getBody().indexOf(" ", startIndex);
-            if(startIndex>=0 && endIndex>=0)
-                return message.getBody().substring(startIndex, endIndex);
+            Matcher m = accountNumberPattern.matcher(message.getBody());
+            while (m.find()) {
+                return "XX" + m.group(1);
+            }
         }
         return null;
     }
 
     public String getBankName(SMSMessage message)
     {
-        for(String bankCode: banks)
-        {
-            if(message.getAddress().indexOf(bankCode)>=0)
-                return bankCode;
+        Matcher m = bankNamePattern.matcher(message.getAddress());
+        while (m.find()) {
+            return m.group(1);
         }
         return null;
     }
