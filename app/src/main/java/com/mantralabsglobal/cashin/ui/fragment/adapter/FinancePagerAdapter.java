@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BankDetailFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BlankFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.CurrentAddressFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.EMIFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.HistoryFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.IncomeFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
@@ -23,6 +24,8 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
 
     private BankDetailFragment bankDetailFragment;
 
+    private EMIFragment emiFragment;
+
     private HistoryFragment userHistoryFragment;
 
 
@@ -32,6 +35,7 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
         ifragnent = new IncomeFragment();
         bankDetailFragment = new BankDetailFragment();
         userHistoryFragment = new HistoryFragment();
+        emiFragment = new EMIFragment();
     }
 
     @Override
@@ -42,6 +46,8 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
                 return bankDetailFragment;
             case 1:
                 return ifragnent ;
+            case 2:
+                return emiFragment ;
             case 3:
                 return userHistoryFragment ;
             // Open FragmentTab4.java

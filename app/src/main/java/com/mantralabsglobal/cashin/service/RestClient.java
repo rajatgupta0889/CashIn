@@ -35,6 +35,7 @@ public class RestClient  {
     private AvtarService avtarService;
     private ReferenceService referenceService;
     private BankSnapService bankSnapService;
+    private EMIService emiService;
 
     public RestClient(Context context)
     {
@@ -84,6 +85,7 @@ public class RestClient  {
         avtarService = restAdapter.create(AvtarService.class);
         referenceService = restAdapter.create(ReferenceService.class);
         bankSnapService = restAdapter.create(BankSnapService.class);
+        emiService = restAdapter.create(EMIService.class);
     }
 
     public AuthenticationService getAuthenticationService()
@@ -148,5 +150,7 @@ public class RestClient  {
         return referenceService;
     }
 
-
+    public EMIService getEmiService() {
+        return emiService;
+    }
 }

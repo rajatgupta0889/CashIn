@@ -28,10 +28,10 @@ import retrofit.mime.TypedFile;
 public interface BankSnapService {
 
     @Multipart
-    @POST("/user/bank_statement")
+    @POST("/user/attachment")
     public void uploadBankSnapImage(@Part("bank_statement") TypedFile file, Callback<BankSnapImage> callback);
 
-    @GET("/user/bank_statement")
+    @GET("/user/attachment")
     public void getBankStmtSnapImage(Callback<BankSnapImage> callback);
 
     public static class BankSnapUtil

@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.BankDetailFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,11 +32,12 @@ import java.util.Map;
 public class BankDetailView extends LinearLayout  {
 
     private ImageView bankName;
-    private EditText accountNumber;
+    public EditText accountNumber;
     private ImageView isPrimaryIcon;
     Map<String, Integer> drawableResourceMap;
 
     private  List<PrimaryFlagChangedListener> primaryFlagChangedListenerList = new ArrayList<>();
+    private  AddMoreAccountNumberListener accountNumListener;
 
     private PrimaryBankService.BankDetail bankDetail;
 
@@ -56,7 +60,11 @@ public class BankDetailView extends LinearLayout  {
 
         drawableResourceMap = new HashMap<>();
         drawableResourceMap.put("HDFC", R.drawable.logo_hdfc);
-        drawableResourceMap.put("ICICI", R.drawable.logo_icici);
+        drawableResourceMap.put("CITI", R.drawable.logo_citi_bank);
+        drawableResourceMap.put("YESB", R.drawable.logo_yes_bank);
+        drawableResourceMap.put("PUNB", R.drawable.logo_punjab_national_bank);
+        drawableResourceMap.put("SYNB", R.drawable.logo_syndicate_bank);
+        drawableResourceMap.put("ICIC", R.drawable.logo_icici);
 
         loadViews();
     }
@@ -74,6 +82,27 @@ public class BankDetailView extends LinearLayout  {
                     for (PrimaryFlagChangedListener listener : primaryFlagChangedListenerList) {
                         listener.onPrimaryChanged(BankDetailView.this);
                     }
+                }
+            }
+        });
+
+        accountNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d("s",s.toString());
+                if (s != null && s.toString().trim().length() > 0 &&  BankDetailView.this.getBankDetail() != null && accountNumListener != null) {
+                    BankDetailView.this.getBankDetail().setAccountNumber(s.toString());
+                    accountNumListener.onAccountNumberChanged(BankDetailView.this);
                 }
             }
         });
@@ -134,8 +163,18 @@ public class BankDetailView extends LinearLayout  {
             primaryFlagChangedListenerList.add(listener);
     }
 
+    public void addAddMoreAccountNumberListener(AddMoreAccountNumberListener listener)
+    {
+        accountNumListener = listener;
+    }
+
     public interface PrimaryFlagChangedListener
     {
         void onPrimaryChanged(BankDetailView bankDetailView);
+    }
+
+    public interface AddMoreAccountNumberListener
+    {
+        void onAccountNumberChanged(BankDetailView bankDetailView);
     }
 }

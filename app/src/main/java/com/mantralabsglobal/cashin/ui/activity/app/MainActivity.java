@@ -183,7 +183,13 @@ public class MainActivity extends BaseActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        int id = item.getItemId();
+        if (id == R.id.action_product_tour) {
+            Intent intent = new Intent(getBaseContext(), IntroSliderActivity.class);
+            startActivity(intent);
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
