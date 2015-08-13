@@ -1,109 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:padding="20dp">
+    android:layout_height="match_parent" >
 
-    <ScrollView android:id="@+id/vg_form"
+    <FrameLayout android:id="@+id/vg_form" android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent" android:orientation="vertical"
-            android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:text="@string/ever_taken_a_loan" style="@style/text_medium_input_header" />
+            <ScrollView  style="@style/AppTheme.Form.ScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent" android:orientation="vertical"
+                    android:layout_height="match_parent">
 
-    <RadioGroup android:id="@+id/rg_loan_taken"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:text="@string/ever_taken_a_loan" style="@style/text_medium_input_header" />
 
-        <RadioButton android:id="@+id/rg_loan_taken_yes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/yes" />
-
-
-        <RadioButton android:id="@+id/rg_loan_taken_no"
-            android:layout_width="0dp" android:layout_weight="1"
-            android:layout_height="wrap_content" android:text="@string/no" />
-    </RadioGroup>
-            <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
-
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="@string/cheque_bounced" style="@style/text_medium_input_header" />
-
-
-            <RadioGroup android:id="@+id/rg_cheque_bounced"
+            <RadioGroup android:id="@+id/rg_loan_taken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
 
-                <RadioButton android:id="@+id/rg_cheque_bounced_yes"
+                <RadioButton android:id="@+id/rg_loan_taken_yes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/yes" />
 
 
-                <RadioButton android:id="@+id/rg_cheque_bounced_no"
+                <RadioButton android:id="@+id/rg_loan_taken_no"
                     android:layout_width="0dp" android:layout_weight="1"
                     android:layout_height="wrap_content" android:text="@string/no" />
             </RadioGroup>
+                    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:text="@string/cheque_bounced" style="@style/text_medium_input_header" />
+
+
+                    <RadioGroup android:id="@+id/rg_cheque_bounced"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
+
+                        <RadioButton android:id="@+id/rg_cheque_bounced_yes"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/yes" />
+
+
+                        <RadioButton android:id="@+id/rg_cheque_bounced_no"
+                            android:layout_width="0dp" android:layout_weight="1"
+                            android:layout_height="wrap_content" android:text="@string/no" />
+                    </RadioGroup>
+
+                    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:text="@string/application_rejected" style="@style/text_medium_input_header" />
+
+
+                <RadioGroup android:id="@+id/rg_application_rejected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
+
+                    <RadioButton android:id="@+id/rg_application_rejected_yes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/yes" />
+
+
+                    <RadioButton android:id="@+id/rg_application_rejected_no"
+                        android:layout_width="0dp" android:layout_weight="1"
+                        android:layout_height="wrap_content" android:text="@string/no" />
+                </RadioGroup>
 
             <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="@string/application_rejected" style="@style/text_medium_input_header" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:text="@string/ever_defaulted" style="@style/text_medium_input_header" />
 
 
-        <RadioGroup android:id="@+id/rg_application_rejected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
+                <RadioGroup android:id="@+id/rg_defaulted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
 
-            <RadioButton android:id="@+id/rg_application_rejected_yes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/yes" />
-
-
-            <RadioButton android:id="@+id/rg_application_rejected_no"
-                android:layout_width="0dp" android:layout_weight="1"
-                android:layout_height="wrap_content" android:text="@string/no" />
-        </RadioGroup>
-
-    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:text="@string/ever_defaulted" style="@style/text_medium_input_header" />
+                    <RadioButton android:id="@+id/rg_defaulted_yes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/yes" />
 
 
-        <RadioGroup android:id="@+id/rg_defaulted"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="horizontal" android:paddingLeft="50dp" android:paddingRight="50dp">
+                    <RadioButton android:id="@+id/rg_defaulted_no"
+                        android:layout_width="0dp" android:layout_weight="1"
+                        android:layout_height="wrap_content" android:text="@string/no" />
+                </RadioGroup>
 
-            <RadioButton android:id="@+id/rg_defaulted_yes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/yes" />
+            <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
 
+            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp" android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
 
-            <RadioButton android:id="@+id/rg_defaulted_no"
-                android:layout_width="0dp" android:layout_weight="1"
-                android:layout_height="wrap_content" android:text="@string/no" />
-        </RadioGroup>
+            </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
 
-    <View style="@style/AppTheme.Form.Fragment.Seperator.NoGradient"></View>
+        <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
 
-    <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp" android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:gravity="center">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
-
-    </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </FrameLayout>
     <ProgressBar
         android:id="@+id/progres_bar"
         android:layout_width="wrap_content"

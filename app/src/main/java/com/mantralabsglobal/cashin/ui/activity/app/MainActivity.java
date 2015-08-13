@@ -1,37 +1,23 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
 import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
 import com.mantralabsglobal.cashin.ui.fragment.adapter.MainFragmentAdapter;
-import com.mantralabsglobal.cashin.utils.SMSProvider;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +68,7 @@ public class MainActivity extends BaseActivity  {
         checkUserName();
 
         viewPager.addOnPageChangeListener(pageChangeListener);
-        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+        mainFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(mainFragmentAdapter);
 
     }
@@ -127,6 +113,17 @@ public class MainActivity extends BaseActivity  {
                 socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_socialselected, 0, 0);
             else
                 socialButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_social, 0, 0);
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            if(state == ViewPager.SCROLL_STATE_IDLE) {
+               InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
+                }
+            }
         }
     };
 

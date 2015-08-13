@@ -48,7 +48,7 @@ public interface PrimaryBankService {
         }
 
         public String getAccountNumberLast4Digits() {
-            if(accountNumber!= null && accountNumber.length()>0)
+            if(accountNumber!= null && accountNumber.length()>4)
             {
                 return accountNumber.substring(accountNumber.length()-5);
             }

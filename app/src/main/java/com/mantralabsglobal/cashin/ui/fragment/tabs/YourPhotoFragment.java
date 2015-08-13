@@ -109,7 +109,7 @@ public class YourPhotoFragment extends BaseBindableFragment<AvtarService.AvtarIm
         photoPickerIntent.putExtra("aspectY", 1);
         photoPickerIntent.putExtra("scale", true);*/
 
-        startActivityForResult(photoPickerIntent, BaseActivity.SELECT_PHOTO_FROM_GALLERY);
+        getActivity().startActivityForResult(photoPickerIntent, BaseActivity.SELECT_PHOTO_FROM_GALLERY);
     }
 
     @OnClick(R.id.launch_camera_button)

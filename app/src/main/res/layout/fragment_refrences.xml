@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_aadhar_fragment">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:id="@+id/ll_references_fragment">
 
         <LinearLayout
             android:visibility="gone"
@@ -32,39 +37,76 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/vg_reference_detail" android:visibility="visible" android:orientation="vertical"
+        <FrameLayout
+            android:id="@+id/vg_reference_detail" android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ExpandableListView android:layout_weight="10"
+            <ExpandableListView
                 android:id="@+id/elv_reference_list"
                 android:layout_width="match_parent"
                 android:groupIndicator="@null"
-                android:layout_height="0dp"/>
+                android:layout_height="match_parent" style="@style/AppTheme.Form.ScrollView"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp" android:layout_weight="2" android:gravity="center">
-                <Button android:id="@+id/btn_send_request"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/send_request" />
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+                android:orientation="horizontal"
+                android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom">
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_back"
+                    android:layout_margin="10dp"
+                    android:text="@string/back"
+                    bootstrap:bb_size="small"
+                    bootstrap:bb_icon_left="fa-backward"
+                    bootstrap:bb_type="default"
+                    />
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_send_request"
+                    android:layout_margin="10dp"
+                    bootstrap:bb_size="small"
+                    android:text="@string/send_request"
+                    bootstrap:bb_icon_right="fa-send"
+                    bootstrap:bb_type="primary"
+                    />
 
             </LinearLayout>
 
+
+
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:gravity="center">
+
+
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_send_request"
+                    android:layout_margin="10dp"
+                    bootstrap:bb_size="large"
+                    android:text="@string/send_request"
+                    bootstrap:bb_icon_right="fa-send"
+                    bootstrap:bb_type="primary"
+                    />
+
+            </LinearLayout>
+-->
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_edit_reference"
                 android:src="@drawable/ic_account" android:visibility="visible"
                 app:fabSize="normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
-                android:layout_gravity="bottom|right"
-                android:scaleType="fitCenter"
-                app:elevation="10dp"
+                style="@style/AppTheme.Form.FAB"
                 app:borderWidth="0dp"/>
 
-        </LinearLayout>
+        </FrameLayout>
 
 
     <ProgressBar
@@ -75,4 +117,4 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_gravity="center" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
