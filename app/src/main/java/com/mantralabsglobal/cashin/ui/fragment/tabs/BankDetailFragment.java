@@ -249,8 +249,10 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
         view.addAddMoreAccountNumberListener(new BankDetailView.AddMoreAccountNumberListener(){
             @Override
             public void onAccountNumberChanged(BankDetailView bankDetailView) {
-                bankDetailViewList.add(bankDetailView);
-                primaryBankChangeListener(bankDetailView);
+                if(!bankDetailViewList.contains(bankDetailView)) {
+                    bankDetailViewList.add(bankDetailView);
+                    primaryBankChangeListener(bankDetailView);
+                }
             }
         });
     }
