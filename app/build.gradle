@@ -25,6 +25,15 @@ android {
         // will be marked as failed, and Jenkins won't analyse the Lint output
         abortOnError false
     }
+    productFlavors {
+        production {
+            applicationId "com.mantralabsglobal.cashin.prod"
+        }
+
+        staging {
+            applicationId "com.mantralabsglobal.cashin"
+        }
+    }
 }
 
 allprojects {
@@ -45,7 +54,7 @@ configurations {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services-plus:7.5.0'
     compile 'com.android.support:support-v4:22.2.1'
