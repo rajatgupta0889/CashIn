@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.mantralabsglobal.cashin.businessobjects.BankProvider;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
 import com.mantralabsglobal.cashin.service.PerfiosClient;
 import com.mantralabsglobal.cashin.service.RestClient;
@@ -49,6 +50,7 @@ public class Application extends MultiDexApplication{
 
         restClient = new RestClient(this);
         perfiosClient = new PerfiosClient(this);
+        new BankProvider().init(this);
         getKeyHash();
 
     }

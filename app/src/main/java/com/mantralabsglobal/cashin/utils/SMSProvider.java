@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.businessobjects.BankProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class SMSProvider {
     public SMSProvider(Context context)
     {
         this.context = context;
-        banks = context.getResources().getStringArray(R.array.bank_code);
+        banks = BankProvider.getInstance().getBanks().getBankCodeList().toArray(new String [] {});
         debitKeywords = context.getResources().getStringArray(R.array.debit_keywords);
         creditKeywords = context.getResources().getStringArray(R.array.credit_keywords);
         loanKeywords = context.getResources().getStringArray(R.array.loan_keywords);

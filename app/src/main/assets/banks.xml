@@ -1,0 +1,583 @@
+<banks>
+    <bank>
+        <name>SBBJ</name>
+        <description></description>
+        <normalized_name>SBBJ</normalized_name>
+        <aliases>SBBJ, State Bank of Bikaner and Jaipur</aliases>
+        <bank_code>SBBJ</bank_code>
+    </bank>
+    <bank>
+        <name>HDFC</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>HDFC,HDCF</aliases>
+        <bank_code>HDFC</bank_code>
+    </bank>
+    <bank>
+        <name>ICICI</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>ICICI</aliases>
+        <bank_code>ICIC</bank_code>
+    </bank>
+    <bank>
+        <name>Axis</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Axis,Axis Bank</aliases>
+        <bank_code>UTIB</bank_code>
+    </bank>
+    <bank>
+        <name>SBI</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>SBI,State bank of india</aliases>
+        <bank_code>SBIN</bank_code>
+    </bank>
+    <bank>
+        <name>HSBC</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>HSBC</aliases>
+        <bank_code>HSBC</bank_code>
+    </bank>
+    <bank>
+        <name>Citi</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Citi</aliases>
+        <bank_code>CITI</bank_code>
+    </bank>
+    <bank>
+        <name>StanChart</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>StanChart,Standard Chartered</aliases>
+        <bank_code>SCBL</bank_code>
+    </bank>
+    <bank>
+        <name>Kotak</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Kotak,kotak bank</aliases>
+        <bank_code>KKBK</bank_code>
+    </bank>
+    <bank>
+        <name>IDBI</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>IDBI</aliases>
+        <bank_code>IBKL</bank_code>
+    </bank>
+    <bank>
+        <name>Union</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Union,Union Bank,Union Bank of India</aliases>
+        <bank_code>UBIN</bank_code>
+    </bank>
+    <bank>
+        <name>Yes</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Yes,Yes Bank</aliases>
+        <bank_code>YESB</bank_code>
+    </bank>
+    <bank>
+        <name>IndusInd</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Indus,IndusInd,IndusInd Bank</aliases>
+        <bank_code>INDB</bank_code>
+    </bank>
+    <bank>
+        <name>BOB</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>BOB,Bank of Baroda</aliases>
+        <bank_code>BARB</bank_code>
+    </bank>
+    <bank>
+        <name>PNB</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>PNB,Punjab National Bank</aliases>
+        <bank_code>PUNB</bank_code>
+    </bank>
+    <bank>
+        <name>Canara</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Canara,Canara Bank</aliases>
+        <bank_code>CNRB</bank_code>
+    </bank>
+    <bank>
+        <name>OBC</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Oriental Bank of Commerce,OBC</aliases>
+        <bank_code>ORBC</bank_code>
+    </bank>
+    <bank>
+        <name>Federal</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Federal Bank,Federal</aliases>
+        <bank_code>FDRL</bank_code>
+    </bank>
+    <bank>
+        <name>ING Vysya</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>ING Vysya,ING Vysya</aliases>
+        <bank_code>VYSA</bank_code>
+    </bank>
+    <bank>
+        <name>Bank of Maharashtra</name>
+        <description></description>
+        <normalized_name>Bank of Maharashtra</normalized_name>
+        <aliases>Bank of Maharashtra,Maharashtra, Maharashtra Loan EMI</aliases>
+        <bank_code>MAHB</bank_code>
+    </bank>
+    <bank>
+        <name>City Union</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>City Union Bank,City Union</aliases>
+        <bank_code>CIUB</bank_code>
+    </bank>
+    <bank>
+        <name>Corporation</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>CorpBank,Corporate,Corporation</aliases>
+        <bank_code>CORP</bank_code>
+    </bank>
+    <bank>
+        <name>Karur Vysya</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Karur Vysya</aliases>
+        <bank_code>KVBL</bank_code>
+    </bank>
+    <bank>
+        <name>DCB</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>DCB</aliases>
+        <bank_code>DCBL</bank_code>
+    </bank>
+    <bank>
+        <name>Amex</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Amex,American Express</aliases>
+        <bank_code>AMEX</bank_code>
+    </bank>
+    <bank>
+        <name>SBI - Tata</name>
+        <description></description>
+        <normalized_name>Credit Card</normalized_name>
+        <aliases>TATA Card - SBI</aliases>
+        <bank_code></bank_code>
+    </bank>
+    <bank>
+        <name>Indian</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Indian,Indian Bank</aliases>
+        <bank_code>IDIB</bank_code>
+    </bank>
+    <bank>
+        <name>BOI</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>BOI,Bank of India</aliases>
+        <bank_code>BKID</bank_code>
+    </bank>
+    <bank>
+        <name>South Indian</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>South Indian Bank,South Indian</aliases>
+        <bank_code>SIBL</bank_code>
+    </bank>
+    <bank>
+        <name>Dena</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>DENA,Dena Bank</aliases>
+        <bank_code>BKDN</bank_code>
+    </bank>
+    <bank>
+        <name>Syndicate</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Syndicate</aliases>
+        <bank_code>SYNB</bank_code>
+    </bank>
+    <bank>
+        <name>Central</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Central bank,Central Bank of India,Central, CBI</aliases>
+        <bank_code>CBIN</bank_code>
+    </bank>
+    <bank>
+        <name>Deutsche</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Deutsche,Deutsche</aliases>
+        <bank_code>DEUT</bank_code>
+    </bank>
+    <bank>
+        <name>Indian Overseas</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Indian Overseas,Indian Overseas Bank</aliases>
+        <bank_code>IOBA</bank_code>
+    </bank>
+    <bank>
+        <name>LVB</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Lakshmi Vilas,Laxmi Vilas</aliases>
+        <bank_code>LAVB</bank_code>
+    </bank>
+    <bank>
+        <name>SBP</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>SBP,State Bank of Patiala</aliases>
+        <bank_code>STBP</bank_code>
+    </bank>
+    <bank>
+        <name>UCO</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>UCO</aliases>
+        <bank_code>UCBA</bank_code>
+    </bank>
+    <bank>
+        <name>SBI Hyderabad</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>State Bank of Hyderabad, SBH</aliases>
+        <bank_code>SBHY</bank_code>
+    </bank>
+    <bank>
+        <name>SBI Mysore</name>
+        <description></description>
+        <normalized_name>State Bank of Mysore</normalized_name>
+        <aliases>State Bank of Mysore,State Bank of Mysore, SBM</aliases>
+        <bank_code>SBMY</bank_code>
+    </bank>
+    <bank>
+        <name>Sutex</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Sutex</aliases>
+        <bank_code>SUTB</bank_code>
+    </bank>
+    <bank>
+        <name>TMB</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>Tamilnad Mercantile,TMB</aliases>
+        <bank_code>TMBL</bank_code>
+    </bank>
+    <bank>
+        <name>RBL</name>
+        <description></description>
+        <normalized_name></normalized_name>
+        <aliases>RBL</aliases>
+        <bank_code>RATN</bank_code>
+    </bank>
+    <bank>
+        <name>Andhra</name>
+        <description></description>
+        <normalized_name>Andhra</normalized_name>
+        <aliases>Andhra</aliases>
+        <bank_code>ANDB</bank_code>
+    </bank>
+    <bank>
+        <name>Vijaya Bank</name>
+        <description></description>
+        <normalized_name>Vijaya Bank</normalized_name>
+        <aliases>Vijaya Bank</aliases>
+        <bank_code>VIJB</bank_code>
+    </bank>
+    <bank>
+        <name>UBI</name>
+        <description></description>
+        <normalized_name>United Bank of India</normalized_name>
+        <aliases>United Bank of India</aliases>
+        <bank_code>UTBI</bank_code>
+    </bank>
+    <bank>
+        <name>DBS</name>
+        <description></description>
+        <normalized_name>DBS</normalized_name>
+        <aliases>DBS Bank,DBS</aliases>
+        <bank_code>DBSS</bank_code>
+    </bank>
+    <bank>
+        <name>Karnataka</name>
+        <description></description>
+        <normalized_name>Karnataka</normalized_name>
+        <aliases>Karnataka</aliases>
+        <bank_code>KARB</bank_code>
+    </bank>
+    <bank>
+        <name>PMC</name>
+        <description></description>
+        <normalized_name>PMC</normalized_name>
+        <aliases>PMC</aliases>
+        <bank_code>PMCB</bank_code>
+    </bank>
+    <bank>
+        <name>SBT</name>
+        <description/>
+        <normalized_name>SBT</normalized_name>
+        <aliases>SBT,State Bank of Travancore</aliases>
+        <bank_code>SBTR</bank_code>
+    </bank>
+    <bank>
+        <name>Cosmos Bank</name>
+        <description>Cosmos Bank</description>
+        <normalized_name>Cosmos Bank</normalized_name>
+        <aliases>Cosmos</aliases>
+        <bank_code>COSB</bank_code>
+    </bank>
+    <bank>
+        <name>KCCB</name>
+        <description>Kangra Central Co-operative</description>
+        <normalized_name/>
+        <aliases>Kangra Central Co-operative</aliases>
+        <bank_code>KANG</bank_code>
+    </bank>
+    <bank>
+        <name>Allahabad</name>
+        <description>Allahabad</description>
+        <normalized_name>Allahabad bank</normalized_name>
+        <aliases>Allahabad bank,Allahabad</aliases>
+        <bank_code>ALLA</bank_code>
+    </bank>
+    <bank>
+        <name>RBS</name>
+        <description>RBS</description>
+        <normalized_name>RBS</normalized_name>
+        <aliases>RBS</aliases>
+        <bank_code>ABNA</bank_code>
+    </bank>
+    <bank>
+        <name>Jammu &amp; Kashmir</name>
+        <description>Jammu &amp; Kashmir</description>
+        <normalized_name>Jammu &amp; Kashmir</normalized_name>
+        <aliases>Jammu &amp; Kashmir, JK Bank, JK,J&amp;K</aliases>
+        <bank_code>JAKA</bank_code>
+    </bank>
+    <bank>
+        <name>Dhanlaxmi Bank</name>
+        <description>Dhanlaxmi Bank</description>
+        <normalized_name>Dhanlaxmi Bank</normalized_name>
+        <aliases>Dhanlaxmi Bank, Dhanlaxmi</aliases>
+        <bank_code>DLXB</bank_code>
+    </bank>
+    <bank>
+        <name>Bhartiya Mahila</name>
+        <description>Bhartiya Mahila</description>
+        <normalized_name>Bhartiya Mahila Bank</normalized_name>
+        <aliases>Bhartiya Mahila</aliases>
+        <bank_code>BKID</bank_code>
+    </bank>
+    <bank>
+        <name>Punjab &amp; Maharashtra Co-operative Bank</name>
+        <description>Punjab &amp; Maharashtra Co-operative Bank</description>
+        <normalized_name>PMC Bank</normalized_name>
+        <aliases>PMC Bank, Punjab &amp; Maharashtra Co-operative Bank, PMC</aliases>
+        <bank_code>PMCB</bank_code>
+    </bank>
+    <bank>
+        <name>SVC Bank</name>
+        <description>SVC Bank</description>
+        <normalized_name>SVC Bank</normalized_name>
+        <aliases>SVCB, SVC Bank, SVC</aliases>
+        <bank_code>SVCB</bank_code>
+    </bank>
+    <bank>
+        <name>PSB</name>
+        <description>Punjab and Sind Bank</description>
+        <normalized_name>PSB</normalized_name>
+        <aliases>Punjab and Sind Bank, PSB</aliases>
+        <bank_code>PSIB</bank_code>
+    </bank>
+    <bank>
+        <name>UBKGB</name>
+        <description>Uttarbanga Kshetriya Gramin Bank</description>
+        <normalized_name>UBKGB</normalized_name>
+        <aliases>UBKGB, Uttarbanga Kshetriya Gramin Bank</aliases>
+        <bank_code>CBIN</bank_code>
+    </bank>
+    <bank>
+        <name>Kalupur</name>
+        <description>Kalupur Bank</description>
+        <normalized_name>Kalupur Bank</normalized_name>
+        <aliases>Kalupur Bank, Kalupur, KB</aliases>
+        <bank_code>KCCB</bank_code>
+    </bank>
+    <bank>
+        <name>Vasai Vikas Sahakari</name>
+        <description>Vasai Vikas Sahakari Bank</description>
+        <normalized_name>Vasai Vikas Sahakari Bank</normalized_name>
+        <aliases>Vasai Vikas Sahakari Bank, VVSB, Vasai Vikas Bank</aliases>
+        <bank_code>VVSB</bank_code>
+    </bank>
+    <bank>
+        <name>Catholic Syrian</name>
+        <description>Catholic Syrian Bank</description>
+        <normalized_name>Catholic Syrian</normalized_name>
+        <aliases>Catholic Syrian, CSBK, CSB</aliases>
+        <bank_code>CSBK</bank_code>
+    </bank>
+    <bank>
+        <name>Janata Sahakari</name>
+        <description>Janata Sahakari Bank</description>
+        <normalized_name>Janata Sahakari Bank</normalized_name>
+        <aliases>Janata Sahakari Bank, JSBLPN, Janata Sahakari</aliases>
+        <bank_code>JSBP</bank_code>
+    </bank>
+    <bank>
+        <name>Manhattan</name>
+        <description>Manhattan</description>
+        <normalized_name>Manhattan</normalized_name>
+        <aliases>Manhattan, Manhattan Credit Card, Manhattan CC</aliases>
+        <bank_code>SCBL</bank_code>
+    </bank>
+    <bank>
+        <name>Varachha Co-Operative</name>
+        <description>Varachha Co-Operative</description>
+        <normalized_name>Varachha Co-Operative</normalized_name>
+        <aliases>Varachha Co-Operative</aliases>
+        <bank_code>VARA</bank_code>
+    </bank>
+    <bank>
+        <name>Bharat Co-Operative</name>
+        <description>The Bharat Coop Bank</description>
+        <normalized_name>Bharat Co-Operative</normalized_name>
+        <aliases>Bharat Co-Operative</aliases>
+        <bank_code>BCBM</bank_code>
+    </bank>
+    <bank>
+        <name>Saraswat</name>
+        <description>Saraswat Bank</description>
+        <normalized_name>Saraswat Bank</normalized_name>
+        <aliases>Saraswat, Saraswat Bank</aliases>
+        <bank_code>SRCB</bank_code>
+    </bank>
+    <bank>
+        <name>SBI Group</name>
+        <description>SBI Group</description>
+        <normalized_name>SBI</normalized_name>
+        <aliases>SBBJ, State Bank of Bikaner and Jaipur, SBI,State bank of india, SBP,State Bank of Patiala, State Bank of Hyderabad, State Bank of Mysore,State Bank of Mysore, SBM, SBT,State Bank of Travancore, SBBJ, SBI, SBP, SBI Hyderabad, SBI Mysore, SBT, SBH</aliases>
+        <bank_code>SBIG</bank_code>
+    </bank>
+    <bank>
+        <name>NKGSB</name>
+        <description>NKGSB Cooperative Bank Ltd</description>
+        <normalized_name>NKGSB</normalized_name>
+        <aliases>NKGSB</aliases>
+        <bank_code>NKGS</bank_code>
+    </bank>
+    <bank>
+        <name>Dombivli Nagari Sahakari</name>
+        <description>Dombivli Nagari Sahakari</description>
+        <normalized_name>Dombivli Nagari Sahakari</normalized_name>
+        <aliases>Dombivli Nagari Sahakari, Dombivli, DNSB</aliases>
+        <bank_code>DNSB</bank_code>
+    </bank>
+    <bank>
+        <name>Apna</name>
+        <description>Apna Bank</description>
+        <normalized_name>Apna Bank</normalized_name>
+        <aliases>Apna, Apna Bank,ASBL</aliases>
+        <bank_code>ASBL</bank_code>
+    </bank>
+    <bank>
+        <name>Janakalyan Sahakari</name>
+        <description>Janakalyan Sahakari Bank Ltd</description>
+        <normalized_name>Janakalyan Sahakari Bank Ltd</normalized_name>
+        <aliases>Janakalyan Sahakari Bank Ltd,Janakalyan Sahakari,Janakalyan Sahakari Bank,JSB</aliases>
+        <bank_code>JSBL</bank_code>
+    </bank>
+    <bank>
+        <name>Kalyan Janata Sahakari</name>
+        <description>Kalyan Janata Sahakari</description>
+        <normalized_name>Kalyan Janata Sahakari</normalized_name>
+        <aliases>KJSB,Kalyan Janata Sahakari</aliases>
+        <bank_code>KJSB</bank_code>
+    </bank>
+    <bank>
+        <name>Bhopal Co-operative Central</name>
+        <description>Bhopal Co-operative Central</description>
+        <normalized_name>Bhopal Co-operative Central</normalized_name>
+        <aliases>Bhopal Co-operative Central,BCC</aliases>
+        <bank_code>BCCB</bank_code>
+    </bank>
+    <bank>
+        <name>Rajgurunagar Sahkari Bank Ltd</name>
+        <description>RNSBLR</description>
+        <normalized_name>Rajgurunagar Sahkari Bank Ltd</normalized_name>
+        <aliases>Rajgurunagar Sahkari Bank Ltd, RNSBLR</aliases>
+        <bank_code>RSBL</bank_code>
+    </bank>
+    <bank>
+        <name>Abhyudaya Co-operative</name>
+        <description>Abhyudaya Co-operative Bank</description>
+        <normalized_name>Abhyudaya Co-operative Bank</normalized_name>
+        <aliases>ABHY, Abhyudaya, Abhyudaya Co-operative Bank</aliases>
+        <bank_code>ABHY</bank_code>
+    </bank>
+    <bank>
+        <name>TJSB Sahakari</name>
+        <description>TJSB Sahakari</description>
+        <normalized_name>TJSB Sahakari</normalized_name>
+        <aliases>TJSB Sahakari, TJSB</aliases>
+        <bank_code>TJSB</bank_code>
+    </bank>
+    <bank>
+        <name>M.P. Rajya Sahakari</name>
+        <description></description>
+        <normalized_name>M.P. Rajya Sahakari Bank</normalized_name>
+        <aliases>M.P. Apex Bank, MP Rajya Sahakari Bank, Apex</aliases>
+        <bank_code>CBIN</bank_code>
+    </bank>
+    <bank>
+        <name>Gopinath Patil Parsik Janata Sahakari</name>
+        <description>Gopinath Patil Parsik Janata Sahakari Bank</description>
+        <normalized_name>Gopinath Patil Parsik Janata Sahakari Bank</normalized_name>
+        <aliases>Gopinath Patil Parsik Janata Sahakari Bank, GPPARSIK</aliases>
+        <bank_code>PJSB</bank_code>
+    </bank>
+    <bank>
+        <name>Thane District Central Co-Op Bank</name>
+        <description>Thane District Central Co-Op Bank Ltd</description>
+        <normalized_name>Thane District Central Co-Op Bank</normalized_name>
+        <aliases>Thane District Central Co-Op Bank Ltd, Thane District Central Co-Op Bank</aliases>
+        <bank_code>TDCB</bank_code>
+    </bank>
+    <bank>
+        <name>Thane Bharat Sahakari Bank</name>
+        <description>Thane Bharat Sahakari Bank</description>
+        <normalized_name>Thane Bharat Sahakari Bank</normalized_name>
+        <aliases>Thane Bharat Sahakari Bank</aliases>
+        <bank_code>TBSB</bank_code>
+    </bank>
+    <bank>
+        <name>Akola Urban Cooperative</name>
+        <description>Akola Urban Cooperative Bank</description>
+        <normalized_name>Akola Urban Cooperative Bank</normalized_name>
+        <aliases>Akola Urban Cooperative,  Akola Urban Cooperative Bank</aliases>
+        <bank_code>YESB</bank_code>
+    </bank>
+</banks>

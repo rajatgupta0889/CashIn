@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.businessobjects.BankProvider;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.fragment.utils.TabManager;
@@ -127,9 +128,9 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
     public void onCreateDialog(final PrimaryBankService.BankDetail bankDetail) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Select Bank");
-        builder.setItems(R.array.bank_code, new DialogInterface.OnClickListener() {
+        builder.setItems(BankProvider.getInstance().getBanks().getBankNameList().toArray(new String []{}), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                String bankName = Arrays.asList((getActivity().getResources().getStringArray(R.array.bank_code))).get(item);
+                String bankName = BankProvider.getInstance().getBanks().getBankCodeList().get(item);
                 Log.d("Bank name", bankName);
                 dialog.dismiss();
                 bankDetail.setBankName(bankName);
@@ -188,7 +189,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
                     bankDetail.setAccountNumber(provider.getAccountNumber(smsMessage));
                     bankDetail.setBankName(provider.getBankName(smsMessage));
                     // bankDetail.setIsPrimary(smsList.size() == 1);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++6\
-                    // ++++++++++++++++++++++                   if (!bankDetailList.contains(bankDetail))
+                    if (!bankDetailList.contains(bankDetail))
                         bankDetailList.add(bankDetail);
                     if (!bankCount.containsKey(bankDetail.getAccountNumberLast4Digits()))
                         bankCount.put(bankDetail.getAccountNumberLast4Digits(), 0);
