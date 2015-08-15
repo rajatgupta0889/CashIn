@@ -24,7 +24,7 @@ public class AadharDAO {
     public static AadharService.AadharDetail getAadharDetailFromXML(String xml)
     {
         xml = fixAadharXMLString(xml);
-        XmlPullParserFactory xmlFactoryObject = null;
+        XmlPullParserFactory xmlFactoryObject;
         AadharService.AadharDetail aadharDetail = new AadharService.AadharDetail();
 
         try {
@@ -87,9 +87,7 @@ public class AadharDAO {
                 event = aadharparser.next();
             }
 
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
         return aadharDetail;
@@ -105,10 +103,6 @@ public class AadharDAO {
 
     private static String fixAadharXMLString(String xml)
     {
-        if(xml.startsWith("<?xml")) {
-            int firstDeclarationTagEnd = xml.indexOf(">");
-            return xml.substring(firstDeclarationTagEnd+1);
-        }
-        return xml;
+        return XmlUtils.removeDeclaration(xml);
     }
 }

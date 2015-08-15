@@ -256,4 +256,6 @@
     <string name="change_gmail_account">Change gmail account</string>
     <string name="bank_name_regex">(SBBJ|HDFC|ICIC|UTIB|SBIN|HSBC|CITI|SCBL|KKBK|IBKL|UBIN|YESB|INDB|BARB|PUNB|CNRB|ORBC|FDRL|VYSA|MAHB|CIUB|CORP|KVBL|DCBL|AMEX|IDIB|BKID|SIBL|BKDN|SYNB|CBIN|DEUT|IOBA|LAVB|STBP|UCBA|SBHY|SBMY|SUTB|TMBL|RATN|ANDB|VIJB|UTBI|DBSS|KARB|PMCB|SBTR|COSB|KANG|ALLA|ABNA|JAKA|DLXB|BKID|PMCB|SVCB|PSIB|CBIN|KCCB|VVSB|CSBK|JSBP|SCBL|VARA|BCBM|SRCB|SBIG|NKGS|DNSB|ASBL|JSBL|KJSB|BCCB|RSBL|ABHY|TJSB|CBIN|PJSB)</string>
     <string name="account_name_regex">[\\*xX]+(\\d{4,})\\s</string>
+    <string name="perfios_api_version">2.0</string>
+    <string name="perfios_vendorId">angelPrime</string>
 </resources>

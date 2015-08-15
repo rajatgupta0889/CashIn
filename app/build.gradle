@@ -82,6 +82,11 @@ dependencies {
     compile 'org.apmem.tools:layouts:1.9@aar'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.beardedhen:androidbootstrap:+'
+    compile ('com.squareup.retrofit:converter-simplexml:1.9.0'){
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    }
     /*compile 'org.boofcv:geo:0.18'
             compile 'org.boofcv:recognition:0.18'*/
     //compile 'joda-time:joda-time:2.7' // for joda
