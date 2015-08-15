@@ -24,9 +24,11 @@ before_script:
   - adb wait-for-device
   - adb shell input keyevent 82 &
 
-script: - TERM=dumb ./gradlew connectedStagingDebug
+script:
+  - TERM=dumb ./gradlew connectedStagingDebug
 
-install: - TERM=dumb ./gradlew -s assembleStagingDebug
+install:
+  - TERM=dumb ./gradlew -s assembleStagingDebug
 
 deploy:
   provider: releases
