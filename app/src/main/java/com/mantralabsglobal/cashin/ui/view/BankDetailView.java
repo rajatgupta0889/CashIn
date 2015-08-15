@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.businessobjects.BankProvider;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BankDetailFragment;
 
@@ -32,9 +33,9 @@ import java.util.Map;
 public class BankDetailView extends LinearLayout  {
 
     private ImageView bankName;
+    private TextView tvBankName;
     public EditText accountNumber;
     private ImageView isPrimaryIcon;
-    Map<String, Integer> drawableResourceMap;
 
     private  List<PrimaryFlagChangedListener> primaryFlagChangedListenerList = new ArrayList<>();
     private  AddMoreAccountNumberListener accountNumListener;
@@ -57,20 +58,12 @@ public class BankDetailView extends LinearLayout  {
     private void init(){
         LayoutInflater inflater = LayoutInflater.from(getContext());
         inflater.inflate(R.layout.view_bank_account, this);
-
-        drawableResourceMap = new HashMap<>();
-        drawableResourceMap.put("HDFC", R.drawable.logo_hdfc);
-        drawableResourceMap.put("CITI", R.drawable.logo_citi_bank);
-        drawableResourceMap.put("YESB", R.drawable.logo_yes_bank);
-        drawableResourceMap.put("PUNB", R.drawable.logo_punjab_national_bank);
-        drawableResourceMap.put("SYNB", R.drawable.logo_syndicate_bank);
-        drawableResourceMap.put("ICIC", R.drawable.logo_icici);
-
         loadViews();
     }
 
     private void loadViews() {
         this.bankName = (ImageView)findViewWithTag("iv_bank");
+        this.tvBankName = (TextView) findViewWithTag("tv_bank_name");
         this.isPrimaryIcon = (ImageView)findViewWithTag("iv_is_primary");
         this.accountNumber = (EditText)findViewWithTag("et_account");//  (EditText)findViewById(R.id.et_text);
 
@@ -99,8 +92,8 @@ public class BankDetailView extends LinearLayout  {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.d("s",s.toString());
-                if (s != null && s.toString().trim().length() > 0 &&  BankDetailView.this.getBankDetail() != null && accountNumListener != null) {
+                Log.d("s", s.toString());
+                if (s != null && s.toString().trim().length() > 0 && BankDetailView.this.getBankDetail() != null && accountNumListener != null) {
                     BankDetailView.this.getBankDetail().setAccountNumber(s.toString());
                     accountNumListener.onAccountNumberChanged(BankDetailView.this);
                 }
@@ -148,8 +141,17 @@ public class BankDetailView extends LinearLayout  {
     {
         if(bankDetail != null) {
             this.accountNumber.setText(bankDetail.getAccountNumber());
-            if (bankDetail.getBankName() != null && drawableResourceMap.get(bankDetail.getBankName().toUpperCase()) != null)
-                this.bankName.setImageResource(drawableResourceMap.get(bankDetail.getBankName().toUpperCase()));
+            this.tvBankName.setText(bankDetail.getBankName());
+
+            BankProvider.Bank bank = BankProvider.getInstance().getBanks().getByCodeOrName(bankDetail.getBankName());
+            this.bankName.setContentDescription(bankDetail.getBankName());
+            if (bank != null && bank.getLogo() != null)
+                this.bankName.setImageResource( getContext().getResources().getIdentifier(bank.getLogo(), "drawable", getContext().getPackageName()));
+            else {
+                this.bankName.setImageResource(0);
+                this.bankName.setVisibility(GONE);
+                this.tvBankName.setVisibility(VISIBLE);
+            }
             if (bankDetail.isPrimary())
                 this.isPrimaryIcon.setImageResource(R.drawable.ic_primary_bank_icon);
             else

@@ -13,7 +13,9 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hello on 8/15/2015.
@@ -31,7 +33,7 @@ public class BankProvider {
         return instance;
     }
 
-    public void init(Context context){
+    public void init(Context context) {
 
         String xmlString = null;
         AssetManager am = context.getAssets();
@@ -39,14 +41,17 @@ public class BankProvider {
 
             Serializer serializer = new Persister();
 
-            banks = serializer.read(BankList.class,  am.open(context.getResources().getString(R.string.bank_db)));
-            if(banks != null){
+            banks = serializer.read(BankList.class, am.open(context.getResources().getString(R.string.bank_db)));
+            if (banks != null) {
                 banks.bankCodeList = new ArrayList<>();
                 banks.bankNameList = new ArrayList<>();
-                for(Bank bank : banks.bankList)
-                {
+                banks.bankCodeMap = new HashMap<>();
+                banks.bankNameMap = new HashMap<>();
+                for (Bank bank : banks.bankList) {
                     banks.bankCodeList.add(bank.getBankCode());
                     banks.bankNameList.add(bank.getName());
+                    banks.bankCodeMap.put(bank.getBankCode(), bank);
+                    banks.bankNameMap.put(bank.getName(), bank);
                 }
             }
 
@@ -74,6 +79,18 @@ public class BankProvider {
         //@Path("bank/name")
         private List<String> bankNameList;
 
+        private Map<String,Bank> bankCodeMap;
+        private Map<String,Bank> bankNameMap;
+
+        public Bank getByCode(String code)
+        {
+            return bankCodeMap.get(code);
+        }
+        public Bank getByName(String name)
+        {
+            return bankNameMap.get(name);
+        }
+
         public List<Bank> getBankList() {
             return bankList;
         }
@@ -97,12 +114,40 @@ public class BankProvider {
         public void setBankNameList(List<String> bankNameList) {
             this.bankNameList = bankNameList;
         }
+
+        public Map<String, Bank> getBankCodeMap() {
+            return bankCodeMap;
+        }
+
+        public void setBankCodeMap(Map<String, Bank> bankCodeMap) {
+            this.bankCodeMap = bankCodeMap;
+        }
+
+        public Map<String, Bank> getBankNameMap() {
+            return bankNameMap;
+        }
+
+        public void setBankNameMap(Map<String, Bank> bankNameMap) {
+            this.bankNameMap = bankNameMap;
+        }
+
+        public Bank getByCodeOrName(String bankName) {
+            Bank bank = getByCode(bankName);
+            if(bank == null)
+                bank = getByName(bankName);
+            return bank;
+        }
     }
 
     public static class Bank
     {
         @Element(required = false)
         private String name;
+
+
+
+        @Element(required = false)
+        private String logo;
         @Element(required = false)
         private String description;
         @Element(required = false)
@@ -150,6 +195,13 @@ public class BankProvider {
 
         public void setNormalizedName(String normalizedName) {
             this.normalizedName = normalizedName;
+        }
+
+        public String getLogo() {
+            return logo;
+        }
+        public void setLogo(String logo) {
+            this.logo = logo;
         }
     }
 }

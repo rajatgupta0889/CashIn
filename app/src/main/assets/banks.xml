@@ -12,6 +12,7 @@
         <normalized_name></normalized_name>
         <aliases>HDFC,HDCF</aliases>
         <bank_code>HDFC</bank_code>
+        <logo>logo_hdfc</logo>
     </bank>
     <bank>
         <name>ICICI</name>
@@ -19,6 +20,7 @@
         <normalized_name></normalized_name>
         <aliases>ICICI</aliases>
         <bank_code>ICIC</bank_code>
+        <logo>logo_icici</logo>
     </bank>
     <bank>
         <name>Axis</name>
@@ -47,6 +49,7 @@
         <normalized_name></normalized_name>
         <aliases>Citi</aliases>
         <bank_code>CITI</bank_code>
+        <logo>logo_citi_bank</logo>
     </bank>
     <bank>
         <name>StanChart</name>
@@ -82,6 +85,7 @@
         <normalized_name></normalized_name>
         <aliases>Yes,Yes Bank</aliases>
         <bank_code>YESB</bank_code>
+        <logo>logo_yes_bank</logo>
     </bank>
     <bank>
         <name>IndusInd</name>
@@ -103,6 +107,7 @@
         <normalized_name></normalized_name>
         <aliases>PNB,Punjab National Bank</aliases>
         <bank_code>PUNB</bank_code>
+        <logo>logo_punjab_national_bank</logo>
     </bank>
     <bank>
         <name>Canara</name>
@@ -215,6 +220,7 @@
         <normalized_name></normalized_name>
         <aliases>Syndicate</aliases>
         <bank_code>SYNB</bank_code>
+        <logo>logo_syndicate_bank</logo>
     </bank>
     <bank>
         <name>Central</name>
