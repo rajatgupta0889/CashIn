@@ -7,6 +7,8 @@ before_install:
 env:
   matrix:
     - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+  global:
+    - ADB_INSTALL_TIMEOUT=8
 
 android:
   components:
