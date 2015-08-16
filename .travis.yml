@@ -28,7 +28,8 @@ script:
   - TERM=dumb ./gradlew connectedStagingDebug
 
 install:
-  - TERM=dumb ./gradlew -s assembleStagingDebug
+  #- TERM=dumb ./gradlew -s assembleStagingDebug
+  - true
 
 deploy:
   provider: releases
