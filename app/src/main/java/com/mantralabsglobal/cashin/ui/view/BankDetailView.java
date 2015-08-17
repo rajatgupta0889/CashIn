@@ -10,8 +10,11 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -79,7 +82,7 @@ public class BankDetailView extends LinearLayout  {
             }
         });
 
-        accountNumber.addTextChangedListener(new TextWatcher() {
+    /*   accountNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -97,6 +100,41 @@ public class BankDetailView extends LinearLayout  {
                     BankDetailView.this.getBankDetail().setAccountNumber(s.toString());
                     accountNumListener.onAccountNumberChanged(BankDetailView.this);
                 }
+            }
+        }); */
+/*
+        accountNumber.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                actionId == EditorInfo.IME_ACTION_DONE ||
+                                event.getAction() == KeyEvent.ACTION_DOWN &&
+                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            if (!event.isShiftPressed()) {
+                                // the user is done typing.
+                                BankDetailView.this.getBankDetail().setAccountNumber(v.getText().toString());
+                                accountNumListener.onAccountNumberChanged(BankDetailView.this);
+                                return true; // consume.
+                            }
+                        }
+                        return false; // pass on to other listeners.
+                    }
+                });*/
+
+        accountNumber.setSingleLine();
+        accountNumber.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        accountNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent evembermnt) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    BankDetailView.this.getBankDetail().setAccountNumber(v.getText().toString());
+                    accountNumListener.onAccountNumberChanged(BankDetailView.this);
+                    handled = true;
+
+                }
+                return handled;
             }
         });
     }
