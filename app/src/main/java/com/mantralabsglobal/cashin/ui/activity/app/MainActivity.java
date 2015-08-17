@@ -190,6 +190,11 @@ public class MainActivity extends BaseActivity  {
             finish();
             return true;
         }
+        else if (id == R.id.perfios) {
+            Intent intent = new Intent(getBaseContext(), PerfiosActivity.class);
+            startActivityForResult(intent, 15000);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

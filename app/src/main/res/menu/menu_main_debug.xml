@@ -18,6 +18,7 @@
         app:showAsAction="never"
         android:orderInCategory="1"
         android:menuCategory="secondary"/>
+    <item android:id="@+id/perfios" android:title="Perfios"/>
 
     <!--    <item android:id="@+id/action_package_hash"
            android:title="@string/generate_product_hash"

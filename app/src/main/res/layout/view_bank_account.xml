@@ -23,6 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp" android:layout_weight="2" android:scaleType="fitCenter"  android:src="@drawable/logo_icici"/>
 
+        <TextView android:visibility="gone"
+            android:layout_width="match_parent" android:gravity="center_vertical"
+            android:layout_height="0dp" android:layout_weight="2" android:text="@string/bank_name" android:tag="tv_bank_name"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -36,7 +40,9 @@
 
         <EditText android:tag="et_account"
             android:layout_width="match_parent"
-            android:layout_height="0dp" android:layout_weight="2"/>
+            android:imeOptions="actionDone"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
 
     </LinearLayout>
 </LinearLayout>

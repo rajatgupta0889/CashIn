@@ -1,6 +1,7 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.businessobjects.BankProvider;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.fragment.utils.TabManager;
@@ -41,13 +45,17 @@ import retrofit.Callback;
  */
 public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankService.BankDetail>> {
 
-PrimaryBankService primaryBankService;    private ViewPager mViewPager;
+    PrimaryBankService primaryBankService;
+    private ViewPager mViewPager;
 
     TabManager mTabManager;
     LinearLayout mainLayout, bank_detail_add_more;
 
     @InjectView(R.id.vg_bank_details)
     ViewGroup vg_bank_details;
+
+    @InjectView(R.id.ic_edit)
+    ImageView edit_view;
 
     @InjectView(R.id.info_bar)
     ViewGroup vgInfoBar;
@@ -77,7 +85,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
 
         mTabManager.addTab(mTabHost.newTabSpec("blank").setIndicator("Blank Fragment"),
                 BlankFragment.class, null);
-        mTabManager.addTab(mTabHost.newTabSpec("e_statement").setIndicator("E-Statement"),
+        mTabManager.addTab(mTabHost.newTabSpec("e_statement").setIndicator("E-Statement from Gmail"),
                 EStatementFragment.class, null);
         mTabManager.addTab(mTabHost.newTabSpec("net_banking").setIndicator("Net Banking"),
                 NetBankingFragment.class, null);
@@ -114,22 +122,40 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
 
     @OnClick(R.id.btn_add_more)
     public void addMoreInBankStatement(){
-       /* if(bankDetailViewList.size() == 0 || (bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber() != null
-                && bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber().trim().length() > 0)) {*/
+        if(bankDetailViewList.size() == 0 || (bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber() != null
+                && bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber().trim().length() > 0)) {
             PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
             onCreateDialog(bankDetail);
-      /*  }
+        }
      else {
             Toast.makeText(getActivity(), "Please enter account number in previous row!",Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
+
+    @OnClick(R.id.ic_edit)
+    public void editPrimaryBank() {
+        bank_detail_add_more.setVisibility(View.VISIBLE);
+        vgInfoBar.setVisibility(View.VISIBLE);
+        mainLayout.setVisibility(View.GONE);
+        edit_view.setVisibility(View.GONE);
+        for(BankDetailView bdView : bankDetailViewList)
+        {
+            if(!bdView.getBankDetail().isPrimary())
+            {
+                vg_bank_details.addView(bdView);
+            }
+            bdView.getBankDetail().setIsPrimary(false);
+            bdView.updateUI();
+        }
+    }
+
 
     public void onCreateDialog(final PrimaryBankService.BankDetail bankDetail) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Select Bank");
-        builder.setItems(R.array.bank_code, new DialogInterface.OnClickListener() {
+        builder.setItems(BankProvider.getInstance().getBanks().getBankNameList().toArray(new String []{}), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                String bankName = Arrays.asList((getActivity().getResources().getStringArray(R.array.bank_code))).get(item);
+                String bankName = BankProvider.getInstance().getBanks().getBankCodeList().get(item);
                 Log.d("Bank name", bankName);
                 dialog.dismiss();
                 bankDetail.setBankName(bankName);
@@ -142,31 +168,11 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
 
     private void addMoreBankDetail(final PrimaryBankService.BankDetail bankDetail){
         final BankDetailView view = new BankDetailView(getActivity());
-        /*Editable accountNo = view.accountNumber.getText();
-        String accountNum = accountNo.toString();
-        bankDetail.setAccountNumber(accountNum);*/
         view.setBankDetail(bankDetail);
+        view.accountNumber.requestFocus();
         vg_bank_details.addView(view);
+        bankDetailViewList.add(view);
         addMoreAccNumberListener(view);
-     /*   view.accountNumber.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                bankDetail.setAccountNumber(s.toString());
-                Log.d("Account Number", s.toString());
-                view.setBankDetail(bankDetail);
-
-            }
-        }); */
 
     }
 
@@ -188,7 +194,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
                     bankDetail.setAccountNumber(provider.getAccountNumber(smsMessage));
                     bankDetail.setBankName(provider.getBankName(smsMessage));
                     // bankDetail.setIsPrimary(smsList.size() == 1);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++6\
-                    // ++++++++++++++++++++++                   if (!bankDetailList.contains(bankDetail))
+                    if (!bankDetailList.contains(bankDetail))
                         bankDetailList.add(bankDetail);
                     if (!bankCount.containsKey(bankDetail.getAccountNumberLast4Digits()))
                         bankCount.put(bankDetail.getAccountNumberLast4Digits(), 0);
@@ -238,6 +244,7 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
                     @Override
                     public void onPrimaryChanged(BankDetailView bankDetailView) {
                         bankDetailView.getBankDetail().setIsPrimary(true);
+                        edit_view.setVisibility(View.VISIBLE);
                         bankDetailView.updateUI();
                         handlePrimaryBankSelected(bankDetailView);
                     }
@@ -249,8 +256,11 @@ PrimaryBankService primaryBankService;    private ViewPager mViewPager;
         view.addAddMoreAccountNumberListener(new BankDetailView.AddMoreAccountNumberListener(){
             @Override
             public void onAccountNumberChanged(BankDetailView bankDetailView) {
-                bankDetailViewList.add(bankDetailView);
+                InputMethodManager imm = (InputMethodManager)(getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
+                imm.hideSoftInputFromWindow(view.accountNumber.getWindowToken(), 0);
+                view.accountNumber.clearFocus();
                 primaryBankChangeListener(bankDetailView);
+
             }
         });
     }

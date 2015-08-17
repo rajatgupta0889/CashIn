@@ -88,6 +88,7 @@
         <activity android:name=".ui.activity.app.SendReferralMessageActivity" >
         </activity>
         <activity android:name=".ui.activity.social.OAuthActivity" />
+        <activity android:name=".ui.activity.app.PerfiosActivity"/>
         <activity
             android:name=".ui.activity.app.IntroSliderActivity"
             android:label="@string/title_activity_intro_slider" >
@@ -117,11 +118,11 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <service
+        <!--<service
             android:name=".service.EMIService"
             android:enabled="true"
             android:exported="true" >
-        </service>
+        </service>-->
     </application>
 
 </manifest>

@@ -9,7 +9,9 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.mantralabsglobal.cashin.businessobjects.BankProvider;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
+import com.mantralabsglobal.cashin.service.PerfiosClient;
 import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
 import com.mantralabsglobal.cashin.utils.RetrofitUtils;
@@ -34,6 +36,7 @@ public class Application extends MultiDexApplication{
     private static final String GMAIL_ACCOUNT = "GMAIL_ACCOUNT";
 
     private RestClient restClient;
+    private PerfiosClient perfiosClient;
     private SharedPreferences appPreference = null;
 
    /* static{ System.loadLibrary("opencv_java3");}*/
@@ -46,7 +49,8 @@ public class Application extends MultiDexApplication{
         appPreference = getSharedPreferences(APP_PREFERENCE, 0);
 
         restClient = new RestClient(this);
-
+        perfiosClient = new PerfiosClient(this);
+        new BankProvider().init(this);
         getKeyHash();
 
     }
@@ -92,8 +96,8 @@ public class Application extends MultiDexApplication{
                 Log.e("MY KEY HASH:", sign);
                 //  Toast.makeText(getApplicationContext(),sign,     Toast.LENGTH_LONG).show();
             }
-        } catch (PackageManager.NameNotFoundException e) {
-        } catch (NoSuchAlgorithmException e) {
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
     }
 
@@ -152,6 +156,10 @@ public class Application extends MultiDexApplication{
 
     public String getGmailAccount() {
         return appPreference.getString(GMAIL_ACCOUNT, EMPTY_STRING);
+    }
+
+    public PerfiosClient getPerfiosClient() {
+        return perfiosClient;
     }
 }
 
