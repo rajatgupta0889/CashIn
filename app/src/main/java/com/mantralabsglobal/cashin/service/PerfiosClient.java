@@ -100,9 +100,9 @@ public class PerfiosClient {
         X509EncodedKeySpec publicKeyspec = new X509EncodedKeySpec(publicEncoded);
 
         try {
-            KeyFactory kf = KeyFactory.getInstance("RSA");
+            KeyFactory kf = KeyFactory.getInstance("RSA", "BC");
             publicKey = kf.generatePublic(publicKeyspec);
-        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
             e.printStackTrace();
         }
     }

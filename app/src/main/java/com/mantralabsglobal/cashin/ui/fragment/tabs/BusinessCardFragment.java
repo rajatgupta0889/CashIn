@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
@@ -51,8 +52,15 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     public ViewGroup vg_snap;
     @InjectView(R.id.ll_business_card_detail)
     public ViewGroup vg_form;
+
+    @InjectView(R.id.success_capture)
+    public ViewGroup success_capture;
+
     @InjectView(R.id.enterWorkDetailsButton)
     public Button btn_enter_details;
+
+    @InjectView(R.id.ib_launch_camera)
+    public ImageButton camera_capture;
 
     @NotEmpty
     @InjectView(R.id.cc_employer_name)
@@ -63,12 +71,12 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
     @InjectView(R.id.cc_work_email_id)
     public CustomEditText emailId;
 
-    @InjectView(R.id.fab_launch_camera)
-    public FloatingActionButton fab_launchCamera;
+  /*  @InjectView(R.id.fab_launch_camera)
+    public FloatingActionButton fab_launchCamera;*/
 
-    @NotEmpty
+   /* @NotEmpty
     @InjectView(R.id.cc_work_addess)
-    public CustomEditText workAddress;
+    public CustomEditText workAddress;*/
 
     private BusinessCardService businessCardService;
 
@@ -88,9 +96,9 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
         businessCardService = ((Application)getActivity().getApplication()).getRestClient().getBusinessCardService();
 
-        registerChildView(vg_snap, View.VISIBLE);
-        registerChildView(vg_form, View.GONE);
-        registerFloatingActionButton(fab_launchCamera, vg_form);
+        registerChildView(vg_snap, View.GONE);
+        registerChildView(vg_form, View.VISIBLE);
+       // registerFloatingActionButton(fab_launchCamera, vg_form);
 
         reset(false);
     }
@@ -115,7 +123,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        setVisibleChildView(vg_snap);
+        setVisibleChildView(vg_form);
     }
 
 
@@ -132,7 +140,7 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
         {
             employerName.setText(value.getEmployerName());
             String concatAddress = StringUtils.join(value.getaddressLines(), ",");
-            workAddress.setText(concatAddress);
+          //  workAddress.setText(concatAddress);
             emailId.setText(value.getEmail());
         }
     }
@@ -143,13 +151,14 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             base = new BusinessCardService.BusinessCardDetail();
 
         base.setEmployerName(employerName.getText().toString());
-        base.setAddress(Arrays.asList(workAddress.getText().toString()));
+      //  base.setAddress(Arrays.asList(workAddress.getText().toString()));
         base.setEmail(emailId.getText().toString());
 
         return base;
     }
 
-    @OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera})
+    /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera})*/
+    @OnClick( {R.id.ib_launch_camera, R.id.edit_icon })
     public void launchCamera() {
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
@@ -196,6 +205,9 @@ public class BusinessCardFragment extends BaseBindableFragment<BusinessCardServi
             if (BuildConfig.DEBUG) {
                 showImageDialog(binary);
             }
+
+            camera_capture.setVisibility(View.GONE);
+            success_capture.setVisibility(View.VISIBLE);
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             hideProgressDialog();

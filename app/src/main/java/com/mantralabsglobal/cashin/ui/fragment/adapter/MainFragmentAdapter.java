@@ -18,7 +18,7 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
     private FragmentManager fragmentManager;
     private Context context;
 
-    private Fragment financePager = new AbstractPager(){
+    public Fragment financePager = new AbstractPager(){
 
         FinancePagerAdapter adapter;
         @Override
@@ -41,7 +41,7 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
         }
     };
 
-    private Fragment identityPager = new AbstractPager(){
+    public Fragment identityPager = new AbstractPager(){
 
         IdentityPagerAdapter adapter;
         @Override
@@ -57,7 +57,7 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
         }
     };
 
-    private Fragment workPager = new AbstractPager(){
+    public Fragment workPager = new AbstractPager(){
 
         WorkPagerAdapter adapter;
         @Override
@@ -73,7 +73,7 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
         }
     };
 
-    private Fragment socialPager = new AbstractPager(){
+    public Fragment socialPager = new AbstractPager(){
 
         SocialPagerAdapter adapter;
         @Override
@@ -89,7 +89,7 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
         }
     };
 
-    private Fragment photoPager = new AbstractPager(){
+    public Fragment photoPager = new AbstractPager(){
 
         YourPhotoPagerAdapter adapter;
         @Override

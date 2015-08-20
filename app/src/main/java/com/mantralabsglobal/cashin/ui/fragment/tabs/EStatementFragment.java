@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.android.gms.auth.GoogleAuthException;
@@ -18,6 +20,9 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.AccountPicker;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AuthenticationService;
+import com.mantralabsglobal.cashin.service.EStatementService;
+import com.mantralabsglobal.cashin.service.NetBankingService;
+import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.social.GoogleTokenRetrieverTask;
 import com.mantralabsglobal.cashin.ui.Application;
 import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
@@ -33,17 +38,25 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class EStatementFragment extends BaseFragment
+public class EStatementFragment extends BaseBindableFragment<EStatementService.EStatement>
 {
     private static final String TAG = EStatementFragment.class.getSimpleName();
+    private EStatementService eStatementService;
 
-    @InjectView(R.id.btn_scan_gmail)
-    BootstrapButton btnScanGmail;
+   /* @InjectView(R.id.btn_scan_gmail)
+    BootstrapButton btnScanGmail;*/
+
+    @InjectView(R.id.e_statement_text)
+    TextView eStatementText;
 
     final private List<String> SCOPES = Arrays.asList(new String[]{
             "https://www.googleapis.com/auth/plus.login",
             "https://www.googleapis.com/auth/gmail.readonly"
     });
+
+
+    @InjectView(R.id.e_statement_view)
+    ViewGroup eStatementView;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -61,20 +74,70 @@ public class EStatementFragment extends BaseFragment
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
-        scanGmailForBankStatements();
+        eStatementService = ((Application)getActivity().getApplication()).getRestClient().geteStatementService();
+        /*scanGmailForBankStatements();*/
+        reset(false);
     }
 
-    @OnClick(R.id.btn_scan_gmail)
+    @Override
+    public EStatementService.EStatement getDataFromForm(EStatementService.EStatement base) {
+
+        return base;
+    }
+
+    @Override
+    public void bindDataToForm(final EStatementService.EStatement value) {
+        if (value != null) {
+            if(value.getStatus() == 1)
+                eStatementText.setText("Information already retrieved");
+                /*Toast.makeText(getActivity(), "Information already retrieved", Toast.LENGTH_SHORT).show();*/
+            else if(value.getStatus() == 0){
+                scanGmailForBankStatements();
+            }
+        }
+        else {
+            save();
+        }
+    }
+
+    @Override
+    protected void onUpdate(EStatementService.EStatement updatedData, Callback<EStatementService.EStatement> saveCallback) {
+        eStatementService.createEStatement(updatedData, saveCallback);
+    }
+
+    @Override
+    protected void onCreate(EStatementService.EStatement updatedData, Callback<EStatementService.EStatement> saveCallback) {
+        eStatementService.createEStatement(updatedData, saveCallback);
+    }
+
+    @Override
+    protected void loadDataFromServer(Callback<EStatementService.EStatement> dataCallback) {
+        eStatementService.getEStatement(dataCallback);
+    }
+
+
+    @Override
+    protected View getFormView() {
+        return eStatementView;
+    }
+
+    @Override
+    protected void handleDataNotPresentOnServer() {
+
+    }
+
+
+   /* @OnClick(R.id.btn_scan_gmail)
     public void onScanGmailClick()
     {
         getCashInApplication().setGmailAccount(null);
         scanGmailForBankStatements();
-    }
+    }*/
 
     protected void scanGmailForBankStatements() {
         String gmailAccount =  ((Application)getActivity().getApplication()).getGmailAccount();
@@ -86,11 +149,11 @@ public class EStatementFragment extends BaseFragment
             getActivity().startActivityForResult(googlePicker, BaseActivity.PICK_ACCOUNT_REQUEST);
 
         }
-        else
+       /* else
         {
             btnScanGmail.setText(R.string.change_gmail_account);
             requestForGmailToken(gmailAccount);
-        }
+        }*/
     }
 
     protected void requestForGmailToken(final String gmailAccount) {

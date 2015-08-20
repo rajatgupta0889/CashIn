@@ -14,6 +14,7 @@
     <string name="confirm_on_close">Exit Cash In</string>
     <string name="default_dateof_birth">01-Jan-1990</string>
     <string name="pan_number">PAN Number</string>
+    <string name="bank_statement_info">Pick one of the below option to fetch your last 3 months bank statement</string>
     <string name="pan_number_hint">ALHRR0000S</string>
     <string name="relation_name_hint">Name of the relation</string>
     <string name="enter_pan_card_details_button"><![CDATA[Enter PAN card details  >]]></string>

@@ -29,29 +29,29 @@ public class EmailExtractor implements Extractor {
 		 * Loop backwards through the lines so we can remove
 		 * them along the way.
 		 */
-		lineLoop: for(int i = lines.size() - 1; i >= 0; i--) {
-			String line = lines.remove(i);
-            String [] tokens = line.split(" ");
-            boolean isEmail = false;
+		lineLoop:
+		{	if(lines != null )
+			for (int i = lines.size() - 1; i >= 0; i--) {
+				String line = lines.remove(i);
+				String[] tokens = line.split(" ");
+				boolean isEmail = false;
 
-            for(String token: tokens) {
-                isEmail = EmailValidator.getInstance().isValid(line);
-                if(isEmail)
-                {
-                    contact.setEmailAddress(line);
-                    break;
-                }
-            }
-			if( isEmail ) {
-				// Add all of the remaining lines since we found our match
-				remainingLines.addAll(lines);
-				break lineLoop;
-			}
-			else {
-				remainingLines.add(line);
+				for (String token : tokens) {
+					isEmail = EmailValidator.getInstance().isValid(line);
+					if (isEmail) {
+						contact.setEmailAddress(line);
+						break;
+					}
+				}
+				if (isEmail) {
+					// Add all of the remaining lines since we found our match
+					remainingLines.addAll(lines);
+					break lineLoop;
+				} else {
+					remainingLines.add(line);
+				}
 			}
 		}
-		
 		return remainingLines;
 		
 	}

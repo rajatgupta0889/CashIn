@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.mantralabsglobal.cashin.BuildConfig;
 import com.mantralabsglobal.cashin.R;
@@ -54,6 +55,12 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     @InjectView(R.id.cc_pan)
     public CustomEditText panNumber;
 
+    @InjectView(R.id.success_capture)
+    public ViewGroup success_capture;
+
+    @InjectView(R.id.ib_launch_camera)
+    public ImageButton camera_capture;
+
    /* @NotEmpty
     @InjectView(R.id.cc_father_name)
     public CustomEditText fatherName;
@@ -81,9 +88,9 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         panCardService = ((Application)getActivity().getApplication()).getRestClient().getPanCardService();
         panCardServiceOCR = ((Application)getActivity().getApplication()).getRestClient().getPanCardServiceOCR();
         //SonOfSpinner relation = (SonOfSpinner) view.findViewById(R.id.cs_sonOf);
-        registerChildView(vg_form, View.GONE);
-        registerChildView(vg_scan, View.VISIBLE);
-        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
+        registerChildView(vg_form, View.VISIBLE);
+        registerChildView(vg_scan, View.GONE);
+//        registerFloatingActionButton((FloatingActionButton) getCurrentView().findViewById(R.id.fab_launch_camera), getCurrentView().findViewById(R.id.vg_pan_card_form));
 
         reset(false);
     }
@@ -110,10 +117,12 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        setVisibleChildView(vg_scan);
+        setVisibleChildView(vg_form);
     }
 
-    @OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera})
+    /*@OnClick( {R.id.ib_launch_camera, R.id.fab_launch_camera}
+    )*/
+    @OnClick( {R.id.ib_launch_camera, R.id.edit_icon})
     public void launchCamera() {
         Intent intent = new Intent(getActivity(), CwacCameraActivity.class);
         intent.putExtra(CwacCameraActivity.SHOW_CAMERA_SWITCH, false);
@@ -123,7 +132,6 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
         intent.putExtra("FLIP_CAMERA", false);
         intent.putExtra(CwacCameraFragment.ASPECT_RATIO, Double.parseDouble("0.66666666"));
         intent.putExtra(CwacCameraFragment.SHOW_INFO, getResources().getString(R.string.position_card_inside_frame));
-
         getActivity().startActivityForResult(intent, BaseActivity.IMAGE_CAPTURE_PAN_CARD);
     }
 
@@ -175,9 +183,12 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
             showProgressDialog(getString(R.string.processing_image));
             Bitmap binary = new ImageUtils().binarize( BitmapFactory.decodeFile(Crop.getOutput(result).getPath()));
             uploadImageToServerForOCR(binary, PANCardFragment.this);
-            if (BuildConfig.DEBUG) {
+           /* if (BuildConfig.DEBUG) {
                 showImageDialog(binary);
-            }
+            }*/
+
+            camera_capture.setVisibility(View.GONE);
+            success_capture.setVisibility(View.VISIBLE);
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             hideProgressDialog();
@@ -202,12 +213,9 @@ public class PANCardFragment extends BaseBindableFragment<PanCardService.PanCard
     public PanCardService.PanCardDetail getDataFromForm(PanCardService.PanCardDetail base) {
         if(base == null)
             base = new PanCardService.PanCardDetail();
-
-        //base.setSonOf(fatherName.getText().toString());
         base.setName(name.getText().toString());
         //base.setDob(dob.getText().toString());
         base.setPanNumber(panNumber.getText().toString());
-
         return base;
     }
 
