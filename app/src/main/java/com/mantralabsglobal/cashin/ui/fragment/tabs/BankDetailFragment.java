@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -54,6 +55,12 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     @InjectView(R.id.vg_bank_details)
     ViewGroup vg_bank_details;
 
+    @InjectView(R.id.eStatement)
+    Button eStatement;
+
+    @InjectView(R.id.netBanking)
+    Button netBanking;
+
     @InjectView(R.id.ic_edit)
     ImageView edit_view;
 
@@ -85,18 +92,30 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
 
         mTabManager.addTab(mTabHost.newTabSpec("blank").setIndicator("Blank Fragment"),
                 BlankFragment.class, null);
-        mTabManager.addTab(mTabHost.newTabSpec("e_statement").setIndicator("E-Statement from Gmail"),
-                EStatementFragment.class, null);
         mTabManager.addTab(mTabHost.newTabSpec("net_banking").setIndicator("Net Banking"),
                 NetBankingFragment.class, null);
-        mTabManager.addTab(mTabHost.newTabSpec("take_snap").setIndicator("Upload bank statement"),
-                SnapBankStatementFragment.class, null);
+        mTabManager.addTab(mTabHost.newTabSpec("e_statement").setIndicator("E-Statement from Gmail"),
+                EStatementFragment.class, null);
 
         mTabHost.setCurrentTab(0);
         mTabHost.getTabWidget().getChildAt(0).setVisibility(View.GONE);
 
         return view;
     }
+
+    @OnClick(R.id.eStatement)
+    public void netBankingClick() {
+            mTabHost.setCurrentTab(2);
+            netBanking.setSelected(false);
+            eStatement.setSelected(true);
+    }
+
+    @OnClick( R.id.netBanking)
+    public void eStatementClick() {
+        mTabHost.setCurrentTab(1);
+        netBanking.setSelected(true);
+        eStatement.setSelected(false);
+    };
 
     @Override
     protected View getFormView() {
@@ -110,6 +129,12 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         reset(false);
     }
 
+/*    @Override
+    public void onPause() {
+        super.onPause();
+        save();
+    }*/
+
     @Override
     protected void onCreate(List<PrimaryBankService.BankDetail> updatedData, Callback<List<PrimaryBankService.BankDetail>> saveCallback) {
         primaryBankService.createPrimaryBankDetail(updatedData, saveCallback);
@@ -122,8 +147,12 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
 
     @OnClick(R.id.btn_add_more)
     public void addMoreInBankStatement(){
-        if(bankDetailViewList.size() == 0 || (bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber() != null
+        if(bankDetailViewList == null || bankDetailViewList.size() == 0 || (bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber() != null
                 && bankDetailViewList.get(bankDetailViewList.size()-1).getBankDetail().getAccountNumber().trim().length() > 0)) {
+
+            if(bankDetailViewList == null)
+                bankDetailViewList = new ArrayList<BankDetailView>();
+
             PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
             onCreateDialog(bankDetail);
         }
@@ -165,7 +194,6 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         builder.show();
     }
 
-
     private void addMoreBankDetail(final PrimaryBankService.BankDetail bankDetail){
         final BankDetailView view = new BankDetailView(getActivity());
         view.setBankDetail(bankDetail);
@@ -193,7 +221,6 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
                     PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
                     bankDetail.setAccountNumber(provider.getAccountNumber(smsMessage));
                     bankDetail.setBankName(provider.getBankName(smsMessage));
-                    // bankDetail.setIsPrimary(smsList.size() == 1);++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++6\
                     if (!bankDetailList.contains(bankDetail))
                         bankDetailList.add(bankDetail);
                     if (!bankCount.containsKey(bankDetail.getAccountNumberLast4Digits()))
@@ -237,6 +264,8 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
                     }
                 }
             }
+
+
 
 
             private void primaryBankChangeListener(BankDetailView view) {

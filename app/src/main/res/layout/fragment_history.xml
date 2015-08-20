@@ -6,16 +6,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-            <ScrollView  style="@style/AppTheme.Form.ScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+
                 <LinearLayout
                     android:layout_width="match_parent" android:orientation="vertical"
                     android:layout_height="match_parent">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:text="@string/ever_taken_a_loan" style="@style/text_medium_input_header" />
+                android:layout_height="wrap_content" android:text="@string/ever_taken_a_loan" style="@style/text_medium_input_header_history" />
 
             <RadioGroup android:id="@+id/rg_loan_taken"
                 android:layout_width="match_parent"
@@ -34,7 +32,7 @@
 
             <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:text="@string/cheque_bounced" style="@style/text_medium_input_header" />
+                    android:layout_height="wrap_content" android:text="@string/cheque_bounced" style="@style/text_medium_input_header_history" />
 
 
                     <RadioGroup android:id="@+id/rg_cheque_bounced"
@@ -55,7 +53,9 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:text="@string/application_rejected" style="@style/text_medium_input_header" />
+                    android:layout_height="wrap_content" android:text="@string/application_rejected" style="@style/text_medium_input_header_history" />
+
+
 
 
                 <RadioGroup android:id="@+id/rg_application_rejected"
@@ -76,7 +76,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:text="@string/ever_defaulted" style="@style/text_medium_input_header" />
+                    android:layout_height="wrap_content" android:text="@string/ever_defaulted" style="@style/text_medium_input_header_history" />
 
 
                 <RadioGroup android:id="@+id/rg_defaulted"
@@ -107,7 +107,7 @@
 
             </LinearLayout>
                 </LinearLayout>
-            </ScrollView>
+
 
         <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
 

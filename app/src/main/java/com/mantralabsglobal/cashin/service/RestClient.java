@@ -36,6 +36,8 @@ public class RestClient  {
     private ReferenceService referenceService;
     private BankSnapService bankSnapService;
     private EMIService emiService;
+    private EStatementService eStatementService;
+    private NetBankingService netBankingService;
 
     public RestClient(Context context)
     {
@@ -86,6 +88,17 @@ public class RestClient  {
         referenceService = restAdapter.create(ReferenceService.class);
         bankSnapService = restAdapter.create(BankSnapService.class);
         emiService = restAdapter.create(EMIService.class);
+        eStatementService = restAdapter.create(EStatementService.class);
+        netBankingService = restAdapter.create(NetBankingService.class);
+
+    }
+
+    public NetBankingService getNetBankingService() {
+        return netBankingService;
+    }
+
+    public EStatementService geteStatementService() {
+        return eStatementService;
     }
 
     public AuthenticationService getAuthenticationService()
