@@ -13,6 +13,8 @@ import com.mantralabsglobal.cashin.utils.PerfiosUtils;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -55,13 +57,15 @@ public class PerfiosActivity extends BaseActivity {
         } catch (NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException e) {
             e.printStackTrace();
         }
-        payload.setDestination("statement");
+        payload.setDestination("netbankingFetch");
         payload.setLoanAmount(100000);
         payload.setLoanDuration(24);
         payload.setLoanType("Personal");
 
         try {
-            perfiosService.startProcess(PerfiosUtils.serialize(payload), PerfiosUtils.getPayloadSignature(payload, PerfiosClient.getDefault().getPrivateKey()), new Callback<String>() {
+            String payloadSignature = PerfiosUtils.getPayloadSignature(payload, PerfiosClient.getDefault().getPrivateKey());
+            boolean isValid = PerfiosUtils.validateSignature(payloadSignature, PerfiosUtils.serialize(payload), PerfiosClient.getDefault().getPublicKey());
+            perfiosService.startProcess( PerfiosUtils.condense(PerfiosUtils.serialize(payload)), payloadSignature , new Callback<String>() {
                 @Override
                 public void success(String s, Response response) {
                     Log.i(TAG,s);
@@ -72,7 +76,7 @@ public class PerfiosActivity extends BaseActivity {
                     Log.i(TAG,error.getMessage());
                 }
             });
-        } catch (IllegalBlockSizeException | UnsupportedEncodingException | NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException e) {
+        } catch (IllegalBlockSizeException | UnsupportedEncodingException | NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | NoSuchProviderException | SignatureException e) {
             e.printStackTrace();
         }
 
