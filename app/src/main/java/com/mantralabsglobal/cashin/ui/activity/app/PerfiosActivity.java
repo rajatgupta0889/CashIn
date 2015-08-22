@@ -1,6 +1,8 @@
 package com.mantralabsglobal.cashin.ui.activity.app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -9,6 +11,8 @@ import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.PerfiosClient;
 import com.mantralabsglobal.cashin.service.PerfiosService;
 import com.mantralabsglobal.cashin.utils.PerfiosUtils;
+
+import org.apache.http.util.EncodingUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -43,7 +47,32 @@ public class PerfiosActivity extends BaseActivity {
         ButterKnife.inject(this);
         perfiosService = PerfiosClient.getDefault().getPerfoisService();
         transactionId = UUID.randomUUID().toString();
+        initWebView();
+        //getInstitutions();
         startProcess();
+    }
+
+    protected void getInstitutions(){
+        PerfiosService.InstitutionsPayload payload = new PerfiosService.InstitutionsPayload();
+        payload.setApiVersion(getString(R.string.perfios_api_version));
+        payload.setVendorId(getString(R.string.perfios_vendorId));
+        payload.setDestination("netbankingFetch");
+        try {
+            String payloadSignature = PerfiosUtils.getPayloadSignature(payload, PerfiosClient.getDefault().getPrivateKey());
+            perfiosService.getInstitutions(PerfiosUtils.serialize(payload), payloadSignature, new Callback<String>() {
+                @Override
+                public void success(String s, Response response) {
+                    Log.i(TAG, s);
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.i(TAG, error.getMessage());
+                }
+            });
+        } catch (IllegalBlockSizeException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | NoSuchProviderException | NoSuchPaddingException | SignatureException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void startProcess()
@@ -53,8 +82,8 @@ public class PerfiosActivity extends BaseActivity {
         payload.setVendorId(getString(R.string.perfios_vendorId));
         payload.setTransactionId(transactionId);
         try {
-            payload.setEmailId( PerfiosUtils.base16(PerfiosUtils.encrypt(getCashInApplication().getAppUser().getBytes(), PerfiosClient.getDefault().getPublicKey())));
-        } catch (NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException e) {
+            payload.setEmailId( PerfiosUtils.encrypt(getCashInApplication().getAppUser(), PerfiosClient.getDefault().getPublicKey()));
+        } catch (NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         payload.setDestination("netbankingFetch");
@@ -64,18 +93,11 @@ public class PerfiosActivity extends BaseActivity {
 
         try {
             String payloadSignature = PerfiosUtils.getPayloadSignature(payload, PerfiosClient.getDefault().getPrivateKey());
-            boolean isValid = PerfiosUtils.validateSignature(payloadSignature, PerfiosUtils.serialize(payload), PerfiosClient.getDefault().getPublicKey());
-            perfiosService.startProcess( PerfiosUtils.condense(PerfiosUtils.serialize(payload)), payloadSignature , new Callback<String>() {
-                @Override
-                public void success(String s, Response response) {
-                    Log.i(TAG,s);
-                }
+            //boolean isValid = PerfiosUtils.validateSignature(payloadSignature, PerfiosUtils.serialize(payload), PerfiosClient.getDefault().getPublicKey());
+            String postData = "payload=" + PerfiosUtils.serialize(payload) + "&signature=" + payloadSignature;
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Log.i(TAG,error.getMessage());
-                }
-            });
+            mWebView.postUrl(getString(R.string.perfios_url) + "/start", EncodingUtils.getBytes(postData, "UTF-8"));
+
         } catch (IllegalBlockSizeException | UnsupportedEncodingException | NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | NoSuchProviderException | SignatureException e) {
             e.printStackTrace();
         }
@@ -83,10 +105,26 @@ public class PerfiosActivity extends BaseActivity {
     }
 
     protected void initWebView(){
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setBuiltInZoomControls(true);
+        mWebView.getSettings().setSupportZoom(true);
         mWebView.setWebViewClient( new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
+                if(url.endsWith("report"))
+                {
+                    Intent intent = new Intent();
+                    intent.putExtra("transactionId", transactionId);
+                    setResult(RESULT_OK, intent);
+                    finish();
+
+                }
+                else {
+                    view.loadUrl(url);
+
+
+                }
+                return true;
             }
         });
     }

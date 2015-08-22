@@ -9,6 +9,8 @@ import org.simpleframework.xml.core.Persister;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -30,9 +32,10 @@ public class PerfiosUtils {
     final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
 
-    public static String getPayloadSignature(PerfiosService.StartProcessPayload payload, PrivateKey privateKey) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, NoSuchProviderException, SignatureException {
+    public static <T> String getPayloadSignature(T payload, PrivateKey privateKey) throws IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, NoSuchProviderException, SignatureException {
         String payloadString = serialize(payload);
-        return  base16(sha1withRSA(condense(payloadString).getBytes(), privateKey));
+       // return  base16(sha1withRSA(condense(payloadString).getBytes(), privateKey));
+        return sign(sha1(condense(payloadString)), privateKey);
     }
 
     public static boolean validateSignature(String hexSignature, String payload, PublicKey publicKey)
@@ -60,6 +63,21 @@ public class PerfiosUtils {
         return temp;
     }
 
+    public static String sha1(String payload) throws NoSuchAlgorithmException,
+            UnsupportedEncodingException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        md.update(payload.getBytes("UTF-8"));
+        byte[] digest = md.digest();
+        //byte[] encoded = Hex.encode(digest);
+        //return new String(encoded);
+        return base16(digest);
+    }
+
+    public static String sign(String payload, PrivateKey privateKey) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
+            BadPaddingException, UnsupportedEncodingException {
+        return encrypt(payload, privateKey);
+    }
 
     public static byte [] sha1withRSA(byte [] data, PrivateKey privateKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, SignatureException, NoSuchProviderException {
         Signature signature = null;
@@ -69,11 +87,15 @@ public class PerfiosUtils {
         return signature.sign();
     }
 
-    public static byte [] encrypt(byte [] data, PublicKey publicKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-
+    public static String encrypt(String payload, Key privateKey) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException,
+            BadPaddingException, UnsupportedEncodingException {
         Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        return cipher.doFinal(data);
+        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+        byte[] encrypted = cipher.doFinal(payload.getBytes("UTF-8"));
+        //byte[] encoded = Hex.encode(encrypted);
+        //return new String(encoded);
+        return base16(encrypted);
     }
 
     public static byte [] decrypt(byte [] data, PublicKey publicKey) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
@@ -102,7 +124,7 @@ public class PerfiosUtils {
         return data;
     }
 
-    public static String serialize(PerfiosService.StartProcessPayload payload){
+    public static <T> String serialize(T payload){
         Serializer serializer = new Persister();
         StringWriter stringWriter = new StringWriter();
         try {

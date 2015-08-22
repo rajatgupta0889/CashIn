@@ -21,8 +21,48 @@ public interface PerfiosService {
     @POST("/start")
     void startProcess( @Field("payload") String payload, @Field("signature") String signature, Callback<String> callback);
 
+    @FormUrlEncoded
     @POST("/txnstatus")
-    void transactionStatus(TransactionStatusPayload payload, String signature, Callback<String> callback);
+    void getTransactionStatus(@Field("payload") String payload, @Field("signature") String signature, Callback<TransactionStatusResponse> callback);
+
+    @FormUrlEncoded
+    @POST("/institutions")
+    void getInstitutions(@Field("payload") String payload, @Field("signature") String signature, Callback<String> callback);
+
+
+    @Root(name = "payload")
+    class InstitutionsPayload{
+        @Element
+        private String apiVersion;
+        @Element
+        private String vendorId;
+        @Element
+        private String destination;
+
+        public String getApiVersion() {
+            return apiVersion;
+        }
+
+        public void setApiVersion(String apiVersion) {
+            this.apiVersion = apiVersion;
+        }
+
+        public String getVendorId() {
+            return vendorId;
+        }
+
+        public void setVendorId(String vendorId) {
+            this.vendorId = vendorId;
+        }
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public void setDestination(String destination) {
+            this.destination = destination;
+        }
+    }
 
     @Root(name = "payload")
     class StartProcessPayload{
@@ -138,6 +178,17 @@ public interface PerfiosService {
         @Element(name = "txnId")
         private String transactionId;
 
+        public TransactionStatusPayload()
+        {
+
+        }
+
+        public TransactionStatusPayload(String apiVersion, String vendorId, String transactionId){
+            this.apiVersion = apiVersion;
+            this.vendorId = vendorId;
+            this.transactionId = transactionId;
+        }
+
         public String getApiVersion() {
             return apiVersion;
         }
@@ -165,13 +216,15 @@ public interface PerfiosService {
 
     @Root(name = "Status")
     class TransactionStatusResponse{
-        @Attribute(name = "txnId")
+        @Attribute(name = "txnId", required = false)
         private String transactionId;
-        @Attribute(name="parts")
-        private String partCount;
+        @Attribute(name="parts", required = false)
+        private int partCount;
+        @Attribute(name="processing", required = false)
         private String processing;
+        @Attribute(name="files", required = false)
         private String files;
-        @ElementList(type = TransactionStatusResponsePart.class, name = "Part")
+        @ElementList(type = TransactionStatusResponsePart.class, entry = "Part", required = false, inline = true)
         private List<TransactionStatusResponsePart> parts;
 
         public String getTransactionId() {
@@ -182,11 +235,11 @@ public interface PerfiosService {
             this.transactionId = transactionId;
         }
 
-        public String getPartCount() {
+        public int getPartCount() {
             return partCount;
         }
 
-        public void setPartCount(String partCount) {
+        public void setPartCount(int partCount) {
             this.partCount = partCount;
         }
 
@@ -215,11 +268,14 @@ public interface PerfiosService {
         }
     }
 
-    @Root(name = "Part")
+    @Element(name = "Part")
     class TransactionStatusResponsePart{
-        @Attribute(name = "perfTxnId")
+        @Attribute(name = "perfiosTransactionId")
         private String perfiosTransactionId;
+        @Attribute(required = false)
         private String status;
+        @Attribute(required = false)
+        private String reason;
 
         public String getPerfiosTransactionId() {
             return perfiosTransactionId;
@@ -235,6 +291,14 @@ public interface PerfiosService {
 
         public void setStatus(String status) {
             this.status = status;
+        }
+
+        public String getReason() {
+            return reason;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
         }
     }
 }

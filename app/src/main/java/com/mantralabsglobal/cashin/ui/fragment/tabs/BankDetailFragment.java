@@ -1,5 +1,6 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,12 +24,22 @@ import android.widget.Toast;
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.BankProvider;
+import com.mantralabsglobal.cashin.service.PerfiosClient;
+import com.mantralabsglobal.cashin.service.PerfiosService;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.app.PerfiosActivity;
 import com.mantralabsglobal.cashin.ui.fragment.utils.TabManager;
 import com.mantralabsglobal.cashin.ui.view.BankDetailView;
+import com.mantralabsglobal.cashin.utils.PerfiosUtils;
 import com.mantralabsglobal.cashin.utils.SMSProvider;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,9 +48,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
@@ -103,18 +120,22 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         return view;
     }
 
-    @OnClick(R.id.eStatement)
+    @OnClick(R.id.netBanking)
     public void netBankingClick() {
-            mTabHost.setCurrentTab(2);
-            netBanking.setSelected(false);
-            eStatement.setSelected(true);
-    }
-
-    @OnClick( R.id.netBanking)
-    public void eStatementClick() {
         mTabHost.setCurrentTab(1);
         netBanking.setSelected(true);
         eStatement.setSelected(false);
+
+        //Load perfios webview
+        Intent intent = new Intent(getActivity(), PerfiosActivity.class);
+        getActivity().startActivityForResult(intent, BaseActivity.PERFIOS_NET_BANKING);
+    }
+
+    @OnClick( R.id.eStatement)
+    public void eStatementClick() {
+        mTabHost.setCurrentTab(2);
+        netBanking.setSelected(false);
+        eStatement.setSelected(true);
     };
 
     @Override
@@ -317,6 +338,49 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
         super.onActivityResult(requestCode, resultCode, data);
         if(mTabManager.getCurrentFragment() != null)
             mTabManager.getCurrentFragment().onActivityResult(requestCode,resultCode,data);
+
+        if(requestCode==BaseActivity.PERFIOS_NET_BANKING && resultCode == Activity.RESULT_OK)
+        {
+            showProgressDialog(getString(R.string.title_please_wait));
+            String transactionId = data.getStringExtra("transactionId");
+            PerfiosService.TransactionStatusPayload payloadObj = new PerfiosService.TransactionStatusPayload(getString(R.string.perfios_api_version), getString(R.string.perfios_vendorId), transactionId );
+            String payload = PerfiosUtils.serialize(payloadObj);
+            try {
+                String signature = PerfiosUtils.getPayloadSignature(payloadObj, PerfiosClient.getDefault().getPrivateKey() );
+                PerfiosClient.getDefault().getPerfoisService().getTransactionStatus(payload, signature, new Callback<PerfiosService.TransactionStatusResponse>() {
+                    @Override
+                    public void success(PerfiosService.TransactionStatusResponse transactionStatusResponse, Response response) {
+                        //showToastOnUIThread(PerfiosUtils.serialize(transactionStatusResponse));
+
+                        primaryBankService.uploadPerfiosTransactionStatus(transactionStatusResponse, new Callback<PrimaryBankService.PerfiosTransactionResponse>() {
+                            @Override
+                            public void success(PrimaryBankService.PerfiosTransactionResponse perfiosTransactionResponse, Response response) {
+                                hideProgressDialog();
+                                showToastOnUIThread(perfiosTransactionResponse.getMessage());
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                showToastOnUIThread(error.getMessage());
+                                hideProgressDialog();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        hideProgressDialog();
+                        showToastOnUIThread(error.getMessage());
+                    }
+                });
+
+            } catch (IllegalBlockSizeException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | NoSuchProviderException | SignatureException | NoSuchPaddingException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+                hideProgressDialog();
+                showToastOnUIThread(e.getMessage());
+
+            }
+        }
     }
 
     @Override

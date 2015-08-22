@@ -41,6 +41,8 @@ public class BaseActivity extends AppCompatActivity {
     public static final int CONTACT_PICKER = 11000;
     public static final int SEND_REFERRAL_MESSAGE = 12000;
     public static final int PICK_ACCOUNT_REQUEST = 13000;
+    public static final int PERFIOS_NET_BANKING = 14000;
+
 
 
     protected void putInAppPreference(String key, String value) {
