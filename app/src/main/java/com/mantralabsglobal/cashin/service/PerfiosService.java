@@ -1,13 +1,30 @@
 package com.mantralabsglobal.cashin.service;
 
+import android.content.Context;
+import android.os.AsyncTask;
+
+import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.utils.PerfiosUtils;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
 import java.util.List;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
@@ -26,9 +43,51 @@ public interface PerfiosService {
     void getTransactionStatus(@Field("payload") String payload, @Field("signature") String signature, Callback<TransactionStatusResponse> callback);
 
     @FormUrlEncoded
+    @POST("/txnstatus")
+    TransactionStatusResponse getTransactionStatus(@Field("payload") String payload, @Field("signature") String signature);
+
+    @FormUrlEncoded
     @POST("/institutions")
     void getInstitutions(@Field("payload") String payload, @Field("signature") String signature, Callback<String> callback);
 
+
+    class PerfiosStatusUploadTask extends AsyncTask<String, String, PrimaryBankService.PerfiosTransactionResponse>{
+
+        protected Exception exception;
+        private final Context context;
+
+        public PerfiosStatusUploadTask(Context context){
+            this.context = context;
+        }
+
+        @Override
+        protected PrimaryBankService.PerfiosTransactionResponse doInBackground(String... params) {
+            String transactionId = params[0];
+            PrimaryBankService.PerfiosTransactionResponse perfiosTransactionResponse = null;
+            PerfiosService.TransactionStatusPayload payloadObj = new PerfiosService.TransactionStatusPayload(context.getString(R.string.perfios_api_version)
+                                                                                    , context.getString(R.string.perfios_vendorId), transactionId );
+            publishProgress("Generating payload");
+            String payload = PerfiosUtils.serialize(payloadObj);
+            PrimaryBankService primaryBankService = RestClient.getInstance().getPrimaryBankService();
+            String signature = null;
+            try {
+                publishProgress("Signing payload");
+                signature = PerfiosUtils.getPayloadSignature(payloadObj, PerfiosClient.getDefault().getPrivateKey() );
+            } catch (IllegalBlockSizeException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | NoSuchProviderException | SignatureException | NoSuchPaddingException | UnsupportedEncodingException e) {
+                e.printStackTrace();
+                exception = e;
+            }
+            if(signature != null) {
+                publishProgress("Fetching transaction status from Perfios");
+                TransactionStatusResponse transactionStatusResponse = PerfiosClient.getDefault().getPerfoisService().getTransactionStatus(payload, signature);
+                publishProgress("Uploading status to server");
+                perfiosTransactionResponse = primaryBankService.uploadPerfiosTransactionStatus(transactionStatusResponse);
+                publishProgress("Done!!");
+            }
+            return perfiosTransactionResponse;
+        }
+
+    }
 
     @Root(name = "payload")
     class InstitutionsPayload{

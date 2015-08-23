@@ -341,45 +341,22 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
 
         if(requestCode==BaseActivity.PERFIOS_NET_BANKING && resultCode == Activity.RESULT_OK)
         {
-            showProgressDialog(getString(R.string.title_please_wait));
-            String transactionId = data.getStringExtra("transactionId");
-            PerfiosService.TransactionStatusPayload payloadObj = new PerfiosService.TransactionStatusPayload(getString(R.string.perfios_api_version), getString(R.string.perfios_vendorId), transactionId );
-            String payload = PerfiosUtils.serialize(payloadObj);
-            try {
-                String signature = PerfiosUtils.getPayloadSignature(payloadObj, PerfiosClient.getDefault().getPrivateKey() );
-                PerfiosClient.getDefault().getPerfoisService().getTransactionStatus(payload, signature, new Callback<PerfiosService.TransactionStatusResponse>() {
-                    @Override
-                    public void success(PerfiosService.TransactionStatusResponse transactionStatusResponse, Response response) {
-                        //showToastOnUIThread(PerfiosUtils.serialize(transactionStatusResponse));
-
-                        primaryBankService.uploadPerfiosTransactionStatus(transactionStatusResponse, new Callback<PrimaryBankService.PerfiosTransactionResponse>() {
-                            @Override
-                            public void success(PrimaryBankService.PerfiosTransactionResponse perfiosTransactionResponse, Response response) {
-                                hideProgressDialog();
-                                showToastOnUIThread(perfiosTransactionResponse.getMessage());
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-                                showToastOnUIThread(error.getMessage());
-                                hideProgressDialog();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        hideProgressDialog();
-                        showToastOnUIThread(error.getMessage());
-                    }
-                });
-
-            } catch (IllegalBlockSizeException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | NoSuchProviderException | SignatureException | NoSuchPaddingException | UnsupportedEncodingException e) {
-                e.printStackTrace();
-                hideProgressDialog();
-                showToastOnUIThread(e.getMessage());
-
-            }
+            PerfiosService.PerfiosStatusUploadTask task = new PerfiosService.PerfiosStatusUploadTask(getActivity()){
+                @Override
+                protected void onProgressUpdate(String... values) {
+                    showProgressDialog2(values[0]);
+                }
+                @Override
+                protected void onPostExecute(PrimaryBankService.PerfiosTransactionResponse result) {
+                    dismissProgressDialog2();
+                    if(exception != null)
+                        showToastOnUIThread("Error:" + exception.getMessage());
+                    else
+                        showToastOnUIThread("Success");
+                }
+            };
+            showProgressDialog2("Checking status");
+            task.execute(data.getStringExtra("transactionId"));
         }
     }
 

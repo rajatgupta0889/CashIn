@@ -24,6 +24,9 @@ public interface PrimaryBankService {
 
     @POST("/user/netBankingperfios")
     void uploadPerfiosTransactionStatus(@Body PerfiosService.TransactionStatusResponse perfiosTransactionResponse,  Callback<PerfiosTransactionResponse> callback);
+
+    @POST("/user/netBankingperfios")
+    PerfiosTransactionResponse uploadPerfiosTransactionStatus(@Body PerfiosService.TransactionStatusResponse perfiosTransactionResponse);
     //@PUT("/user/bank")
     //void updatePrimaryBankDetail(@Body BankDetail bankDetail,  Callback<BankDetail> callback);
 
