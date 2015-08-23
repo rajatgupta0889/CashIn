@@ -3,13 +3,17 @@ package com.mantralabsglobal.cashin.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.BankProvider;
+import com.mantralabsglobal.cashin.service.PrimaryBankService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,16 +49,89 @@ public class SMSProvider {
         bankNamePattern = Pattern.compile(context.getString(R.string.bank_name_regex));
     }
 
+    public static class ReadBankAccountInfoTask extends AsyncTask<Long, String,  List<PrimaryBankService.BankDetail>>{
+
+        private final Predicate<SMSMessage> filter;
+        private final SMSProvider provider;
+
+        public ReadBankAccountInfoTask(Predicate<SMSMessage> filter, SMSProvider provider)
+        {
+            this.filter = filter;
+            this.provider = provider;
+        }
+
+        @Override
+        protected  List<PrimaryBankService.BankDetail> doInBackground(Long... params) {
+            Cursor cursor = provider.getSMSInboxCursor();
+            Long since = params[0];
+            int maxCount = cursor.getCount();
+            List<PrimaryBankService.BankDetail> bankDetailList = new ArrayList<>();
+            Map<String, Integer> bankCount = new HashMap<>();
+            if (cursor.moveToFirst()) { // must check the result to prevent exception
+                int index = 1;
+                do {
+                    publishProgress(String.format("Processing inbox %d/%d. Found %d.", index, maxCount, bankDetailList.size() ));
+
+                    if(cursor.getLong(cursor.getColumnIndex("date"))<since)
+                        break;
+                    //String msgData = "";
+                    SMSMessage message = provider.mapCursor(cursor);
+
+                    if(filter.apply(message))
+                    {
+                        PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
+                        bankDetail.setAccountNumber(provider.getAccountNumber(message));
+                        bankDetail.setBankName(provider.getBankName(message));
+                        if (!bankDetailList.contains(bankDetail))
+                            bankDetailList.add(bankDetail);
+                        if (!bankCount.containsKey(bankDetail.getAccountNumberLast4Digits()))
+                            bankCount.put(bankDetail.getAccountNumberLast4Digits(), 0);
+                        int newCount = bankCount.get(bankDetail.getAccountNumberLast4Digits()) + 1;
+                        bankCount.put(bankDetail.getAccountNumberLast4Digits(), newCount);
+                    }
+
+                    index++;
+
+                } while (cursor.moveToNext());
+            } else {
+                publishProgress(String.format("Inbox Empty" ));
+            }
+            return bankDetailList;
+        }
+    }
+
     public List<SMSMessage> readSMS(Predicate<SMSMessage> filter)
     {
         return readSMS(filter, Long.MIN_VALUE);
     }
+
+    protected Cursor getSMSInboxCursor() {
+        return context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+    }
+
+    protected SMSMessage mapCursor(Cursor cursor)
+    {
+        SMSMessage message = new SMSMessage();
+        message.setBody(cursor.getString(cursor.getColumnIndex("body")));
+        message.setSubject(cursor.getString(cursor.getColumnIndex("subject")));
+        message.setType(cursor.getString(cursor.getColumnIndex("type")));
+        message.setAddress(cursor.getString(cursor.getColumnIndex("address")));
+        message.setDate(cursor.getString(cursor.getColumnIndex("date")));
+        message.setId(cursor.getString(cursor.getColumnIndex("_id")));
+        message.setLocked(cursor.getString(cursor.getColumnIndex("locked")));
+        message.setPerson(cursor.getString(cursor.getColumnIndex("person")));
+        message.setProtocol(cursor.getString(cursor.getColumnIndex("protocol")));
+        message.setRead(cursor.getString(cursor.getColumnIndex("read")));
+        message.setReply_path_present(cursor.getString(cursor.getColumnIndex("reply_path_present")));
+        message.setStatus(cursor.getString(cursor.getColumnIndex("status")));
+        message.setThread_id(cursor.getString(cursor.getColumnIndex("thread_id")));
+        message.setService_center(cursor.getString(cursor.getColumnIndex("service_center")));
+        return message;
+    }
+
     public List<SMSMessage> readSMS( Predicate<SMSMessage> filter, long since)
     {
-        // public static final String INBOX = "content://sms/inbox";
-// public static final String SENT = "content://sms/sent";
-// public static final String DRAFT = "content://sms/draft";
-        Cursor cursor = context.getContentResolver().query(Uri.parse("content://sms/inbox"), null, null, null, null);
+        Cursor cursor = getSMSInboxCursor();
 
         List<SMSMessage> smsList = new ArrayList<>();
 
@@ -63,21 +140,7 @@ public class SMSProvider {
                 if(cursor.getLong(cursor.getColumnIndex("date"))<since)
                     break;
                 //String msgData = "";
-                SMSMessage message = new SMSMessage();
-                message.setBody(cursor.getString(cursor.getColumnIndex("body")));
-                message.setSubject(cursor.getString(cursor.getColumnIndex("subject")));
-                message.setType(cursor.getString(cursor.getColumnIndex("type")));
-                message.setAddress(cursor.getString(cursor.getColumnIndex("address")));
-                message.setDate(cursor.getString(cursor.getColumnIndex("date")));
-                message.setId(cursor.getString(cursor.getColumnIndex("_id")));
-                message.setLocked(cursor.getString(cursor.getColumnIndex("locked")));
-                message.setPerson(cursor.getString(cursor.getColumnIndex("person")));
-                message.setProtocol(cursor.getString(cursor.getColumnIndex("protocol")));
-                message.setRead(cursor.getString(cursor.getColumnIndex("read")));
-                message.setReply_path_present(cursor.getString(cursor.getColumnIndex("reply_path_present")));
-                message.setStatus(cursor.getString(cursor.getColumnIndex("status")));
-                message.setThread_id(cursor.getString(cursor.getColumnIndex("thread_id")));
-                message.setService_center(cursor.getString(cursor.getColumnIndex("service_center")));
+                SMSMessage message = mapCursor(cursor);
 
                 if(filter.apply(message))
                     smsList.add(message);

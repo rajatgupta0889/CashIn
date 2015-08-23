@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 import com.android.internal.util.Predicate;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.businessobjects.BankProvider;
-import com.mantralabsglobal.cashin.service.PerfiosClient;
 import com.mantralabsglobal.cashin.service.PerfiosService;
 import com.mantralabsglobal.cashin.service.PrimaryBankService;
 import com.mantralabsglobal.cashin.ui.Application;
@@ -32,31 +29,18 @@ import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
 import com.mantralabsglobal.cashin.ui.activity.app.PerfiosActivity;
 import com.mantralabsglobal.cashin.ui.fragment.utils.TabManager;
 import com.mantralabsglobal.cashin.ui.view.BankDetailView;
-import com.mantralabsglobal.cashin.utils.PerfiosUtils;
 import com.mantralabsglobal.cashin.utils.SMSProvider;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SignatureException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 import butterknife.InjectView;
 import butterknife.OnClick;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 /**
  * Created by pk on 13/06/2015.
@@ -203,7 +187,7 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     public void onCreateDialog(final PrimaryBankService.BankDetail bankDetail) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Select Bank");
-        builder.setItems(BankProvider.getInstance().getBanks().getBankNameList().toArray(new String []{}), new DialogInterface.OnClickListener() {
+        builder.setItems(BankProvider.getInstance().getBanks().getBankNameList().toArray(new String[]{}), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 String bankName = BankProvider.getInstance().getBanks().getBankCodeList().get(item);
                 Log.d("Bank name", bankName);
@@ -226,80 +210,81 @@ public class BankDetailFragment extends BaseBindableFragment<List<PrimaryBankSer
     }
 
 
+    @Override
+    protected void handleDataNotPresentOnServer() {
+        final SMSProvider provider = new SMSProvider(getActivity());
+        SMSProvider.ReadBankAccountInfoTask task = new SMSProvider.ReadBankAccountInfoTask(new Predicate<SMSProvider.SMSMessage>() {
             @Override
-            protected void handleDataNotPresentOnServer() {
-                final SMSProvider provider = new SMSProvider(getActivity());
-                List<SMSProvider.SMSMessage> smsList = provider.readSMS(new Predicate<SMSProvider.SMSMessage>() {
-                    @Override
-                    public boolean apply(SMSProvider.SMSMessage smsMessage) {
-                        return provider.isSenderBank(smsMessage) && provider.hasAccountInformation(smsMessage);
-                    }
-                });
-
-                List<PrimaryBankService.BankDetail> bankDetailList = new ArrayList<>();
-                final Map<String, Integer> bankCount = new HashMap<>();
-                for (SMSProvider.SMSMessage smsMessage : smsList) {
-                    PrimaryBankService.BankDetail bankDetail = new PrimaryBankService.BankDetail();
-                    bankDetail.setAccountNumber(provider.getAccountNumber(smsMessage));
-                    bankDetail.setBankName(provider.getBankName(smsMessage));
-                    if (!bankDetailList.contains(bankDetail))
-                        bankDetailList.add(bankDetail);
-                    if (!bankCount.containsKey(bankDetail.getAccountNumberLast4Digits()))
-                        bankCount.put(bankDetail.getAccountNumberLast4Digits(), 0);
-                    int newCount = bankCount.get(bankDetail.getAccountNumberLast4Digits()) + 1;
-                    bankCount.put(bankDetail.getAccountNumberLast4Digits(), newCount);
-                }
-                sortBankDetailsList(bankDetailList, bankCount);
+            public boolean apply(SMSProvider.SMSMessage smsMessage) {
+                return provider.isSenderBank(smsMessage) && provider.hasAccountInformation(smsMessage);
             }
+        }, provider){
 
-            private void sortBankDetailsList(List<PrimaryBankService.BankDetail> bankDetailList, final Map<String, Integer> bankCount) {
-                if (bankDetailList.size() > 0) {
-                    Collections.sort(bankDetailList, new Comparator<PrimaryBankService.BankDetail>() {
-
-                        @Override
-                        public int compare(PrimaryBankService.BankDetail lhs, PrimaryBankService.BankDetail rhs) {
-                            return bankCount.get(rhs.getAccountNumberLast4Digits()).compareTo(bankCount.get(lhs.getAccountNumberLast4Digits()));
-                        }
-                    });
-                    //    bankDetailList.get(0).setIsPrimary(true);
-                }
+            @Override
+            protected void onProgressUpdate(String... values) {
+                showProgressDialog2(values[0]);
+            }
+            @Override
+            protected void onPostExecute( List<PrimaryBankService.BankDetail> bankDetailList) {
+                dismissProgressDialog2();
                 bindDataToForm(bankDetailList);
             }
+        };
+        showProgressDialog2("Scanning SMS");
+        task.execute(Long.MIN_VALUE);
 
-            @Override
-            protected void onUpdate(List<PrimaryBankService.BankDetail> updatedData, Callback<List<PrimaryBankService.BankDetail>> saveCallback) {
-                primaryBankService.createPrimaryBankDetail(updatedData, saveCallback);
-            }
+    }
 
-            @Override
-            public void bindDataToForm(final List<PrimaryBankService.BankDetail> value) {
-                if (value != null) {
-                    bankDetailViewList = new ArrayList<>();
-                    for (final PrimaryBankService.BankDetail bankDetail : value) {
-                        BankDetailView view = new BankDetailView(getActivity());
-                        view.setBankDetail(bankDetail);
-                        vg_bank_details.addView(view);
-                        bankDetailViewList.add(view);
-                        primaryBankChangeListener(view);
+/*
+    private void sortBankDetailsList(List<PrimaryBankService.BankDetail> bankDetailList, final Map<String, Integer> bankCount) {
+        if (bankDetailList.size() > 0) {
+            Collections.sort(bankDetailList, new Comparator<PrimaryBankService.BankDetail>() {
 
-                    }
+                @Override
+                public int compare(PrimaryBankService.BankDetail lhs, PrimaryBankService.BankDetail rhs) {
+                    return bankCount.get(rhs.getAccountNumberLast4Digits()).compareTo(bankCount.get(lhs.getAccountNumberLast4Digits()));
                 }
+            });
+            //    bankDetailList.get(0).setIsPrimary(true);
+        }
+        bindDataToForm(bankDetailList);
+    }
+*/
+
+    @Override
+    protected void onUpdate(List<PrimaryBankService.BankDetail> updatedData, Callback<List<PrimaryBankService.BankDetail>> saveCallback) {
+        primaryBankService.createPrimaryBankDetail(updatedData, saveCallback);
+    }
+
+    @Override
+    public void bindDataToForm(final List<PrimaryBankService.BankDetail> value) {
+        if (value != null) {
+            bankDetailViewList = new ArrayList<>();
+            for (final PrimaryBankService.BankDetail bankDetail : value) {
+                BankDetailView view = new BankDetailView(getActivity());
+                view.setBankDetail(bankDetail);
+                vg_bank_details.addView(view);
+                bankDetailViewList.add(view);
+                primaryBankChangeListener(view);
+
             }
+        }
+    }
 
 
 
 
-            private void primaryBankChangeListener(BankDetailView view) {
-                view.addPrimaryFlagChangeListener(new BankDetailView.PrimaryFlagChangedListener() {
-                    @Override
-                    public void onPrimaryChanged(BankDetailView bankDetailView) {
-                        bankDetailView.getBankDetail().setIsPrimary(true);
-                        edit_view.setVisibility(View.VISIBLE);
-                        bankDetailView.updateUI();
-                        handlePrimaryBankSelected(bankDetailView);
-                    }
-                });
+    private void primaryBankChangeListener(BankDetailView view) {
+        view.addPrimaryFlagChangeListener(new BankDetailView.PrimaryFlagChangedListener() {
+            @Override
+            public void onPrimaryChanged(BankDetailView bankDetailView) {
+                bankDetailView.getBankDetail().setIsPrimary(true);
+                edit_view.setVisibility(View.VISIBLE);
+                bankDetailView.updateUI();
+                handlePrimaryBankSelected(bankDetailView);
             }
+        });
+    }
 
 
     private void addMoreAccNumberListener(final BankDetailView view) {

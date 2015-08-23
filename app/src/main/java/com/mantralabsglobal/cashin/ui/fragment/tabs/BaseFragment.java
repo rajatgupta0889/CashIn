@@ -67,32 +67,21 @@ public abstract class BaseFragment extends Fragment {
 
     protected void showProgressDialog2( final String message)
     {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(progressDialog == null)
-                    progressDialog = ProgressDialog.show(getActivity(), getString(R.string.title_please_wait),
-                            message, true);
-                else
-                    progressDialog.setMessage(message);
+        if(progressDialog == null)
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.title_please_wait),
+                    message, true);
+        else
+            progressDialog.setMessage(message);
 
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
-
-            }
-        });
+        if(!progressDialog.isShowing())
+            progressDialog.show();
 
     }
 
     protected void dismissProgressDialog2()
     {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(progressDialog != null)
-                    progressDialog.dismiss();
-            }
-        });
+        if(progressDialog != null)
+            progressDialog.dismiss();
 
     }
 

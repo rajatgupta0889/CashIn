@@ -47,6 +47,10 @@ public interface PerfiosService {
     TransactionStatusResponse getTransactionStatus(@Field("payload") String payload, @Field("signature") String signature);
 
     @FormUrlEncoded
+    @POST("/retrieve")
+    String retrieveReports(@Field("payload") String payload, @Field("signature") String signature);
+
+    @FormUrlEncoded
     @POST("/institutions")
     void getInstitutions(@Field("payload") String payload, @Field("signature") String signature, Callback<String> callback);
 
@@ -83,6 +87,7 @@ public interface PerfiosService {
                 publishProgress("Uploading status to server");
                 perfiosTransactionResponse = primaryBankService.uploadPerfiosTransactionStatus(transactionStatusResponse);
                 publishProgress("Done!!");
+
             }
             return perfiosTransactionResponse;
         }
