@@ -43,9 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp" android:gravity="center" >
 
-        <LinearLayout android:orientation="horizontal" android:id="@+id/gplus_sign_in_button" android:paddingLeft="@dimen/margin_outside_sign_in" android:paddingRight="@dimen/margin_outside_sign_in" android:layout_marginBottom="@dimen/margin_below_sign_in"  android:layout_width="fill_parent" android:layout_height="@dimen/sign_in_button_component_height">
+        <LinearLayout android:orientation="horizontal" android:id="@+id/gplus_sign_in_button" android:paddingLeft="@dimen/margin_outside_sign_in" android:paddingRight="@dimen/margin_outside_sign_in" android:layout_marginBottom="@dimen/margin_below_sign_in"  android:layout_width="fill_parent" android:layout_height="@dimen/sign_in_button_component_height" android:visibility="invisible">
             <ImageView android:background="@drawable/sign_up_button_component_selector" android:duplicateParentState="true" android:layout_width="@dimen/sign_in_button_component_height" android:layout_height="fill_parent" android:src="@drawable/google_icon" android:scaleType="centerInside" android:contentDescription="@string/description_image" />
-            <TextView android:paddingLeft="@dimen/margin_outside" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="@dimen/default_border" android:text="@string/sign_in_with_google" style="@style/sign_up_button_component" />
+            <TextView android:paddingLeft="@dimen/margin_outside" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="@dimen/default_border" android:text="@string/sign_in_with_google" style="@style/sign_up_button_component" android:gravity="center"/>
         </LinearLayout>
         
         <!--<com.google.android.gms.common.SignInButton

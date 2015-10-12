@@ -151,6 +151,8 @@ public class MonthIncomeView extends LinearLayout {
         bundle.putParcelable("instanceState", super.onSaveInstanceState());
         bundle.putString("incomeMonth", et_month.getText().toString());
         bundle.putString("incomeAmount", et_amount.getText().toString());
+        bundle.putInt("month", month);
+        bundle.putInt("year", year);
         return bundle;
 
     }
@@ -162,7 +164,8 @@ public class MonthIncomeView extends LinearLayout {
             Bundle bundle = (Bundle) state;
             et_month.setText(bundle.getString("incomeMonth"));
             et_amount.setText(bundle.getString("incomeAmount"));
-
+            month = bundle.getInt("month");
+            year = bundle.getInt("year");
 
             super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
             return;

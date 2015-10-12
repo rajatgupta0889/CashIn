@@ -1,76 +1,100 @@
 package com.mantralabsglobal.cashin.social;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.net.Uri;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.linkedin.platform.APIHelper;
-import com.linkedin.platform.errors.LIApiError;
-import com.linkedin.platform.listeners.ApiListener;
-import com.linkedin.platform.listeners.ApiResponse;
+import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.mantralabsglobal.cashin.utils.DateUtils;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.builder.api.LinkedInApi;
+import org.scribe.oauth.OAuthService;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by pk on 7/4/2015.
  */
-public class LinkedIn {
+public class LinkedIn extends SocialBase<LinkedInService.LinkedInDetail>{
 
-    //private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address,school-name,degree,start-date,end-date)";
-   private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address)";
+    private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address,educations)?format=json";
+    //private static final String PROFILE_URL = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,positions,location,email-address)?format=json";
     private static final String TAG = LinkedIn.class.getSimpleName();
+    final static String CALLBACK = "oauth://linkedin";
 
+    //private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/people/~/connections:(id,last-name)";
 
-    public static void getLinkedInProfile(Context context, Activity activity, final SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener)
+    public OAuthService getOAuthService(Context context)
     {
 
-        APIHelper apiHelper = APIHelper.getInstance(context);
-        apiHelper.getRequest(activity, PROFILE_URL, new ApiListener() {
-            @Override
-            public void onApiSuccess(ApiResponse apiResponse) {
-                Log.i(TAG, apiResponse.getResponseDataAsJson().toString());
-                JSONObject response = apiResponse.getResponseDataAsJson();
-                Gson gson = new Gson();
-                LinkedInProfileResponse linkedInProfileResponse = gson.fromJson(apiResponse.getResponseDataAsJson().toString(),LinkedInProfileResponse.class);
-                if(linkedInProfileResponse != null)
-                {
-                    LinkedInService.LinkedInDetail linkedInDetail = new LinkedInService.LinkedInDetail();
-                    linkedInDetail.setConnectedAs(linkedInProfileResponse.getFirstName() + " " + linkedInProfileResponse.getLastName());
-                    linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
-                    linkedInDetail.setEducation(new LinkedInService.Education());
-                    if(linkedInProfileResponse.getPositions() != null && linkedInProfileResponse.getPositions().getValues().size()>0)
-                    {
-                        linkedInDetail.getWorkExperience().setCompany(linkedInProfileResponse.getPositions().getValues().get(0).getCompany().getName());
-                        linkedInDetail.getWorkExperience().setJobTitle(linkedInProfileResponse.getPositions().getValues().get(0).getTitle());
-                        StartDate sd = linkedInProfileResponse.getPositions().getValues().get(0).getStartDate();
-                        if(sd != null)
-                        {
-                            linkedInDetail.getWorkExperience().setTimePeriod( DateUtils.getYearsPassed(sd.getYear(), sd.getMonth(),1) + " Years ");
-                        }
-                    }
-                    listener.onSuccess(linkedInDetail);
+        return new ServiceBuilder()
+                //.provider(LinkedInApi.withScopes("r_fullprofile"))
+                .provider(LinkedInApi.class)
+                .apiKey(context.getResources().getString(R.string.linkedin_key))
+                .apiSecret(context.getResources().getString(R.string.linkedin_secret))
+                .callback(CALLBACK)
+                .build();
+    }
 
+    @Override
+    protected String getProfileUrl() {
+        return PROFILE_URL;
+    }
+
+    @Override
+    protected LinkedInService.LinkedInDetail getProfileFromResponse(String responseBody) {
+        Gson gson = new Gson();
+        LinkedInProfileResponse linkedInProfileResponse = gson.fromJson(responseBody, LinkedInProfileResponse.class);
+
+        return convertToLinkedInDetail(linkedInProfileResponse);
+    }
+
+    private LinkedInService.LinkedInDetail convertToLinkedInDetail(LinkedInProfileResponse linkedInProfileResponse)
+    {
+        if(linkedInProfileResponse != null)
+        {
+            LinkedInService.LinkedInDetail linkedInDetail = new LinkedInService.LinkedInDetail();
+            linkedInDetail.setConnectedAs(linkedInProfileResponse.getFirstName() + " " + linkedInProfileResponse.getLastName());
+            linkedInDetail.setWorkExperience(new LinkedInService.WorkExperience());
+            linkedInDetail.setEducation(new LinkedInService.Education());
+            if(linkedInProfileResponse.getPositions() != null && linkedInProfileResponse.getPositions().getValues().size()>0)
+            {
+                linkedInDetail.getWorkExperience().setCompany(linkedInProfileResponse.getPositions().getValues().get(0).getCompany().getName());
+                linkedInDetail.getWorkExperience().setJobTitle(linkedInProfileResponse.getPositions().getValues().get(0).getTitle());
+                StartDate sd = linkedInProfileResponse.getPositions().getValues().get(0).getStartDate();
+                if(sd != null)
+                {
+                    linkedInDetail.getWorkExperience().setTimePeriod( DateUtils.getYearsPassed(sd.getYear(), sd.getMonth(),1) + " Years ");
                 }
             }
-
-            @Override
-            public void onApiError(LIApiError LIApiError) {
-
-                listener.onFailure(LIApiError.getMessage());
+            if(linkedInProfileResponse.getEducations() != null && linkedInProfileResponse.getEducations().getValues().size()>0)
+            {
+                linkedInDetail.getEducation().setCollege(linkedInProfileResponse.getEducations().getValues().get(0).getSchoolName());
+                linkedInDetail.getEducation().setDegree(linkedInProfileResponse.getEducations().getValues().get(0).getDegree());
+                linkedInDetail.getEducation().setFieldOfStudy(linkedInProfileResponse.getEducations().getValues().get(0).getFieldOfStudy());
             }
-        });
+            return linkedInDetail;
+
+        }
+        return null;
+    }
+
+
+    @Override
+    public String getCallBackUrl() {
+        return CALLBACK;
+    }
+
+    @Override
+    public String getVerifierCode(String callbackUrl) {
+        Uri uri = Uri.parse(callbackUrl);
+        String verifier = uri.getQueryParameter("oauth_verifier");
+        return verifier;
     }
 
     public class Company {
@@ -238,6 +262,27 @@ public class LinkedIn {
         @Expose
         private Positions positions;
 
+        @Expose
+        private Educations educations;
+
+
+        /**
+         *
+         * @return
+         * The educations
+         */
+        public Educations getEducations() {
+            return educations;
+        }
+
+        /**
+         *
+         * @param educations
+         * The educations
+         */
+        public void setEducations(Educations educations) {
+            this.educations = educations;
+        }
         /**
          *
          * @return
@@ -344,6 +389,202 @@ public class LinkedIn {
          */
         public void setPositions(Positions positions) {
             this.positions = positions;
+        }
+
+    }
+
+    public class Educations {
+
+        @SerializedName("_total")
+        @Expose
+        private Integer Total;
+        @Expose
+        private List<Education> values = new ArrayList<Education>();
+
+        /**
+         *
+         * @return
+         * The Total
+         */
+        public Integer getTotal() {
+            return Total;
+        }
+
+        /**
+         *
+         * @param Total
+         * The _total
+         */
+        public void setTotal(Integer Total) {
+            this.Total = Total;
+        }
+
+        /**
+         *
+         * @return
+         * The values
+         */
+        public List<Education> getValues() {
+            return values;
+        }
+
+        /**
+         *
+         * @param values
+         * The values
+         */
+        public void setValues(List<Education> values) {
+            this.values = values;
+        }
+
+    }
+
+    public class EndDate {
+
+        @Expose
+        private Integer year;
+
+        /**
+         *
+         * @return
+         * The year
+         */
+        public Integer getYear() {
+            return year;
+        }
+
+        /**
+         *
+         * @param year
+         * The year
+         */
+        public void setYear(Integer year) {
+            this.year = year;
+        }
+
+    }
+
+    public class Education {
+
+        @Expose
+        private String degree;
+        @Expose
+        private EndDate endDate;
+        @Expose
+        private String fieldOfStudy;
+        @Expose
+        private Integer id;
+        @Expose
+        private String schoolName;
+        @Expose
+        private StartDate startDate;
+
+        /**
+         *
+         * @return
+         * The degree
+         */
+        public String getDegree() {
+            return degree;
+        }
+
+        /**
+         *
+         * @param degree
+         * The degree
+         */
+        public void setDegree(String degree) {
+            this.degree = degree;
+        }
+
+        /**
+         *
+         * @return
+         * The endDate
+         */
+        public EndDate getEndDate() {
+            return endDate;
+        }
+
+        /**
+         *
+         * @param endDate
+         * The endDate
+         */
+        public void setEndDate(EndDate endDate) {
+            this.endDate = endDate;
+        }
+
+        /**
+         *
+         * @return
+         * The fieldOfStudy
+         */
+        public String getFieldOfStudy() {
+            return fieldOfStudy;
+        }
+
+        /**
+         *
+         * @param fieldOfStudy
+         * The fieldOfStudy
+         */
+        public void setFieldOfStudy(String fieldOfStudy) {
+            this.fieldOfStudy = fieldOfStudy;
+        }
+
+        /**
+         *
+         * @return
+         * The id
+         */
+        public Integer getId() {
+            return id;
+        }
+
+        /**
+         *
+         * @param id
+         * The id
+         */
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        /**
+         *
+         * @return
+         * The schoolName
+         */
+        public String getSchoolName() {
+            return schoolName;
+        }
+
+        /**
+         *
+         * @param schoolName
+         * The schoolName
+         */
+        public void setSchoolName(String schoolName) {
+            this.schoolName = schoolName;
+        }
+
+        /**
+         *
+         * @return
+         * The startDate
+         */
+        public StartDate getStartDate() {
+            return startDate;
+        }
+
+        /**
+         *
+         * @param startDate
+         * The startDate
+         */
+        public void setStartDate(StartDate startDate) {
+            this.startDate = startDate;
         }
 
     }
@@ -589,5 +830,7 @@ public class LinkedIn {
         }
 
     }
+
+
 
 }

@@ -2,6 +2,8 @@ package com.mantralabsglobal.cashin.service;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -22,22 +24,32 @@ public interface BusinessCardService {
     @PUT("/user/businessCard")
     void updateBusinessCardDetail(@Body BusinessCardDetail businessCardDetail, Callback<BusinessCardDetail> callback);
 
+    @POST("/user/ocr/businessCard")
+    void getBusinessCardDetailFromImage(@Body OCRServiceProvider.CardImage businessCardImage, Callback<BusinessCardDetail> callback);
 
     public static class BusinessCardDetail{
 
-        private String address;
+        @SerializedName("BusinessCardDetail")
+        private List<String> contentArr;
+
+        @SerializedName("Address")
+        private List<String> addressLines;
+
+        @SerializedName("Email")
         private String email;
 
-        @SerializedName("name")
+        @SerializedName("CompanyName")
         private String employerName;
 
+        @SerializedName("Name")
+        private String name;
 
-        public String getAddress() {
-            return address;
+        public List<String> getaddressLines() {
+            return addressLines;
         }
 
-        public void setAddress(String address) {
-            this.address = address;
+        public void setAddress(List<String> addressLines) {
+            this.addressLines = addressLines;
         }
 
         public String getEmail() {
@@ -54,6 +66,22 @@ public interface BusinessCardService {
 
         public void setEmployerName(String employerName) {
             this.employerName = employerName;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<String> getContentArr() {
+            return contentArr;
+        }
+
+        public void setContentArr(List<String> contentArr) {
+            this.contentArr = contentArr;
         }
     }
 

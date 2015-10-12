@@ -4,18 +4,25 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.Face;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.commonsware.cwac.camera.CameraFragment;
@@ -24,32 +31,39 @@ import com.commonsware.cwac.camera.CameraUtils;
 import com.commonsware.cwac.camera.PictureTransaction;
 import com.commonsware.cwac.camera.SimpleCameraHost;
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.activity.camera.CwacCameraActivity;
+import com.mantralabsglobal.cashin.ui.view.ScanBorderView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by pk on 7/9/2015.
  */
-public class CwacCameraFragment extends CameraFragment implements
-        SeekBar.OnSeekBarChangeListener {
+public class CwacCameraFragment extends CameraFragment /*implements
+        SeekBar.OnSeekBarChangeListener*/ {
     private static final String KEY_USE_FFC=
             "com.commonsware.cwac.camera.demo.USE_FFC";
+    public static final String SHOW_BOUNDS = "SHOW_BOUNDS";
+    public static final String ASPECT_RATIO = "ASPECT_RATIO";
+    public static final String SHOW_INFO = "SHOW_INFO";
     private MenuItem singleShotItem=null;
     private MenuItem autoFocusItem=null;
-    private MenuItem takePictureItem=null;
     private MenuItem flashItem=null;
-    private MenuItem recordItem=null;
+    // private MenuItem recordItem=null;
     private MenuItem stopRecordItem=null;
     private MenuItem mirrorFFC=null;
     private boolean singleShotProcessing=false;
-    private SeekBar zoom=null;
+    //private SeekBar zoom=null;
     private long lastFaceToast=0L;
     String flashMode=null;
     private File mFile;
+    boolean showBounds =false;
+    double aspectRatio = 1;
+    ScanBorderView scanView;
 
 
     public static CwacCameraFragment newInstance(boolean useFFC) {
@@ -65,7 +79,6 @@ public class CwacCameraFragment extends CameraFragment implements
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
-
         setHasOptionsMenu(true);
 
         SimpleCameraHost.Builder builder=
@@ -81,15 +94,57 @@ public class CwacCameraFragment extends CameraFragment implements
         View cameraView=
                 super.onCreateView(inflater, container, savedInstanceState);
         View results=inflater.inflate(R.layout.cwac_camera_fragment, container, false);
+        final ViewGroup vgcamera = ((ViewGroup)results.findViewById(R.id.camera));
+        vgcamera.addView(cameraView);
 
-        ((ViewGroup)results.findViewById(R.id.camera)).addView(cameraView);
-        zoom=(SeekBar)results.findViewById(R.id.zoom);
-        zoom.setKeepScreenOn(true);
+        cameraView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoFocus();
 
-        setRecordingItemVisibility();
+            }
+        });
+
+        showBounds = getActivity().getIntent().getBooleanExtra(SHOW_BOUNDS, false);
+        aspectRatio = getActivity().getIntent().getDoubleExtra(ASPECT_RATIO, 1);
+
+        String contextInfo = getActivity().getIntent().getStringExtra(SHOW_INFO);
+
+        if(contextInfo != null && contextInfo.length()>0)
+        {
+            TextView tv = new TextView(getActivity());
+            tv.setGravity(Gravity.CENTER | Gravity.TOP);
+
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 100, 0, 0);
+            params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+            tv.setLayoutParams(params);
+
+            tv.setBackgroundColor(getResources().getColor(R.color.translucent));
+            tv.setTextColor(getResources().getColor(R.color.white_max));
+            tv.setVisibility(View.VISIBLE);
+            tv.setText(contextInfo);
+
+            vgcamera.addView(tv);
+        }
+
+        if(showBounds) {
+
+            scanView = new ScanBorderView(getActivity(), null);
+            scanView.setAspectRatio(aspectRatio);
+            vgcamera.addView(scanView);
+        }
+
+        /*zoom=(SeekBar)results.findViewById(R.id.zoom);
+        zoom.setKeepScreenOn(true);*/
+
+        //    setRecordingItemVisibility();
+
+        ButterKnife.inject(this, results);
 
         return(results);
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -106,27 +161,25 @@ public class CwacCameraFragment extends CameraFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.cwac_camera, menu);
-
-        takePictureItem=menu.findItem(R.id.camera);
+//        inflater.inflate(R.menu.cwac_camera, menu);
         //singleShotItem=menu.findItem(R.id.single_shot);
         //singleShotItem.setChecked(getContract().isSingleShotMode());
-        autoFocusItem=menu.findItem(R.id.autofocus);
-        flashItem=menu.findItem(R.id.flash);
+  //      autoFocusItem=menu.findItem(R.id.autofocus);
+    //    flashItem=menu.findItem(R.id.flash);
         //recordItem=menu.findItem(R.id.record);
         //stopRecordItem=menu.findItem(R.id.stop);
-        mirrorFFC=menu.findItem(R.id.mirror_ffc);
-        MenuItem showZoom = menu.findItem(R.id.show_zoom);
-        zoom.setVisibility(showZoom.isChecked() ? View.VISIBLE : View.GONE);
+       // mirrorFFC=menu.findItem(R.id.mirror_ffc);
+        /*MenuItem showZoom = menu.findItem(R.id.show_zoom);
+        zoom.setVisibility(showZoom.isChecked() ? View.VISIBLE : View.GONE);*/
 
-        if (isRecording()) {
+      /*  if (isRecording()) {
             recordItem.setVisible(false);
             stopRecordItem.setVisible(true);
-            takePictureItem.setVisible(false);
         }
-
-        setRecordingItemVisibility();
+*/
+        //     setRecordingItemVisibility();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -137,9 +190,7 @@ public class CwacCameraFragment extends CameraFragment implements
                 return(true);
 
             case R.id.autofocus:
-                takePictureItem.setEnabled(false);
                 autoFocus();
-
                 return(true);
 
             /*case R.id.single_shot:
@@ -148,11 +199,11 @@ public class CwacCameraFragment extends CameraFragment implements
 
                 return(true);
 */
-            case R.id.show_zoom:
+           /* case R.id.show_zoom:
                 item.setChecked(!item.isChecked());
                 zoom.setVisibility(item.isChecked() ? View.VISIBLE : View.GONE);
 
-                return(true);
+                return(true);*/
 
             case R.id.flash:
             case R.id.mirror_ffc:
@@ -168,7 +219,7 @@ public class CwacCameraFragment extends CameraFragment implements
         return(singleShotProcessing);
     }
 
-    @Override
+   /* @Override
     public void onProgressChanged(SeekBar seekBar, int progress,
                                   boolean fromUser) {
         if (fromUser) {
@@ -190,35 +241,36 @@ public class CwacCameraFragment extends CameraFragment implements
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         // ignore
-    }
+    }*/
 
-    void setRecordingItemVisibility() {
+  /*  void setRecordingItemVisibility() {
         if (zoom != null && recordItem != null) {
             if (getDisplayOrientation() != 0
                     && getDisplayOrientation() != 180) {
                 recordItem.setVisible(false);
             }
         }
-    }
+    }*/
 
     Contract getContract() {
         return((Contract)getActivity());
     }
 
     public void takeSimplePicture() {
-        if (getContract().isSingleShotMode()) {
+        if (singleShotItem!=null && singleShotItem.isChecked()) {
             singleShotProcessing=true;
-            takePictureItem.setEnabled(false);
+//            takePictureItem.setEnabled(false);
         }
 
         PictureTransaction xact=new PictureTransaction(getHost());
 
-        if (flashItem!=null && flashItem.isChecked()) {
+        if (CwacCameraActivity.flashOn) {
             xact.flashMode(flashMode);
         }
 
         takePicture(xact);
     }
+
 
     public interface Contract {
         boolean isSingleShotMode();
@@ -261,7 +313,21 @@ public class CwacCameraFragment extends CameraFragment implements
         public void saveImage(PictureTransaction xact, byte[] image) {
             if (useSingleShotMode()) {
 
+               /* if(showBounds)
+                {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(image, 0, image.length);
+
+                    bitmap = Bitmap.createBitmap(bitmap,(int)(scanView.getScanX()*bitmap.getWidth()) ,(int)(scanView.getScanY()*bitmap.getHeight())
+                            ,(int)(scanView.getScanWidth()*bitmap.getWidth()),(int)(scanView.getScanHeight()*bitmap.getHeight()));
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    super.saveImage(xact, stream.toByteArray());
+                }
+                else {*/
+
                 super.saveImage(xact, image);
+                /*}*/
 
                 Intent resultIntent = new Intent();
                 // TODO Add extras or a data URI to this intent as appropriate.
@@ -311,13 +377,13 @@ public class CwacCameraFragment extends CameraFragment implements
                             Camera.Parameters.FLASH_MODE_AUTO,
                             Camera.Parameters.FLASH_MODE_ON);
 
-            if (doesZoomReallyWork() && parameters.getMaxZoom() > 0) {
+          /*  if (doesZoomReallyWork() && parameters.getMaxZoom() > 0) {
                 zoom.setMax(parameters.getMaxZoom());
                 zoom.setOnSeekBarChangeListener(CwacCameraFragment.this);
             }
             else {
                 zoom.setEnabled(false);
-            }
+            }*/
 
             if (parameters.getMaxNumDetectedFaces() > 0) {
                 supportsFaces=true;
@@ -348,14 +414,8 @@ public class CwacCameraFragment extends CameraFragment implements
         @TargetApi(16)
         public void onAutoFocus(boolean success, Camera camera) {
             super.onAutoFocus(success, camera);
-
-            takePictureItem.setEnabled(true);
         }
 
-        @Override
-        public boolean mirrorFFC() {
-            return(mirrorFFC.isChecked());
-        }
     }
 
 }

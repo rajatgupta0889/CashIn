@@ -1,6 +1,10 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -8,19 +12,29 @@ import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mantralabsglobal.cashin.R;
+import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 
 /**
  * Created by pk on 6/20/2015.
@@ -49,6 +63,31 @@ public abstract class BaseFragment extends Fragment {
             }
         });
 
+    }
+
+    protected void showProgressDialog2( final String message)
+    {
+        if(progressDialog == null)
+            progressDialog = ProgressDialog.show(getActivity(), getString(R.string.title_please_wait),
+                    message, true);
+        else
+            progressDialog.setMessage(message);
+
+        if(!progressDialog.isShowing())
+            progressDialog.show();
+
+    }
+
+    protected void dismissProgressDialog2()
+    {
+        if(progressDialog != null)
+            progressDialog.dismiss();
+
+    }
+
+    protected Application getCashInApplication()
+    {
+       return ((Application)getActivity().getApplication());
     }
 
     protected void showToastOnUIThread(final String message)
@@ -106,13 +145,52 @@ public abstract class BaseFragment extends Fragment {
         if(fabList == null)
         {
             fabList = new ArrayList<>();
-            floatingActionButtonViewMap.put(childView,fabList);
+            floatingActionButtonViewMap.put(childView, fabList);
         }
         if(!fabList.contains(fab)) {
             fabList.add(fab);
             fab.setVisibility(childView.getVisibility());
         }
     }
+
+    @Optional
+    @OnClick(R.id.btn_back)
+    public void onPreviousTabClick()
+    {
+        ((MainActivity)getActivity()).previousTab();
+    }
+
+    @Optional
+    @OnClick(R.id.btn_next)
+    public void onNextTabClick()
+    {
+        ((MainActivity)getActivity()).nextTab();
+    }
+/*
+
+    protected void registerBackNextButton(Button backButton, Button nextButton)
+    {
+        if(backButton != null)
+        {
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    previousTab();
+                }
+            });
+        }
+
+        if(nextButton != null)
+        {
+            nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity)getActivity()).nextTab();
+                }
+            });
+        }
+    }
+*/
 
     protected void setVisibleChildView(View view)
     {
@@ -155,6 +233,36 @@ public abstract class BaseFragment extends Fragment {
             genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         }
         return genderAdapter;
+    }
+
+    public void showImageDialog(Bitmap bmp) {
+        final Dialog builder = new Dialog(getActivity());
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        builder.getWindow().setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                //nothing;
+            }
+        });
+
+        ImageView imageView = new ImageView(getActivity());
+        imageView.setImageBitmap(bmp);
+        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        builder.setCanceledOnTouchOutside(true);
+        builder.show();
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                builder.dismiss(); // when the task active then close the dialog
+                t.cancel(); // also just top the timer thread, otherwise, you may receive a crash report
+            }
+        }, 3000);
+
     }
 
 

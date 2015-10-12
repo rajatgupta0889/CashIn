@@ -1,7 +1,9 @@
 package com.mantralabsglobal.cashin.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.mantralabsglobal.cashin.R;
 
@@ -32,17 +35,47 @@ public abstract class AbstractPager extends Fragment {
         ButterKnife.inject(this, view);
 
         viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-        FragmentPagerAdapter fragmentPagerAdapter = getPagerAdapter(getChildFragmentManager());
+        final FragmentPagerAdapter fragmentPagerAdapter = getPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(fragmentPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        if(fragmentPagerAdapter.getCount()<3)
-            tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        else
-            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        setTabLayoutMode(fragmentPagerAdapter, tabLayout);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tabLayout.setupWithViewPager(viewPager);
+
+            }
+        }, 250);
+
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if(state == ViewPager.SCROLL_STATE_IDLE && getContext() != null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (inputMethodManager != null) {
+                        inputMethodManager.hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
+                    }
+                }
+            }
+        });
 
         return view;
+    }
+
+    protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
+    {
+        if(fragmentPagerAdapter.getCount()<3) {
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        }
+        else
+        {
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        }
     }
 
     @Override
@@ -67,4 +100,45 @@ public abstract class AbstractPager extends Fragment {
         Log.d("AbstractPager", "onActivityResult invoked on " + fragment);
     }
 
+    public boolean nextTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex < viewPager.getAdapter().getCount()-1)
+        {
+            viewPager.setCurrentItem(currentIndex+1, true);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean previousTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex > 0)
+        {
+            viewPager.setCurrentItem(currentIndex-1, true);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moveToFirstTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex != 0)
+        {
+            viewPager.setCurrentItem(0, true);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moveToLastTab(){
+        int currentIndex = viewPager.getCurrentItem();
+        if(currentIndex <= viewPager.getAdapter().getCount()-1)
+        {
+            viewPager.setCurrentItem(viewPager.getAdapter().getCount()-1, true);
+            return true;
+        }
+        return false;
+    }
+
+    protected abstract Context getContext();
 }

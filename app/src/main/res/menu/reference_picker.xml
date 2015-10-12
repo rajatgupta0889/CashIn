@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:appcompat="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
+
+    <item android:id="@+id/contacts_done"
+        android:title="@string/done"
+        appcompat:showAsAction="always"/>
+    <!--<item android:id="@+id/contacts_cancel"
+        android:title="@android:string/cancel"
+        appcompat:showAsAction="always"/>-->
+</menu>

@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
+    <!--<item
         android:id="@+id/camera"
         android:icon="@android:drawable/ic_menu_camera"
         app:showAsAction="ifRoom"
         android:title="@string/take_picture">
-    </item>
+    </item>-->
     <!--<item
         android:id="@+id/record"
         app:showAsAction="ifRoom"
@@ -47,7 +47,7 @@
     <item
         android:id="@+id/mirror_ffc"
         android:checkable="true"
-        android:checked="false"
+        android:checked="true"
         android:title="@string/mirror_ffc">
     </item>
 

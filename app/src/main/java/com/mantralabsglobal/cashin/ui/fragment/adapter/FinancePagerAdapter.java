@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BankDetailFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BlankFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.CurrentAddressFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.EMIFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.HistoryFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.IncomeFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
@@ -17,12 +18,14 @@ import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
 public class FinancePagerAdapter extends FragmentPagerAdapter{
 
     private FragmentManager fragmentManager;
-    private String tabtitles[] = new String[] {"Bank", "Credit Card",  "Bank Statement", "Income", "Current Address" , "Permanent Address", "Expenses", "History"};
+    private String tabtitles[] = new String[] {"Bank",  "Income", "EMI", "History"};
 
     private IncomeFragment ifragnent;
+
     private BankDetailFragment bankDetailFragment;
-    private CurrentAddressFragment currentAddressFragment;
-    private PermanentAddressFragment permanentAddressFragment;
+
+    private EMIFragment emiFragment;
+
     private HistoryFragment userHistoryFragment;
 
 
@@ -31,9 +34,8 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
         this.fragmentManager = fm;
         ifragnent = new IncomeFragment();
         bankDetailFragment = new BankDetailFragment();
-        currentAddressFragment = new CurrentAddressFragment();
-        permanentAddressFragment = new PermanentAddressFragment();
         userHistoryFragment = new HistoryFragment();
+        emiFragment = new EMIFragment();
     }
 
     @Override
@@ -42,15 +44,13 @@ public class FinancePagerAdapter extends FragmentPagerAdapter{
 
             case 0:
                 return bankDetailFragment;
-            case 3:
+            case 1:
                 return ifragnent ;
-            case 4:
-                return currentAddressFragment ;
-            case 5:
-                return permanentAddressFragment ;
-            case 7:
+            case 2:
+                return emiFragment ;
+            case 3:
                 return userHistoryFragment ;
-            // Open FragmentTab3.java
+            // Open FragmentTab4.java
         }
         return new BlankFragment();
     }

@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.zxing.BarcodeFormat;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.BirthDayView;
 import com.mantralabsglobal.cashin.utils.AadharDAO;
 import com.mantralabsglobal.cashin.service.AadharService;
@@ -74,8 +76,8 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     @InjectView(R.id.rl_aadhar_detail)
      ViewGroup vg_form;
 
-    @InjectView(R.id.btn_save)
-    Button btnSave;
+    @InjectView(R.id.btn_next)
+    BootstrapButton btnNext;
 
     static final int SCAN_AADHAR_CARD = 99;
 
@@ -113,7 +115,7 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
 
     @Override
     protected void onCreate(AadharService.AadharDetail updatedData, Callback<AadharService.AadharDetail> saveCallback) {
-        aadharService.createAadharDetail(updatedData,saveCallback);
+        aadharService.createAadharDetail(updatedData, saveCallback);
     }
 
     @Override
@@ -124,6 +126,11 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
     @Override
     protected void handleDataNotPresentOnServer() {
         setVisibleChildView(vg_camera);
+    }
+
+    @Override
+    protected View getFormView() {
+        return vg_form;
     }
 
 
@@ -192,5 +199,4 @@ public class AadharCardFragment extends BaseBindableFragment<AadharService.Aadha
         detail.setSonOf(fatherName.getText().toString());
         return detail;
     }
-
 }

@@ -2,11 +2,15 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:id="@+id/currentLocationLayout" android:layout_height="match_parent" android:orientation="vertical">
 
-        <ScrollView android:id="@+id/vg_address_form" android:visibility="gone"
+    <FrameLayout android:id="@+id/vg_address_form" android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:orientation="vertical">
+
+    <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" style="@style/AppTheme.Form.ScrollView">
         <LinearLayout
-            android:padding="20dp" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
+             android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
             <TextView android:id="@+id/adressTextView"
                 android:layout_width="match_parent"
@@ -43,7 +47,7 @@
 
             <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp">
+            android:layout_height="wrap_content" android:orientation="vertical">
 
                 <TextView android:layout_below="@+id/seperatorView" android:id="@+id/ownOrRentedTextView"
                     android:layout_marginTop="@dimen/form_input_margin_top"
@@ -70,76 +74,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" app:field_label="@string/owned_by" app:field_icon="@drawable/ic_identity"/>
 
-            <LinearLayout android:layout_alignParentBottom="true" android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:gravity="center">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
-
-            </LinearLayout>
-
-
         </LinearLayout>
         </ScrollView>
 
+        <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_get_loc_from_gps"
+            android:src="@drawable/gps_layer"
+            app:fabSize="normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.Form.FAB"
+            app:borderWidth="0dp"/>
+
+    </FrameLayout>
         <LinearLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/vg_gps_launcher"
             android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:paddingTop="50dp" android:gravity="center" android:orientation="vertical"
-                >
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="Get location from GPS" android:gravity="center_horizontal"
-                    style="@style/AppTheme.Form.Header" />
+                    android:text="Get location from GPS"
+                    style="@style/AppTheme.Form.Fragment.Top.Header"  />
 
                 <ImageButton
                     android:id="@+id/ib_get_gps_location"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:background="@drawable/round_button" android:src="@drawable/ic_gps"/>
+                    style="@style/AppTheme.Form.Fragment.Top.Image"  android:src="@drawable/ic_gps_track"/>
 
-            </LinearLayout>
+            </FrameLayout>
 
 
-            <View
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/gradient_seperator"
-                android:layout_height="2dp"></View>
+            <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
 
-            <Button
-                android:id="@+id/btn_edit_address"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" android:capitalize="characters" android:text="Edit your current address  >" android:background="@null"
-                />
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
+
+                <Button
+                    android:id="@+id/btn_edit_address"
+                    style="@style/AppTheme.Form.Fragment.Bottom.Button" android:text="Edit your current address  >"
+                    />
+            </FrameLayout>
 
         </LinearLayout>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_get_loc_from_gps"
-        android:src="@drawable/gps_layer"
-        app:fabSize="normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignTop="@+id/currentLocationLayout"
-        android:layout_margin="24dp"
-        android:layout_gravity="bottom|right"
-        app:borderWidth="0dp"/>
+
     <ProgressBar
         android:id="@+id/progres_bar"
         android:layout_width="wrap_content"

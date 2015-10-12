@@ -22,9 +22,26 @@ public interface PrimaryBankService {
     @POST("/user/bank")
     void createPrimaryBankDetail(@Body List<BankDetail> bankDetail,  Callback<List<BankDetail>> callback);
 
+    @POST("/user/netBankingperfios")
+    void uploadPerfiosTransactionStatus(@Body PerfiosService.TransactionStatusResponse perfiosTransactionResponse,  Callback<PerfiosTransactionResponse> callback);
+
+    @POST("/user/netBankingperfios")
+    PerfiosTransactionResponse uploadPerfiosTransactionStatus(@Body PerfiosService.TransactionStatusResponse perfiosTransactionResponse);
     //@PUT("/user/bank")
     //void updatePrimaryBankDetail(@Body BankDetail bankDetail,  Callback<BankDetail> callback);
 
+
+    public static class PerfiosTransactionResponse{
+        private String message;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+    }
 
     public static class BankDetail{
 
@@ -48,9 +65,9 @@ public interface PrimaryBankService {
         }
 
         public String getAccountNumberLast4Digits() {
-            if(accountNumber!= null && accountNumber.length()>0)
+            if(accountNumber!= null && accountNumber.length()>4)
             {
-                return accountNumber.substring(accountNumber.length()-5);
+                return accountNumber.substring(accountNumber.length()-4);
             }
             return accountNumber;
         }

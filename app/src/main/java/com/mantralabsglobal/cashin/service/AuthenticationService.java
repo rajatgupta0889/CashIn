@@ -18,20 +18,29 @@ public interface AuthenticationService {
     @POST("/login")
     void authenticateUser(@Body UserPrincipal userPrincipal  , Callback<AuthenticatedUser> callback);
 
+    @POST("/login")
+    AuthenticatedUser authenticateUserSync(@Body UserPrincipal userPrincipal );
+
     @POST("/signup")
     void registerUser(@Body NewUser user  , Callback<AuthenticatedUser> callback);
 
-    public static class UserPrincipal{
+    @POST("/user/authCode")
+    void sendGoogleAuthCode(@Body UserGoogleAuthCode authCode, Callback<Void> callback);
 
+    public static class UserGoogleAuthCode
+    {
+        private String authCode;
         private String email;
-        private String password;
 
-        public String getPassword() {
-            return password;
+        public UserGoogleAuthCode() {
         }
 
-        public void setPassword(String password) {
-            this.password = password;
+        public String getAuthCode() {
+            return authCode;
+        }
+
+        public void setAuthCode(String authCode) {
+            this.authCode = authCode;
         }
 
         public String getEmail() {
@@ -40,6 +49,28 @@ public interface AuthenticationService {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+    }
+    public static class UserPrincipal{
+
+        private String email;
+        private String token;
+
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
         }
     }
 
@@ -92,10 +123,10 @@ public interface AuthenticationService {
     }
 
     public static class NewUser extends UserPrincipal{
-        public NewUser(String email, String password)
+        public NewUser(String email, String token)
         {
             setEmail(email);
-            setPassword(password);
+            setToken(token);
         }
     }
 }

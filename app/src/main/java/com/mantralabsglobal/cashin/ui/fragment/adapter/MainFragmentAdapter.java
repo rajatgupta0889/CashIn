@@ -1,10 +1,14 @@
 package com.mantralabsglobal.cashin.ui.fragment.adapter;
 
+import android.content.Context;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
+
+import butterknife.OnEditorAction;
 
 /**
  * Created by pk on 6/27/2015.
@@ -12,8 +16,9 @@ import com.mantralabsglobal.cashin.ui.fragment.AbstractPager;
 public class MainFragmentAdapter extends FragmentPagerAdapter {
 
     private FragmentManager fragmentManager;
+    private Context context;
 
-    private Fragment financePager = new AbstractPager(){
+    public Fragment financePager = new AbstractPager(){
 
         FinancePagerAdapter adapter;
         @Override
@@ -22,9 +27,21 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
                 adapter = new FinancePagerAdapter(fragmentManager);
             return adapter;
         }
+
+        @Override
+        protected void setTabLayoutMode(FragmentPagerAdapter fragmentPagerAdapter, TabLayout tabLayout)
+        {
+            tabLayout.setTabMode(TabLayout.MODE_FIXED);
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        }
+        @Override
+        protected Context getContext()
+        {
+            return context;
+        }
     };
 
-    private Fragment identityPager = new AbstractPager(){
+    public Fragment identityPager = new AbstractPager(){
 
         IdentityPagerAdapter adapter;
         @Override
@@ -33,9 +50,14 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
                 adapter = new IdentityPagerAdapter(fragmentManager);
             return adapter;
         }
+        @Override
+        protected Context getContext()
+        {
+            return context;
+        }
     };
 
-    private Fragment workPager = new AbstractPager(){
+    public Fragment workPager = new AbstractPager(){
 
         WorkPagerAdapter adapter;
         @Override
@@ -44,9 +66,14 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
                 adapter = new WorkPagerAdapter(fragmentManager);
             return adapter;
         }
+        @Override
+        protected Context getContext()
+        {
+            return context;
+        }
     };
 
-    private Fragment socialPager = new AbstractPager(){
+    public Fragment socialPager = new AbstractPager(){
 
         SocialPagerAdapter adapter;
         @Override
@@ -55,22 +82,33 @@ public class MainFragmentAdapter extends FragmentPagerAdapter {
                 adapter = new SocialPagerAdapter(fragmentManager);
             return adapter;
         }
-    };
-
-    private Fragment photoPager = new AbstractPager(){
-
-        SocialPagerAdapter adapter;
         @Override
-        protected SocialPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
-            if(adapter == null || fragmentManager != adapter.getFragmentManager())
-                adapter = new SocialPagerAdapter(fragmentManager);
-            return adapter;
+        protected Context getContext()
+        {
+            return context;
         }
     };
 
-    public MainFragmentAdapter(FragmentManager fm) {
+    public Fragment photoPager = new AbstractPager(){
+
+        YourPhotoPagerAdapter adapter;
+        @Override
+        protected YourPhotoPagerAdapter getPagerAdapter(FragmentManager fragmentManager) {
+            if(adapter == null || fragmentManager != adapter.getFragmentManager())
+                adapter = new YourPhotoPagerAdapter(fragmentManager);
+            return adapter;
+        }
+        @Override
+        protected Context getContext()
+        {
+            return context;
+        }
+    };
+
+    public MainFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.fragmentManager = fm;
+        this.context = context;
     }
     @Override
     public Fragment getItem(int position) {

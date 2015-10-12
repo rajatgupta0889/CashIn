@@ -17,8 +17,76 @@
 
     <style name="AppTheme.Form"></style>
 
-    <style name="AppTheme.Form.Header" parent="android:TextAppearance.DeviceDefault.Large">
+    <style name="AppTheme.Form.Header" parent="android:TextAppearance.DeviceDefault.Large"/>
 
+    <style name="AppTheme.Form.Fragment.Top" parent="AppTheme.Form.Header">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Bottom" parent="AppTheme.Form.Header">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="AppTheme.Form.ScrollView">
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_marginBottom">60dp</item>
+    </style>
+    <style name="AppTheme.Form.FAB">
+        <item name="android:layout_marginBottom">@dimen/fab_bottom_margin</item>
+        <item name="android:layout_marginRight">@dimen/fab_right_margin</item>
+        <item name="android:layout_gravity">bottom|right</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Bottom.Text">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/form_header_margin_top_text</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Bottom.Button">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">@dimen/text_padding_medium</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:drawableRight">@drawable/ic_action_arrow</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Top.Header" parent="AppTheme.Form.Header">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginBottom">@dimen/for_header_margin_bottom</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Top.Image" parent="AppTheme.Form.Header">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Seperator" parent="AppTheme.Form.Header">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/form_fragment_seperator_height</item>
+        <item name="android:background">@drawable/gradient_seperator</item>
+        <item name="android:layout_marginBottom">@dimen/form_fragment_seperator_margin_bottom</item>
+    </style>
+
+    <style name="AppTheme.Form.Fragment.Seperator.NoGradient">
+        <item name="android:background">@color/seperator_center</item>
+        <item name="android:layout_marginBottom">@dimen/form_fragment_input_seperator</item>
+        <item name="android:layout_marginTop">@dimen/form_fragment_input_seperator</item>
     </style>
 
     <style name="AppTheme.Form.Header.Inverse" parent="android:TextAppearance.DeviceDefault.Large.Inverse">
@@ -76,14 +144,14 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="Widget.CashIn.ActionBar" parent="Widget.AppCompat.ActionBar">
+    <style name="Widget.CashIn.ActionBar" parent="Widget.AppCompat.Light.ActionBar.TabBar.Inverse">
         <item name="android:background">@color/primary</item>
         <item name="theme">@style/ThemeOverlay.CashIn.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <style name="Widget.CashIn.ActionBar.Camera">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/transparent</item>
         <item name="android:textColorPrimary">@color/primary</item>
         <item name="android:textColorSecondary">@color/primary</item>
         <item name="android:actionMenuTextColor">@color/primary</item>
@@ -94,21 +162,21 @@
         <item name="android:textColor">@color/primary</item>
     </style>
 
-    <style name="ThemeOverlay.CashIn.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+    <style name="ThemeOverlay.CashIn.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/light</item>
     </style>
 
     <style name="text_medium_white_nl">
-        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@color/white_max</item>
     </style>
     <style name="text_medium_blue_nl">
-        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@color/primary</item>
     </style>
 
     <style name="sign_up_button_component" parent="@style/text_medium_white_nl">
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
         <item name="android:background">@drawable/sign_up_button_component_selector</item>
     </style>
 
@@ -136,6 +204,19 @@
     <style name="text_medium_gs" parent="text_medium_nl">
         <item name="android:padding">@dimen/text_padding_medium</item>
     </style>
+
+    <style name="text_medium_input_header" parent="text_medium_nl">
+        <item name="android:padding">@dimen/text_padding_medium</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="text_medium_input_header_history" parent="text_medium_nl">
+        <item name="android:paddingBottom">@dimen/text_padding_medium</item>
+        <item name="android:paddingLeft">@dimen/text_padding_medium</item>
+        <item name="android:paddingRight">@dimen/text_padding_medium</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
     <style name="text_medium_white_gs" parent="text_medium_white_nl">
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:padding">@dimen/text_padding_medium</item>
@@ -157,4 +238,17 @@
     <style name="CWACCameraTheme" parent="CWACCameraBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    <style name="com_facebook_button" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/com_facebook_button_background</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">14.0dp</item>
+    </style>
+
+    <dimen name="form_fragment_input_seperator">10dp</dimen>
 </resources>

@@ -1,7 +1,6 @@
 package com.mantralabsglobal.cashin.social;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
@@ -16,7 +15,7 @@ import com.google.android.gms.plus.Plus;
 /**
  * Created by pk on 7/4/2015.
  */
-public class GooglePlus extends SocialBase {
+public class GooglePlus{
 
     private static final String TAG = "GooglePlus";
     /* Client used to interact with Google APIs. */
@@ -25,18 +24,20 @@ public class GooglePlus extends SocialBase {
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
 
+    private static final String GMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+
     /* Is there a ConnectionResult resolution in progress? */
     private boolean mIsResolving = false;
 
     /* Should we automatically resolve ConnectionResults when possible? */
     protected boolean mShouldResolve = false;
 
-    public void authenticate(Activity activity, final SocialListener<String> listener)
+    public void authenticate(final Activity activity, final SocialBase.SocialListener<String> listener)
     {
-        mGoogleApiClient = new GoogleApiClient.Builder(activity)
+     GoogleApiClient.Builder mGoogleApiClientBuilder = new GoogleApiClient.Builder(activity)
                 .addConnectionCallbacks(new AuthenticateCallback() {
                     @Override
-                    public void onSuccess(String email) {
+                    public void onSuccess(final String email) {
                         listener.onSuccess(email);
                     }
                 })
@@ -48,12 +49,16 @@ public class GooglePlus extends SocialBase {
                 })
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
-                .build();
+                .addScope(new Scope(Scopes.PLUS_LOGIN));
+
+        mGoogleApiClient = mGoogleApiClientBuilder.build();
 
         mShouldResolve = true;
         mGoogleApiClient.connect();
 
     }
+
+
 
     protected abstract class AuthenticateCallback implements GoogleApiClient.ConnectionCallbacks {
         @Override
@@ -63,7 +68,9 @@ public class GooglePlus extends SocialBase {
             // establish a service connection to Google Play services.
             Log.d(TAG, "onConnected:" + bundle);
             mShouldResolve = false;
+
             String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
             onSuccess(email);
         }
 
@@ -73,7 +80,7 @@ public class GooglePlus extends SocialBase {
         public void onConnectionSuspended(int i) {
 
         }
-    };
+    }
 
     protected abstract class ConnectionFailedListener implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -108,7 +115,7 @@ public class GooglePlus extends SocialBase {
                 onFailure("Signin cancelled");
             }
         }
-    };
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);

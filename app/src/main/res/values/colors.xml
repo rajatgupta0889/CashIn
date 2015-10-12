@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary_dark">#0072B0</color>
-    <color name="accent">#0BAEDF</color>
+    <color name="accent">#82C4F2</color>
     <color name="primary">#0288D1</color>
     <color name="light">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="translucent">#55000000</color>
+    <color name="translucentBlue">#550BAEDF</color>
     <color name="intro_slider_one">#82B8D5</color>
     <color name="info_bar_background">#DBEEF9</color>
     <color name="info_bar_text">#0582C6</color>
@@ -12,4 +15,13 @@
     <color name="sign_up_button_component_background_clicked">#ff4a8cb9</color>
     <color name="get_started_button_component_background">#fff</color>
     <color name="get_started_button_component_background_clicked">#ddd</color>
+    <color name="seperator_center">#d3d3d3</color>
+    <color name="com_facebook_button_background_color">#415dae</color>
+    <color name="com_facebook_button_background_color_disabled">#bdc1c9</color>
+    <color name="com_facebook_button_background_color_pressed">#2f477a</color>
+    <color name="com_facebook_button_login_silver_background_color">#f4f6f8</color>
+    <color name="com_facebook_button_login_silver_background_color_pressed">#e9eaf0</color>
+    <color name="gray_background">#d3d3d3</color>
+    <color name="bank_statement_clicked">#d3d3d3</color>
+    <color name="bank_statement">#bbb</color>
 </resources>

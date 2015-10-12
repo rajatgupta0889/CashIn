@@ -1,28 +1,29 @@
 package com.mantralabsglobal.cashin.ui.fragment.tabs;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.linkedin.platform.LISession;
-import com.linkedin.platform.LISessionManager;
-import com.linkedin.platform.errors.LIAuthError;
-import com.linkedin.platform.listeners.AuthListener;
-import com.linkedin.platform.utils.Scope;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.LinkedInService;
 import com.mantralabsglobal.cashin.service.RestClient;
 import com.mantralabsglobal.cashin.social.LinkedIn;
 import com.mantralabsglobal.cashin.social.SocialBase;
+import com.mantralabsglobal.cashin.social.SocialFactory;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.BaseActivity;
+import com.mantralabsglobal.cashin.ui.activity.social.OAuthActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import org.scribe.model.Token;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -34,8 +35,6 @@ import retrofit.Callback;
 public class LinkedInFragment extends BaseBindableFragment<LinkedInService.LinkedInDetail> {
 
     private static final String TAG = "LinkedInFragment";
-    @InjectView(R.id.btn_linkedIn_connect)
-    ImageButton btn_linkedIn;
 
     @InjectView(R.id.ll_linkedIn_connect)
     ViewGroup vg_linkedInConnect;
@@ -72,7 +71,6 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Get the view from fragmenttab1.xml
         View view = inflater.inflate(R.layout.fragment_linkedin, container, false);
         return view;
     }
@@ -94,6 +92,11 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
     }
 
     @Override
+    protected View getFormView() {
+        return vg_linkedInProfile;
+    }
+
+    @Override
     protected void onUpdate(LinkedInService.LinkedInDetail updatedData, Callback<LinkedInService.LinkedInDetail> saveCallback) {
         linkedInService.updateLinkedInDetail(updatedData, saveCallback);
     }
@@ -110,43 +113,61 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     protected void handleDataNotPresentOnServer() {
-        LISession session = LISessionManager.getInstance(getActivity()).getSession();
-        if( session != null && session.getAccessToken() != null && !session.getAccessToken().isExpired())
+        String accessToken = ((Application)getActivity().getApplication()).getAppPreference().getString("linkedin_access_token", null);
+        String accessSecret = ((Application)getActivity().getApplication()).getAppPreference().getString("linkedin_access_secret", null);
+        if(accessToken!= null && accessSecret != null)
         {
-            showProgressDialog("");
-            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
+            new AsyncLinkedInProfileTask().execute(accessToken, accessSecret);
         }
         else {
             setVisibleChildView(vg_linkedInConnect);
         }
-
     }
 
-    @OnClick(R.id.btn_linkedIn_connect)
-    public void onConnectClick()
-    {
-        showProgressDialog(getString(R.string.waiting_for_linkedIn), true, false);
-        LISession session = LISessionManager.getInstance(getActivity()).getSession();
-        if( session != null && session.getAccessToken() != null && !session.getAccessToken().isExpired())
-        {
-            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
-        }
-        else {
-            LISessionManager.getInstance(getActivity().getApplicationContext()).init(getActivity(), buildScope(), new AuthListener() {
-                        @Override
-                        public void onAuthSuccess() {
-                            LinkedIn.getLinkedInProfile(getActivity().getApplicationContext(), getActivity(), listener);
-                        }
+    private class AsyncLinkedInProfileTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                LinkedIn linkedIn = SocialFactory.getSocialHelper(SocialFactory.LINKEDIN, LinkedIn.class);
+                Token token = linkedIn.getAccessToken(params[0], params[1]);
+                final LinkedInService.LinkedInDetail linkedInDetail = linkedIn.getSocialProfile(getActivity(), token );
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindDataToForm(linkedInDetail);
+                    }
+                });
 
-                        @Override
-                        public void onAuthError(LIAuthError error) {
-                            hideProgressDialog();
-                            Log.v(TAG, error.toString());
-                            setVisibleChildView(vg_linkedInConnect);
-                        }
-                    },
-                    true);
+            }
+            catch(Exception e)
+            {
+                showToastOnUIThread(e.getMessage());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setVisibleChildView(vg_linkedInConnect);
+                    }
+                });
+
+            }
+            finally {
+
+                hideProgressDialog();
+            }
+            return null;
         }
+    };
+
+
+    @OnClick(R.id.btn_linkedIn_connect)
+    public void onConnectClick() {
+        //showProgressDialog(getString(R.string.waiting_for_linkedIn), true, false);
+
+        Intent intent = new Intent(getActivity(), OAuthActivity.class);
+        intent.putExtra("SOCIAL_NAME", SocialFactory.LINKEDIN);
+        getActivity().startActivityForResult(intent, BaseActivity.LINKEDIN_SIGNIN);
+
+        //new AsyncLinkedInProfileTask().execute();
     }
 
     private SocialBase.SocialListener<LinkedInService.LinkedInDetail> listener = new SocialBase.SocialListener<LinkedInService.LinkedInDetail>() {
@@ -163,11 +184,11 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
             setVisibleChildView(vg_linkedInConnect);
         }
     };
-
+/*
     // Build the list of member permissions our LinkedIn session requires
     private static Scope buildScope() {
         return Scope.build(Scope.R_BASICPROFILE, Scope.R_EMAILADDRESS);
-    }
+    }*/
 
     @Override
     public void bindDataToForm(LinkedInService.LinkedInDetail value) {
@@ -214,6 +235,18 @@ public class LinkedInFragment extends BaseBindableFragment<LinkedInService.Linke
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LISessionManager.getInstance(getActivity().getApplicationContext()).onActivityResult(getActivity(), requestCode, resultCode, data);
+        //LISessionManager.getInstance(getActivity().getApplicationContext()).onActivityResult(getActivity(), requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( resultCode == Activity.RESULT_OK && requestCode == BaseActivity.LINKEDIN_SIGNIN) {
+            String access_token = data.getStringExtra("access_token");
+            String access_secret = data.getStringExtra("access_secret");
+
+            ((Application)getActivity().getApplication()).putInAppPreference("linkedin_access_token", access_token);
+            ((Application)getActivity().getApplication()).putInAppPreference("linkedin_access_secret", access_secret);
+
+            handleDataNotPresentOnServer();
+
+        }
     }
 }

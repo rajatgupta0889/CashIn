@@ -1,0 +1,47 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.mantralabsglobal.cashin.ui.fragment.tabs.SnapBankStatementFragment"
+    android:id="@+id/bankSnapView">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|top"
+        android:layout_marginTop="20dp"
+        android:id="@+id/snap_layout_view">
+
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:id="@+id/imageView1"
+            android:layout_weight="1"
+            android:src= "@drawable/ic_add_photo_icon"
+            android:scaleType="fitXY"
+            />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:id="@+id/imageView2"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal|top"
+            android:src= "@drawable/ic_add_photo_icon"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="10dp" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:id="@+id/imageView3"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:src= "@drawable/ic_add_photo_icon"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+</FrameLayout>

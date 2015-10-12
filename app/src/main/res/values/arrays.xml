@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="currency_keywords">
+        <item>INR</item>
+        <item>Rs.</item>
+        <item>USD</item>
+    </array>
+    <array name="debit_keywords">
+        <item>DR</item>
+        <item>debited</item>
+        <item>withdrawn</item>
+        <item>withdrawal</item>
+        <item>ECS</item>
+        <item>cod</item>
+        <item>spent</item>
+        <item>ATM</item>
+        <item>Chq</item>
+        <item>Cheque</item>
+        <item>purchase</item>
+        <item>payment</item>
+        <item>overdue</item>
+        <item>Transaction</item>
+        <item>Txn</item>
+    </array>
+    <array name="credit_keywords">
+        <item>CR</item>
+        <item>credited</item>
+        <item>deposited</item>
+        <item>ECS</item>
+    </array>
+    <array name="loan_keywords">
+        <item>loan</item>
+        <item>emi</item>
+    </array>
+    <array name="bill_keywords">
+        <item>bill</item>
+        <item>payable</item>
+    </array>
+    <array name="account_keyword">
+        <item>A/c</item>
+        <item>Account</item>
+        <item>balance</item>
+        <item>bal</item>
+        <item>stmt</item>
+        <item>statement</item>
+        <item>Min due</item>
+        <item>Credit card</item>
+    </array>
+
+</resources>

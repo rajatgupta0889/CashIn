@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import com.mantralabsglobal.cashin.R;
 import com.mantralabsglobal.cashin.service.AddressService;
 import com.mantralabsglobal.cashin.ui.Application;
+import com.mantralabsglobal.cashin.ui.activity.app.MainActivity;
 import com.mantralabsglobal.cashin.ui.view.CustomEditText;
 import com.mantralabsglobal.cashin.ui.view.CustomSpinner;
 import com.mantralabsglobal.cashin.utils.LocationAddress;
@@ -36,7 +37,7 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
     CustomEditText cc_street;
 
     @NotEmpty
-    @Digits()
+    @Digits(integer = 6)
     @InjectView(R.id.cc_pincode)
     CustomEditText cc_pincode;
 
@@ -101,6 +102,11 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
 
     }
 
+
+    @Override
+    protected View getFormView() {
+        return vg_addressForm;
+    }
 
     @Override
     protected void handleDataNotPresentOnServer() {
@@ -188,7 +194,6 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
                     cs_own.getSpinner().setSelection(((ArrayAdapter<String>) cs_own.getAdapter()).getPosition(address.getOwn()));
                 }
             });
-
         }
     }
 
@@ -204,5 +209,4 @@ public abstract class AddressFragment extends BaseBindableFragment<AddressServic
         address.setOwn(cs_own.getSpinner().getSelectedItem().toString());
         return address;
     }
-
 }

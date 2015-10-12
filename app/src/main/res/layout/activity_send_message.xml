@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:title="@string/send_message_to_referrals"
+        style="@style/Widget.CashIn.ActionBar"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" android:paddingStart="20dp" android:paddingEnd="20dp" android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="0.75">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/your_referrals" style="@style/text_medium_input_header" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp" android:background="@color/seperator_center"/>
+
+        <org.apmem.tools.layouts.FlowLayout android:id="@+id/vg_referrals"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp" android:layout_weight="1"
+            >
+        </org.apmem.tools.layouts.FlowLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp" android:background="@color/seperator_center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="1.4" android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/message" style="@style/text_medium_input_header" />
+
+            <CheckBox android:id="@+id/cb_default_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/default_message" android:checked="true" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp" android:background="@color/seperator_center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="3">
+
+            <EditText android:id="@+id/et_message_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:inputType="textMultiLine|textShortMessage" android:scrollHorizontally="false" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:layout_weight="2" android:gravity="center" >
+
+            <Button android:id="@+id/btn_send_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/send_message"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

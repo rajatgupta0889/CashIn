@@ -2,3 +2,5 @@
 linkedin-sdk/build/
 .idea
 .gradle
+app/app-release.apk
+local.properties

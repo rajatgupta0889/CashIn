@@ -6,25 +6,30 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.mantralabsglobal.cashin.ui.fragment.tabs.AadharCardFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.BlankFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.CurrentAddressFragment;
 import com.mantralabsglobal.cashin.ui.fragment.tabs.PANCardFragment;
+import com.mantralabsglobal.cashin.ui.fragment.tabs.PermanentAddressFragment;
 
 /**
  * Created by pk on 13/06/2015.
  */
 public class IdentityPagerAdapter extends FragmentPagerAdapter{
 
-    private String tabtitles[] = new String[] { "Aadhar", "PAN"};
+    private String tabtitles[] = new String[] { "Aadhar", "PAN", "Current Address" , "Permanent Address"};
 
     AadharCardFragment aadharCardFragment;
     PANCardFragment panCardFragment;
     FragmentManager fragmentManager;
+    private CurrentAddressFragment currentAddressFragment;
+    private PermanentAddressFragment permanentAddressFragment;
 
     public IdentityPagerAdapter(FragmentManager fm) {
         super(fm);
         this.fragmentManager = fm;
         aadharCardFragment = new AadharCardFragment();
         panCardFragment = new PANCardFragment();
-
+        currentAddressFragment = new CurrentAddressFragment();
+        permanentAddressFragment = new PermanentAddressFragment();
     }
 
     @Override
@@ -35,7 +40,11 @@ public class IdentityPagerAdapter extends FragmentPagerAdapter{
                  return aadharCardFragment ;
             case 1:
                 return panCardFragment;
-            // Open FragmentTab3.java
+            case 2:
+                return currentAddressFragment ;
+            case 3:
+                return permanentAddressFragment ;
+            // Open FragmentTab4.java
         }
         return new BlankFragment();
     }

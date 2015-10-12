@@ -1,61 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:id="@+id/ll_aadhar_fragment">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_aadhar_fragment">
 
         <LinearLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/ll_aadhar_camera"
             android:layout_width="match_parent" android:gravity="top|center"  android:layout_height="match_parent" android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:paddingTop="50dp" android:gravity="center" android:orientation="vertical"
-                >
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Top">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@string/scan_aadhar_qr_code" android:gravity="center_horizontal"
-                    style="@style/AppTheme.Form.Header" />
+                   android:text="@string/scan_aadhar_qr_code"
+                    style="@style/AppTheme.Form.Fragment.Top.Header" />
 
                 <ImageButton android:id="@+id/ib_launchScanner"
-                    android:layout_marginTop="30dp"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp" android:src="@drawable/ic_camera"
-                    android:background="@drawable/round_button"
+                    style="@style/AppTheme.Form.Fragment.Top.Image" android:src="@drawable/ic_camera_click"
                     android:contentDescription="@string/scan_aadhar_qr_code" />
 
-            </LinearLayout>
+            </FrameLayout>
 
+            <View style="@style/AppTheme.Form.Fragment.Seperator"></View>
 
-            <View
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/gradient_seperator"
-                android:layout_height="2dp"/>
-
-
+            <FrameLayout style="@style/AppTheme.Form.Fragment.Bottom">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:paddingTop="20dp" android:paddingBottom="20dp" android:text="@string/aadhar_card_not_ready" />
+                style="@style/AppTheme.Form.Fragment.Bottom.Text" android:text="@string/aadhar_card_not_ready" />
 
             <Button
                 android:id="@+id/bt_edit_aadhar_detail"
-                android:layout_width="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content" android:text="@string/enter_aadhar_details" android:background="@null"
+                style="@style/AppTheme.Form.Fragment.Bottom.Button" android:text="@string/enter_aadhar_details"
                 />
+            </FrameLayout>
 
         </LinearLayout>
 
-        <ScrollView
-            android:id="@+id/rl_aadhar_detail" android:visibility="gone"
+        <FrameLayout android:id="@+id/rl_aadhar_detail" android:visibility="visible"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <LinearLayout android:padding="20dp"
+            android:layout_height="match_parent" android:orientation="vertical">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_marginBottom="50dp">
+        <LinearLayout android:padding="16dp"
             android:layout_width="match_parent" android:layout_height="match_parent"
-            android:layout_gravity="start|top" android:orientation="vertical">
+            android:orientation="vertical">
 
             <com.mantralabsglobal.cashin.ui.view.CustomEditText
                 android:id="@+id/cc_name"
@@ -94,13 +87,10 @@
 
             <LinearLayout android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignTop="@+id/ll_aadhar_fragment"
                 android:layout_height="wrap_content" android:gravity="center">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_save" android:text="@string/save" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/btn_reset" android:text="@string/reset" />
+
 
             </LinearLayout>
 
@@ -109,17 +99,21 @@
 
         </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_launchScanner"
-        android:src="@drawable/ic_camera"
-        app:fabSize="normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignTop="@+id/ll_aadhar_fragment"
-        android:layout_margin="24dp"
-        android:layout_gravity="bottom|right"
-        app:borderWidth="0dp"/>
+            <include layout="@layout/back_next_view" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_launchScanner"
+                android:src="@drawable/ic_camera" android:visibility="visible"
+                app:fabSize="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/fab_bottom_margin"
+                android:layout_marginRight="@dimen/fab_right_margin"
+                android:layout_gravity="bottom|right"
+                app:borderWidth="0dp"/>
+
+    </FrameLayout>
+
     <ProgressBar
         android:id="@+id/progres_bar"
         android:layout_width="wrap_content"

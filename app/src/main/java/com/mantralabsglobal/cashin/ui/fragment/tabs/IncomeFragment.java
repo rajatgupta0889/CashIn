@@ -24,26 +24,28 @@ import java.util.List;
 import butterknife.InjectView;
 import retrofit.Callback;
 
-/**
+/**++
  * Created by pk on 14/06/2015.
  */
-public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Income>> {
+public class IncomeFragment extends BaseBindableListFragment<IncomeService.Income> {
 
     @NotEmpty
-    @Digits
+    @Digits(integer = 6)
     @InjectView(R.id.cc_month_one)
     public MonthIncomeView monthIncomeViewOne;
 
-    @Digits
+    @Digits(integer = 6)
     @NotEmpty
     @InjectView(R.id.cc_month_two)
     public MonthIncomeView monthIncomeViewTwo;
 
-    @Digits
+    @Digits (integer = 6)
     @NotEmpty
     @InjectView(R.id.cc_month_three)
     public MonthIncomeView monthIncomeViewThree;
 
+    @InjectView(R.id.vg_form)
+    ViewGroup vg_form;
 
     IncomeService incomeService;
 
@@ -55,6 +57,12 @@ public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Inco
 
         return view;
     }
+
+    @Override
+    protected View getFormView() {
+        return vg_form;
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -100,7 +108,6 @@ public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Inco
     }
 
 
-
     @Override
     public void bindDataToForm(List<IncomeService.Income> value) {
         if(value.size()>0)
@@ -108,19 +115,18 @@ public class IncomeFragment extends BaseBindableFragment<List<IncomeService.Inco
             monthIncomeViewOne.setYear(value.get(0).getYear());
             monthIncomeViewOne.setMonth(value.get(0).getMonth()-1);
             monthIncomeViewOne.setAmount(String.valueOf(value.get(0).getAmount()));
-
-            if(value.size()==2)
-            {
-                monthIncomeViewTwo.setYear(value.get(1).getYear());
-                monthIncomeViewTwo.setMonth(value.get(1).getMonth()-1);
-                monthIncomeViewTwo.setAmount(String.valueOf(value.get(1).getAmount()));
-            }
-            if(value.size()==3)
-            {
-                monthIncomeViewThree.setYear(value.get(2).getYear());
-                monthIncomeViewThree.setMonth(value.get(2).getMonth()-1);
-                monthIncomeViewThree.setAmount(String.valueOf(value.get(2).getAmount()));
-            }
+        }
+        if(value.size()>1)
+        {
+            monthIncomeViewTwo.setYear(value.get(1).getYear());
+            monthIncomeViewTwo.setMonth(value.get(1).getMonth()-1);
+            monthIncomeViewTwo.setAmount(String.valueOf(value.get(1).getAmount()));
+        }
+        if(value.size()>2)
+        {
+            monthIncomeViewThree.setYear(value.get(2).getYear());
+            monthIncomeViewThree.setMonth(value.get(2).getMonth()-1);
+            monthIncomeViewThree.setAmount(String.valueOf(value.get(2).getAmount()));
         }
     }
 

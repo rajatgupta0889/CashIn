@@ -5,9 +5,7 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mantralabsglobal.cashin.R;
-import com.mantralabsglobal.cashin.service.AddressService;
-import com.mantralabsglobal.cashin.service.AuthenticationService;
-import com.mantralabsglobal.cashin.service.LinkedInService;
+import com.mantralabsglobal.cashin.ui.Application;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.net.CookieManager;
@@ -16,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
+import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -34,6 +33,14 @@ public class RestClient  {
     private UserHistoryService userHistoryService;
     private FacebookService facebookService;
     private PanCardService panCardServiceOCR;
+    private AvtarService avtarService;
+    private ReferenceService referenceService;
+    private BankSnapService bankSnapService;
+    private EMIService emiService;
+    private EStatementService eStatementService;
+    private NetBankingService netBankingService;
+
+    private static RestClient instance;
 
     public RestClient(Context context)
     {
@@ -45,6 +52,8 @@ public class RestClient  {
 
         client.setConnectTimeout(30, TimeUnit.SECONDS);
         client.setReadTimeout(60, TimeUnit.SECONDS);
+
+        client.interceptors().add( ((Application)context).getAuthInterceptor());
 
         CookieManager cookieManager = new CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
@@ -78,6 +87,26 @@ public class RestClient  {
         userHistoryService = restAdapter.create(UserHistoryService.class);
         facebookService = restAdapter.create(FacebookService.class);
         panCardServiceOCR = restAdapterOCR.create(PanCardService.class);
+        avtarService = restAdapter.create(AvtarService.class);
+        referenceService = restAdapter.create(ReferenceService.class);
+        bankSnapService = restAdapter.create(BankSnapService.class);
+        emiService = restAdapter.create(EMIService.class);
+        eStatementService = restAdapter.create(EStatementService.class);
+        netBankingService = restAdapter.create(NetBankingService.class);
+
+        instance = this;
+    }
+
+    public static RestClient getInstance() {
+        return instance;
+    }
+
+    public NetBankingService getNetBankingService() {
+        return netBankingService;
+    }
+
+    public EStatementService geteStatementService() {
+        return eStatementService;
     }
 
     public AuthenticationService getAuthenticationService()
@@ -87,6 +116,14 @@ public class RestClient  {
 
     public LinkedInService getLinkedInService() {
         return linkedInService;
+    }
+
+    public BankSnapService getBankSnapService() {
+        return bankSnapService;
+    }
+
+    public void setBankSnapService(BankSnapService bankSnapService) {
+        this.bankSnapService = bankSnapService;
     }
 
     public AddressService getAddressService() {
@@ -124,5 +161,17 @@ public class RestClient  {
 
     public PanCardService getPanCardServiceOCR() {
         return panCardServiceOCR;
+    }
+
+    public AvtarService getAvtarService() {
+        return avtarService;
+    }
+
+    public ReferenceService getReferenceService() {
+        return referenceService;
+    }
+
+    public EMIService getEmiService() {
+        return emiService;
     }
 }

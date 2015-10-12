@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity implements Validator.ValidationL
 
         AuthenticationService.UserPrincipal userPrincipal = new AuthenticationService.UserPrincipal();
         userPrincipal.setEmail(email);
-        userPrincipal.setPassword(password);
+        //userPrincipal.setPassword(password);
 
         service.authenticateUser(userPrincipal, new Callback<AuthenticationService.AuthenticatedUser>() {
             @Override

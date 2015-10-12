@@ -7,17 +7,14 @@
     <string name="login_header">Cash In</string>
     <string name="title_activity_authenticated">AuthenticatedActivity</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
     <string name="username_hint">someone@example.com</string>
     <string name="password_hint">Password</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="your_photo">Your Photo</string>
     <string name="confirm_on_close">Exit Cash In</string>
     <string name="default_dateof_birth">01-Jan-1990</string>
     <string name="pan_number">PAN Number</string>
+    <string name="bank_statement_info">Pick one of the below option to fetch your last 3 months bank statement</string>
     <string name="pan_number_hint">ALHRR0000S</string>
     <string name="relation_name_hint">Name of the relation</string>
     <string name="enter_pan_card_details_button"><![CDATA[Enter PAN card details  >]]></string>
@@ -30,8 +27,8 @@
     <string name="gender">Gender</string>
     <string name="aadhar_number">Aadhar Number</string>
     <string name="date_of_birth">Date of birth</string>
-    <string name="facebook">facebook</string>
-    <string name="facebook_connect">connnect</string>
+    <string name="facebook">Facebook</string>
+    <string name="facebook_connect">Connect with facebook</string>
     <string name="facebook_connected_as">Connected as</string>
     <string name="facebook_profile_details">Profile Details</string>
     <string name="workplace">Workplace</string>
@@ -55,6 +52,7 @@
     <string name="school">School</string>
     <string name="enter_primary_bank_details">Enter your primary bank details</string>
     <string name="bank_name">Bank Name</string>
+    <string name="bank_statement_details">Bank statement details</string>
     <string name="account_number_last_4_digits">Account Number (Last 4 digits)</string>
     <string name="last_three_month_salary">Please enter your last 3 months income</string>
     <string name="month_one">Month One</string>
@@ -68,8 +66,6 @@
     <string name="rent">Rent</string>
     <string name="owned">Owned</string>
     <string name="owned_by">Own</string>
-    <string name="server_url">http://52.10.22.1:1400</string>
-    <string name="server_url_ocr">http://52.10.22.1:1400</string>
     <string name="server_date_time_format">yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'</string>
     <string name="title_please_wait">Please wait ....</string>
     <string name="authenticating">Authenticating</string>
@@ -79,13 +75,14 @@
     <string name="waiting_for_facebook">Waiting for facebook</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
     <string name="gps_failed">Failed to get location from GPS</string>
     <string name="save_sucess">Data saved sucessfully</string>
     <string name="waiting_for_server">Waiting for server</string>
     <string name="not_present_on_server">Data not available</string>
     <string name="picture">Picture</string>
     <string name="description_info">Info</string>
-    <string name="facebook_app_id">1442098402762222</string>
     <string name="intro_message">
         <![CDATA[
 
@@ -129,16 +126,16 @@
     <string name="saving_permanent_address">Saving permanent address</string>
     <string name="reset_sucess">Reset sucessfull</string>
     <string name="your_profile">Your Profile</string>
-    <string name="father_name">Father\'s Name</string>
+    <string name="father_name">Father\'s Name/Spouse Name</string>
     <string name="logout">Logout</string>
     <string name="product_tour">Product tour</string>
     <string name="sign_in_with_google">Sign in</string>
-    <string name="signing_in">Singing in</string>
+    <string name="signing_in">Signing in</string>
     <string name="read_transactional_sms">Read transactional SMS</string>
-    <string name="ever_taken_a_loan">Ever taken a loan</string>
-    <string name="cheque_bounced">Bounced a cheque in last 3 months</string>
-    <string name="application_rejected">Application rejected</string>
-    <string name="ever_defaulted">Defaulted</string>
+    <string name="ever_taken_a_loan">Have you ever taken a loan?</string>
+    <string name="cheque_bounced">Has any of your cheques bounced in the last 3 months?</string>
+    <string name="application_rejected">Has your application for a loan ever been rejected?</string>
+    <string name="ever_defaulted">Have you defaulted on a previous loan?</string>
     <!--ZXing Scanner -->
 
     <string-array name="city_array">
@@ -163,6 +160,12 @@
         <item>Female</item>
         <item>Others</item>
     </string-array>
+    <string-array name="reference_relationship_array">
+        <item>Friend</item>
+        <item>Family</item>
+        <item>Neighbour</item>
+        <item>Acquaintance</item>
+    </string-array>
     <string name="title_activity_intro_slider">IntroSliderActivity</string>
 
     <string name="hello_world">Hello world!</string>
@@ -171,7 +174,7 @@
     <string name="recieve_money_card">Recieve money card</string>
     <string name="photos_of_documents">Photos of documents</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="generate_product_hash">Package hash</string>
     <string name="degree">Degree</string>
@@ -208,8 +211,53 @@
     <string name="flash">Flash</string>
     <string name="launch_full_screen">Launch Full-Screen</string>
     <string name="mirror_ffc">Mirror FFC</string>
+    <string name="or">Or</string>
+    <string name="upload_from_gallery">Upload from gallery</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string-array name="cwac_nav">
         <item >@string/standard</item>
         <item >@string/ffc</item>
     </string-array>
+    <string name="title_activity_main_activity_my">MainActivityMy</string>
+    <string name="position_card_inside_frame">Position card inside red marker</string>
+    <string name="press_back_again_to_exit">Please BACK again to exit</string>
+    <string name="select_three_reference">Select 3 people from your contact list</string>
+    <string name="title_contact_picker">Your Contacts</string>
+    <string name="loading_contacts">Loading contacts</string>
+    <string name="menu_search">Search</string>
+    <string name="select_status">0/3</string>
+    <string name="done">Done</string>
+    <string name="contactImage">Contact Image</string>
+    <string name="contactName">Contact Name</string>
+    <string name="relationship">Relationship</string>
+    <string name="send_request">Send Request</string>
+    <string name="max_reference_selection_reached">Maximum references selected. Unselect existing to select a different contact.</string>
+    <string name="send_message_to_referrals">Send message to referrals</string>
+    <string name="your_referrals">Your Referrals</string>
+    <string name="message">Message</string>
+    <string name="default_message">Default Message</string>
+    <string name="send_message">Send Message</string>
+    <string name="default_referral_message_content">
+        <![CDATA[
+            <p>Hello Friends,</p>
+            <p>I am applying for a loan on the CashIn app. I need references to qualify me. Please help me to get the loan by qualifying me.</p>
+            <p>Thank you</p>
+            <p>My referral link: cashinapp.slack.com/@user</p>
+        ]]>
+    </string>
+    <string name="default_referral_message_content_new">
+        <![CDATA[
+            Hello Friends,\nI am applying for a loan on the CashIn app. I need references to qualify me. Please help me to get the loan by qualifying me.\nThank you\nMy referral link: cashinapp.slack.com/%s
+        ]]>
+    </string>
+    <string name="existing_emis">Existing EMIs</string>
+    <string name="last_three_month_cc_bill">Last 3 months credit card bill</string>
+    <string name="select_gmail_acccount">Select gmail Account</string>
+    <string name="change_gmail_account">Change gmail account</string>
+    <string name="bank_name_regex">(SBBJ|HDFC|ICIC|UTIB|SBIN|HSBC|CITI|SCBL|KKBK|IBKL|UBIN|YESB|INDB|BARB|PUNB|CNRB|ORBC|FDRL|VYSA|MAHB|CIUB|CORP|KVBL|DCBL|AMEX|IDIB|BKID|SIBL|BKDN|SYNB|CBIN|DEUT|IOBA|LAVB|STBP|UCBA|SBHY|SBMY|SUTB|TMBL|RATN|ANDB|VIJB|UTBI|DBSS|KARB|PMCB|SBTR|COSB|KANG|ALLA|ABNA|JAKA|DLXB|BKID|PMCB|SVCB|PSIB|CBIN|KCCB|VVSB|CSBK|JSBP|SCBL|VARA|BCBM|SRCB|SBIG|NKGS|DNSB|ASBL|JSBL|KJSB|BCCB|RSBL|ABHY|TJSB|CBIN|PJSB)</string>
+    <string name="account_name_regex">[\\*xX]+(\\d{4,})\\s</string>
+    <string name="perfios_api_version">2.0</string>
+    <string name="perfios_vendorId">angelPrime</string>
+    <string name="bank_db">banks.xml</string>
 </resources>
